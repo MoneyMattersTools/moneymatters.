@@ -1,0 +1,63 @@
+
+.hamburger {
+  display: none; // hide by default (desktop)
+}
+
+
+
+// Mobile-specific styling
+@media screen and (max-width: 768px) {
+
+  #mobileMenu {
+    display: none !important;
+  }
+  
+  #mobileMenu.show {
+    display: flex !important;
+    flex-direction: column;
+  }
+  
+  .top {
+    display: none;
+    flex-direction: column;
+    background-color: black; // or match your site's background
+    position: absolute;
+    width: 200px;
+    padding: 20px;
+    border-radius: 0 0 0 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    margin-right: -2.5%;
+  }
+
+  .top a {
+    padding: 10px 0;
+    font-size: 1rem;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+    position: absolute;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 1001;
+  }
+
+  .hamburger span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+  }
+
+  .block-link {
+    text-align: center !important;
+  }
+}
+

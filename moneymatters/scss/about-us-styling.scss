@@ -1,0 +1,363 @@
+@import 'partials/positioning';
+
+@import 'partials/links';
+
+@import 'partials/font-sizes';
+
+@import 'partials/generalstyling';
+
+@import 'partials/index-form';
+
+@import 'partials/hamburger';
+
+@import 'partials/get-connected-footer';
+
+@import 'partials/header';
+
+.section1 {
+    @include center(horizontal);
+    @include flex-column();
+}
+
+
+h1 {
+    font-size: $font-h1-size;
+}
+
+.coin {
+    width: 10%;
+    position: absolute;
+    opacity: 75%;
+}
+
+.coin.one {
+    top: 30%;
+    left: 15%;
+}
+
+.coin.two {
+    top: 40%;
+    right: 10%;
+}
+
+.coin.three {
+    top: 50%;
+    right: 20%;
+}
+
+.coin.four {
+    top: 55%;
+    left: 5%;
+}
+
+.coin.five {
+    top: 120%;
+    left: 30%;
+}
+
+.coin.six {
+
+    top: 145%;
+    right: 20%;
+}
+.plant-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .plant-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .text-and-line {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    gap: 10px;
+
+    .line {
+      width: 80px;
+      height: 2px;
+      background-color: black;
+    }
+  
+    .text-content {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      text-align: left;
+    }
+  
+    .label {
+      font-size: $font-h2-size;
+      margin: 0;
+      font-weight: bold;
+    }
+  
+    p {
+      font-size: 20px;
+      margin-top: 0.5rem;
+      max-width: 500px;
+    }
+  }
+  
+  /* Specific positioning for each text-and-line */
+  .text-and-line {
+    top: 10%;  // Around the head
+    left: 7.5%;
+    flex-direction: row-reverse;
+  }
+  
+  .text-and-line.second {
+    top: 32%;  // First left leaf
+    left: -5%;
+    flex-direction: row-reverse;
+  }
+  
+  .text-and-line.third {
+    top: 37%;  // Right side of second leaf
+    right: -5%;
+    left: auto;
+    flex-direction: row; // line -> text (flip because on right)
+    
+  }
+  
+  .text-and-line.fourth {
+    top: 70%; // Roots
+    left: 2.5%;
+    flex-direction: row-reverse;
+  }
+  
+
+.connection-container {
+    @include flex();
+    gap: 50px;
+    @include center(horizontal);
+
+    div img {
+        width: 50%;
+        margin-top: 2.5%;
+        margin-bottom: 2.5%;
+      }
+  }
+
+  .connection-container div {
+    text-align: left;
+  }
+
+  .connection-container a {
+    @include link-style(white);
+  }
+
+  .section3 {
+    @include flex-column();
+    padding-left: 5%;
+    padding-right: 5%;
+    position: relative;
+
+}
+
+
+  footer p {
+    margin-left: 5%;
+    font-weight: 600;
+    font-size: 25px;
+    @include center(vertical);
+  }
+
+  footer nav {
+    @include flex();
+    margin-left: 5%;
+    margin-top: 2.5%;
+    gap: 15px;
+  }
+
+  .credits {
+    @include center(horizontal);
+    margin-bottom: 2.5%;
+  }
+
+  .credits a {
+    margin-left: 15px;
+  }
+
+  @media screen and (max-width: 768px) {
+    
+    html, main {
+     overflow-x: hidden;
+    }
+
+    h1 {
+        font-size: $font-h1-mobile;
+    }
+
+    h2 {
+        font-size: $font-h2-mobile;
+    }
+
+    .section1 h2, .section2 div h2 {
+        font-size: $font-h2-mobile;
+    }
+
+    .section2 {
+
+        .coin.one {
+            top: 20%;
+        }
+
+        .coin.two {
+            top: 40%;
+            right: 30%;
+        }
+
+        .coin.three {
+            top: 80%;
+            right: 2.5%;
+        }
+
+        .coin.four {
+            top: 70%;
+        }
+
+        .coin.five {
+            top: 15%;
+            left: 5%;
+        }
+        .coin.six {
+            top: 15%;
+            right: 10%;
+        }
+    }
+
+    .plant-container {
+        margin-top: 15%;
+        max-width: 750px;
+        width: 80%;
+
+        .line {
+            display: none;
+        }
+
+        .plant-image {
+            width: 75%;
+            margin-top: 10%;
+        }
+
+        .text-and-line {
+            max-width: 400px;
+            left: 11%;
+            top: -12%;
+
+            .text-content{
+                align-items: center;
+                text-align: center;
+            }
+
+            h2 {
+                font-size: $font-h2-mobile;
+            }
+        }
+
+        .text-and-line.second {
+            max-width: 150px;
+            top: 25%;
+            left: -1%;
+            .text-content{
+                align-items: left;
+                text-align: left;
+            }
+        }
+
+        .text-and-line.third {
+            max-width: 150px;
+            top: 35%;
+            left: 62%;
+            
+            .text-content{
+                align-items: right;
+                text-align: right;
+            }
+        }
+
+        .text-and-line.fourth {
+            top: 95%;
+
+            .text-content {
+                align-items: center;
+                text-align: center;
+            }
+            
+        }
+
+        p {
+            font-size: $font-p-mobile;
+        }
+    }
+
+    h3 {
+        font-size: $font-h3-mobile;
+    }
+
+    p {
+        font-size: $font-p-mobile;
+    }
+
+    .section1 {
+        margin-top: 10%;
+    }
+
+    footer p {
+        margin-left: 5%;
+        font-size: $font-p-mobile;
+       }
+    
+       .credits p {
+        font-size: $font-p-mobile;
+       }
+    
+    
+       .credits a {
+        margin-left: 5px;
+        font-size: $font-a-mobile;
+      }
+
+      .section3 {
+
+        margin-top: 30%;
+    
+        h2 {
+            font-size: $font-h2-mobile;
+        }
+
+        h3 {
+            font-size: $font-h3-mobile;
+        }
+
+        p {
+            font-size: $font-p-mobile;
+        }
+      }
+
+      .connection-container {
+        gap: 0px;
+        
+        div {
+            text-align: center;
+        }
+
+
+      }
+
+      .social-media {
+        bottom: 50px;
+      }
+
+
+}

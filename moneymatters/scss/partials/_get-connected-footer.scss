@@ -1,0 +1,159 @@
+@import 'font-sizes';
+
+
+#join-us {
+  @include flex-column();
+  padding-left: 5%;
+  padding-right: 5%;
+  position: relative;
+
+  h2 {
+      font-size: $font-h2-size;
+  }
+}
+
+.final {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.final h2 {
+    font-size: $font-h2-size;
+  }
+
+
+  .connection-container div {
+    text-align: left;
+  }
+
+  .connection-container a {
+    @include link-style(white);
+    
+    p {
+      text-decoration: underline;
+    }
+  }
+
+  .connection-container a:hover {
+    p {
+      text-decoration: none;
+    }
+  }
+
+footer {
+  padding-top: 2.5%;
+}
+
+
+  footer p {
+    margin-left: 5%;
+    font-weight: 600;
+    font-size: 25px;
+    @include center(vertical);
+  }
+
+  footer nav {
+    @include flex();
+    margin-left: 5%;
+    margin-top: 2.5%;
+    gap: 15px;
+
+    a {
+      @include link-style(black);
+      text-decoration: underline;
+    }
+  }
+
+  .credits {
+    @include center(horizontal);
+    margin-bottom: 2.5%;
+  }
+
+  .credits a {
+    margin-left: 15px;
+  }
+
+  .social-media {
+    @include flex-column();
+    position: relative;
+    left: 80%;
+    bottom: 100px;
+    
+    h3 {
+      font-size: $font-h3-size;
+    }
+
+    .social-links {
+      @include flex();
+      gap: 25px;
+      margin-top: 1.5%;
+      img {
+        width: 35px;
+        height: 35px;
+      }
+    }
+
+  }
+
+  .disclaimer {
+
+    @include flex-column();
+    @include center(horizontal);
+    margin-right: 5%;
+    margin-bottom: 2.5%;
+    margin-top: -5%;
+    h3 {
+      font-size: $font-h3-mobile;
+    }
+
+    p {
+      margin-top: 0.5%;
+      font-size: $font-p-mobile;
+    }
+  }
+
+
+  @media screen and (max-width: 768px) {
+
+    footer {
+      overflow-x: hidden;
+    }
+
+    h1 {
+        font-size: $font-h1-mobile;
+    }
+    
+    footer p {
+        margin-left: 5%;
+        font-size: $font-p-mobile;
+       }
+    
+       .credits p {
+        font-size: $font-p-mobile;
+       }
+    
+    
+       .credits a {
+        margin-left: 5px;
+        font-size: $font-a-mobile;
+      }
+
+      .social-media {
+
+        bottom: 50px;
+        left: 70%;
+
+        h3 {
+          font-size: $font-h3-mobile;
+        }
+
+        .social-links {
+          gap: 10px;
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    
+  }

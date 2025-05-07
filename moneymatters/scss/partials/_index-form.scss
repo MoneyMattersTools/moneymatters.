@@ -1,0 +1,177 @@
+@import 'font-sizes';
+@import 'positioning';
+
+#join-us {
+    background-color: black;
+    color: white;
+    padding-top: 5%;
+
+    h2 {
+        font-size: $font-h2-size;
+    }
+
+    h3 {
+        font-size: $font-h3-size;
+    }
+
+    p {
+        font-size: $font-p-size;
+    }
+}
+
+.connection-container {
+    @include flex();
+    padding-bottom: 2.5%;
+
+    div {
+        color: white;
+
+        a h3 {
+          width: 50%;
+          text-wrap: wrap;
+        }
+    }
+
+    div img {
+      width: 50%;
+      margin-top: 2.5%;
+      margin-bottom: 2.5%;
+    }
+  }
+
+.form-container {
+    width: 60%;
+    margin-top: -5%;
+
+    h3 {
+      position: relative;
+      right: 24%;
+      margin-bottom: 2.5%;
+    }
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    right: 25%;
+  }
+  
+  form .row {
+    display: flex;
+    gap: 20px;
+    @include center(horizontal);
+  }
+
+  .row #email {
+    width: 100%;
+  }
+  
+  form .col {
+    flex: 1;
+  }
+  
+  form input.form-control {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 18px;
+    border: 2px solid white;
+    border-radius: 25px;
+    background-color: white;
+    color: black;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  
+  form input.form-control::placeholder {
+    color: gray;
+  }
+  
+  form input.form-control:focus {
+    border-color: black;
+    box-shadow: 0 0 5px rgb(251, 251, 251);
+  }
+  
+
+  .submit-btn {
+    background-color: white;
+    border: 1px solid white;
+    color: black;
+    padding: 15px 30px;
+    font-size: 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  footer {
+    padding-top: 2.5%;
+  }
+
+
+  @media screen and (max-width: 768px) {
+
+
+    #join-us {
+        @include center(horizontal);
+
+        h2 {
+            font-size: $font-h2-mobile;
+        }
+
+        h3 {
+            font-size: $font-h3-mobile;
+        }
+
+        p {
+            font-size: $font-p-size;
+        }
+    }
+
+
+  .connection-container {
+    @include flex-column();
+    padding-bottom: 8%;
+    @include center(horizontal);
+    
+    a {
+      text-align: center;
+    }
+    
+
+    div {
+      @include center(horizontal);
+      color: white;
+
+      a h3 {
+        width: 100%;
+      }
+
+      img {
+        width: 40%;
+      }
+    }
+    
+
+    .form-container {
+      width: 100%;
+      margin-top: 5%;
+      @include flex-column();
+    form, h3 {
+      right: 0;
+    }
+  }
+  }
+
+ }
+
+
+  

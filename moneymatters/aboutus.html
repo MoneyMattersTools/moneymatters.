@@ -1,0 +1,189 @@
+<html>
+    <head>
+        <title>About Us</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="About Money Matters">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="scss/about-us-styling.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+      
+        <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
+    {
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500 Index"
+    },
+    {
+      "proName": "FOREXCOM:NSXUSD",
+      "title": "US 100 Cash CFD"
+    },
+    {
+      "proName": "FX_IDC:EURUSD",
+      "title": "EUR to USD"
+    },
+    {
+      "proName": "BITSTAMP:BTCUSD",
+      "title": "Bitcoin"
+    },
+    {
+      "proName": "BITSTAMP:ETHUSD",
+      "title": "Ethereum"
+    }
+  ],
+  "showSymbolLogo": true,
+  "isTransparent": true,
+  "displayMode": "adaptive",
+  "colorTheme": "dark",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+    </head>
+
+    <body>
+        <header>
+            <div class="top-bar"></div>
+            <a href="index.html"><p>MoneyMatters.</p></a>
+
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+
+            <nav class="top show" id="mobileMenu">
+                <a href="index.html">Home</a>
+                <a href="tools.html">Tools</a>
+                <a href="aboutus.html">About Us</a>
+                <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
+                <a href="#join-us" class="block-link">Get Connected!</a>
+            </nav>
+        </header>
+        <main>
+            <section class="section1">
+                <h1>About Us.</h1>
+            </section>
+
+            <section class="section2">
+
+                <img src="images/coin-1.png" alt="Gold Coin" class="coin one">
+                <img src="images/coin-2.png" alt="Gold Coin" class="coin two">
+                <img src="images/coin-3.png" alt="Gold Coin" class="coin three">
+                <img src="images/coin-4.png" alt="Gold Coin" class="coin four">
+                <img src="images/coin-5.png" alt="Gold Coin" class="coin five">
+                <img src="images/coin-6.png" alt="Gold Coin" class="coin six">
+
+                <div class="plant-container">
+                    <img src="images/plant-w-roots.PNG" alt="Plant" class="plant-image">
+                  
+                    <div class="text-and-line">
+                      <div class="line"></div>
+                      <div class="text-content">
+                        <h2 class="label">Who we are</h2>
+                        <p>Two college friends from Philly with a mutual passion for entrepreneurship & finance. We have diverse backgrounds from Professional Sports to Investment Banking.</p>
+                      </div>
+                    </div>
+                  
+                    <div class="text-and-line second">
+                      <div class="line"></div>
+                      <div class="text-content">
+                        <h2 class="label">Mission</h2>
+                        <p>Personal finance doesn’t need to be complicated. The first step is learning about your situation! We aim to give EVERYONE access to FREE tools as the first step to improving their financial health.</p>
+                      </div>
+                    </div>
+                  
+                    <div class="text-and-line third">
+                      <div class="line"></div>
+                      <div class="text-content">
+                        <h2 class="label">Vision</h2>
+                        <p>Educate, connect & improve! Our long term plan is to grow a community of like-minded people who share & learn from one another experiences.</p>
+                      </div>
+                    </div>
+                  
+                    <div class="text-and-line fourth">
+                      <div class="line"></div>
+                      <div class="text-content">
+                        <h2 class="label">Core Values</h2>
+                        <p>No b.s., just a place to start getting back on track with your financial health. Simple, real & attainable solutions for EVERYONE.</p>
+                      </div>
+                    </div>
+                  </div>
+                    
+            </section>
+
+            <section class="section3" id="join-us">
+                <h2>Get Connected</h2>
+                <h3>Enter Your Email</h3>
+                <div class="connection-container">
+                    <div>
+                        <a href="https://discord.com/invite/DCWFBPxh" target="_blank">
+                        <img src="images/moneymatters-logo.png" alt="">
+                        <h3>Join the Community and Get Plugged In</h3>
+                        <p>DISCORD LINK</p>
+                        </a>
+                    </div>
+
+                    <div class="form-container">
+                        <h3>Join the MoneyMatters Community!</h3>
+                        <form id="signup-form" action="https://formspree.io/f/xovdvjng" method="POST">
+                            <div class="row">
+                              <div class="col">
+                                <input type="text" name="first_name" class="form-control" placeholder="First name">
+                              </div>
+                              <div class="col">
+                                <input type="text" name="last_name" class="form-control" placeholder="Last name">
+                              </div>
+                            </div>
+                            <div class="row" id="email">
+                                <input type="text" name="email" class="form-control" placeholder="Email">
+                            </div>
+                            <button type="submit" class="submit-btn">Submit</button>
+                          </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>MoneyMatters.</p>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="tools.html">Tools</a>
+                <a href="aboutus.html">About Us</a>
+                <a href="blogs/blogs-home.html">Blogs</a>
+            </nav>
+            <div class="social-media">
+                <h3>Follow Us!</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/moneymatters.tools?igsh=d2Rxbjg3dGY1c2ll&utm_source=qr" target="_blank"><img src="images/IGLOGO.png" alt=""></a>
+                    <a href="https://www.facebook.com/share/14wpjLu4Zze/?mibextid=wwXIfr" target="_blank"><img src="images/fbasset.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@moneymatters.tools?_t=ZP-8w46bg1nK5G&_r=1" target="_blank"><img src="images/TikTok_Icon_Black_Circle.png" alt="TikTok"></a>
+                </div>
+            </div>
+
+            
+
+            <div class="disclaimer">
+                <h3>Disclaimer</h3>
+                <p>The information and tools provided on this website are for educational and informational purposes only. We aim to assist individuals in budgeting, investing, and planning for improved financial health by offering accessible resources. However, the content on this site is not intended as professional financial advice or formal recommendations.
+                    We do not receive any incentives or compensation to promote any specific financial products or services. All content is presented independently, and no product, service, or tool should be construed as an endorsement.
+                    Users are encouraged to seek personalized advice from a licensed financial professional before making any financial decisions. We do not assume any responsibility or liability for actions taken based on the information or recommendations provided on this site. By using the tools and resources available, users acknowledge and agree that they do so at their own risk.
+                    </p>
+            </div>
+
+            <div class="credits">
+              <p>&copy; 2025 <a href="https://ambitiousmarketingsolutions.com/" target="_blank">Ambitious Marketing Solutions</a></p>
+          </div>
+        </footer>
+
+        <script src="scripts/hamburger.js"></script>
+        
+    </body>
+
+</html>

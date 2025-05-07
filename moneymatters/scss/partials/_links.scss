@@ -1,0 +1,51 @@
+@import 'font-sizes';
+
+@mixin link-style($color) {
+    color: $color;
+    text-decoration: none;
+  }
+  
+
+// Mixin for hover rise effect
+@mixin hover-rise($distance: 5px, $duration: 0.4s) {
+    display: inline-block;
+    transition: transform $duration ease, box-shadow $duration ease;
+  
+    &:hover {
+      transform: translateY(-$distance);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      text-decoration: none !important;
+    }
+  }
+
+
+.download-button {
+    @include link-style(white);
+    @include hover-rise();
+    background-color: black;
+    font-size: $font-h2-size;
+    width: fit-content;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    border-radius: 15px;
+    display: inline-block;
+    margin: auto;
+}
+
+
+@media screen and (max-width: 768px) {
+
+  .download-button {
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-top: 0.8%;
+    padding-bottom: 0.8%;
+    border-radius: 12px;
+    margin-top: 5%;
+    margin-bottom: 3%;
+    font-size: $font-h3-mobile;
+}
+
+}

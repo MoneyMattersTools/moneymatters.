@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <title>Advanced Budget Tool</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Advanced Budgeting Tool">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../indiv-tools-scss/indiv-tool-styling.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+     <!-- TradingView Widget BEGIN -->
+     <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+        "symbols": [
+        {
+            "proName": "FOREXCOM:SPXUSD",
+            "title": "S&P 500 Index"
+        },
+        {
+            "proName": "FOREXCOM:NSXUSD",
+            "title": "US 100 Cash CFD"
+        },
+        {
+            "proName": "FX_IDC:EURUSD",
+            "title": "EUR to USD"
+        },
+        {
+            "proName": "BITSTAMP:BTCUSD",
+            "title": "Bitcoin"
+        },
+        {
+            "proName": "BITSTAMP:ETHUSD",
+            "title": "Ethereum"
+        }
+        ],
+        "showSymbolLogo": true,
+        "isTransparent": true,
+        "displayMode": "adaptive",
+        "colorTheme": "dark",
+        "locale": "en"
+    }
+        </script>
+    </div>
+    <!-- TradingView Widget END -->
+    </head>
+
+    <body>
+        <header>
+            <div class="top-bar"></div>
+                <a href="index.html"><p>MoneyMatters.</p></a>
+
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                <nav class="top show" id="mobileMenu">
+                        <a href="../../index.html">Home</a>
+                        <a href="../../tools.html">Tools</a>
+                        <a href="../../aboutus.html">About Us</a>
+                        <a href="../../blogs/blogs-home.html" class="blog-link">Blogs</a>
+                    <a href="#join-us" class="block-link">Get Connected!</a>
+                </nav>
+        </header>
+        <main>
+            <section class="section1">
+                <h1>Advanced Budget Tool.</h1>
+                <p class="first-p">The basic budgeting tool is the best place to start for simple financial guidance. Visualize WHERE your money is spent relative to HOW it should be spent.</p>
+                
+                <div class="how-to-container">
+                    <p class="how-to-text">Quick Start</p>
+                    <button class="dropdown-arrow" id="toggleDropdown">▼</button>
+                  </div>
+                  
+                <div class="dropdown-details" id="dropdownContent">
+                    <p>
+                        The <span class="green">Advanced Budget Tool</span> helps to record, visualize, and make recommendations based on spending patterns.
+
+                        <ul>
+                            <li>Adjust the <span class="black-white">black cells with white font</span> to record your information (This is personal to you only and MoneyMatters does not have access until you share it with us)</li>
+
+                            <li>Notice the monthly trend bar charts relating to each expense. Do certain expenses spike during different times of the year? How can your average monthly spending help you project spending for next year?</li>
+
+                            <li>On the “<span class="lightblue">Analysis</span>” tab, note an automated recommended budget based on your income. These spending recommendations are helpful as a frame of reference, not an exact figure for what works for your household. In a similar manner, the automated saver tool recommends how much your household can save annually by cutting down on key expenses. Also, note the recommend savings breakdown for future investing.</li>
+
+                            <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The next step is to <span class="bold">share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
+
+                        </ul>
+                        THIS IS NOT FINANCIAL ADVICE. INVESTMENTS HAVE RISK. MONEYMATTERS IS NOT RESPONSIBLE FOR ANY DECISION YOU MAKE BASED ON THE USE OF THESE TOOLS
+                                            
+                    </p>
+                  </div>
+
+                <img src="../../images/advanced-budget-laptop.png" alt="Basic Budgeting Tool">
+                <a href="" class="download-button">Download</a>
+            </section>
+
+            <section class="final" id="join-us">
+                <h2>Get Connected</h2>
+                <h3>Enter Your Email</h3>
+                <div class="connection-container">
+                    <div>
+                        <a href="https://discord.com/invite/DCWFBPxh" target="_blank">
+                        <img src="../../images/moneymatters-logo.png" alt="">
+                        <h3>Join the Community & Get Plugged In</h3>
+                        <p>DISCORD LINK</p>
+                        </a>
+                    </div>
+
+                    <div class="form-container">
+                        <h3>Join the MoneyMatters Community!</h3>
+                        <form id="signup-form" action="https://formspree.io/f/xovdvjng" method="POST">
+                            <div class="row">
+                              <div class="col">
+                                <input type="text" name="first_name" class="form-control" placeholder="First name">
+                              </div>
+                              <div class="col">
+                                <input type="text" name="last_name" class="form-control" placeholder="Last name">
+                              </div>
+                            </div>
+                            <div class="row" id="email">
+                                <input type="text" name="email" class="form-control" placeholder="Email">
+                            </div>
+                            <button type="submit" class="submit-btn">Submit</button>
+                          </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Money Matters.</p>
+            <nav>
+                <a href="../../index.html">Home</a>
+                <a href="../../tools.html">Tools</a>
+                <a href="../../aboutus.html">About Us</a>
+                <a href="">Blogs</a>
+            </nav>
+            <div class="social-media">
+                <h3>Follow Us!</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/moneymatters.tools?igsh=d2Rxbjg3dGY1c2ll&utm_source=qr" target="_blank"><img src="../../images/IGLOGO.png" alt="Instagram"></a>
+                    <a href="https://www.facebook.com/share/14wpjLu4Zze/?mibextid=wwXIfr" target="_blank"><img src="../../images/fbasset.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@moneymatters.tools?_t=ZP-8w46bg1nK5G&_r=1" target="_blank"><img src="../../images/TikTok_Icon_Black_Circle.png" alt="TikTok"></a>
+                </div>
+            </div>
+
+
+            <div class="disclaimer">
+                <h3>Disclaimer</h3>
+                <p>The information and tools provided on this website are for educational and informational purposes only. We aim to assist individuals in budgeting, investing, and planning for improved financial health by offering accessible resources. However, the content on this site is not intended as professional financial advice or formal recommendations.
+                    We do not receive any incentives or compensation to promote any specific financial products or services. All content is presented independently, and no product, service, or tool should be construed as an endorsement.
+                    Users are encouraged to seek personalized advice from a licensed financial professional before making any financial decisions. We do not assume any responsibility or liability for actions taken based on the information or recommendations provided on this site. By using the tools and resources available, users acknowledge and agree that they do so at their own risk.
+                    </p>
+            </div>
+
+            <div class="credits">
+                <p>&copy; 2025 <a href="https://ambitiousmarketingsolutions.com/" target="_blank">Ambitious Marketing Solutions</a></p>
+            </div>
+        </footer>
+
+
+        <script src="../individual-tools-scripts/drop-down-text.js"></script>
+        <script src="../../scripts/hamburger.js"></script>
+    </body>
+
+</html>

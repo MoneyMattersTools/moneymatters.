@@ -1,0 +1,132 @@
+@import '../../scss/partials/font-sizes';
+@import '../../scss/partials/generalstyling';
+@import '../../scss/partials/header';
+@import '../../scss/partials/links';
+@import '../../scss/partials/positioning';
+@import '../../scss/partials/get-connected-footer';
+@import '../../scss/partials/index-form';
+@import '../../scss/partials/text-styling';
+@import '../../scss/partials/hamburger';
+
+.section1 {
+    @include center(horizontal);
+    @include flex-column();
+    border-bottom: 3px solid black;
+    padding-bottom: 2.5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 2.5%;
+
+    h1 {
+        margin-bottom: 2.5%;
+    }
+
+    .first-p {
+        margin-bottom: 2.5%;
+        font-size: $font-p-size;
+    }
+
+    a {
+        margin-bottom: 2.5%;
+    }
+
+    img {
+        width: 50%;
+        margin: auto;
+    }
+}
+
+
+.how-to-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: auto;
+    z-index: 10;
+  }
+  
+  .how-to-text {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .dropdown-arrow {
+    background: black;
+    color: white;
+    border: none;
+    font-size: 20px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .dropdown-arrow.open {
+    transform: rotate(180deg);
+  }
+  
+  .dropdown-details {
+    display: none;
+    margin: auto;
+    margin-top: 10px;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    width: 70%;
+    font-size: 18px;
+
+    ul {
+        margin-top: 1.5%;
+    }
+
+    li {
+        margin-left: 2%;
+        margin-bottom: 15px;
+    }
+  }
+  
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+    width: 80%;
+    padding: 20px;
+    margin-bottom: 10%;
+    margin: auto;
+  }
+  
+  .tool-card {
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+
+    h2 {
+        margin-top: 2.5%;
+    }
+  }
+  
+  
+  .tool-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+  
+
+
+@media screen and (max-width: 768px) {
+
+    h1 {
+        font-size: $font-h1-mobile;
+    }
+
+    li {
+        margin-left: 3%;
+    }
+}
