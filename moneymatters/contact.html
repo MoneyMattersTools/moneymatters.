@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <title>Contact Us — MoneyMatters.</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Contact MoneyMatters">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="scss/homestyling.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="value-strip" aria-label="Why MoneyMatters">
+          <div class="value-strip-inner">
+            <span class="value-item"><span class="value-icon">🔓</span> Pay once, yours forever</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions or upsells</span>
+          </div>
+        </div>
+        <header>
+            <div class="top-bar"></div>
+            <a href="index.html"><p>MoneyMatters.</p></a>
+
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav class="top show" id="mobileMenu">
+                <a href="index.html">Home</a>
+                <a href="tools.html">Tools</a>
+                <a href="aboutus.html">About Us</a>
+                <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
+                <a href="contact.html" class="block-link">Get Connected!</a>
+            </nav>
+        </header>
+
+        <main class="simple-page">
+          <section class="page-hero fade-up">
+            <div class="page-orb" aria-hidden="true"></div>
+            <h1>Get in Touch</h1>
+            <p>Questions, feedback, or partnership ideas? Reach out — or join the community.</p>
+          </section>
+          <section class="contact-options fade-up">
+            <a href="https://discord.com/invite/DCWFBPxh" target="_blank" rel="noopener" class="contact-option discord-option">
+              <h3>Join our Discord</h3>
+              <p>Real-time conversations with other people building their financial plans.</p>
+              <span class="contact-option-btn">Open Discord →</span>
+            </a>
+            <div class="contact-option email-option">
+              <h3>Send us a message</h3>
+              <p>For longer questions, feedback, or business inquiries, use the form below.</p>
+            </div>
+          </section>
+          <section class="contact-section fade-up">
+            <form action="https://formspree.io/f/xovdvjng" method="POST" class="contact-form">
+              <label for="c_name">Name</label>
+              <input type="text" id="c_name" name="name" required>
+              <label for="c_email">Email</label>
+              <input type="email" id="c_email" name="email" required>
+              <label for="c_message">Message</label>
+              <textarea id="c_message" name="message" rows="6" required></textarea>
+              <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+          </section>
+        </main>
+
+        <footer>
+            <p>MoneyMatters.</p>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="tools.html">Tools</a>
+                <a href="aboutus.html">About Us</a>
+                <a href="blogs/blogs-home.html">Blogs</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy-policy.html">Privacy Policy</a>
+            </nav>
+            <div class="social-media">
+                <h3>Follow Us!</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/moneymatters.tools?igsh=d2Rxbjg3dGY1c2ll&utm_source=qr" target="_blank"><img src="images/IGLOGO.png" alt="Instagram"></a>
+                    <a href="https://www.facebook.com/share/14wpjLu4Zze/?mibextid=wwXIfr" target="_blank"><img src="images/fbasset.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@moneymatters.tools?_t=ZP-8w46bg1nK5G&_r=1" target="_blank"><img src="images/TikTok_Icon_Black_Circle.png" alt="TikTok"></a>
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                <h3>Disclaimer</h3>
+                <p>The information and tools provided on this website are for educational and informational purposes only. We aim to assist individuals in budgeting, investing, and planning for improved financial health by offering accessible resources. However, the content on this site is not intended as professional financial advice or formal recommendations.
+                    We do not receive any incentives or compensation to promote any specific financial products or services. All content is presented independently, and no product, service, or tool should be construed as an endorsement.
+                    Users are encouraged to seek personalized advice from a licensed financial professional before making any financial decisions. We do not assume any responsibility or liability for actions taken based on the information or recommendations provided on this site. By using the tools and resources available, users acknowledge and agree that they do so at their own risk.
+                    </p>
+            </div>
+
+            <div class="credits">
+                <p>&copy; 2025 MoneyMatters.</p>
+            </div>
+        </footer>
+
+        <script src="scripts/hamburger.js"></script>
+        <script src="scripts/scroll-animations.js"></script>
+    </body>
+
+</html>

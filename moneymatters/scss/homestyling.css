@@ -988,4 +988,273 @@ footer nav {
   .social-media {
     bottom: 80px;
   }
-}/*# sourceMappingURL=homestyling.css.map */
+}
+
+/* --- Gradient Orb (hero section) --- */
+.gradient-orb {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(98, 169, 116, 0.35) 0%, rgba(98, 169, 116, 0.1) 50%, transparent 70%);
+  filter: blur(40px);
+  top: -100px;
+  right: -100px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- Scroll fade-up animation --- */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* --- Tool card hover effect --- */
+.tools-container > div,
+.tools-container > a {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.tools-container > div:hover,
+.tools-container > a:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Resource cards (section3) --- */
+.resource-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: #1F2937;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.resource-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+.resource-card__label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #62A974;
+  background: rgba(98, 169, 116, 0.12);
+  padding: 3px 10px;
+  border-radius: 20px;
+  width: fit-content;
+}
+.resource-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+.resource-card p {
+  font-size: 0.875rem;
+  color: #4B5563;
+  margin: 0;
+}
+
+/* --- Discord card (section4) --- */
+.discord-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 24px;
+  border-radius: 16px;
+  background: #5865F2;
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.discord-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(88, 101, 242, 0.4);
+  text-decoration: none;
+  color: #ffffff;
+}
+.discord-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.discord-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+.discord-card p {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin: 0;
+}
+.discord-card__cta {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 10px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* --- Form labels --- */
+.form-container label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 4px;
+}
+
+/* --- Simple pages (contact, privacy policy) --- */
+.simple-page {
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 0 24px;
+}
+.simple-page h1 {
+  font-size: 2.5rem;
+  margin-bottom: 24px;
+  color: #1A2B23;
+}
+.simple-page h2 {
+  font-size: 1.4rem;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: #1A2B23;
+}
+.simple-page p,
+.simple-page li {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1F2937;
+}
+.simple-page ul {
+  padding-left: 24px;
+  margin-bottom: 16px;
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+.contact-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+  color: #1F2937;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+}
+.contact-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+.contact-form .submit-btn {
+  align-self: flex-start;
+}
+/* --- Value strip --- */
+.value-strip {
+  background: #1A2B23;
+  color: #FAFAF7;
+  font-size: 13px;
+  padding: 10px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(98, 169, 116, 0.2);
+}
+.value-strip-inner { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 10px 16px; max-width: 1200px; }
+.value-item { display: inline-flex; align-items: center; gap: 6px; }
+.value-icon { font-size: 14px; }
+.value-divider { color: rgba(250, 250, 247, 0.3); }
+@media (max-width: 640px) {
+  .value-strip { font-size: 11.5px; padding: 8px 12px; }
+  .value-divider { display: none; }
+}
+/* --- Section 4 grid layout --- */
+.section4-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 5%;
+  align-items: start;
+}
+.section4-grid .discord-card,
+.section4-grid .form-container {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+@media (max-width: 768px) {
+  .section4-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+.discord-card p { text-decoration: none !important; }
+.discord-card h3 { text-decoration: none !important; }
+
+/* --- Contact options grid --- */
+.contact-options { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px; margin: 0 auto 40px; }
+.contact-option { display: block; padding: 28px; border-radius: 16px; background: #FAFAF7; border: 1px solid #E8EDE9; text-decoration: none; color: inherit; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+a.contact-option:hover { transform: translateY(-4px); border-color: #62A974; box-shadow: 0 12px 24px rgba(26, 43, 35, 0.08); }
+.contact-option h3 { font-size: 20px; margin-bottom: 8px; }
+.contact-option p { font-size: 15px; color: #4A5568; margin-bottom: 14px; }
+.contact-option-btn { display: inline-block; padding: 10px 20px; background: #62A974; color: white; border-radius: 8px; font-weight: 600; font-size: 14px; }
+a.contact-option:hover .contact-option-btn { background: #4A8559; }
+@media (max-width: 640px) { .contact-options { grid-template-columns: 1fr; } }
+
+/* --- Page hero (contact, privacy-policy) --- */
+.page-hero { position: relative; padding: 80px 8% 40px; text-align: center; overflow: hidden; }
+.page-hero h1 { font-size: 48px; margin-bottom: 12px; position: relative; z-index: 1; }
+.page-hero p { font-size: 18px; color: #4A5568; max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+.contact-section { max-width: 640px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* --- Page orb (used in tools, contact, privacy-policy via homestyling) --- */
+.page-orb {
+  position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(98, 169, 116, 0.2) 0%, rgba(98, 169, 116, 0.05) 40%, transparent 70%);
+  filter: blur(50px); pointer-events: none; z-index: 0;
+}
+
+/* --- Global style polish (Chunk 8) --- */
+main img, section img { border-radius: 12px; }
+header img, header .logo { transition: transform 0.2s ease; }
+header img:hover, header .logo:hover { transform: scale(1.04); }
+button, .submit-btn { border-radius: 8px; }
+/*# sourceMappingURL=homestyling.css.map */

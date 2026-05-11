@@ -9,45 +9,18 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
       
-        <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-  {
-  "symbols": [
-    {
-      "proName": "FOREXCOM:SPXUSD",
-      "title": "S&P 500 Index"
-    },
-    {
-      "proName": "FOREXCOM:NSXUSD",
-      "title": "US 100 Cash CFD"
-    },
-    {
-      "proName": "FX_IDC:EURUSD",
-      "title": "EUR to USD"
-    },
-    {
-      "proName": "BITSTAMP:BTCUSD",
-      "title": "Bitcoin"
-    },
-    {
-      "proName": "BITSTAMP:ETHUSD",
-      "title": "Ethereum"
-    }
-  ],
-  "showSymbolLogo": true,
-  "isTransparent": true,
-  "displayMode": "adaptive",
-  "colorTheme": "dark",
-  "locale": "en"
-}
-  </script>
-</div>
-<!-- TradingView Widget END -->
     </head>
 
     <body>
+        <div class="value-strip" aria-label="Why MoneyMatters">
+          <div class="value-strip-inner">
+            <span class="value-item"><span class="value-icon">🔓</span> Pay once, yours forever</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions or upsells</span>
+          </div>
+        </div>
         <header>
             <div class="top-bar"></div>
             <a href="index.html"><p>MoneyMatters.</p></a>
@@ -63,91 +36,105 @@
                 <a href="tools.html">Tools</a>
                 <a href="aboutus.html">About Us</a>
                 <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
-                <a href="#join-us" class="block-link">Get Connected!</a>
+                <a href="contact.html" class="block-link">Get Connected!</a>
             </nav>
         </header>
         <main>
-            <section class="section1">
-                <h1>About Us.</h1>
+            <section class="about-hero fade-up">
+              <div class="page-orb" aria-hidden="true"></div>
+              <h1>About MoneyMatters</h1>
+              <p class="about-hero-sub">Serious financial tools, without the gatekeeping.</p>
             </section>
 
-            <section class="section2">
-
-                <img src="images/coin-1.png" alt="Gold Coin" class="coin one">
-                <img src="images/coin-2.png" alt="Gold Coin" class="coin two">
-                <img src="images/coin-3.png" alt="Gold Coin" class="coin three">
-                <img src="images/coin-4.png" alt="Gold Coin" class="coin four">
-                <img src="images/coin-5.png" alt="Gold Coin" class="coin five">
-                <img src="images/coin-6.png" alt="Gold Coin" class="coin six">
-
-                <div class="plant-container">
-                    <img src="images/plant-w-roots.PNG" alt="Plant" class="plant-image">
-                  
-                    <div class="text-and-line">
-                      <div class="line"></div>
-                      <div class="text-content">
-                        <h2 class="label">Who we are</h2>
-                        <p>Two college friends from Philly with a mutual passion for entrepreneurship & finance. We have diverse backgrounds from Professional Sports to Investment Banking.</p>
-                      </div>
-                    </div>
-                  
-                    <div class="text-and-line second">
-                      <div class="line"></div>
-                      <div class="text-content">
-                        <h2 class="label">Mission</h2>
-                        <p>Personal finance doesn’t need to be complicated. The first step is learning about your situation! We aim to give EVERYONE access to FREE tools as the first step to improving their financial health.</p>
-                      </div>
-                    </div>
-                  
-                    <div class="text-and-line third">
-                      <div class="line"></div>
-                      <div class="text-content">
-                        <h2 class="label">Vision</h2>
-                        <p>Educate, connect & improve! Our long term plan is to grow a community of like-minded people who share & learn from one another experiences.</p>
-                      </div>
-                    </div>
-                  
-                    <div class="text-and-line fourth">
-                      <div class="line"></div>
-                      <div class="text-content">
-                        <h2 class="label">Core Values</h2>
-                        <p>No b.s., just a place to start getting back on track with your financial health. Simple, real & attainable solutions for EVERYONE.</p>
-                      </div>
-                    </div>
-                  </div>
-                    
+            <section class="about-section fade-up">
+              <h2>Why we exist</h2>
+              <p>Financial planning shouldn’t require a six-figure salary or a finance degree.</p>
+              <p>Professional planners charge hundreds to thousands per session. Most online tools either oversimplify your situation, hide the math behind their numbers, or harvest your data to push financial products you didn’t ask for.</p>
+              <p>MoneyMatters was built to fix this — to put serious, transparent financial tools in the hands of people who want to actually understand and control their money.</p>
             </section>
 
-            <section class="section3" id="join-us">
-                <h2>Get Connected</h2>
-                <h3>Enter Your Email</h3>
-                <div class="connection-container">
-                    <div>
-                        <a href="https://discord.com/invite/DCWFBPxh" target="_blank">
-                        <img src="images/moneymatters-logo.png" alt="">
-                        <h3>Join the Community and Get Plugged In</h3>
-                        <p>DISCORD LINK</p>
-                        </a>
-                    </div>
-
-                    <div class="form-container">
-                        <h3>Join the MoneyMatters Community!</h3>
-                        <form id="signup-form" action="https://formspree.io/f/xovdvjng" method="POST">
-                            <div class="row">
-                              <div class="col">
-                                <input type="text" name="first_name" class="form-control" placeholder="First name">
-                              </div>
-                              <div class="col">
-                                <input type="text" name="last_name" class="form-control" placeholder="Last name">
-                              </div>
-                            </div>
-                            <div class="row" id="email">
-                                <input type="text" name="email" class="form-control" placeholder="Email">
-                            </div>
-                            <button type="submit" class="submit-btn">Submit</button>
-                          </form>
-                    </div>
+            <section class="about-section about-differentiators fade-up">
+              <h2>What makes us different</h2>
+              <div class="differentiator-grid">
+                <div class="differentiator-card">
+                  <h3>You own it.</h3>
+                  <p>Pay once, and the tool is yours forever. No subscriptions, no rented access, no features getting paywalled later.</p>
                 </div>
+                <div class="differentiator-card">
+                  <h3>Transparent math.</h3>
+                  <p>Every formula is visible and editable. Adapt the tool to your situation, learn how the numbers work, and trust the output because you can see how it was calculated.</p>
+                </div>
+                <div class="differentiator-card">
+                  <h3>No conflicts.</h3>
+                  <p>We don’t earn referral fees from brokers, banks, or insurers. We don’t sell your data. The tool is the entire product.</p>
+                </div>
+                <div class="differentiator-card">
+                  <h3>Real depth.</h3>
+                  <p>Built by people who use these tools to plan their own finances — not marketers chasing the latest trend.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="about-section fade-up">
+              <h2>How it works</h2>
+              <div class="steps-grid">
+                <div class="step-card">
+                  <div class="step-number">1</div>
+                  <h3>Choose a tool</h3>
+                  <p>Pick from budgeting, investing, retirement, or net-worth calculators.</p>
+                </div>
+                <div class="step-card">
+                  <div class="step-number">2</div>
+                  <h3>Make it yours</h3>
+                  <p>Pay once and instantly get your own copy of the master spreadsheet.</p>
+                </div>
+                <div class="step-card">
+                  <div class="step-number">3</div>
+                  <h3>Start planning</h3>
+                  <p>Plug in your numbers and see exactly where you stand.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="about-section fade-up">
+              <h2>Frequently asked questions</h2>
+              <div class="faq-list">
+                <details>
+                  <summary>Why do I need to make a copy of the sheet?</summary>
+                  <p>Your copy is private and yours alone. The master template stays clean for everyone, and you can edit, save, and revisit your version anytime — without affecting anyone else.</p>
+                </details>
+                <details>
+                  <summary>Can I share my copy with my spouse or partner?</summary>
+                  <p>Yes. Once you have your copy, you can share it with anyone in your household just like any Google Sheet.</p>
+                </details>
+                <details>
+                  <summary>Do you offer refunds?</summary>
+                  <p>If a tool isn’t what you expected, contact us within 14 days for a full refund.</p>
+                </details>
+                <details>
+                  <summary>Will the tools get updates?</summary>
+                  <p>Yes. We periodically improve the tools and notify buyers of significant updates. You can request the updated version anytime.</p>
+                </details>
+                <details>
+                  <summary>Is this financial advice?</summary>
+                  <p>No. MoneyMatters tools are educational and for your personal planning. For decisions with major consequences, please consult a licensed financial professional.</p>
+                </details>
+                <details>
+                  <summary>How is this different from apps like Mint or YNAB?</summary>
+                  <p>Those are subscription apps with locked-down features and your data in their hands. Our tools are spreadsheets you fully own and can adapt — no recurring fees, no lock-in.</p>
+                </details>
+              </div>
+            </section>
+
+            <section class="about-section fade-up">
+              <h2>Built on real principles</h2>
+              <p>Our tools are grounded in widely-accepted personal finance frameworks: zero-based budgeting, the 4% safe withdrawal rule for retirement, compound-interest modeling for long-term planning, and standard net-worth accounting.</p>
+              <p>Where we make assumptions (like return rates or inflation), we tell you what they are and let you adjust them. No black boxes.</p>
+            </section>
+
+            <section class="about-cta fade-up">
+              <h2>Ready to take control of your money?</h2>
+              <a href="tools.html" class="cta-button">Browse the tools →</a>
             </section>
         </main>
         <footer>
@@ -157,6 +144,8 @@
                 <a href="tools.html">Tools</a>
                 <a href="aboutus.html">About Us</a>
                 <a href="blogs/blogs-home.html">Blogs</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy-policy.html">Privacy Policy</a>
             </nav>
             <div class="social-media">
                 <h3>Follow Us!</h3>
@@ -183,7 +172,7 @@
         </footer>
 
         <script src="scripts/hamburger.js"></script>
-        
+        <script src="scripts/scroll-animations.js"></script>
     </body>
 
 </html>

@@ -9,46 +9,19 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
-            <!-- TradingView Widget BEGIN -->
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-            {
-            "symbols": [
-            {
-                "proName": "FOREXCOM:SPXUSD",
-                "title": "S&P 500 Index"
-            },
-            {
-                "proName": "FOREXCOM:NSXUSD",
-                "title": "US 100 Cash CFD"
-            },
-            {
-                "proName": "FX_IDC:EURUSD",
-                "title": "EUR to USD"
-            },
-            {
-                "proName": "BITSTAMP:BTCUSD",
-                "title": "Bitcoin"
-            },
-            {
-                "proName": "BITSTAMP:ETHUSD",
-                "title": "Ethereum"
-            }
-            ],
-            "showSymbolLogo": true,
-            "isTransparent": true,
-            "displayMode": "adaptive",
-            "colorTheme": "dark",
-            "locale": "en"
-        }
-            </script>
-        </div>
-        <!-- TradingView Widget END -->
     </head>
 
 
     <body>
+        <div class="value-strip" aria-label="Why MoneyMatters">
+          <div class="value-strip-inner">
+            <span class="value-item"><span class="value-icon">🔓</span> Pay once, yours forever</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions or upsells</span>
+          </div>
+        </div>
         <header>
             <div class="top-bar"></div>
             <a href="index.html"><p>MoneyMatters.</p></a>
@@ -64,15 +37,14 @@
                 <a href="tools.html">Tools</a>
                 <a href="aboutus.html">About Us</a>
                 <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
-                <a href="#join-us" class="block-link">Get Connected!</a>
+                <a href="contact.html" class="block-link">Get Connected!</a>
             </nav>
         </header>
         <main>
-            <section class="section1">
-                <img src="images/money_matters-piggybank.png" alt="Piggy Bank image">
-                <h1>Financial Tools.</h1>
-                <p><span class="bold">You’re in the right spot!</span>
-                    Below are <span class="underline">simple, effective & dynamic tools</span> that provide insights into your financial well being. It’s fast to tell if you’re on track with your <span class="italics">spending, savings & investing goals.</span></p>
+            <section class="tools-hero fade-up">
+              <div class="page-orb" aria-hidden="true"></div>
+              <h1>Financial Tools</h1>
+              <p class="tools-hero-sub">Direct, transparent calculators for budgeting, investing, retirement, and net worth — yours to keep.</p>
             </section>
 
             <section class="section2">
@@ -193,6 +165,8 @@
                 <a href="tools.html">Tools</a>
                 <a href="aboutus.html">About Us</a>
                 <a href="blogs/blogs-home.html">Blogs</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy-policy.html">Privacy Policy</a>
             </nav>
             <div class="social-media">
                 <h3>Follow Us!</h3>
@@ -219,6 +193,7 @@
         </footer>
 
         <script src="scripts/hamburger.js"></script>
+        <script src="scripts/scroll-animations.js"></script>
     </body>
 
 </html>

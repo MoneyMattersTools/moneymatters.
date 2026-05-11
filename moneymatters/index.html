@@ -9,45 +9,18 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
-        <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-    "symbols": [
-      {
-        "proName": "FOREXCOM:SPXUSD",
-        "title": "S&P 500 Index"
-      },
-      {
-        "proName": "FOREXCOM:NSXUSD",
-        "title": "US 100 Cash CFD"
-      },
-      {
-        "proName": "FX_IDC:EURUSD",
-        "title": "EUR to USD"
-      },
-      {
-        "proName": "BITSTAMP:BTCUSD",
-        "title": "Bitcoin"
-      },
-      {
-        "proName": "BITSTAMP:ETHUSD",
-        "title": "Ethereum"
-      }
-    ],
-    "showSymbolLogo": true,
-    "isTransparent": true,
-    "displayMode": "adaptive",
-    "colorTheme": "dark",
-    "locale": "en"
-  }
-    </script>
-  </div>
-  <!-- TradingView Widget END -->
     </head>
 
     <body>
+        <div class="value-strip" aria-label="Why MoneyMatters">
+          <div class="value-strip-inner">
+            <span class="value-item"><span class="value-icon">🔓</span> Pay once, yours forever</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions or upsells</span>
+          </div>
+        </div>
         <header>
             <div class="top-bar"></div>
                 <a href="index.html"><p>MoneyMatters.</p></a>
@@ -63,23 +36,19 @@
                         <a href="tools.html">Tools</a>
                         <a href="aboutus.html">About Us</a>
                         <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
-                    <a href="#join-us" class="block-link">Get Connected!</a>
+                    <a href="contact.html" class="block-link">Get Connected!</a>
                 </nav>
         </header>
 
         <main>
 
-            <img src="images/coin-1.png" alt="Gold Coin" class="coin one">
-            <img src="images/coin-2.png" alt="Gold Coin" class="coin two">
-            <img src="images/coin-3.png" alt="Gold Coin" class="coin three">
-            <img src="images/coin-4.png" alt="Gold Coin" class="coin four">
-            <img src="images/coin-5.png" alt="Gold Coin" class="coin five">
             <div class="hero">
-                <div class="hero-text">
+                <div class="gradient-orb" aria-hidden="true"></div>
+                <div class="hero-text fade-up">
                     <h1>MoneyMatters.</h1>
                     <p class="onep1">Learn how to use your money effectively.</p>
                     <p class="onep2">This site was started by two college friends who believe access to powerful financial tools should be FREE and easy to use for EVERYONE.</p>
-                    <a href="aboutus.html">Start Here</a>
+                    <a href="tools.html" class="hero-cta">Explore the Tools</a>
                     <img src="images/money_matters-tree.png" alt="Light green money tree" class="back-text-img">
                 </div>
                 <img src="images/hero-icon.png" alt="MonneyMatters Logo">
@@ -89,7 +58,7 @@
                 <!--<p class="twop">Download our simple tools & learn more about your finances along with strategies to improve them. 15 minutes, a lifetime of value.</p>-->
             </section>
 
-            <section class="section2">
+            <section class="section2 fade-up">
                 <h2><a href="tools.html">Popular Tools</a></h2>
                 <div class="tools-container">
                     <div>
@@ -119,24 +88,26 @@
             </section>
 
 
-            <section class="section3">
+            <section class="section3 fade-up">
                 <h2>Helpful Resources</h2>
                 <!--Might put an image-->
                 <div class="section3-split">
                     <div class="links-container">
-                        <div>
+                        <a class="resource-card" href="https://www.youtube.com/watch?v=pd29VYF6e-U" target="_blank" rel="noopener">
+                            <span class="resource-card__label">Video</span>
                             <h3>What is Financial Planning?</h3>
-                            <a href="https://www.youtube.com/watch?v=pd29VYF6e-U" target="_blank">
-                                https://www.youtube.com/watch?v=pd29VYF6e-U</a>
-                        </div>
-                        <div>
+                            <p>A beginner-friendly introduction to managing your personal finances.</p>
+                        </a>
+                        <a class="resource-card" href="https://www.investor.gov/free-financial-planning-tools" target="_blank" rel="noopener">
+                            <span class="resource-card__label">SEC</span>
                             <h3>SEC Guidance</h3>
-                            <a href="https://www.investor.gov/free-financial-planning-tools" target="_blank">https://www.investor.gov/free-financial-planning-tools</a>
-                        </div>
-                        <div>
+                            <p>Free financial planning tools from the U.S. Securities and Exchange Commission.</p>
+                        </a>
+                        <a class="resource-card" href="https://www.irs.gov/help/ita" target="_blank" rel="noopener">
+                            <span class="resource-card__label">IRS</span>
                             <h3>IRS Tax Tools</h3>
-                            <a href="https://www.irs.gov/help/ita" target="_blank">https://www.irs.gov/help/ita</a>
-                        </div>
+                            <p>Interactive Tax Assistant — answer tax questions and get instant guidance.</p>
+                        </a>
                     </div>
 
                         <div class="video-container">
@@ -145,33 +116,32 @@
                 </div>
             </section>
 
-            <section class="section4" id="join-us">
+            <section class="section4 fade-up" id="join-us">
                 <h2>Get Connected</h2>
-                <h3>Enter Your Email</h3>
-                <div class="connection-container">
-                    <div>
-                        <a href="https://discord.com/invite/DCWFBPxh" target="_blank">
-                        <img src="images/moneymatters-logo.png" alt="">
-                        <h3>Join the Community & Get Plugged In</h3>
-                        <p>DISCORD LINK</p>
-                        </a>
-                    </div>
+                <div class="section4-grid">
+                    <a class="discord-card" href="https://discord.com/invite/DCWFBPxh" target="_blank" rel="noopener">
+                        <img src="images/moneymatters-logo.png" alt="MoneyMatters Logo">
+                        <h3>Join the Community</h3>
+                        <p>Connect with like-minded people, share strategies, and get real financial guidance — all for free.</p>
+                        <span class="discord-card__cta">Join on Discord</span>
+                    </a>
 
                     <div class="form-container">
-                        <div>
-                            <h3>Join the MoneyMatters Community!</h3>
-                        </div>
+                        <h3>Join the MoneyMatters Community!</h3>
                         <form id="signup-form" action="https://formspree.io/f/xovdvjng" method="POST">
                             <div class="row">
                               <div class="col">
-                                <input type="text" name="first_name" class="form-control" placeholder="First name">
+                                <label for="first_name">First Name</label>
+                                <input type="text" id="first_name" name="first_name" class="form-control">
                               </div>
                               <div class="col">
-                                <input type="text" name="last_name" class="form-control" placeholder="Last name">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" id="last_name" name="last_name" class="form-control">
                               </div>
                             </div>
                             <div class="row" id="email">
-                                <input type="text" name="email" class="form-control" placeholder="Email">
+                                <label for="email_input">Email</label>
+                                <input type="email" id="email_input" name="email" class="form-control">
                             </div>
                             <button type="submit" class="submit-btn">Submit</button>
                           </form>
@@ -192,9 +162,9 @@
                     <a href="tools.html">Tools</a>
                     <a href="aboutus.html">About Us</a>
                     <a href="blogs/blogs-home.html">Blogs</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="privacy-policy.html">Privacy Policy</a>
                 </nav>
-                <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
-            
 
 
             <div class="social-media">
@@ -220,6 +190,7 @@
         </footer>
 
         <script src="scripts/hamburger.js"></script>
+        <script src="scripts/scroll-animations.js"></script>
     </body>
 
 </html>

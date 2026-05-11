@@ -588,4 +588,23 @@ footer {
   .blog-posts h2 {
     text-align: center;
   }
-}/*# sourceMappingURL=blogs-home-styling.css.map */
+}
+
+/* --- Value strip --- */
+.value-strip {
+  background: #1A2B23;
+  color: #FAFAF7;
+  font-size: 13px;
+  padding: 10px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(98, 169, 116, 0.2);
+}
+.value-strip-inner { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 10px 16px; max-width: 1200px; }
+.value-item { display: inline-flex; align-items: center; gap: 6px; }
+.value-icon { font-size: 14px; }
+.value-divider { color: rgba(250, 250, 247, 0.3); }
+@media (max-width: 640px) {
+  .value-strip { font-size: 11.5px; padding: 8px 12px; }
+  .value-divider { display: none; }
+}
+/*# sourceMappingURL=blogs-home-styling.css.map */
