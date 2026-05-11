@@ -2,7 +2,7 @@
 @import 'positioning';
 
 #join-us {
-    background-color: black;
+    background-color: #1A2B23;
     color: white;
     padding-top: 5%;
 
@@ -80,7 +80,7 @@ form {
     border: 2px solid white;
     border-radius: 25px;
     background-color: white;
-    color: black;
+    color: #1F2937;
     outline: none;
     transition: all 0.2s ease;
   }
@@ -90,7 +90,7 @@ form {
   }
   
   form input.form-control:focus {
-    border-color: black;
+    border-color: #1A2B23;
     box-shadow: 0 0 5px rgb(251, 251, 251);
   }
   
@@ -98,7 +98,7 @@ form {
   .submit-btn {
     background-color: white;
     border: 1px solid white;
-    color: black;
+    color: #1F2937;
     padding: 15px 30px;
     font-size: 20px;
     border-radius: 25px;

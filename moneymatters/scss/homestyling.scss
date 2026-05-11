@@ -15,7 +15,7 @@
 @import 'partials/header';
 
 html {
-  background-color: white !important;
+  background-color: #FAFAF7 !important;
 }
 
 h2 {
@@ -108,7 +108,7 @@ h2 {
 }
 
 .hero-text a {
-    background-color: black;
+    background-color: #1A2B23;
     @include link-style(white);
     border-radius: 25px;
     padding-left: 10%;
@@ -125,7 +125,7 @@ h2 {
 
 .section2 {
     position: relative;
-    background-color: black;
+    background-color: #1A2B23;
     color: white;
     padding-left: 2.5%;
     padding-right: 2.5%;

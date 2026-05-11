@@ -59,7 +59,7 @@ footer {
     gap: 15px;
 
     a {
-      @include link-style(black);
+      @include link-style(#1F2937);
       text-decoration: underline;
     }
   }

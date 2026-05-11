@@ -22,7 +22,7 @@
 .download-button {
     @include link-style(white);
     @include hover-rise();
-    background-color: black;
+    background-color: #1A2B23;
     font-size: $font-h2-size;
     width: fit-content;
     padding-left: 2.5%;

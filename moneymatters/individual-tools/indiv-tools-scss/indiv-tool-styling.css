@@ -1,7 +1,11 @@
-* {
+﻿* {
   font-family: "Inter", sans-serif;
   padding: 0;
   margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter Tight', 'Inter', sans-serif;
 }
 
 html {
@@ -13,7 +17,7 @@ html {
   text-decoration: none;
   display: inline-block;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  background-color: black;
+  background-color: #1A2B23;
   font-size: 40px;
   width: -moz-fit-content;
   width: fit-content;
@@ -81,7 +85,7 @@ header p {
 .top-bar {
   position: absolute;
   top: 0;
-  background-color: black;
+  background-color: #1A2B23;
   width: 100vw;
   height: 165px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -90,7 +94,7 @@ header p {
 
 .block-link {
   background-color: white;
-  color: black !important;
+  color: #1F2937 !important;
   border-radius: 8px;
   padding-left: 24px;
   padding-right: 24px;
@@ -156,7 +160,7 @@ h1 {
   text-decoration: none;
   display: inline-block;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  background-color: black;
+  background-color: #1A2B23;
   font-size: 40px;
   width: -moz-fit-content;
   width: fit-content;
@@ -242,7 +246,7 @@ footer nav {
   gap: 15px;
 }
 footer nav a {
-  color: black;
+  color: #1F2937;
   text-decoration: none;
   text-decoration: underline;
 }
@@ -330,7 +334,7 @@ footer nav a {
   }
 }
 #join-us {
-  background-color: black;
+  background-color: #1A2B23;
   color: white;
   padding-top: 5%;
 }
@@ -403,7 +407,7 @@ form input.form-control {
   border: 2px solid white;
   border-radius: 25px;
   background-color: white;
-  color: black;
+  color: #1F2937;
   outline: none;
   transition: all 0.2s ease;
 }
@@ -417,14 +421,14 @@ form input.form-control::placeholder {
 }
 
 form input.form-control:focus {
-  border-color: black;
+  border-color: #1A2B23;
   box-shadow: 0 0 5px rgb(251, 251, 251);
 }
 
 .submit-btn {
   background-color: white;
   border: 1px solid white;
-  color: black;
+  color: #1F2937;
   padding: 15px 30px;
   font-size: 20px;
   border-radius: 25px;
@@ -496,7 +500,7 @@ footer {
 }
 
 .black-white {
-  background-color: black;
+  background-color: #1A2B23;
   color: white;
 }
 
@@ -531,7 +535,7 @@ footer {
   .top {
     display: none;
     flex-direction: column;
-    background-color: black;
+    background-color: #1A2B23;
     position: absolute;
     width: 200px;
     padding: 20px;
@@ -573,7 +577,7 @@ footer {
   text-align: center;
   display: flex;
   flex-direction: column;
-  border-bottom: 3px solid black;
+  border-bottom: 3px solid #1A2B23;
   padding-bottom: 2.5%;
   margin-left: 5%;
   margin-right: 5%;
@@ -608,7 +612,7 @@ footer {
 }
 
 .dropdown-arrow {
-  background: black;
+  background: #1A2B23;
   color: white;
   border: none;
   font-size: 20px;
@@ -627,7 +631,7 @@ footer {
   display: none;
   margin: auto;
   margin-top: 10px;
-  background-color: white;
+  background-color: #FAFAF7;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   padding: 15px;
   border-radius: 10px;

@@ -1,7 +1,11 @@
-* {
+﻿* {
   font-family: "Inter", sans-serif;
   padding: 0;
   margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter Tight', 'Inter', sans-serif;
 }
 
 html {
@@ -13,7 +17,7 @@ html {
   text-decoration: none;
   display: inline-block;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  background-color: black;
+  background-color: #1A2B23;
   font-size: 40px;
   width: -moz-fit-content;
   width: fit-content;
@@ -44,7 +48,7 @@ html {
   }
 }
 #join-us {
-  background-color: black;
+  background-color: #1A2B23;
   color: white;
   padding-top: 5%;
 }
@@ -117,7 +121,7 @@ form input.form-control {
   border: 2px solid white;
   border-radius: 25px;
   background-color: white;
-  color: black;
+  color: #1F2937;
   outline: none;
   transition: all 0.2s ease;
 }
@@ -131,14 +135,14 @@ form input.form-control::placeholder {
 }
 
 form input.form-control:focus {
-  border-color: black;
+  border-color: #1A2B23;
   box-shadow: 0 0 5px rgb(251, 251, 251);
 }
 
 .submit-btn {
   background-color: white;
   border: 1px solid white;
-  color: black;
+  color: #1F2937;
   padding: 15px 30px;
   font-size: 20px;
   border-radius: 25px;
@@ -219,7 +223,7 @@ footer {
   .top {
     display: none;
     flex-direction: column;
-    background-color: black;
+    background-color: #1A2B23;
     position: absolute;
     width: 200px;
     padding: 20px;
@@ -311,7 +315,7 @@ footer nav {
   gap: 15px;
 }
 footer nav a {
-  color: black;
+  color: #1F2937;
   text-decoration: none;
   text-decoration: underline;
 }
@@ -403,7 +407,7 @@ footer nav a {
   text-decoration: none;
   display: inline-block;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  background-color: black;
+  background-color: #1A2B23;
   font-size: 40px;
   width: -moz-fit-content;
   width: fit-content;
@@ -471,7 +475,7 @@ header p {
 .top-bar {
   position: absolute;
   top: 0;
-  background-color: black;
+  background-color: #1A2B23;
   width: 100vw;
   height: 165px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -480,7 +484,7 @@ header p {
 
 .block-link {
   background-color: white;
-  color: black !important;
+  color: #1F2937 !important;
   border-radius: 8px;
   padding-left: 24px;
   padding-right: 24px;
@@ -542,7 +546,7 @@ h1 {
   }
 }
 html {
-  background-color: white !important;
+  background-color: #FAFAF7 !important;
 }
 
 h2 {
@@ -626,7 +630,7 @@ h2 {
 }
 
 .hero-text a {
-  background-color: black;
+  background-color: #1A2B23;
   color: white;
   text-decoration: none;
   border-radius: 25px;
@@ -650,7 +654,7 @@ h2 {
 
 .section2 {
   position: relative;
-  background-color: black;
+  background-color: #1A2B23;
   color: white;
   padding-left: 2.5%;
   padding-right: 2.5%;

@@ -11,7 +11,7 @@
 .section1 {
     @include center(horizontal);
     @include flex-column();
-    border-bottom: 3px solid black;
+    border-bottom: 3px solid #1A2B23;
     padding-bottom: 2.5%;
     margin-left: 5%;
     margin-right: 5%;
@@ -51,7 +51,7 @@
   }
   
   .dropdown-arrow {
-    background: black;
+    background: #1A2B23;
     color: white;
     border: none;
     font-size: 20px;
@@ -70,7 +70,7 @@
     display: none;
     margin: auto;
     margin-top: 10px;
-    background-color: white;
+    background-color: #FAFAF7;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     padding: 15px;
     border-radius: 10px;
