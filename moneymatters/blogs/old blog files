@@ -1,0 +1,519 @@
+/* =====================================================
+   MoneyMatters. Site Base Stylesheet
+   Loaded LAST on every page to enforce consistent styling
+   across header, footer, nav, value strip, animations, and forms.
+   ===================================================== */
+
+/* ---------- Brand color tokens ---------- */
+:root {
+    --mm-charcoal: #1A2B23;
+    --mm-cream: #FAFAF7;
+    --mm-text: #1F2937;
+    --mm-text-muted: #4A5568;
+    --mm-text-soft: #6B7280;
+    --mm-green: #62A974;
+    --mm-green-deep: #4A8559;
+    --mm-green-soft: rgba(98, 169, 116, 0.12);
+    --mm-border: #E8EDE9;
+}
+
+/* ---------- Typography reset ---------- */
+body { background: var(--mm-cream); color: var(--mm-text); }
+body h1, body h2, body h3, body h4, body h5, body h6,
+.value-strip, header, footer {
+    font-family: 'Inter Tight', 'Inter', sans-serif;
+}
+body, body p, body a, body input, body button, body textarea {
+    font-family: 'Inter', sans-serif;
+}
+
+/* ===========================================================
+   VALUE STRIP (revolving info bar at top of every page)
+   =========================================================== */
+body > .value-strip,
+.value-strip {
+    background: var(--mm-charcoal) !important;
+    color: var(--mm-cream) !important;
+    font-size: 15px !important;
+    padding: 12px 0 !important;
+    overflow: hidden !important;
+    border-bottom: 1px solid rgba(98, 169, 116, 0.2) !important;
+    position: relative !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+.value-strip .value-strip-track {
+    display: inline-flex !important;
+    gap: 40px !important;
+    white-space: nowrap !important;
+    animation: mm-scroll-strip 60s linear infinite !important;
+    padding-left: 100% !important;
+}
+.value-strip .value-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    font-weight: 500 !important;
+    color: var(--mm-cream) !important;
+}
+.value-strip .value-icon { font-size: 16px !important; }
+.value-strip .value-divider {
+    color: rgba(250, 250, 247, 0.3) !important;
+    font-size: 18px !important;
+}
+@keyframes mm-scroll-strip {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .value-strip .value-strip-track {
+        animation: none !important;
+        padding-left: 0 !important;
+        white-space: normal !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+    }
+}
+@media (max-width: 640px) {
+    body > .value-strip,
+    .value-strip { font-size: 13px !important; padding: 10px 0 !important; }
+    .value-strip .value-icon { font-size: 14px !important; }
+}
+
+/* ===========================================================
+   HEADER & NAV (unified across all pages)
+   =========================================================== */
+body > header,
+body header {
+    background: var(--mm-charcoal) !important;
+    color: var(--mm-cream) !important;
+    padding: 18px 5% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    position: relative !important;
+    z-index: 100 !important;
+}
+body header a { text-decoration: none !important; }
+body header > a > p,
+body header p {
+    color: var(--mm-cream) !important;
+    font-weight: 700 !important;
+    font-size: 26px !important;
+    margin: 0 !important;
+    transition: transform 0.2s ease !important;
+}
+body header > a:hover > p { transform: scale(1.04) !important; }
+
+/* Force unified nav styling — overrides per-page colors (yellow, blue, etc.) */
+body header nav,
+body header nav.top,
+body header .top {
+    display: flex !important;
+    gap: 28px !important;
+    align-items: center !important;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+}
+body header nav a,
+body header nav.top a,
+body header .top a {
+    color: var(--mm-cream) !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    padding: 8px 4px !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+    background: transparent !important;
+    border: none !important;
+}
+body header nav a:hover,
+body header nav.top a:hover { color: var(--mm-green) !important; text-decoration: none !important; }
+
+/* "Get Connected!" pill button */
+body header nav a.block-link,
+body header nav a:last-child {
+    background: var(--mm-cream) !important;
+    color: var(--mm-charcoal) !important;
+    padding: 9px 18px !important;
+    border-radius: 8px !important;
+}
+body header nav a.block-link:hover,
+body header nav a:last-child:hover {
+    background: var(--mm-green) !important;
+    color: var(--mm-cream) !important;
+}
+
+/* Hamburger (mobile) */
+body header .hamburger { display: none; cursor: pointer; }
+body header .hamburger span {
+    width: 25px; height: 3px;
+    background: var(--mm-cream);
+    border-radius: 2px;
+    margin: 3px 0;
+}
+@media (max-width: 768px) {
+    body header nav,
+    body header nav.top {
+        display: none !important;
+        flex-direction: column !important;
+        gap: 14px !important;
+        position: absolute !important;
+        top: 100% !important; right: 0 !important;
+        background: var(--mm-charcoal) !important;
+        padding: 20px !important;
+        min-width: 220px !important;
+        border-radius: 0 0 0 12px !important;
+    }
+    body header nav.show,
+    body header nav.top.show { display: flex !important; }
+    body header .hamburger { display: flex !important; flex-direction: column; }
+}
+
+/* ===========================================================
+   FOOTER (unified across all pages)
+   =========================================================== */
+body > footer,
+body footer {
+    background: var(--mm-charcoal) !important;
+    color: var(--mm-cream) !important;
+    padding: 50px 5% 25px !important;
+    margin-top: 60px !important;
+}
+body footer > p,
+body footer > .logo {
+    color: var(--mm-cream) !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-bottom: 18px !important;
+}
+body footer nav {
+    display: flex !important;
+    gap: 24px !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 26px !important;
+    padding-bottom: 26px !important;
+    border-bottom: 1px solid rgba(250, 250, 247, 0.15) !important;
+    position: static !important;
+}
+body footer nav a {
+    color: var(--mm-cream) !important;
+    text-decoration: none !important;
+    font-size: 14px !important;
+    transition: color 0.2s ease !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+body footer nav a:hover { color: var(--mm-green) !important; }
+body footer .social-media h3 { color: var(--mm-cream) !important; font-size: 16px !important; margin-bottom: 12px !important; }
+body footer .social-links { display: flex !important; gap: 14px !important; margin-bottom: 26px !important; }
+body footer .social-links a { display: inline-block; transition: transform 0.2s ease; }
+body footer .social-links a:hover { transform: translateY(-2px); }
+body footer .social-links img { width: 30px !important; height: 30px !important; border-radius: 6px; }
+body footer .disclaimer {
+    font-size: 12px !important;
+    color: rgba(250, 250, 247, 0.6) !important;
+    line-height: 1.6 !important;
+    margin-bottom: 18px !important;
+    max-width: 900px !important;
+}
+body footer .disclaimer h3 {
+    font-size: 13px !important;
+    color: rgba(250, 250, 247, 0.8) !important;
+    margin-bottom: 8px !important;
+}
+body footer .disclaimer p { color: rgba(250, 250, 247, 0.6) !important; font-size: 12px !important; }
+body footer .credits, body footer .credits p {
+    font-size: 12px !important;
+    color: rgba(250, 250, 247, 0.5) !important;
+}
+
+/* ===========================================================
+   FORM RESETS — fights the legacy "form { position: relative; right: 25% }"
+   =========================================================== */
+body form,
+.connect-section form,
+.contact-form,
+#signup-form {
+    position: static !important;
+    right: auto !important;
+    left: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+body .form-container,
+.connect-section .form-container {
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    max-width: none !important;
+}
+.connect-section input,
+.connect-section .form-control {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    position: static !important;
+    right: auto !important;
+}
+.connect-section .row,
+.connect-section #email {
+    position: static !important;
+    width: 100% !important;
+    right: auto !important;
+    left: auto !important;
+}
+
+/* ===========================================================
+   CONNECT SECTION (Discord + Email signup)
+   =========================================================== */
+.connect-section {
+    background: var(--mm-charcoal) !important;
+    color: var(--mm-cream) !important;
+    padding: 80px 5% !important;
+    margin: 0 !important;
+}
+.connect-section * { color: var(--mm-cream); }
+.connect-header { text-align: center; max-width: 700px; margin: 0 auto 50px; }
+.connect-header h2 { font-size: 38px !important; margin-bottom: 12px !important; }
+.connect-header p { font-size: 16px !important; color: rgba(250, 250, 247, 0.75) !important; margin: 0 !important; }
+.connect-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+    align-items: stretch !important;
+}
+.connect-card {
+    background: rgba(250, 250, 247, 0.05) !important;
+    border: 1px solid rgba(98, 169, 116, 0.25) !important;
+    border-radius: 16px !important;
+    padding: 32px !important;
+    text-decoration: none !important;
+    color: var(--mm-cream) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    box-sizing: border-box !important;
+}
+a.connect-card:hover { transform: translateY(-4px); border-color: var(--mm-green); background: rgba(98, 169, 116, 0.08) !important; }
+.connect-card h3 { font-size: 22px !important; margin-bottom: 10px !important; color: var(--mm-cream) !important; }
+.connect-card > p { font-size: 15px !important; color: rgba(250, 250, 247, 0.75) !important; margin-bottom: 20px !important; line-height: 1.5; }
+
+.connect-btn, .connect-section .submit-btn, .connect-section button[type="submit"] {
+    display: inline-block !important;
+    padding: 11px 22px !important;
+    background: var(--mm-green) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    border: none !important;
+    cursor: pointer !important;
+    font-family: inherit !important;
+    transition: background 0.2s ease !important;
+    position: static !important;
+    right: auto !important;
+}
+.connect-btn:hover, .connect-section .submit-btn:hover { background: var(--mm-green-deep) !important; }
+a.connect-card .connect-btn { align-self: flex-start !important; }
+
+.form-side label, #signup-form label {
+    display: block !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin: 12px 0 6px !important;
+    color: rgba(250, 250, 247, 0.85) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    position: static !important;
+}
+.form-side input, #signup-form input.form-control, #signup-form input {
+    width: 100% !important;
+    padding: 11px 14px !important;
+    border: 1px solid rgba(250, 250, 247, 0.2) !important;
+    background: rgba(250, 250, 247, 0.08) !important;
+    color: var(--mm-cream) !important;
+    border-radius: 8px !important;
+    font-family: inherit !important;
+    font-size: 15px !important;
+    box-sizing: border-box !important;
+    position: static !important;
+    right: auto !important; left: auto !important;
+}
+.form-side input:focus, #signup-form input:focus {
+    outline: none !important;
+    border-color: var(--mm-green) !important;
+    background: rgba(250, 250, 247, 0.12) !important;
+}
+.form-side input::placeholder, #signup-form input::placeholder { color: rgba(250, 250, 247, 0.5) !important; }
+.form-side .form-row, #signup-form .row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    position: static !important;
+    width: 100% !important;
+    right: auto !important;
+}
+.form-side .form-col, #signup-form .col { display: flex !important; flex-direction: column !important; min-width: 0 !important; }
+.form-side .submit-btn, #signup-form .submit-btn, #signup-form button[type="submit"] {
+    width: 100% !important;
+    margin-top: 18px !important;
+    padding: 13px 22px !important;
+    font-size: 15px !important;
+}
+@media (max-width: 768px) {
+    .connect-grid { grid-template-columns: 1fr !important; }
+    .form-side .form-row, #signup-form .row { grid-template-columns: 1fr !important; }
+}
+
+/* ===========================================================
+   FADE-UP ANIMATION (scroll-into-view)
+   =========================================================== */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.fade-up.is-visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+    .fade-up { opacity: 1; transform: none; transition: none; }
+}
+
+/* ===========================================================
+   FLOAT SHAPES (animated decorative elements)
+   =========================================================== */
+.float-shape {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 0;
+}
+.float-shape-1 {
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(98, 169, 116, 0.18), transparent 70%);
+    filter: blur(2px);
+    animation: mm-float-1 14s ease-in-out infinite;
+}
+.float-shape-2 {
+    width: 90px; height: 90px;
+    background: radial-gradient(circle, rgba(98, 169, 116, 0.14), transparent 70%);
+    filter: blur(2px);
+    animation: mm-float-2 11s ease-in-out infinite;
+}
+.float-shape-3 {
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(98, 169, 116, 0.10), transparent 70%);
+    filter: blur(8px);
+    animation: mm-float-3 18s ease-in-out infinite;
+}
+@keyframes mm-float-1 {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(25px, -18px); }
+    66% { transform: translate(-15px, 12px); }
+}
+@keyframes mm-float-2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-22px, 18px); }
+}
+@keyframes mm-float-3 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -22px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .float-shape-1, .float-shape-2, .float-shape-3 { animation: none; }
+}
+
+/* Page-level orb */
+.page-orb {
+    position: absolute;
+    top: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(98, 169, 116, 0.18) 0%, rgba(98, 169, 116, 0.04) 40%, transparent 70%);
+    filter: blur(50px);
+    pointer-events: none;
+    z-index: 0;
+}
+@media (max-width: 768px) {
+    .page-orb { width: 350px; height: 250px; }
+}
+
+/* ===========================================================
+   VIDEO RESOURCE CARD (autoplay on scroll)
+   =========================================================== */
+.video-card {
+    background: var(--mm-cream);
+    border: 1px solid var(--mm-border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.video-card:hover { transform: translateY(-4px); border-color: rgba(98, 169, 116, 0.4); box-shadow: 0 12px 28px rgba(26, 43, 35, 0.08); }
+.video-card .video-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+}
+.video-card .video-frame iframe {
+    width: 100%; height: 100%;
+    border: 0;
+    position: absolute;
+    top: 0; left: 0;
+}
+.video-card .video-thumb {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    background-color: #1A2B23;
+}
+.video-card .play-icon {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: rgba(98, 169, 116, 0.95);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease;
+}
+.video-card:hover .play-icon { transform: scale(1.1); }
+.video-card .resource-body {
+    padding: 18px 22px 22px;
+}
+.video-card .resource-tag {
+    display: inline-block;
+    background: rgba(98, 169, 116, 0.12);
+    color: var(--mm-green-deep);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.video-card h3 { font-size: 18px; margin-bottom: 6px; color: var(--mm-charcoal); }
+.video-card p { font-size: 14px; color: var(--mm-text-muted); margin: 0; }
+
+/* ===========================================================
+   GLOBAL POLISH (rounded corners, transitions)
+   =========================================================== */
+body main img:not([class*="logo"]):not([class*="social"]),
+body section img:not([class*="logo"]):not([class*="social"]) {
+    border-radius: 12px;
+}
+body a, body button { transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease; }
