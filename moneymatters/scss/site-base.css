@@ -517,3 +517,4 @@ body section img:not([class*="logo"]):not([class*="social"]) {
     border-radius: 12px;
 }
 body a, body button { transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease; }
+
