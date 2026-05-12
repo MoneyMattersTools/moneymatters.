@@ -588,6 +588,8 @@ h2 {
   display: flex;
   gap: 5px;
   margin-top: 2.5%;
+  position: relative;
+  overflow: visible;
 }
 .hero h1 {
   margin-top: 30%;
@@ -1004,6 +1006,7 @@ footer nav {
   z-index: 0;
 }
 
+
 /* --- Scroll fade-up animation --- */
 .fade-up {
   opacity: 0;
@@ -1191,42 +1194,98 @@ footer nav {
   background: #1A2B23;
   color: #FAFAF7;
   font-size: 13px;
-  padding: 10px 16px;
-  text-align: center;
+  padding: 9px 0;
+  overflow: hidden;
   border-bottom: 1px solid rgba(98, 169, 116, 0.2);
+  white-space: nowrap;
 }
-.value-strip-inner { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 10px 16px; max-width: 1200px; }
-.value-item { display: inline-flex; align-items: center; gap: 6px; }
+.value-strip-track {
+  display: inline-flex;
+  gap: 0 28px;
+  animation: scroll-strip 28s linear infinite;
+  will-change: transform;
+}
+@keyframes scroll-strip {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.value-strip-track::after {
+  content: '';
+  display: inline-block;
+  width: 28px;
+}
+.value-item { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .value-icon { font-size: 14px; }
-.value-divider { color: rgba(250, 250, 247, 0.3); }
-@media (max-width: 640px) {
-  .value-strip { font-size: 11.5px; padding: 8px 12px; }
-  .value-divider { display: none; }
+.value-divider { color: rgba(250, 250, 247, 0.3); flex-shrink: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .value-strip-track { animation: none; }
+  .value-strip { overflow: auto; white-space: normal; text-align: center; padding: 9px 16px; }
 }
-/* --- Section 4 grid layout --- */
-.section4-grid {
+@media (max-width: 640px) {
+  .value-strip { font-size: 11.5px; }
+}
+/* --- Connect section (replaces section4-grid) --- */
+.connect-section { padding: 80px 8%; }
+.connect-header { text-align: center; margin-bottom: 48px; }
+.connect-header h2 { font-family: 'Inter Tight', sans-serif; font-size: clamp(28px, 4vw, 40px); font-weight: 800; color: #1A2B23; margin-bottom: 10px; }
+.connect-header p { font-size: 17px; color: #4A5568; }
+.connect-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  max-width: 1100px;
+  gap: 28px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 0 5%;
   align-items: start;
 }
-.section4-grid .discord-card,
-.section4-grid .form-container {
-  position: static !important;
-  left: auto !important;
-  right: auto !important;
-  top: auto !important;
-  width: 100% !important;
-  max-width: none !important;
+.connect-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 36px 32px;
+  border-radius: 20px;
+  background: #FAFAF7;
+  border: 1px solid #E8EDE9;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
+.connect-card:hover { transform: translateY(-4px); border-color: #62A974; box-shadow: 0 12px 28px rgba(26, 43, 35, 0.09); }
+.connect-card h3 { font-family: 'Inter Tight', sans-serif; font-size: 22px; font-weight: 700; color: #1A2B23; margin: 0; }
+.connect-card p { font-size: 15px; color: #4A5568; margin: 0; }
+.connect-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  background: #1A2B23;
+  color: #FAFAF7;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  align-self: flex-start;
+}
+.connect-btn:hover { background: #62A974; }
+.form-side form { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.form-side label { font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 2px; }
+.form-side input {
+  padding: 10px 14px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  color: #1F2937;
+  transition: border-color 0.2s ease;
+}
+.form-side input:focus { outline: none; border-color: #62A974; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 768px) {
-  .section4-grid { grid-template-columns: 1fr; gap: 24px; }
+  .connect-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .connect-section { padding: 60px 6%; }
 }
-.discord-card p { text-decoration: none !important; }
-.discord-card h3 { text-decoration: none !important; }
 
 /* --- Contact options grid --- */
 .contact-options { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px; margin: 0 auto 40px; }

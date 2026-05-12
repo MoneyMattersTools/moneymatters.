@@ -6,6 +6,7 @@
         <meta name="description" content="MoneyMatters. Blogs">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="scss/blogs-home-styling.css">
+        <link rel="stylesheet" href="../scss/site-base.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -14,12 +15,38 @@
 
     <body>
         <div class="value-strip" aria-label="Why MoneyMatters">
-          <div class="value-strip-inner">
+          <div class="value-strip-track">
             <span class="value-item"><span class="value-icon">🔓</span> Pay once, yours forever</span>
             <span class="value-divider">·</span>
-            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas</span>
+            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas you can see</span>
             <span class="value-divider">·</span>
-            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions or upsells</span>
+            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions, no upsells</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🔒</span> Your data stays yours</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">📊</span> Built by people who use them</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">💡</span> Real depth, no gimmicks</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🧮</span> Spreadsheets you can adapt</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">✏️</span> Every assumption is editable</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🎓</span> Learn the math, don't just trust it</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🌱</span> Plan, refine, grow</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">📅</span> Designed for long-term use</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🤝</span> Share with your partner</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🔁</span> Free updates included</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">⚡</span> Up and running in minutes</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🎯</span> No fluff, no gatekeeping</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">💼</span> Pro-grade planning at a fair price</span>
           </div>
         </div>
         <header>
@@ -40,7 +67,9 @@
                     <a href="../contact.html" class="block-link">Get Connected!</a>
                 </nav>
         </header>
-<section class="blog-hero">
+<section class="blog-hero" style="position: relative; overflow: visible;">
+    <div class="float-shape float-shape-1" aria-hidden="true" style="top: 20%; left: 8%;"></div>
+    <div class="float-shape float-shape-2" aria-hidden="true" style="bottom: 10%; right: 10%;"></div>
     <h1>MoneyMatters. Blogs</h1>
     <p>Financial tips, tools, and real-world advice — for everyone.</p>
   </section>
@@ -105,10 +134,10 @@
 <footer>
 <p>MoneyMatters.</p>
 <nav>
-    <a href="index.html">Home</a>
-    <a href="tools.html">Tools</a>
-    <a href="aboutus.html">About Us</a>
-    <a href="blogs/blogs-home.html">Blogs</a>
+    <a href="../index.html">Home</a>
+    <a href="../tools.html">Tools</a>
+    <a href="../aboutus.html">About Us</a>
+    <a href="blogs-home.html">Blogs</a>
     <a href="../contact.html">Contact</a>
     <a href="../privacy-policy.html">Privacy Policy</a>
 </nav>

@@ -855,17 +855,35 @@ footer nav {
   background: #1A2B23;
   color: #FAFAF7;
   font-size: 13px;
-  padding: 10px 16px;
-  text-align: center;
+  padding: 9px 0;
+  overflow: hidden;
   border-bottom: 1px solid rgba(98, 169, 116, 0.2);
+  white-space: nowrap;
 }
-.value-strip-inner { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 10px 16px; max-width: 1200px; }
-.value-item { display: inline-flex; align-items: center; gap: 6px; }
+.value-strip-track {
+  display: inline-flex;
+  gap: 0 28px;
+  animation: scroll-strip 28s linear infinite;
+  will-change: transform;
+}
+@keyframes scroll-strip {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.value-strip-track::after {
+  content: '';
+  display: inline-block;
+  width: 28px;
+}
+.value-item { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .value-icon { font-size: 14px; }
-.value-divider { color: rgba(250, 250, 247, 0.3); }
+.value-divider { color: rgba(250, 250, 247, 0.3); flex-shrink: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .value-strip-track { animation: none; }
+  .value-strip { overflow: auto; white-space: normal; text-align: center; padding: 9px 16px; }
+}
 @media (max-width: 640px) {
-  .value-strip { font-size: 11.5px; padding: 8px 12px; }
-  .value-divider { display: none; }
+  .value-strip { font-size: 11.5px; }
 }
 /* --- Fade-up animation --- */
 .fade-up { opacity: 0; transform: translateY(32px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -877,9 +895,27 @@ footer nav {
 .about-hero h1 { font-size: 56px; margin-bottom: 14px; position: relative; z-index: 1; }
 .about-hero-sub { font-size: 20px; color: #4A5568; max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
 .about-section { max-width: 960px; margin: 0 auto; padding: 60px 8%; }
-.about-section h2 { font-size: 32px; margin-bottom: 20px; }
+.about-section h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  display: inline-block;
+  position: relative;
+}
+.about-section h2::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 48px;
+  background: #62A974;
+  border-radius: 2px;
+  margin-top: 8px;
+}
 .about-section p { font-size: 17px; line-height: 1.7; color: #2D3748; margin-bottom: 14px; }
-.differentiator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 30px; }
+.differentiator-grid { display: grid; grid-template-columns: 5fr 4fr; gap: 20px 28px; margin-top: 30px; }
+.differentiator-card:nth-child(1) { grid-column: 1; }
+.differentiator-card:nth-child(2) { grid-column: 2; grid-row: 1 / 3; align-self: stretch; }
+.differentiator-card:nth-child(3) { grid-column: 1; }
+.differentiator-card:nth-child(4) { grid-column: 1 / 3; }
 .differentiator-card { background: #FAFAF7; border: 1px solid #E8EDE9; border-radius: 16px; padding: 28px; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
 .differentiator-card:hover { transform: translateY(-4px); border-color: #62A974; box-shadow: 0 12px 24px rgba(26, 43, 35, 0.08); }
 .differentiator-card h3 { color: #1A2B23; font-size: 20px; margin-bottom: 8px; }
@@ -906,8 +942,25 @@ footer nav {
   background: radial-gradient(circle, rgba(98, 169, 116, 0.2) 0%, rgba(98, 169, 116, 0.05) 40%, transparent 70%);
   filter: blur(50px); pointer-events: none; z-index: 0;
 }
+/* --- Float shape (decorative) --- */
+.float-shape {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+.float-shape-1 {
+  width: 260px; height: 260px;
+  top: -40px; right: -60px;
+  background: radial-gradient(circle, rgba(98, 169, 116, 0.18) 0%, transparent 70%);
+}
+.about-section { position: relative; }
 @media (max-width: 768px) {
-  .differentiator-grid, .steps-grid { grid-template-columns: 1fr; }
+  .differentiator-grid { grid-template-columns: 1fr; }
+  .differentiator-card:nth-child(2) { grid-column: 1; grid-row: auto; }
+  .differentiator-card:nth-child(4) { grid-column: 1; }
+  .steps-grid { grid-template-columns: 1fr; }
   .about-hero h1 { font-size: 36px; }
   .about-section h2 { font-size: 26px; }
 }

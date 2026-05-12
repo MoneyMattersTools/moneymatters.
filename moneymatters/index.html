@@ -6,6 +6,7 @@
         <meta name="description" content="Financial Calculators">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="scss/homestyling.css">
+        <link rel="stylesheet" href="scss/site-base.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -13,12 +14,38 @@
 
     <body>
         <div class="value-strip" aria-label="Why MoneyMatters">
-          <div class="value-strip-inner">
+          <div class="value-strip-track">
             <span class="value-item"><span class="value-icon">🔓</span> Pay once, yours forever</span>
             <span class="value-divider">·</span>
-            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas</span>
+            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas you can see</span>
             <span class="value-divider">·</span>
-            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions or upsells</span>
+            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions, no upsells</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🔒</span> Your data stays yours</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">📊</span> Built by people who use them</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">💡</span> Real depth, no gimmicks</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🧮</span> Spreadsheets you can adapt</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">✏️</span> Every assumption is editable</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🎓</span> Learn the math, don't just trust it</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🌱</span> Plan, refine, grow</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">📅</span> Designed for long-term use</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🤝</span> Share with your partner</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🔁</span> Free updates included</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">⚡</span> Up and running in minutes</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">🎯</span> No fluff, no gatekeeping</span>
+            <span class="value-divider">·</span>
+            <span class="value-item"><span class="value-icon">💼</span> Pro-grade planning at a fair price</span>
           </div>
         </div>
         <header>
@@ -44,6 +71,9 @@
 
             <div class="hero">
                 <div class="gradient-orb" aria-hidden="true"></div>
+                <div class="float-shape float-shape-1" aria-hidden="true" style="top: 25%; left: 6%;"></div>
+                <div class="float-shape float-shape-2" aria-hidden="true" style="bottom: 18%; right: 10%;"></div>
+                <div class="float-shape float-shape-3" aria-hidden="true" style="top: 60%; left: 45%;"></div>
                 <div class="hero-text fade-up">
                     <h1>MoneyMatters.</h1>
                     <p class="onep1">Learn how to use your money effectively.</p>
@@ -93,11 +123,18 @@
                 <!--Might put an image-->
                 <div class="section3-split">
                     <div class="links-container">
-                        <a class="resource-card" href="https://www.youtube.com/watch?v=pd29VYF6e-U" target="_blank" rel="noopener">
-                            <span class="resource-card__label">Video</span>
+                        <div class="resource-card video-card" data-video-id="pd29VYF6e-U" data-video-title="What is Financial Planning?">
+                          <div class="video-frame">
+                            <div class="video-thumb" role="button" aria-label="Play video: What is Financial Planning?">
+                              <span class="play-icon">▶</span>
+                            </div>
+                          </div>
+                          <div class="resource-body">
+                            <span class="resource-tag">Video</span>
                             <h3>What is Financial Planning?</h3>
-                            <p>A beginner-friendly introduction to managing your personal finances.</p>
-                        </a>
+                            <p>A clear introduction to building a financial plan.</p>
+                          </div>
+                        </div>
                         <a class="resource-card" href="https://www.investor.gov/free-financial-planning-tools" target="_blank" rel="noopener">
                             <span class="resource-card__label">SEC</span>
                             <h3>SEC Guidance</h3>
@@ -116,37 +153,37 @@
                 </div>
             </section>
 
-            <section class="section4 fade-up" id="join-us">
+            <section class="connect-section fade-up" id="join-us">
+              <div class="connect-header">
                 <h2>Get Connected</h2>
-                <div class="section4-grid">
-                    <a class="discord-card" href="https://discord.com/invite/DCWFBPxh" target="_blank" rel="noopener">
-                        <img src="images/moneymatters-logo.png" alt="MoneyMatters Logo">
-                        <h3>Join the Community</h3>
-                        <p>Connect with like-minded people, share strategies, and get real financial guidance — all for free.</p>
-                        <span class="discord-card__cta">Join on Discord</span>
-                    </a>
-
-                    <div class="form-container">
-                        <h3>Join the MoneyMatters Community!</h3>
-                        <form id="signup-form" action="https://formspree.io/f/xovdvjng" method="POST">
-                            <div class="row">
-                              <div class="col">
-                                <label for="first_name">First Name</label>
-                                <input type="text" id="first_name" name="first_name" class="form-control">
-                              </div>
-                              <div class="col">
-                                <label for="last_name">Last Name</label>
-                                <input type="text" id="last_name" name="last_name" class="form-control">
-                              </div>
-                            </div>
-                            <div class="row" id="email">
-                                <label for="email_input">Email</label>
-                                <input type="email" id="email_input" name="email" class="form-control">
-                            </div>
-                            <button type="submit" class="submit-btn">Submit</button>
-                          </form>
+                <p>Join the community or sign up for updates.</p>
+              </div>
+              <div class="connect-grid">
+                <a href="https://discord.com/invite/DCWFBPxh" target="_blank" rel="noopener" class="connect-card discord-side">
+                  <h3>Join our Discord</h3>
+                  <p>Real-time conversations with other people building their financial plans.</p>
+                  <span class="connect-btn">Open Discord →</span>
+                </a>
+                <div class="connect-card form-side">
+                  <h3>Get email updates</h3>
+                  <p>Occasional tips, new tools, and promos — no spam.</p>
+                  <form id="signup-form" action="https://formspree.io/f/xovdvjng" method="POST">
+                    <div class="form-row">
+                      <div class="form-col">
+                        <label for="first_name">First name</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                      </div>
+                      <div class="form-col">
+                        <label for="last_name">Last name</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                      </div>
                     </div>
+                    <label for="email_input">Email</label>
+                    <input type="email" id="email_input" name="email" required>
+                    <button type="submit" class="submit-btn">Submit</button>
+                  </form>
                 </div>
+              </div>
             </section>
 
             <section class="section5">
@@ -191,6 +228,7 @@
 
         <script src="scripts/hamburger.js"></script>
         <script src="scripts/scroll-animations.js"></script>
+        <script src="scripts/video-autoplay.js"></script>
     </body>
 
 </html>
