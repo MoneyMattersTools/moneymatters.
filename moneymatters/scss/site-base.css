@@ -8,6 +8,7 @@
     --mm-charcoal-deep: #0F1B15;
     --mm-cream: #FAFAF7;
     --mm-cream-warm: #F5F2EB;
+    --mm-cream-sunny: #FBF6EC;
     --mm-text: #1F2937;
     --mm-text-muted: #4A5568;
     --mm-text-soft: #6B7280;
@@ -674,3 +675,19 @@ body footer .footer-signoff { font-family: var(--mm-serif) !important; font-styl
 }
 body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { border-radius: 12px; }
 body a, body button { transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease; }
+
+/* --- Newsletter CTA (Beehiiv embed wrapper) --- */
+.newsletter-cta {
+  width: 100%;
+  background: var(--mm-cream-sunny);
+  padding: 64px 24px;
+}
+.newsletter-cta__inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+@media (max-width: 640px) {
+  .newsletter-cta {
+    padding: 40px 16px;
+  }
+}
