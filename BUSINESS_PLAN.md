@@ -1,4 +1,4 @@
-﻿# MoneyMatters — Business Plan
+# MoneyMatters � Business Plan
 *Source of truth. Last updated: 2026-07-11.*
 
 ## Model
@@ -11,7 +11,7 @@ Lead-generation platform for CFP(R) fee-only, fiduciary financial advisors. Free
 - Per-lead fees
 - Revenue share on successfully onboarded clients
 
-Users pay nothing for base tools. Advanced tools remain paid during the transition (current: $50 flat, Google Sheets -- pricing strategy TBD, see SITE_STRATEGY.md Section 9).
+Users pay nothing for base tools. Advanced tools remain paid during the transition (Advanced tools: $10 each. Subscription: $10/month (all advanced tools + webinars + free advisor sessions, tiers TBD)).
 
 ## Value Exchange
 
