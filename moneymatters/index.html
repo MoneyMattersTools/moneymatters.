@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="scss/homestyling.css">
         <link rel="stylesheet" href="scss/site-base.css">
+        <link rel="stylesheet" href="scss/diagnostic.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,53 +17,29 @@
     <body>
         <div class="value-strip" aria-label="Why MoneyMatters">
           <div class="value-strip-track">
-            <span class="value-item"><span class="value-icon">🔓</span> Pay once, yours forever</span>
+            <span class="value-item">You can't fix what you can't see. See it first.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas you can see</span>
+            <span class="value-item">Free in under 2 minutes.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions, no upsells</span>
+            <span class="value-item">No login, no upsell, no catch.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🔒</span> Your data stays yours</span>
+            <span class="value-item">Real advisors, actually vetted.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">📊</span> Built by people who use them</span>
+            <span class="value-item">Your data, your call.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">💡</span> Real depth, no gimmicks</span>
+            <span class="value-item">Built by people who've been confused too.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🧮</span> Works in Google Sheets</span>
+            <span class="value-item">You can't fix what you can't see. See it first.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">✏️</span> Every assumption is editable</span>
+            <span class="value-item">Free in under 2 minutes.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🎓</span> Learn the math, don't just trust it</span>
+            <span class="value-item">No login, no upsell, no catch.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🤝</span> Share with your partner</span>
+            <span class="value-item">Real advisors, actually vetted.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">⚡</span> Up and running in minutes</span>
+            <span class="value-item">Your data, your call.</span>
             <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">💼</span> Pro-grade planning at a fair price</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🔓</span> Pay once, yours forever</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">📐</span> Transparent formulas you can see</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🚫</span> No subscriptions, no upsells</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🔒</span> Your data stays yours</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">📊</span> Built by people who use them</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">💡</span> Real depth, no gimmicks</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🧮</span> Works in Google Sheets</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">✏️</span> Every assumption is editable</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🎓</span> Learn the math, don't just trust it</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">🤝</span> Share with your partner</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">⚡</span> Up and running in minutes</span>
-            <span class="value-divider">●</span>
-            <span class="value-item"><span class="value-icon">💼</span> Pro-grade planning at a fair price</span>
+            <span class="value-item">Built by people who've been confused too.</span>
             <span class="value-divider">●</span>
           </div>
         </div>
@@ -87,19 +64,92 @@
 
         <main>
 
-            <div class="hero">
+            <div class="hero" id="diagnostic-hero" data-active-step="choice">
                 <div class="mesh-blob mesh-blob-1" aria-hidden="true"></div>
                 <div class="mesh-blob mesh-blob-2" aria-hidden="true"></div>
                 <div class="mesh-blob mesh-blob-3" aria-hidden="true"></div>
 
                 <div class="hero-text fade-up">
-                  <span class="kicker"><span class="kicker-dot"></span>Personal finance, simplified</span>
-                  <h1>Smart tools for <em class="h-italic-accent">smart money</em> decisions.</h1>
-                  <p class="hero-sub">Transparent financial calculators — built to be understood, owned, and adapted to your life.</p>
-                  <a href="tools.html" class="hero-cta">Explore the tools <span aria-hidden="true">→</span></a>
+
+                  <div class="hero-step" data-step="choice">
+                    <span class="kicker"><span class="kicker-dot"></span>Personal finance, simplified</span>
+                    <h1>Where do you actually stand with <em class="h-italic-accent">money</em>?</h1>
+                    <p class="hero-sub">Pick a starting point. Takes less than 2 minutes.</p>
+                    <div class="entry-grid">
+                      <button type="button" class="connect-card" id="start-health-score">
+                        <h3>Check my Financial Health Score</h3>
+                        <p>A quick, honest read on where you stand — and what to do next.</p>
+                        <span class="connect-btn">Start <span aria-hidden="true">→</span></span>
+                      </button>
+                      <a class="connect-card" href="individual-tools/basic-tools/net-worth-calculator.html">
+                        <h3>See my Net Worth</h3>
+                        <p>Add up what you own and owe to see the full picture.</p>
+                        <span class="connect-btn">Start <span aria-hidden="true">→</span></span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="hero-step" data-step="email" hidden>
+                    <span class="kicker"><span class="kicker-dot"></span>Financial Health Score</span>
+                    <h2>First, where should we send your results?</h2>
+                    <p class="hero-sub">Enter your email to get your full results. We will send you a link — no password needed.</p>
+                    <form id="diagnostic-email-form" class="diagnostic-form form-side" novalidate>
+                      <label for="diagnostic-email">Email</label>
+                      <input type="email" id="diagnostic-email" name="email" required placeholder="you@example.com" autocomplete="email">
+                      <button type="submit" class="submit-btn">Continue</button>
+                      <p class="diagnostic-error" id="email-error" hidden></p>
+                    </form>
+                    <button type="button" class="step-back" data-back="choice">← Back</button>
+                  </div>
+
+                  <div class="hero-step" data-step="quiz" hidden>
+                    <div class="quiz-progress">
+                      <span class="quiz-progress-label" id="quiz-progress-label">Question 1 of 7</span>
+                      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+                    </div>
+                    <h2 id="quiz-question-text"></h2>
+                    <div class="quiz-answers" id="quiz-answers"></div>
+                    <button type="button" class="step-back" id="quiz-back">← Back</button>
+                    <p class="diagnostic-error" id="quiz-error" hidden></p>
+                  </div>
+
+                  <div class="hero-step" data-step="verifying" hidden>
+                    <span class="kicker"><span class="kicker-dot"></span>Financial Health Score</span>
+                    <h2>Verifying your results…</h2>
+                  </div>
+
+                  <div class="hero-step" data-step="verify" hidden>
+                    <span class="kicker"><span class="kicker-dot"></span>Almost there</span>
+                    <h2>Check your email to see your results.</h2>
+                    <p class="hero-sub">We sent a link to <strong id="verify-email-display"></strong>. Click it to verify your email and unlock your Financial Health Score.</p>
+                  </div>
+
+                  <div class="hero-step" data-step="verify-error" hidden>
+                    <span class="kicker"><span class="kicker-dot"></span>Financial Health Score</span>
+                    <h2 id="verify-error-heading">That link didn't work.</h2>
+                    <p class="hero-sub" id="verify-error-message"></p>
+                    <button type="button" class="step-back" data-back="choice">← Start over</button>
+                  </div>
+
+                  <div class="hero-step" data-step="results" hidden>
+                    <span class="kicker"><span class="kicker-dot"></span>Your Financial Health Score</span>
+                    <div class="score-reveal">
+                      <span class="score-number" id="score-number">0</span>
+                    </div>
+                    <p class="score-band" id="score-band"></p>
+                    <p class="hero-sub" id="score-copy"></p>
+                    <button type="button" class="score-breakdown-toggle" id="score-breakdown-toggle" hidden>See what is driving this</button>
+                    <ul class="score-breakdown" id="score-breakdown" hidden></ul>
+                    <div class="next-steps">
+                      <a href="individual-tools/basic-tools/net-worth-calculator.html">See your Net Worth too</a>
+                      <a href="https://discord.com/invite/DCWFBPxh" target="_blank" rel="noopener">Join the community</a>
+                      <a href="tools.html">Explore all tools</a>
+                    </div>
+                  </div>
+
                 </div>
 
-                <div class="hero-visual fade-up" aria-hidden="true">
+                <div class="hero-visual fade-up" id="hero-visual" aria-hidden="true">
                   <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
                     <g class="curve-group">
                       <path class="curve-stroke curve-stroke-1" d="M 80 380 Q 120 280 200 250 T 360 180 Q 400 160 420 110"/>
@@ -234,6 +284,7 @@
         <script src="scripts/hamburger.js"></script>
         <script src="scripts/scroll-animations.js"></script>
         <script src="scripts/video-autoplay.js"></script>
+        <script src="scripts/diagnostic.js"></script>
     </body>
 
 </html>

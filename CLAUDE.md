@@ -1,0 +1,1 @@
+﻿Non-technical founder. When you would otherwise ask me to choose between technical options, pick the option you recommend and state the assumption briefly instead of asking, unless it has a real cost implication, in which case ask.

@@ -23,7 +23,9 @@ Users pay nothing for base tools. Advanced tools remain paid during the transiti
 
 ## Target Segments
 
-Anxious early-career (22-30), Overwhelmed parents (30-45), Retirement-anxious mid-career (40-55), First-time homebuyers (25-40), Debt-stressed (any age), Retirees (60+), General curious (fallback)
+**Primary (mass-market, core focus):** Anxious early-career (22-30) . Overwhelmed parents (30-45) . Retirement-anxious mid-career (40-55) . First-time homebuyers (25-40) . Debt-stressed (any age) . Retirees (60+) . General curious (fallback)
+
+**Secondary (SEO/traffic feeder, not core focus):** Liquidity-event moments -- recently sold a business, inheritance, NIL/pro athlete money, seed-funded founders. Lower volume, higher intent and higher referral value per placement; routes into the same core funnel via dedicated landing pages, not a separate product. See SITE_STRATEGY.md Section 9.
 
 ## Advisor Vetting (non-negotiable)
 
@@ -55,3 +57,5 @@ Discord -- live, not yet seeded. Skool -- planned after 200+ engaged newsletter 
 2. Basic Budget web tool + advisor-share consent UI
 3. Advisor directory placeholder + first blog post live
 4. Remaining tool rebuilds, podcast landing page, About/Privacy final versions, "How we make money" transparency page
+
+
