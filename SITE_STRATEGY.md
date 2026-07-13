@@ -31,6 +31,8 @@ Both tools are in scope for the same build phase — see Section 10 and BUSINESS
 
 Users who skip both diagnostics can still reach the tools page directly via nav — don't force it, just don't lead with it.
 
+**Access model (confirmed):** About Us, Tools, and Blog stay public and crawlable — no auth wall, no gating, ever. Only community access, saved results on return visits, and advisor connection require a completed diagnostic with a verified email.
+
 ## 4. Marquee — Rewrite (kill the feature-bullet scroll)
 
 Old marquee was a 12-item product-feature list ("pay once," "no subscriptions"). That's not the story anymore — some tools *do* stay paid, and the pitch is diagnosis + connection, not ownership. Replacing with a shorter, slower-moving strip that carries brand voice instead of a feature dump:

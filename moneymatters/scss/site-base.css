@@ -691,3 +691,175 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     padding: 40px 16px;
   }
 }
+
+/* --- Native diagnostics teaser (Tools page) --- */
+.native-diagnostics {
+    padding: 90px 6% 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 700px 500px at 18% 20%, rgba(98, 169, 116, 0.12), transparent 55%),
+        radial-gradient(ellipse 600px 400px at 85% 75%, rgba(196, 154, 71, 0.10), transparent 55%),
+        var(--mm-cream-warm);
+}
+.native-diagnostics .kicker { display: inline-block; }
+.native-diagnostics h2 {
+    font-family: var(--mm-serif);
+    font-size: clamp(32px, 4vw, 48px);
+    margin: 0 0 14px;
+    color: var(--mm-charcoal);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+}
+.native-diagnostics .native-diagnostics-sub {
+    font-family: var(--mm-sans);
+    font-size: 17px;
+    color: var(--mm-text-muted);
+    max-width: 560px;
+    margin: 0 auto 44px;
+    line-height: 1.6;
+}
+.native-diagnostics .connect-grid { margin: 0 auto; }
+
+/* --- Downloadable spreadsheets section demotion (Tools page) --- */
+.section2--secondary {
+    padding-top: 60px !important;
+    background: var(--mm-cream) !important;
+}
+.section2--secondary .section2-intro {
+    font-family: var(--mm-sans);
+    font-size: 15px;
+    color: var(--mm-text-soft);
+    text-align: center;
+    max-width: 520px;
+    margin: -30px auto 44px;
+}
+.section2--secondary h2 {
+    font-size: clamp(26px, 3vw, 34px) !important;
+    color: var(--mm-text-muted) !important;
+}
+
+/* --- Advanced tools priced CTA (Tools page) --- */
+.tools-buy-cta { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; }
+.tools-buy-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 13px 28px !important;
+    background: var(--mm-charcoal) !important;
+    color: var(--mm-cream) !important;
+    border-radius: 10px !important;
+    font-family: var(--mm-sans) !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+}
+.tools-buy-btn:hover { background: var(--mm-green-deep) !important; transform: translateY(-2px); }
+.tools-buy-note {
+    font-family: var(--mm-sans);
+    font-size: 12px;
+    color: var(--mm-text-soft);
+}
+
+/* --- About Us: trust card + diagnostic CTA banner --- */
+.trust-block {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid var(--mm-border);
+    border-left: 4px solid var(--mm-gold);
+    border-radius: 16px;
+    padding: 40px 44px;
+    box-shadow: var(--mm-shadow-sm);
+}
+.trust-block h2 { margin-top: 0 !important; }
+.trust-block p { margin-bottom: 0 !important; }
+
+.about-diagnostic-cta {
+    max-width: 900px;
+    margin: 0 auto 20px;
+    padding: 32px 40px;
+    background: var(--mm-green-soft);
+    border: 1px solid rgba(98, 169, 116, 0.3);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+.about-diagnostic-cta p {
+    font-family: var(--mm-sans-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--mm-charcoal);
+    margin: 0;
+}
+.about-diagnostic-cta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--mm-charcoal);
+    color: var(--mm-cream);
+    border-radius: 10px;
+    font-family: var(--mm-sans);
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+.about-diagnostic-cta a:hover { background: var(--mm-green-deep); transform: translateY(-2px); }
+
+/* --- Blog: empty state + card grid prep --- */
+.blog-empty-state {
+    max-width: 640px;
+    margin: 60px auto 100px;
+    padding: 56px 44px;
+    text-align: center;
+    background: var(--mm-cream-warm);
+    border: 1px solid var(--mm-border);
+    border-radius: 20px;
+}
+.blog-empty-state h2 {
+    font-family: var(--mm-serif);
+    font-size: clamp(26px, 3vw, 34px);
+    margin: 0 0 14px;
+    color: var(--mm-charcoal);
+    font-weight: 500;
+}
+.blog-empty-state p {
+    font-family: var(--mm-sans);
+    font-size: 16px;
+    color: var(--mm-text-muted);
+    margin: 0;
+    line-height: 1.6;
+}
+.blog-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 6%;
+}
+.blog-card {
+    background: var(--mm-cream);
+    border: 1px solid var(--mm-border);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: var(--mm-shadow-sm);
+    transition: all 0.3s ease;
+}
+.blog-card:hover { transform: translateY(-6px); border-color: var(--mm-green); box-shadow: var(--mm-shadow-lg); }
+.blog-card .blog-excerpt { font-family: var(--mm-sans); color: var(--mm-text-muted); font-size: 15px; line-height: 1.6; margin: 10px 0 20px; }
+.blog-card .read-more { font-family: var(--mm-sans); font-weight: 700; color: var(--mm-green-deep); text-decoration: none; font-size: 14px; }
+.blog-card .read-more:hover { color: var(--mm-charcoal); }
+
+@media (max-width: 640px) {
+    .about-diagnostic-cta { flex-direction: column; text-align: center; }
+    .trust-block { padding: 32px 26px; }
+}

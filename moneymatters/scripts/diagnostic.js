@@ -303,6 +303,13 @@
   function init() {
     var params = new URLSearchParams(window.location.search);
     var token = params.get('verify');
+    var startParam = params.get('start');
+
+    function stripStartParam() {
+      var url = new URL(window.location.href);
+      url.searchParams.delete('start');
+      window.history.replaceState({}, '', url.toString());
+    }
 
     if (token) {
       setStep('verifying');
@@ -334,12 +341,22 @@
       .then(function (data) {
         if (data && data.loggedIn && typeof data.healthScore === 'number') {
           renderResults(data.healthScore, data.healthBand, null);
+        } else if (startParam === 'health-score') {
+          stripStartParam();
+          setStep('email');
+          var input = el('diagnostic-email');
+          if (input) input.focus();
         } else {
           setStep('choice');
         }
       })
       .catch(function () {
-        setStep('choice');
+        if (startParam === 'health-score') {
+          stripStartParam();
+          setStep('email');
+        } else {
+          setStep('choice');
+        }
       });
   }
 
