@@ -1,7 +1,0 @@
-﻿{
-  "permissions": {
-    "defaultMode": "acceptEdits",
-    "allow": ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
-    "deny": ["Bash(rm -rf /*)", "Bash(sudo:*)", "Bash(git push --force*)", "Bash(git push -f*)"]
-  }
-}
