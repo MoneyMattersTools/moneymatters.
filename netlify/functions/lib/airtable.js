@@ -47,6 +47,13 @@ async function findByToken(table, token) {
   return findOneByFormula(table, `{Token} = '${escapeFormulaValue(token)}'`);
 }
 
+async function findActiveTokenByEmail(table, email) {
+  const formula = `AND(LOWER({Email}) = '${escapeFormulaValue(
+    email.toLowerCase()
+  )}', {Used At} = BLANK(), IS_AFTER({Expires At}, NOW()))`;
+  return findOneByFormula(table, formula);
+}
+
 async function createRecord(table, fields) {
   return airtableFetch(table, '', {
     method: 'POST',
@@ -65,6 +72,7 @@ module.exports = {
   findOneByFormula,
   findByEmail,
   findByToken,
+  findActiveTokenByEmail,
   createRecord,
   updateRecord,
 };

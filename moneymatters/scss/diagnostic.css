@@ -47,6 +47,11 @@
     box-shadow: var(--mm-shadow-lg);
 }
 #diagnostic-hero button.connect-card .connect-btn { align-self: flex-start !important; }
+#diagnostic-hero button.hero-cta {
+    border: none !important;
+    cursor: pointer !important;
+    font: inherit !important;
+}
 @media (max-width: 640px) {
     #diagnostic-hero .entry-grid { grid-template-columns: 1fr !important; }
 }

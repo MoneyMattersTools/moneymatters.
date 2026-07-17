@@ -2,6 +2,8 @@ const { findByToken, findByEmail, createRecord, updateRecord } = require('./lib/
 const { computeScore, determineBand } = require('./lib/scoring');
 const { signSession, buildSetCookie } = require('./lib/session');
 
+const TOKEN_RE = /^[A-Za-z0-9_-]{16,128}$/;
+
 function json(statusCode, body, extraHeaders = {}) {
   return {
     statusCode,
@@ -11,12 +13,22 @@ function json(statusCode, body, extraHeaders = {}) {
 }
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== 'GET') {
+  // POST (not GET) so this action never fires from a mere page load or an
+  // automated email-security-scanner prefetching the magic-link URL — it only
+  // runs when the frontend makes an explicit fetch after the user confirms.
+  if (event.httpMethod !== 'POST') {
     return json(405, { ok: false, error: 'method_not_allowed' });
   }
 
-  const token = (event.queryStringParameters || {}).token;
-  if (!token) {
+  let payload;
+  try {
+    payload = JSON.parse(event.body || '{}');
+  } catch {
+    return json(400, { ok: false, error: 'invalid' });
+  }
+
+  const token = typeof payload.token === 'string' ? payload.token : '';
+  if (!token || !TOKEN_RE.test(token)) {
     return json(400, { ok: false, error: 'invalid' });
   }
 
@@ -33,6 +45,14 @@ exports.handler = async (event) => {
     if (!fields['Expires At'] || new Date(fields['Expires At']).getTime() < Date.now()) {
       return json(410, { ok: false, error: 'expired' });
     }
+
+    // Mark the token used immediately after the validity checks pass, before
+    // the (slower) Users upsert — shrinks the window in which two concurrent
+    // requests for the same token could both pass the "not used" check above.
+    // Airtable's REST API has no compare-and-swap primitive, so this reduces
+    // rather than eliminates the race; a genuinely atomic guarantee would
+    // need a datastore that supports conditional writes.
+    await updateRecord('Verification Tokens', tokenRecord.id, { 'Used At': new Date().toISOString() });
 
     const email = fields.Email;
     let answers = {};
@@ -67,8 +87,6 @@ exports.handler = async (event) => {
         'Last Verified At': nowIso,
       });
     }
-
-    await updateRecord('Verification Tokens', tokenRecord.id, { 'Used At': nowIso });
 
     const cookieValue = signSession({ email, healthScore: score, healthBand: band });
 

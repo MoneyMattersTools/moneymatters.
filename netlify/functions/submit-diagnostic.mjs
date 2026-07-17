@@ -1,27 +1,40 @@
-const crypto = require('crypto');
-const { createRecord } = require('./lib/airtable');
-const { sendEmail } = require('./lib/resend');
-const { validateAnswers, computeScore } = require('./lib/scoring');
+import crypto from 'node:crypto';
+import airtableLib from './lib/airtable.js';
+import resendLib from './lib/resend.js';
+import scoringLib from './lib/scoring.js';
+
+const { createRecord, findActiveTokenByEmail } = airtableLib;
+const { sendEmail } = resendLib;
+const { validateAnswers, computeScore, QUESTIONS } = scoringLib;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_MAX_LENGTH = 254; // RFC 5321 max mailbox length
 const TOKEN_TTL_MS = 30 * 60 * 1000;
 
 function json(statusCode, body) {
-  return {
-    statusCode,
+  return new Response(JSON.stringify(body), {
+    status: statusCode,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  };
+  });
 }
 
-exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
+// Only the validated question answers are persisted — never the raw client payload.
+function extractCleanAnswers(answers) {
+  const clean = {};
+  for (const q of QUESTIONS) {
+    clean[q.id] = answers[q.id];
+  }
+  return clean;
+}
+
+export default async (request) => {
+  if (request.method !== 'POST') {
     return json(405, { ok: false, error: 'method_not_allowed' });
   }
 
   let payload;
   try {
-    payload = JSON.parse(event.body || '{}');
+    payload = await request.json();
   } catch {
     return json(400, { ok: false, error: 'invalid_json' });
   }
@@ -29,7 +42,7 @@ exports.handler = async (event) => {
   const email = typeof payload.email === 'string' ? payload.email.trim().toLowerCase() : '';
   const answers = payload.answers;
 
-  if (!EMAIL_RE.test(email)) {
+  if (!email || email.length > EMAIL_MAX_LENGTH || !EMAIL_RE.test(email)) {
     return json(400, { ok: false, error: 'invalid_email' });
   }
   if (!validateAnswers(answers)) {
@@ -37,7 +50,17 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { score } = computeScore(answers);
+    // Per-email cooldown: if an unused, unexpired token already exists for this
+    // address, don't create another or send another email. Caps abuse of this
+    // endpoint as an email-spam relay at one outstanding link per address per
+    // TOKEN_TTL_MS, on top of the IP-based rate limit in this function's config.
+    const existingActive = await findActiveTokenByEmail('Verification Tokens', email);
+    if (existingActive) {
+      return json(429, { ok: false, error: 'cooldown_active' });
+    }
+
+    const cleanAnswers = extractCleanAnswers(answers);
+    const { score } = computeScore(cleanAnswers);
     const token = crypto.randomBytes(32).toString('base64url');
     const expiresAt = new Date(Date.now() + TOKEN_TTL_MS).toISOString();
 
@@ -46,7 +69,7 @@ exports.handler = async (event) => {
       Email: email,
       Purpose: 'signup_verification',
       'Pending Health Score': score,
-      'Pending Answers': JSON.stringify(answers),
+      'Pending Answers': JSON.stringify(cleanAnswers),
       'Expires At': expiresAt,
     });
 
@@ -63,8 +86,15 @@ exports.handler = async (event) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('submit-diagnostic error:', err);
-    // Still return a generic ok:true-shaped failure without leaking internals,
-    // but use 500 so the frontend can show a "something went wrong, try again" state.
     return json(500, { ok: false, error: 'server_error' });
   }
+};
+
+export const config = {
+  path: '/api/submit-diagnostic',
+  rateLimit: {
+    windowLimit: 8,
+    windowSize: 60,
+    aggregateBy: ['ip'],
+  },
 };

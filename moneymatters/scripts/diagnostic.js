@@ -312,27 +312,42 @@
     }
 
     if (token) {
-      setStep('verifying');
-      fetch('/api/verify-token?token=' + encodeURIComponent(token))
-        .then(function (res) {
-          return res.json().then(function (data) {
-            return { ok: res.ok && data.ok, data: data };
-          });
-        })
-        .then(function (result) {
-          var url = new URL(window.location.href);
-          url.searchParams.delete('verify');
-          window.history.replaceState({}, '', url.toString());
+      // Strip the token from the URL immediately — it now lives only in this
+      // closure. The verify call itself only fires on an explicit user click
+      // below, never automatically on page load, so an email-security
+      // scanner or link-prefetcher that merely loads this page (even one
+      // that executes JS) can't silently consume the single-use token.
+      var url = new URL(window.location.href);
+      url.searchParams.delete('verify');
+      window.history.replaceState({}, '', url.toString());
 
-          if (!result.ok) {
-            renderVerifyError(result.data && result.data.error);
-            return;
-          }
-          renderResults(result.data.score, result.data.band, result.data.breakdown);
-        })
-        .catch(function () {
-          renderVerifyError('server_error');
+      setStep('verify-confirm');
+      var confirmBtn = el('verify-confirm-btn');
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', function () {
+          setStep('verifying');
+          fetch('/api/verify-token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: token }),
+          })
+            .then(function (res) {
+              return res.json().then(function (data) {
+                return { ok: res.ok && data.ok, data: data };
+              });
+            })
+            .then(function (result) {
+              if (!result.ok) {
+                renderVerifyError(result.data && result.data.error);
+                return;
+              }
+              renderResults(result.data.score, result.data.band, result.data.breakdown);
+            })
+            .catch(function () {
+              renderVerifyError('server_error');
+            });
         });
+      }
       return;
     }
 
