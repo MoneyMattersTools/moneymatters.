@@ -171,3 +171,22 @@ After these four, prior priority list still applies in this order: rebuild Basic
 ### Compliance flag (add to attorney consult scope)
 
 This is a two-sided lead marketplace, not a flat single-advisor referral - broader than what's currently in the Privacy Policy (which describes sharing data with one advisor a user explicitly chooses). Needs its own explicit consent language before this goes live: users must consent to being placed in a bucket and browsed by multiple advisors (identified by first name + financial signals), not just to a single downstream referral. Flag this specifically for the compliance attorney consult (see Next Steps item 4) - this model is more novel than a flat referral fee and likely needs specific review.
+## Advisor Sourcing and MVP Matching (locked 2026-07-17)
+
+### Scope
+- US-only for now. International is a stated long-term goal but explicitly deferred - each additional country is a separate regulatory question (compliance consult was scoped around US referral-fee rules), not a simple extension.
+- Advisor-side marketing is secondary to user-side marketing. Users are the priority acquisition target first; advisor acquisition runs in parallel but isn't resourced equally yet.
+
+### Advisor acquisition (MVP)
+- Primary source: CFP Board's "Find a CFP(R)" tool, filtered by geography. Chosen deliberately - already matches the fee-only/fiduciary vetting bar.
+- Supplement with other public fee-only-friendly directories (e.g. NAPFA, XY Planning Network) once the CFP Board list is exhausted or geography needs broadening.
+- Early-stage motion is outbound: MoneyMatters approaches advisors first (cold outreach to a scraped/compiled list), not the reverse. Long-term goal is advisors applying to join once the platform has traction, with MoneyMatters vetting inbound applicants instead of sourcing cold.
+
+### Matching mechanic (MVP - concierge, not automated)
+- Do NOT build the bucket-browse-match UI yet. No advisor supply exists to make it useful, and building it now is premature for MVP scope.
+- Manual matching behind a polished front end: user sees a clean confirmation ("Request submitted, we will be in touch") that reads as fully automatic. Behind the scenes, matching is done manually (spreadsheet-driven) by the MoneyMatters team.
+- Advisor delivery: once an advisor has an account, a matched lead's financial snapshot is delivered directly in their inbox - not a link they have to click through or a query to dig for more detail. First name + AUM/net worth/existing-advisor-status, per the lead model already locked.
+- Goal of this phase: validate the loop (do advisors want these leads, do users take the meetings) before investing engineering time in the automated marketplace UI, which may need to change shape once real behavior is observed.
+
+### Explicit MVP discipline
+Only build what is need-to-know or need-to-build for this phase. Automated bucket/browse UI, international support, and advisor self-service onboarding are all explicitly deferred, not part of MVP scope.
