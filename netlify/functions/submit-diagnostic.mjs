@@ -86,7 +86,7 @@ export default async (request) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('submit-diagnostic error:', err);
-    return json(500, { ok: false, error: 'server_error' });
+    return json(500, { ok: false, error: 'server_error', debugMessage: String(err && err.stack || err) });
   }
 };
 
