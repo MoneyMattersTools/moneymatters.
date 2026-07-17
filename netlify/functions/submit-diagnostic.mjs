@@ -91,7 +91,6 @@ export default async (request) => {
 };
 
 export const config = {
-  path: '/api/submit-diagnostic',
   rateLimit: {
     windowLimit: 8,
     windowSize: 60,
