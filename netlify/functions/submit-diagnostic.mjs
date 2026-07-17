@@ -3,13 +3,33 @@ import airtableLib from './lib/airtable.js';
 import resendLib from './lib/resend.js';
 import scoringLib from './lib/scoring.js';
 
-const { createRecord, findActiveTokenByEmail } = airtableLib;
+const { createRecord, findActiveTokenByEmail, countRecentRequestsByIp } = airtableLib;
 const { sendEmail } = resendLib;
 const { validateAnswers, computeScore, QUESTIONS } = scoringLib;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const EMAIL_MAX_LENGTH = 254; // RFC 5321 max mailbox length
-const TOKEN_TTL_MS = 30 * 60 * 1000;
+const TOKEN_TTL_SECONDS = 30 * 60;
+const TOKEN_TTL_MS = TOKEN_TTL_SECONDS * 1000;
+
+// Application-level IP rate limit. Netlify's platform-native rate limiting
+// (see the `rateLimit` config below) isn't available on the current plan
+// tier — the account's Firewall/Traffic Rules pages render empty and
+// billing shows an Enterprise upsell for it. This check is the real,
+// functioning protection; it uses the same Airtable-backed pattern as the
+// per-email cooldown below, which is already proven to work in this
+// codebase regardless of plan tier.
+const IP_RATE_LIMIT_WINDOW_SECONDS = 60;
+const IP_RATE_LIMIT_MAX_REQUESTS = 8;
+
+function getClientIp(request, context) {
+  if (context && typeof context.ip === 'string' && context.ip) return context.ip;
+  const headerIp = request.headers.get('x-nf-client-connection-ip');
+  if (headerIp) return headerIp;
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  if (forwardedFor) return forwardedFor.split(',')[0].trim();
+  return 'unknown';
+}
 
 function json(statusCode, body) {
   return new Response(JSON.stringify(body), {
@@ -27,7 +47,7 @@ function extractCleanAnswers(answers) {
   return clean;
 }
 
-export default async (request) => {
+export default async (request, context) => {
   if (request.method !== 'POST') {
     return json(405, { ok: false, error: 'method_not_allowed' });
   }
@@ -49,11 +69,25 @@ export default async (request) => {
     return json(400, { ok: false, error: 'invalid_answers' });
   }
 
+  const clientIp = getClientIp(request, context);
+
   try {
+    // IP rate limit — checked first since it's the cheaper, coarser gate.
+    if (clientIp !== 'unknown') {
+      const recentCount = await countRecentRequestsByIp(
+        'Verification Tokens',
+        clientIp,
+        IP_RATE_LIMIT_WINDOW_SECONDS,
+        TOKEN_TTL_SECONDS
+      );
+      if (recentCount >= IP_RATE_LIMIT_MAX_REQUESTS) {
+        return json(429, { ok: false, error: 'rate_limited' });
+      }
+    }
+
     // Per-email cooldown: if an unused, unexpired token already exists for this
     // address, don't create another or send another email. Caps abuse of this
-    // endpoint as an email-spam relay at one outstanding link per address per
-    // TOKEN_TTL_MS, on top of the IP-based rate limit in this function's config.
+    // endpoint as an email-spam relay at one outstanding link per address.
     const existingActive = await findActiveTokenByEmail('Verification Tokens', email);
     if (existingActive) {
       return json(429, { ok: false, error: 'cooldown_active' });
@@ -71,6 +105,7 @@ export default async (request) => {
       'Pending Health Score': score,
       'Pending Answers': JSON.stringify(cleanAnswers),
       'Expires At': expiresAt,
+      'Request IP': clientIp,
     });
 
     const siteUrl = (process.env.SITE_URL || '').replace(/\/$/, '');

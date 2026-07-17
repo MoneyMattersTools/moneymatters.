@@ -54,6 +54,19 @@ async function findActiveTokenByEmail(table, email) {
   return findOneByFormula(table, formula);
 }
 
+// Counts records tagged with `ip` in the "Request IP" field whose inferred
+// creation time (Expires At - tokenTtlSeconds, since there's no Created At
+// field) falls within the last windowSeconds. Used for application-level
+// IP rate limiting, mirroring the per-email cooldown pattern.
+async function countRecentRequestsByIp(table, ip, windowSeconds, tokenTtlSeconds) {
+  const formula = `AND({Request IP} = '${escapeFormulaValue(ip)}', IS_AFTER(DATEADD({Expires At}, -${tokenTtlSeconds}, 'seconds'), DATEADD(NOW(), -${windowSeconds}, 'seconds')))`;
+  const data = await airtableFetch(
+    table,
+    `?maxRecords=50&filterByFormula=${encodeURIComponent(formula)}`
+  );
+  return data.records ? data.records.length : 0;
+}
+
 async function createRecord(table, fields) {
   return airtableFetch(table, '', {
     method: 'POST',
@@ -73,6 +86,7 @@ module.exports = {
   findByEmail,
   findByToken,
   findActiveTokenByEmail,
+  countRecentRequestsByIp,
   createRecord,
   updateRecord,
 };
