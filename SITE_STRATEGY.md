@@ -151,3 +151,23 @@ Priority order, in this sequence:
 4. **Compliance attorney consult** - required before any paid referral, per BUSINESS_PLAN.md. Ethan is handling this directly with outside help; implement once ready, not blocking the above three.
 
 After these four, prior priority list still applies in this order: rebuild Basic Budget/Retirement/Investment as native web tools, full visual redesign of About/Tools/Blog, liquidity-event landing pages (Section 9), advisor community-recommendation mechanic, blog content + marketing agent reconfiguration, Discord seeding, Creator Partnership doc reconciliation.
+## Pricing and Advisor Lead Model (locked 2026-07-13, replaces prior $10/tool + $10/mo language)
+
+### User-facing pricing
+
+- **Free tier**: intro/basic tools, free info videos and resources. This is the public-access layer everyone sees, no signup required beyond the existing diagnostic flow.
+- **Paid tier**: single $5/month subscription. Includes advanced tools, new tools as released, explainer/how-to videos, webinar access, advisor Q&A sessions, and community access.
+- No per-tool pricing anymore ($10/tool is superseded) - subscription is the only paid path.
+
+### Advisor lead model (not literal bidding)
+
+- Users never pay to speak with an advisor. Advisors pay MoneyMatters for leads.
+- Users are sorted into value buckets based on signals like AUM, net worth, and opportunity size (bucket definitions TBD).
+- Advisors browse users within their price bucket. Advisors see **first name only**, plus AUM/net worth/existing-advisor-status - no last name or contact info at this stage.
+- Advisor selects a user they want to pursue; MoneyMatters facilitates a match.
+- Advisor shares their bio/profile with the user. User decides whether to take the meeting.
+- Explicit design intent: **the user holds the leverage** - advisors approach the user first, not the other way around. Webinars and advisor Q&A sessions double as a channel for advisors to market themselves to potential clients.
+
+### Compliance flag (add to attorney consult scope)
+
+This is a two-sided lead marketplace, not a flat single-advisor referral - broader than what's currently in the Privacy Policy (which describes sharing data with one advisor a user explicitly chooses). Needs its own explicit consent language before this goes live: users must consent to being placed in a bucket and browsed by multiple advisors (identified by first name + financial signals), not just to a single downstream referral. Flag this specifically for the compliance attorney consult (see Next Steps item 4) - this model is more novel than a flat referral fee and likely needs specific review.
