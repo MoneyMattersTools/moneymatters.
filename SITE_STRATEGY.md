@@ -141,3 +141,13 @@ Not a pivot — mass-market diagnostic-first mission stays primary, this is a bo
 - [ ] Liquidity-event moment landing pages (Section 9): confirm URLs/copy, advisor specialization tags, referral fee tier
 - [ ] Advisor recommendation mechanic: "from vetted list" is straightforward; "from community good experiences" implies some way to surface Discord sentiment/reviews on-site — needs a lightweight design (manual curation vs. built feature) before Session +1 scopes it as code
 - [ ] Creator Partnership Offering doc found in Drive (10% rev share / 25% off code, "Money Matters" pre-pivot messaging) — confirm if still active; if so it needs to be reconciled with new positioning before any creator posts go live
+## Next Steps (agreed 2026-07-13, supersedes prior session sequence)
+
+Priority order, in this sequence:
+
+1. **Verify first-time onboarding matches spec** - confirm via stateless server-side test (no session cookie) that a true first-time visitor sees the dual-choice hero and the full flow (choice -> email/quiz -> verification-pending -> verified results -> next-step prompts) matches SITE_STRATEGY.md Sections 2-5. In progress.
+2. **Pricing/subscription tier definition** - $10/tool and $10/month are locked; tiering and what's included at each level (webinars, free advisor sessions, additional tools) still needs to be built out.
+3. **Real advisor recruitment/vetting** - the advisor-match CTA currently has no real advisors behind it. Needs actual outreach and vetting (CFP fee-only fiduciary, per BUSINESS_PLAN.md) before the funnel means anything end to end.
+4. **Compliance attorney consult** - required before any paid referral, per BUSINESS_PLAN.md. Ethan is handling this directly with outside help; implement once ready, not blocking the above three.
+
+After these four, prior priority list still applies in this order: rebuild Basic Budget/Retirement/Investment as native web tools, full visual redesign of About/Tools/Blog, liquidity-event landing pages (Section 9), advisor community-recommendation mechanic, blog content + marketing agent reconfiguration, Discord seeding, Creator Partnership doc reconciliation.
