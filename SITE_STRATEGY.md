@@ -190,3 +190,8 @@ This is a two-sided lead marketplace, not a flat single-advisor referral - broad
 
 ### Explicit MVP discipline
 Only build what is need-to-know or need-to-build for this phase. Automated bucket/browse UI, international support, and advisor self-service onboarding are all explicitly deferred, not part of MVP scope.
+## Design Direction Notes (captured 2026-07-17, for the future full visual redesign - not active work yet)
+
+- Ethan wants the redesign to feel alive, not stale: lots of real imagery, visualization, and videography rather than static icon-and-text cards. Creative freedom encouraged here.
+- Site design and the native tool rebuild should be visually complementary - same system, not two disconnected phases.
+- Logo asset: hero-icon file provided (dollar sign inside a partial circle with an upward arrow, dark green on cream) - incorporate as a visual anchor once the redesign phase starts. File needs to be saved into the repo images folder before Claude Code can use it.
