@@ -1,10 +1,11 @@
-﻿<html>
+<html>
     <head>
         <title>Basic Retirement Tool</title>
         <meta charset="UTF-8">
         <meta name="description" content="Basic Retirement Tool">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../indiv-tools-scss/indiv-tool-styling.css">
+        <link rel="stylesheet" href="../indiv-tools-scss/native-tool.css">
         <link rel="stylesheet" href="../../scss/site-base.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,9 +61,9 @@
                 </nav>
         </header>
         <main>
-            <section class="section1">
-                <h1>Basic Retirement Tool.</h1>
-                <p class="first-p"></p>
+            <section class="tool-intro">
+                <h1>Retirement Planning Tool.</h1>
+                <p class="first-p">See whether you're on track to retire when you want — enter your numbers below and the projection updates instantly.</p>
 
                 <div class="how-to-container">
                     <p class="how-to-text">Quick Start</p>
@@ -70,70 +71,97 @@
                   </div>
 
                   <div class="dropdown-details" id="dropdownContent">
-
-                    <h2>Still Working</h2>
                     <p>
-                        The <span class="green">Retirement Planning Tool</span> helps to monitor and provide a target to ensure you are on the right path to retire on time.
+                        The <span class="green">Retirement Planning Tool</span> monitors and provides a target to ensure you're on the right path — whether you're still working toward retirement or already there.
 
                         <ul>
-                            <li>Adjust the <span class="black-white">black cells with white font</span> to record your information. (This is personal to you only and MoneyMatters does not have access until you share it with us)</li>
+                            <li>Choose <span class="bold">Still working</span> or <span class="bold">Already retired</span> below, then enter your numbers. Nothing is saved or sent anywhere.</li>
 
-                            <li>Notice estimated <span class="bold">$ value needed to retire</span>. Below, notice your projected savings by retirement age assuming you continue saving as you recorded. Lastly, if below the target $ needed is greater than your projected savings, the annual and monthly additional savings is calculated.</li>
+                            <li>If still working: see the estimated $ value needed to retire and your projected savings by retirement age. If retired: see whether your current savings sustain your annual spending through your planning horizon.</li>
 
-                            <li>This does not take into consideration other forms of income during retirement, only if your savings alone will be enough to support your needs. Social Security income, inheritance, trusts, and pension benefits also supplement your monthly needs, requiring less in total savings.</li>
-                            
-                            <li>Try adjusting your <span class="bold">wage replacement ratio</span> (the % of your current income you expect to live on in retirement), your <span class="bold">expected investment return</span> % and other variables to see how it affects your retirement timeline.</li>
-                            
+                            <li>This does not take into consideration other forms of income during retirement — Social Security, pensions, inheritance, and trusts would all reduce the total savings you actually need.</li>
+
+                            <li>Try adjusting your <span class="bold">wage replacement ratio</span> (working mode) or <span class="bold">annual spending</span> (retired mode), and your <span class="bold">expected investment return</span>, to see how they affect your timeline.</li>
+
                             <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The next step is to <span class="bold">share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
                         </ul>
-                             
-                    </p>
-
-
-                    <h2 class="retired-start-heading">Retired</h2>
-                    <p>
-                        The <span class="green">Retirement Planning Tool</span> helps to monitor and provide a target to ensure you are using your resources effectively in retirement.
-
-                        <ul>
-                            <li>Adjust the <span class="black-white">black cells with white font</span> to record your information. (This is personal to you only and MoneyMatters does not have access until you share it with us)</li>
-
-                            <li>Notice estimated <span class="bold">Additional $ needed in retirement</span>. Below, notice your remaining total retirement savings. Lastly, if below the target $ needed is greater than your projected savings, the annual and monthly additional savings/reduced spending is calculated.</li>
-
-                            <li>This does not take into consideration other forms of income during retirement, only if your savings alone will be enough to support your needs. Social Security income, inheritance, trusts, and pension benefits also supplement your monthly needs, requiring less in total savings.</li>
-
-                            <li>Try adjusting your <span class="bold">wage replacement ratio</span> (the % of your current income you expect to live on in retirement), your <span class="bold">expected investment return</span> % and other variables to see how it affects your retirement timeline.</li>
-
-                            <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The next step is to <span>share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
-
-                        </ul>
                         THIS IS NOT FINANCIAL ADVICE. INVESTMENTS HAVE RISK. MONEYMATTERS IS NOT RESPONSIBLE FOR ANY DECISION YOU MAKE BASED ON THE USE OF THESE TOOLS
-                                            
                     </p>
                   </div>
-                  
-                  <section class="tool-grid">
-                    <div class="tool-card">
-                      <h2>Single and Working</h2>
-                      <img src="../../images/single-working-laptop.jpg" alt="Single and Working">
-                      <a href="https://docs.google.com/spreadsheets/u/1/d/14HvU8qWToc9pzi9-5CCKMXDq1S-eG3kT7cVDGzo1yaE/copy?usp=sharing" class="download-button">Download</a>
+            </section>
+
+            <section class="tool-app fade-up">
+              <div class="tool-app-grid">
+                <div class="tool-panel tool-app-inputs">
+                  <div class="tool-toggle">
+                    <button type="button" data-mode="working" class="is-active">Still working</button>
+                    <button type="button" data-mode="retired">Already retired</button>
+                  </div>
+
+                  <div id="ret-working-fields">
+                    <h2>Your retirement plan</h2>
+                    <div class="tool-field-row">
+                      <div class="tool-field">
+                        <label for="ret-current-age">Current age</label>
+                        <input type="number" inputmode="numeric" min="0" id="ret-current-age" placeholder="35">
+                      </div>
+                      <div class="tool-field">
+                        <label for="ret-retire-age">Target retirement age</label>
+                        <input type="number" inputmode="numeric" min="0" id="ret-retire-age" placeholder="65">
+                      </div>
                     </div>
-                    <div class="tool-card">
-                      <h2>Single and Retired</h2>
-                      <img src="../../images/single-retired-laptop.jpg" alt="Single and Retired">
-                      <a href="https://docs.google.com/spreadsheets/u/1/d/1MSYI-C1wsHyEUeZDA149qFGi8y6D7MlpV6tt-GzJIa8/copy?usp=sharing" class="download-button">Download</a>
+                    <div class="tool-field">
+                      <label for="ret-income">Current annual income</label>
+                      <input type="number" inputmode="decimal" min="0" id="ret-income" placeholder="90000">
                     </div>
-                    <div class="tool-card">
-                      <h2>Married and Working</h2>
-                      <img src="../../images/married-working-laptop.jpg" alt="Married and Working">
-                      <a href="https://docs.google.com/spreadsheets/u/1/d/1khcX_devqhXdMYAhDFj4Lcwh7YzaoN281QnR1hN9DDQ/copy?usp=sharing" class="download-button">Download</a>
+                    <div class="tool-field">
+                      <label for="ret-current-savings">Current retirement savings</label>
+                      <input type="number" inputmode="decimal" min="0" id="ret-current-savings" placeholder="60000">
                     </div>
-                    <div class="tool-card">
-                      <h2>Married and Retired</h2>
-                      <img src="../../images/married-retired-laptop.jpg" alt="Married and Retired">
-                      <a href="https://docs.google.com/spreadsheets/u/1/d/1VuStue2QZ8FOAjZ53LBKEQ0L5eRIbugivWf9f1vzUbo/copy?usp=sharing" class="download-button">Download</a>
+                    <div class="tool-field">
+                      <label for="ret-monthly-contribution">Monthly savings contribution</label>
+                      <input type="number" inputmode="decimal" min="0" id="ret-monthly-contribution" placeholder="800">
                     </div>
-                  </section>
-                  
+                    <div class="tool-field-row">
+                      <div class="tool-field">
+                        <label for="ret-wage-replacement">Wage replacement ratio (%)</label>
+                        <input type="number" inputmode="decimal" min="0" max="100" id="ret-wage-replacement" placeholder="80">
+                      </div>
+                      <div class="tool-field">
+                        <label for="ret-return">Expected annual return (%)</label>
+                        <input type="number" inputmode="decimal" min="0" max="100" id="ret-return" placeholder="7">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="ret-retired-fields" hidden>
+                    <h2>Your retirement plan</h2>
+                    <div class="tool-field-row">
+                      <div class="tool-field">
+                        <label for="ret-retired-age">Current age</label>
+                        <input type="number" inputmode="numeric" min="0" id="ret-retired-age" placeholder="67">
+                      </div>
+                      <div class="tool-field">
+                        <label for="ret-life-expectancy">Plan through age</label>
+                        <input type="number" inputmode="numeric" min="0" id="ret-life-expectancy" placeholder="90">
+                      </div>
+                    </div>
+                    <div class="tool-field">
+                      <label for="ret-retired-savings">Current retirement savings</label>
+                      <input type="number" inputmode="decimal" min="0" id="ret-retired-savings" placeholder="900000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="ret-annual-spending">Annual spending / withdrawals</label>
+                      <input type="number" inputmode="decimal" min="0" id="ret-annual-spending" placeholder="55000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="ret-retired-return">Expected annual return (%)</label>
+                      <input type="number" inputmode="decimal" min="0" max="100" id="ret-retired-return" placeholder="5">
+                    </div>
+                  </div>
+                </div>
+                <div class="tool-panel tool-app-results" id="retirement-results"></div>
+              </div>
             </section>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
@@ -179,6 +207,9 @@
 
         <script src="../individual-tools-scripts/drop-down-text.js"></script>
         <script src="../../scripts/hamburger.js"></script>
+        <script src="../../scripts/scroll-animations.js"></script>
+        <script src="../individual-tools-scripts/tool-utils.js"></script>
+        <script src="../individual-tools-scripts/basic-retirement-tool.js"></script>
 
     </body>
 

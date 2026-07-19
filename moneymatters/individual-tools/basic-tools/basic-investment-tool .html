@@ -1,10 +1,11 @@
-﻿<html>
+<html>
     <head>
         <title>Basic Investment Tool</title>
         <meta charset="UTF-8">
         <meta name="description" content="Basic Investment Tool">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../indiv-tools-scss/indiv-tool-styling.css">
+        <link rel="stylesheet" href="../indiv-tools-scss/native-tool.css">
         <link rel="stylesheet" href="../../scss/site-base.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,34 +61,74 @@
                 </nav>
         </header>
         <main>
-            <section class="section1">
-                <h1>Basic Investment Tool.</h1>
-                <p class="first-p"></p>
-                
+            <section class="tool-intro">
+                <h1>Investment Management Tool.</h1>
+                <p class="first-p">See how your portfolio mix compares to a target for your risk tolerance — enter your holdings below and the breakdown updates instantly.</p>
+
                 <div class="how-to-container">
                     <p class="how-to-text">Quick Start</p>
                     <button class="dropdown-arrow" id="toggleDropdown">▼</button>
                   </div>
-                  
+
                   <div class="dropdown-details" id="dropdownContent">
                     <p>
-                        The <span class="green">Investment Management Tool</span> helps to categorize, project, and optimize your investments and curate an investment strategy that works for your goals.
+                        The <span class="green">Investment Management Tool</span> helps you categorize your holdings and compare your allocation to a strategy that fits your risk tolerance.
 
                         <ul>
-                            <li>Adjust the <span class="black-white">black cells with white font</span> to record your information. Adjust the Risk Tolerance Cell (<span class="bold">1,2,3</span>). <span class="bold">1 being the least risky</span> recommended for generally older individuals (55+) who rely on capital preservation and liquidity to live on. <span class="bold">2 is moderate risk</span> for those looking to steadily grow while preserving capital through increased equity exposure. <span class="bold">3 is the greatest risk</span> allocation of the options in this tool designed for young people with time to make gains and generally less capital at risk. (This is personal to you only and MoneyMatters does not have access until you share it with us)</li>
+                            <li>Enter what you hold in each asset class, then choose your <span class="bold">Risk Tolerance</span>. <span class="bold">Conservative</span> is typically recommended for older individuals (55+) who rely on capital preservation and liquidity to live on. <span class="bold">Moderate</span> is for those looking to steadily grow while preserving capital. <span class="bold">Aggressive</span> is the greatest-risk allocation, designed for people with time to ride out volatility and generally less capital at risk. Nothing is saved or sent anywhere.</li>
 
-                            <li>Notice your asset type breakdown in the pie chart. How does it compare to the recommended asset allocation based on your risk tolerance? How does <span class="bold">your portfolio's expected return</span> compared to the <span class="bold">projected return target</span> for your circumstances?</li>
+                            <li>Compare your current allocation to the recommended target for your risk tolerance, and see how <span class="bold">your portfolio's expected return</span> compares to the <span class="bold">target return</span> for that profile.</li>
 
                             <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The next step is to <span class="bold">share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
-
                         </ul>
                         THIS IS NOT FINANCIAL ADVICE. INVESTMENTS HAVE RISK. MONEYMATTERS IS NOT RESPONSIBLE FOR ANY DECISION YOU MAKE BASED ON THE USE OF THESE TOOLS
-                                            
+
                     </p>
                   </div>
+            </section>
 
-                <img src="../../images/basic-investment-laptop.png" alt="Basic Investment Tool">
-                <a href="https://docs.google.com/spreadsheets/u/1/d/19eVgUzvTuu0mPU0_3W_9WkS0-Z7P1TegxKM2F8NcCIs/copy?usp=sharing" class="download-button" target="_blank">Download</a>
+            <section class="tool-app fade-up">
+              <div class="tool-app-grid">
+                <div class="tool-panel tool-app-inputs">
+                  <h2>Your portfolio</h2>
+                  <div class="tool-field">
+                    <label for="inv-equities">Stocks / equities ($)</label>
+                    <input type="number" inputmode="decimal" min="0" id="inv-equities" placeholder="60000">
+                  </div>
+                  <div class="tool-field">
+                    <label for="inv-bonds">Bonds / fixed income ($)</label>
+                    <input type="number" inputmode="decimal" min="0" id="inv-bonds" placeholder="25000">
+                  </div>
+                  <div class="tool-field">
+                    <label for="inv-cash">Cash / cash equivalents ($)</label>
+                    <input type="number" inputmode="decimal" min="0" id="inv-cash" placeholder="10000">
+                  </div>
+                  <div class="tool-field">
+                    <label for="inv-other">Other / alternative ($)</label>
+                    <input type="number" inputmode="decimal" min="0" id="inv-other" placeholder="5000">
+                    <span class="tool-field-hint">Real estate, crypto, private holdings, etc.</span>
+                  </div>
+
+                  <div class="tool-field-group">
+                    <span class="tool-field-group-label">Risk tolerance</span>
+                    <div class="tool-radio-group" role="radiogroup" aria-label="Risk tolerance">
+                      <label class="tool-radio-btn">
+                        <input type="radio" name="inv-risk" value="1">
+                        <span>1 &middot; Conservative</span>
+                      </label>
+                      <label class="tool-radio-btn">
+                        <input type="radio" name="inv-risk" value="2" checked>
+                        <span>2 &middot; Moderate</span>
+                      </label>
+                      <label class="tool-radio-btn">
+                        <input type="radio" name="inv-risk" value="3">
+                        <span>3 &middot; Aggressive</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="tool-panel tool-app-results" id="investment-results"></div>
+              </div>
             </section>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
@@ -134,6 +175,9 @@
 
         <script src="../individual-tools-scripts/drop-down-text.js"></script>
         <script src="../../scripts/hamburger.js"></script>
+        <script src="../../scripts/scroll-animations.js"></script>
+        <script src="../individual-tools-scripts/tool-utils.js"></script>
+        <script src="../individual-tools-scripts/basic-investment-tool.js"></script>
     </body>
 
 </html>

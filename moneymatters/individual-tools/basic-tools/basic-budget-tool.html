@@ -5,6 +5,7 @@
         <meta name="description" content="Basic Budgeting Tool">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../indiv-tools-scss/indiv-tool-styling.css">
+        <link rel="stylesheet" href="../indiv-tools-scss/native-tool.css">
         <link rel="stylesheet" href="../../scss/site-base.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,36 +61,75 @@
                 </nav>
         </header>
         <main>
-            <section class="section1">
+            <section class="tool-intro">
                 <h1>Basic Budget Tool.</h1>
-                <p class="first-p">The basic budgeting tool is the best place to start for simple financial guidance. Visualize WHERE your money is spent relative to HOW it should be spent.</p>
-                
+                <p class="first-p">See WHERE your money is going relative to HOW it should be going — enter your numbers below and the breakdown updates instantly.</p>
+
                 <div class="how-to-container">
                     <p class="how-to-text">Quick Start</p>
                     <button class="dropdown-arrow" id="toggleDropdown">▼</button>
                   </div>
-                  
+
                   <div class="dropdown-details" id="dropdownContent">
-                    <p>The <span class="green">Basic Budget Tool</span> helps to record, visualize, and make recommendations based on spending patterns.
+                    <p>The <span class="green">Basic Budget Tool</span> compares what you actually spend each month against widely-used budgeting guideline percentages.
 
                         <ul>
+                            <li>Enter your monthly take-home income, then what you actually spend in each category. Results update as you type — nothing is saved or sent anywhere.</li>
 
-                            <li>Adjust the <span class="black-white">black cells with white font</span> to record your information (This is personal to you only and MoneyMatters does not have access until you share it with us)</li>
-                            
-                            <li>Under the “<span class="lightblue">Analysis</span>” header, note key expense ratios vs. targets for those expense ratios. (These ratios provide insight into your spending habits)</li>
-                            
-                            <li>On the “<span class="lightblue">Recommendations</span>” tab, an automated budget is created based on your income. These spending recommendations are helpful as a frame of reference, not an exact figure for what works for your household.</li>
-                            
+                            <li>Each category shows your <span class="bold">actual % of income</span> against a <span class="bold">recommended target %</span>, with a tag flagging whether you're on track.</li>
+
+                            <li>The "recommended" dollar amount is simply that target percentage applied to the income you entered — a frame of reference, not an exact figure for your household.</li>
+
                             <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The <span class="bold">next step is to share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
-                            
                         </ul>
                         THIS IS NOT FINANCIAL ADVICE. INVESTMENTS HAVE RISK. MONEYMATTERS IS NOT RESPONSIBLE FOR ANY DECISION YOU MAKE BASED ON THE USE OF THESE TOOLS
-                    
+
                     </p>
                   </div>
-                  
-                <img src="../../images/basic-budget-laptop.png" alt="Basic Budgeting Tool">
-                <a href="https://docs.google.com/spreadsheets/u/1/d/1ROjb0XKuRqXYjwu_ShfN7tfpCb1ACAiBzpKOfRurA1c/copy?usp=sharing" target="_blank" class="download-button">Download</a>
+            </section>
+
+            <section class="tool-app fade-up">
+              <div class="tool-app-grid">
+                <div class="tool-panel tool-app-inputs">
+                  <h2>Your monthly numbers</h2>
+                  <div class="tool-field">
+                    <label for="budget-income">Monthly take-home income</label>
+                    <input type="number" inputmode="decimal" min="0" id="budget-income" placeholder="5000">
+                  </div>
+                  <div class="tool-field-group">
+                    <span class="tool-field-group-label">Monthly spending by category</span>
+                    <div class="tool-field">
+                      <label for="budget-housing">Housing</label>
+                      <input type="number" inputmode="decimal" min="0" id="budget-housing" placeholder="1400">
+                    </div>
+                    <div class="tool-field">
+                      <label for="budget-transportation">Transportation</label>
+                      <input type="number" inputmode="decimal" min="0" id="budget-transportation" placeholder="600">
+                    </div>
+                    <div class="tool-field">
+                      <label for="budget-food">Food</label>
+                      <input type="number" inputmode="decimal" min="0" id="budget-food" placeholder="500">
+                    </div>
+                    <div class="tool-field">
+                      <label for="budget-utilities">Utilities</label>
+                      <input type="number" inputmode="decimal" min="0" id="budget-utilities" placeholder="300">
+                    </div>
+                    <div class="tool-field">
+                      <label for="budget-insurance">Insurance</label>
+                      <input type="number" inputmode="decimal" min="0" id="budget-insurance" placeholder="400">
+                    </div>
+                    <div class="tool-field">
+                      <label for="budget-savings">Savings &amp; debt repayment</label>
+                      <input type="number" inputmode="decimal" min="0" id="budget-savings" placeholder="700">
+                    </div>
+                    <div class="tool-field">
+                      <label for="budget-other">Discretionary / other</label>
+                      <input type="number" inputmode="decimal" min="0" id="budget-other" placeholder="300">
+                    </div>
+                  </div>
+                </div>
+                <div class="tool-panel tool-app-results" id="budget-results"></div>
+              </div>
             </section>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
@@ -136,6 +176,9 @@
 
         <script src="../individual-tools-scripts/drop-down-text.js"></script>
         <script src="../../scripts/hamburger.js"></script>
+        <script src="../../scripts/scroll-animations.js"></script>
+        <script src="../individual-tools-scripts/tool-utils.js"></script>
+        <script src="../individual-tools-scripts/basic-budget-tool.js"></script>
     </body>
 
 </html>
