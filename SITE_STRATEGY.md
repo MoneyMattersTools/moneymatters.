@@ -195,3 +195,12 @@ Only build what is need-to-know or need-to-build for this phase. Automated bucke
 - Ethan wants the redesign to feel alive, not stale: lots of real imagery, visualization, and videography rather than static icon-and-text cards. Creative freedom encouraged here.
 - Site design and the native tool rebuild should be visually complementary - same system, not two disconnected phases.
 - Logo asset: hero-icon file provided (dollar sign inside a partial circle with an upward arrow, dark green on cream) - incorporate as a visual anchor once the redesign phase starts. File needs to be saved into the repo images folder before Claude Code can use it.
+## Advisor Snapshot Format (updated 2026-07-18, upgrades prior "first name + AUM" spec)
+
+The snapshot delivered to advisors (per lead, in their inbox) should be a compelling narrative line, not just a bracket. Example format:
+
+"[First name / couple], [age bracket], [family composition], [region], [investible assets], [notable opportunity signal if any - inheritance, liquidity event, etc.]"
+
+e.g. "Sarah, early 40s, 2 children, Bucks County PA, $500k investible assets, expecting inheritance"
+
+Geographic granularity should scale with local population density - county/region-level for small towns, city-level acceptable for larger metros - to avoid re-identification risk in low-population areas. This entire format needs explicit sign-off as part of the compliance attorney consult (Next Steps item 4) alongside the lead-marketplace consent language already flagged.
