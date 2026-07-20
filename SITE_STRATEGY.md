@@ -204,3 +204,7 @@ The snapshot delivered to advisors (per lead, in their inbox) should be a compel
 e.g. "Sarah, early 40s, 2 children, Bucks County PA, $500k investible assets, expecting inheritance"
 
 Geographic granularity should scale with local population density - county/region-level for small towns, city-level acceptable for larger metros - to avoid re-identification risk in low-population areas. This entire format needs explicit sign-off as part of the compliance attorney consult (Next Steps item 4) alongside the lead-marketplace consent language already flagged.
+## Advisor Snapshot Format — Refinement (updated 2026-07-19)
+
+- Users can opt in to a checklist of situational details when electing to connect with an advisor (e.g. "expecting inheritance," "recently sold a business," "new to investing," etc.) - this enhances their snapshot and helps match them with an advisor who specializes in that situation. User-elected, not inferred - they choose what to surface.
+- Geography in the snapshot should not default to a fixed granularity (e.g. always "town"). Let the user see and select/confirm the area description shown to advisors, broad enough to avoid re-identification in low-population areas while still being locally useful. Replaces the earlier "scale granularity to population density" auto-rule with a user-facing choice instead.
