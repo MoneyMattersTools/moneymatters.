@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 
     <head>
         <title>Financial Tools</title>
@@ -53,7 +53,7 @@
                 <span></span>
               </div>
 
-            <nav class="top">
+            <nav class="top show" id="mobileMenu">
                 <a href="index.html">Home</a>
                 <a href="tools.html">Tools</a>
                 <a href="aboutus.html">About Us</a>
@@ -65,6 +65,11 @@
             <section class="tools-hero fade-up">
               <h1>Financial Tools</h1>
               <p class="tools-hero-sub">Direct, transparent calculators for budgeting, investing, retirement, and net worth — yours to keep.</p>
+              <div class="tools-hero-icon-row" aria-hidden="true">
+                <img src="images/budgeticon.png" alt="">
+                <img src="images/investmenticon.png" alt="">
+                <img src="images/retirementicon.png" alt="">
+              </div>
             </section>
 
             <section class="native-diagnostics fade-up">
@@ -85,84 +90,73 @@
               </div>
             </section>
 
-            <section class="section2 section2--secondary">
-                <h2>Downloadable spreadsheets</h2>
-                <p class="section2-intro">Prefer to work in your own spreadsheet? These are still here — free, yours to keep.</p>
-                <div class="tools">
-                    <div class="tools-content">
-                        <div>
-                            <h3><a href="individual-tools/basic-tools/basic-budget-tool.html">Basic Budget Tool</a></h3>
-                            <p>The <span class="bold">basic budgeting tool</span> is the best place to start for simple financial guidance. Visualize WHERE your money is spent relative to HOW it should be spent.</p>
-                                <!--<a href="">Explanation Video</a></p>-->
-                        </div>
-                        <img src="images/basic-budget-laptop.png" alt="Basic Budget Excel Finance Tool">
-                    </div>
-                    <a href="individual-tools/basic-tools/basic-budget-tool.html" class="download-button">Open Tool</a>
-                </div>
+            <section class="feature-tools fade-up">
+              <span class="kicker"><span class="kicker-dot"></span>Free, interactive, no signup</span>
+              <h2>Prefer to go deeper on one thing?</h2>
+              <p class="feature-tools-sub">Three tools, live on the page — enter your numbers and see the breakdown update instantly. Every formula is visible.</p>
 
-                <div class="tools">
-                    <div class="tools-content">
-                        <div>
-                            <h3><a href="individual-tools/basic-tools/basic-retirement-tool.html">Retirement Planning Tool</a></h3>
-                            <p>The cost to retire “comfortably” is getting higher & higher. With this tool, monitor your progress towards <span class="italics">financial stability.</span></p> <!--<a href="">Explanation Video</a></p>-->
-                        </div>
-                        <img src="images/retirement-laptop.png" alt="Retirement Planning Tool">
-                    </div>
-                    <a href="individual-tools/basic-tools/basic-retirement-tool.html" class="download-button">Open Tool</a>
-                </div>
+              <div class="feature-tools-grid">
+                <a class="feature-tool-card" href="individual-tools/basic-tools/basic-budget-tool.html">
+                  <div class="feature-tool-icon"><img src="images/budgeticon.png" alt=""></div>
+                  <div class="feature-tool-preview" aria-hidden="true">
+                    <span class="mini-bar" style="--w:88%; --c:var(--mm-green);"></span>
+                    <span class="mini-bar" style="--w:56%; --c:var(--mm-gold);"></span>
+                    <span class="mini-bar" style="--w:34%; --c:var(--mm-text-soft);"></span>
+                  </div>
+                  <h3>Basic Budget Tool</h3>
+                  <p>See where your money actually goes against a real spending guideline.</p>
+                  <span class="connect-btn">Open tool <span aria-hidden="true">→</span></span>
+                </a>
 
-                <div class="tools">
-                    <div class="tools-content">
-                        <div>
-                            <h3><a href="individual-tools/basic-tools/basic-investment-tool .html">Investment Management Tool</a></h3>
-                            <p>The “secret” to building wealth is save often and invest responsibly. Analyze how your investment strategies compares to your long term goals.</p> <!--<a href="">Explanation Video</a></p>-->
-                        </div>
-                        <img src="images/basic-investment-laptop.png" alt="Basic Investment Management Tool">
-                    </div>
-                    <a href="individual-tools/basic-tools/basic-investment-tool .html" class="download-button">Open Tool</a>
-                </div>
+                <a class="feature-tool-card" href="individual-tools/basic-tools/basic-retirement-tool.html">
+                  <div class="feature-tool-icon"><img src="images/retirementicon.png" alt=""></div>
+                  <div class="feature-tool-preview feature-tool-preview--steps" aria-hidden="true">
+                    <span style="--h:30%"></span><span style="--h:48%"></span><span style="--h:62%"></span><span style="--h:80%"></span><span style="--h:100%"></span>
+                  </div>
+                  <h3>Retirement Planning Tool</h3>
+                  <p>Project your savings and see the gap between where you're headed and where you need to be.</p>
+                  <span class="connect-btn">Open tool <span aria-hidden="true">→</span></span>
+                </a>
 
-                <div class="tools" id="last-listed-tool">
-                    <div class="tools-content">
-                        <div>
-                            <h3><a href="individual-tools/basic-tools/net-worth-calculator.html">Net Worth Calculator Tool</a></h3>
-                            <p>The “secret” to building wealth is save often and invest responsibly. Analyze how your investment strategies compares to your long term goals.</p> <!--<a href="">Explanation Video</a></p>-->
-                        </div>
-                        <img src="images/net-worth-calculator-laptop.png" alt="Net Worth Calculator Tool">
-                    </div>
-                    <a href="individual-tools/basic-tools/net-worth-calculator.html" class="download-button">Download</a>
-                </div>
+                <a class="feature-tool-card" href="individual-tools/basic-tools/basic-investment-tool%20.html">
+                  <div class="feature-tool-icon"><img src="images/investmenticon.png" alt=""></div>
+                  <div class="feature-tool-preview feature-tool-preview--donut" aria-hidden="true">
+                    <span class="mini-donut"></span>
+                  </div>
+                  <h3>Investment Management Tool</h3>
+                  <p>Compare your current allocation to a target built for your risk tolerance.</p>
+                  <span class="connect-btn">Open tool <span aria-hidden="true">→</span></span>
+                </a>
+              </div>
+
+              <p class="feature-tools-footnote">Also want a spreadsheet you can save a copy of? The <a href="individual-tools/basic-tools/net-worth-calculator.html">Net Worth Calculator</a> is still available that way.</p>
             </section>
 
-            <section class="section3">
-                <h2>Advanced Tools</h2>
-                <div class="tools">
-                    <div class="tools-content">
-                        <div>
-                            <h3><a href="individual-tools/advanced-tools/advanced-budget-tool.html">Advanced Budget Tool</a></h3>
-                            <p>This tool is for people who want in-depth analysis of their annual spending patterns. At just $10, this tool pays for itself when used correctly to point out spending patterns and to optimize the way we use our money.</p> <!--<a href="">Explanation Video</a></p>-->
-                        </div>
-                        <img src="images/advanced-budget-laptop.png" alt="Advanced Budget Excel Tool">
-                    </div>
-                    <div class="tools-buy-cta">
-                        <a href="individual-tools/advanced-tools/advanced-budget-tool.html" class="tools-buy-btn">Get for $10 <span aria-hidden="true">→</span></a>
-                        <span class="tools-buy-note">One-time purchase, yours forever</span>
-                    </div>
-                </div>
+            <section class="plus-section fade-up">
+              <span class="kicker"><span class="kicker-dot"></span>Go further</span>
+              <h2>MoneyMatters+</h2>
+              <p class="plus-sub">One subscription. Everything beyond the free tools, in one place.</p>
 
-                <div class="tools">
-                    <div class="tools-content">
-                        <div>
-                            <h3><a href="individual-tools/advanced-tools/advanced-investment-tool.html">Advanced Investment Mangagement Tool</a></h3>
-                            <p>This tool is for people who want to model and stress-test their investment strategy in depth. At just $10, get advanced projections and risk-adjusted allocation modeling to keep your portfolio on track.</p> <!--<a href="">Explanation Video</a></p>-->
-                        </div>
-                        <img src="images/advanced-investment-laptop.png" alt="Advanced Investment Management Tool">
-                    </div>
-                    <div class="tools-buy-cta">
-                        <a href="individual-tools/advanced-tools/advanced-investment-tool.html" class="tools-buy-btn">Get for $10 <span aria-hidden="true">→</span></a>
-                        <span class="tools-buy-note">One-time purchase, yours forever</span>
-                    </div>
+              <div class="plus-card">
+                <div class="plus-card-price">
+                  <span class="plus-card-amount">$5</span>
+                  <span class="plus-card-period">/month</span>
                 </div>
+                <ul class="plus-card-list">
+                  <li>Advanced Budget &amp; Investment tools, with deeper modeling</li>
+                  <li>Every new tool we release, included automatically</li>
+                  <li>Explainer videos and live webinars</li>
+                  <li>Advisor Q&amp;A sessions</li>
+                  <li>Full community access</li>
+                </ul>
+                <a href="contact.html" class="connect-btn plus-card-cta">Get started</a>
+                <span class="plus-card-note">Cancel anytime.</span>
+              </div>
+
+              <div class="plus-preview-links">
+                <a href="individual-tools/advanced-tools/advanced-budget-tool.html">Preview the Advanced Budget Tool →</a>
+                <a href="individual-tools/advanced-tools/advanced-investment-tool.html">Preview the Advanced Investment Tool →</a>
+              </div>
             </section>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
@@ -171,11 +165,6 @@
               </div>
             </section>
 
-        </main>
-
-    </body>
-
-</html>
         </main>
         <footer>
             <p>MoneyMatters.</p>
@@ -196,7 +185,7 @@
                 </div>
             </div>
 
-            
+
 
             <div class="disclaimer">
                 <h3>Disclaimer</h3>

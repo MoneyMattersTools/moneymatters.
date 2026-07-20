@@ -1,4 +1,8 @@
-﻿.download-button {
+﻿html {
+  overflow-x: hidden;
+}
+
+.download-button {
   color: white;
   text-decoration: none;
   display: inline-block;
