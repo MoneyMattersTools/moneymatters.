@@ -1,0 +1,578 @@
+/* =====================================================
+   MoneyMatters — Dark Cinematic System (redesign round 2)
+   Supersedes the light editorial look. Loaded last on every
+   page, after site-base.css and any page-specific stylesheet.
+   Reuses existing markup/classes everywhere — presentation
+   layer only, no structural or logic changes.
+   ===================================================== */
+
+:root {
+    /* Safe to redefine directly — not dual-purposed as both a light
+       surface and a light-on-dark text color anywhere in the codebase. */
+    --mm-green: #34D399;
+    --mm-green-deep: #10B981;
+    --mm-green-darker: #059669;
+    --mm-green-soft: rgba(52, 211, 153, 0.14);
+    --mm-gold: #E3B04B;
+    --mm-gold-soft: rgba(227, 176, 75, 0.16);
+    --mm-border: rgba(255, 255, 255, 0.10);
+    --mm-shadow-sm: 0 2px 14px rgba(0, 0, 0, 0.35);
+    --mm-shadow-md: 0 10px 34px rgba(0, 0, 0, 0.45);
+    --mm-shadow-lg: 0 26px 64px rgba(0, 0, 0, 0.55);
+
+    /* New tokens for the dark surface system. --mm-cream/--mm-charcoal/
+       --mm-text etc. are left alone at :root — they're used as BOTH
+       backgrounds and light-on-dark text colors throughout the existing
+       CSS, so redefining them would fix one usage and break the other.
+       These new tokens are applied via explicit overrides below instead. */
+    --mm-bg: #070D0A;
+    --mm-bg-deep: #020504;
+    --mm-surface: #101915;
+    --mm-surface-raised: #17221C;
+    --mm-surface-border: rgba(255, 255, 255, 0.09);
+    --mm-text-light: #F2F6F3;
+    --mm-text-light-muted: #A8B8AD;
+    --mm-text-light-soft: #718276;
+    --mm-glow: rgba(52, 211, 153, 0.5);
+}
+
+/* --- Motion-reduced users skip everything below that isn't essential --- */
+@media (prefers-reduced-motion: reduce) {
+    .cursor-glow, .grain-overlay { display: none !important; }
+}
+
+/* =====================================================
+   Global: body, typography, base surfaces
+   ===================================================== */
+body {
+    background: var(--mm-bg) !important;
+    color: var(--mm-text-light) !important;
+}
+body h1, body h2, body h3 { color: var(--mm-text-light); }
+body p { color: var(--mm-text-light-muted); }
+body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { border-radius: 14px; }
+
+/* Subtle film-grain texture for the "cinematic" feel — single inline SVG,
+   fixed + pointer-events:none, effectively free at runtime. */
+.grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Cursor-follow spotlight — desktop/precise-pointer only, GPU-cheap
+   (transform only), updated via requestAnimationFrame in cinematic-motion.js. */
+.cursor-glow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 520px; height: 520px;
+    margin-left: -260px; margin-top: -260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--mm-glow) 0%, rgba(52, 211, 153, 0.08) 45%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    will-change: transform;
+    filter: blur(10px);
+}
+.cursor-glow.is-active { opacity: 0.5; }
+@media (pointer: coarse) { .cursor-glow { display: none; } }
+
+/* =====================================================
+   Header / nav — already dark, deepen + add glow-on-scroll hook
+   ===================================================== */
+body > header, body header {
+    background: var(--mm-bg-deep) !important;
+    border-bottom: 1px solid var(--mm-surface-border);
+}
+body header nav a.block-link {
+    background: var(--mm-green) !important;
+    color: var(--mm-bg-deep) !important;
+}
+body header nav a.block-link:hover { background: var(--mm-text-light) !important; }
+@media (max-width: 768px) {
+    body header nav, body header nav.top { background: var(--mm-bg-deep) !important; border: 1px solid var(--mm-surface-border); }
+}
+
+body > .value-strip, .value-strip {
+    background: var(--mm-bg-deep) !important;
+    border-bottom: 1px solid var(--mm-surface-border) !important;
+}
+
+/* =====================================================
+   Footer — already dark by design; deepen slightly for consistency
+   ===================================================== */
+body > footer, body footer { background: var(--mm-bg-deep) !important; }
+
+/* =====================================================
+   Reveal / motion utilities (additive to existing .fade-up)
+   ===================================================== */
+.fade-up { transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) !important; }
+.reveal-scale { opacity: 0; transform: translateY(24px) scale(0.97); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal-scale.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+@media (prefers-reduced-motion: reduce) { .reveal-scale { opacity: 1; transform: none; transition: none; } }
+
+/* Staggered children — pure CSS, no JS needed beyond the existing
+   IntersectionObserver adding .is-visible to the parent. */
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.02s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.10s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.18s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.26s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.34s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.42s; }
+
+/* Magnetic hover — transform nudges toward cursor position, set via
+   --mx/--my custom properties from cinematic-motion.js. Falls back to
+   a plain hover lift if JS hasn't attached the vars yet. */
+.magnetic { transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+.magnetic:hover { transform: translate(var(--mx, 0), var(--my, -2px)); }
+
+/* Oversized editorial number/type moment — reused for hero score,
+   plus-card price, tool results. */
+.display-number {
+    font-family: var(--mm-serif);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    background: linear-gradient(180deg, var(--mm-text-light) 0%, var(--mm-text-light-muted) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* =====================================================
+   Homepage: diagnostic hero — presentation only, every ID/class/
+   data-attribute the diagnostic.js state machine depends on is
+   untouched (#diagnostic-hero, .hero-step[data-step], #hero-visual,
+   .hero-visual--band-*, form/button IDs, etc.)
+   ===================================================== */
+body main .hero {
+    background:
+        radial-gradient(ellipse 900px 700px at 12% 20%, rgba(52, 211, 153, 0.16), transparent 55%),
+        radial-gradient(ellipse 800px 600px at 90% 80%, rgba(227, 176, 75, 0.10), transparent 55%),
+        radial-gradient(ellipse 1000px 500px at 50% 100%, rgba(52, 211, 153, 0.06), transparent 60%),
+        linear-gradient(180deg, var(--mm-bg-deep) 0%, var(--mm-bg) 55%, var(--mm-bg) 100%) !important;
+    min-height: 720px !important;
+}
+.hero .mesh-blob-1 { background: radial-gradient(circle, rgba(52, 211, 153, 0.30), transparent 60%); }
+.hero .mesh-blob-2 { background: radial-gradient(circle, rgba(227, 176, 75, 0.18), transparent 60%); }
+.hero .mesh-blob-3 { background: radial-gradient(circle, rgba(52, 211, 153, 0.12), transparent 60%); }
+.hero::after { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent) !important; }
+
+.hero .hero-text h1 {
+    color: var(--mm-text-light) !important;
+    font-size: clamp(52px, 7.2vw, 96px) !important;
+    text-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+}
+.hero .hero-text h1 em, .hero .hero-text h1 .h-italic-accent { color: var(--mm-green) !important; }
+.hero .hero-text p.hero-sub { color: var(--mm-text-light-muted) !important; }
+.hero .hero-text h2 { color: var(--mm-text-light) !important; }
+/* diagnostic.css targets this with an ID selector + !important — match
+   its specificity exactly or this override silently loses the cascade. */
+#diagnostic-hero .hero-text h2 { color: var(--mm-text-light) !important; }
+
+.hero .hero-text .hero-cta {
+    background: var(--mm-green) !important;
+    color: var(--mm-bg-deep) !important;
+}
+.hero .hero-text .hero-cta:hover { background: var(--mm-text-light) !important; }
+
+/* Entry cards (choice step) and results next-steps */
+.hero .entry-grid button.connect-card,
+.hero .entry-grid a.connect-card,
+#diagnostic-hero .connect-card {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+}
+#diagnostic-hero .connect-card:hover { border-color: var(--mm-green) !important; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
+#diagnostic-hero .connect-card h3 { color: var(--mm-text-light) !important; }
+#diagnostic-hero .connect-card > p { color: var(--mm-text-light-muted) !important; }
+#diagnostic-hero .connect-btn { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+#diagnostic-hero .connect-btn:hover { background: var(--mm-text-light) !important; }
+
+/* Email / quiz form fields */
+#diagnostic-hero .form-side label { color: var(--mm-text-light-muted) !important; }
+#diagnostic-hero .form-side input,
+#diagnostic-hero input#diagnostic-email {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+#diagnostic-hero .form-side input:focus { border-color: var(--mm-green) !important; box-shadow: 0 0 0 3px var(--mm-green-soft) !important; }
+#diagnostic-hero .submit-btn { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+#diagnostic-hero .submit-btn:hover { background: var(--mm-text-light) !important; }
+#diagnostic-hero .step-back { color: var(--mm-text-light-soft) !important; }
+#diagnostic-hero .step-back:hover { color: var(--mm-green) !important; }
+#diagnostic-hero .diagnostic-error { color: #FF8A75 !important; }
+
+#diagnostic-hero .quiz-progress-label { color: var(--mm-green) !important; }
+#diagnostic-hero .quiz-progress-bar { background: var(--mm-surface) !important; }
+#diagnostic-hero .quiz-progress-fill { background: var(--mm-green) !important; }
+#diagnostic-hero .quiz-answer-btn {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+#diagnostic-hero .quiz-answer-btn:hover { border-color: var(--mm-green) !important; background: var(--mm-surface-raised) !important; }
+#diagnostic-hero .quiz-answer-btn.is-selected { border-color: var(--mm-green) !important; background: var(--mm-green-soft) !important; }
+
+#diagnostic-hero [data-step="verify"] strong,
+#diagnostic-hero [data-step="verify-error"] strong { color: var(--mm-text-light) !important; }
+
+/* Results: score reveal gets the display-number treatment */
+#diagnostic-hero .score-number {
+    font-size: clamp(80px, 11vw, 128px) !important;
+    background: linear-gradient(180deg, var(--mm-text-light) 0%, var(--mm-green) 140%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+#diagnostic-hero .score-band { color: var(--mm-green) !important; }
+#diagnostic-hero .score-copy, #diagnostic-hero .hero-sub { color: var(--mm-text-light-muted) !important; }
+#diagnostic-hero .score-breakdown-toggle { color: var(--mm-green) !important; }
+#diagnostic-hero .score-breakdown li {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+}
+#diagnostic-hero .breakdown-dimension { color: var(--mm-text-light) !important; }
+#diagnostic-hero .breakdown-tag.strong { background: rgba(52, 211, 153, 0.16) !important; color: var(--mm-green) !important; }
+#diagnostic-hero .breakdown-tag.good { background: var(--mm-gold-soft) !important; color: var(--mm-gold) !important; }
+#diagnostic-hero .breakdown-tag.attention { background: rgba(255, 138, 117, 0.14) !important; color: #FF8A75 !important; }
+#diagnostic-hero .next-steps a { color: var(--mm-text-light) !important; border-bottom-color: var(--mm-gold) !important; }
+#diagnostic-hero .next-steps a:hover { color: var(--mm-green) !important; border-color: var(--mm-green) !important; }
+
+/* Score-band curve retint stays vivid against the dark visual panel */
+.hero-visual--band-starting .curve-stroke { stroke: var(--mm-text-light-soft) !important; }
+.hero-visual--band-starting .curve-dot { fill: var(--mm-text-light-soft) !important; }
+.hero-visual--band-needs-work .curve-stroke-3 { stroke: var(--mm-gold) !important; }
+.hero-visual--band-solid .curve-stroke-1, .hero-visual--band-solid .curve-stroke-2 { stroke: var(--mm-green) !important; }
+.hero-visual--band-thriving .curve-stroke-1, .hero-visual--band-thriving .curve-stroke-2 { stroke: var(--mm-green) !important; }
+.hero-visual--band-thriving .curve-dot-1, .hero-visual--band-thriving .curve-dot-3 { fill: var(--mm-gold) !important; }
+.hero .hero-visual .curve-stroke-1 { stroke: var(--mm-green) !important; }
+.hero .hero-visual .curve-stroke-2 { stroke: rgba(52, 211, 153, 0.65) !important; }
+.hero .hero-visual .curve-stroke-3 { stroke: var(--mm-gold) !important; }
+
+/* =====================================================
+   Homepage: "Popular tools" + "Helpful resources" sections
+   ===================================================== */
+.section2 { background: var(--mm-bg) !important; }
+.section2 h2 a { color: var(--mm-text-light) !important; }
+.section2 h2 a:hover { color: var(--mm-green) !important; }
+.tools-container > div {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+}
+.tools-container > div:hover { border-color: var(--mm-green) !important; }
+.tools-container > div img { background: rgba(52, 211, 153, 0.06) !important; }
+.tools-container > div h3 { color: var(--mm-text-light) !important; }
+.tools-container > div p { color: var(--mm-text-light-muted) !important; }
+
+.section3 { background: var(--mm-bg-deep) !important; }
+.section3 h2 { color: var(--mm-text-light) !important; }
+.section3 .links-container .resource-card:not(.video-card) {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+}
+.section3 .links-container .resource-card:not(.video-card):hover { border-color: var(--mm-green) !important; }
+.section3 .resource-card h3 { color: var(--mm-text-light) !important; }
+.section3 .resource-card p { color: var(--mm-text-light-muted) !important; }
+.section3 .resource-card__label, .section3 .resource-tag {
+    background: rgba(52, 211, 153, 0.16) !important;
+    color: var(--mm-green) !important;
+}
+.video-card { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
+.video-card h3 { color: var(--mm-text-light) !important; }
+.video-card p { color: var(--mm-text-light-muted) !important; }
+
+.connect-section { background: var(--mm-bg-deep) !important; }
+.connect-header h2 { color: var(--mm-text-light) !important; }
+.connect-card { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
+.connect-card h3 { color: var(--mm-text-light) !important; }
+.connect-card > p { color: var(--mm-text-light-muted) !important; }
+.connect-btn, .connect-section .submit-btn, .connect-section button[type="submit"] {
+    background: var(--mm-green) !important; color: var(--mm-bg-deep) !important;
+}
+.connect-btn:hover, .connect-section .submit-btn:hover { background: var(--mm-text-light) !important; color: var(--mm-bg-deep) !important; }
+.form-side label, #signup-form label { color: var(--mm-text-light-muted) !important; }
+.form-side input, #signup-form input.form-control, #signup-form input {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+
+.newsletter-cta { background: var(--mm-bg) !important; }
+
+/* =====================================================
+   Shared page hero (About / Tools / Blog legacy .page-hero) +
+   generic .about-section prose
+   ===================================================== */
+.page-hero, .about-hero, .tools-hero {
+    background:
+        radial-gradient(ellipse 800px 600px at 20% 25%, rgba(52, 211, 153, 0.14), transparent 55%),
+        radial-gradient(ellipse 700px 500px at 85% 65%, rgba(227, 176, 75, 0.08), transparent 55%),
+        var(--mm-bg-deep) !important;
+}
+.page-hero h1, .about-hero h1, .tools-hero h1 { color: var(--mm-text-light) !important; }
+.page-hero p, .about-hero p, .about-hero-sub, .tools-hero-sub { color: var(--mm-text-light-muted) !important; }
+.about-section h2 { color: var(--mm-text-light) !important; }
+.about-section p { color: var(--mm-text-light-muted) !important; }
+.simple-page { color: var(--mm-text-light-muted); }
+.simple-page a { color: var(--mm-green); }
+.simple-page ul, .simple-page li { color: var(--mm-text-light-muted); }
+/* homestyling.css targets these with the extra element selector
+   (.simple-page p / .simple-page li), which outranks the parent-level
+   rule above regardless of load order — match it directly. */
+.simple-page p, .simple-page li { color: var(--mm-text-light-muted); }
+.simple-page h1 { color: var(--mm-text-light); }
+.simple-page h2 { color: var(--mm-text-light); }
+
+/* =====================================================
+   About Us page components
+   ===================================================== */
+.about-hero-v2 {
+    background:
+        radial-gradient(ellipse 800px 600px at 15% 20%, rgba(52, 211, 153, 0.16), transparent 55%),
+        radial-gradient(ellipse 700px 500px at 90% 70%, rgba(227, 176, 75, 0.10), transparent 55%),
+        var(--mm-bg-deep) !important;
+}
+.about-hero-v2-copy h1 { color: var(--mm-text-light); }
+.about-hero-v2-copy h1 .h-italic-accent { color: var(--mm-green); }
+.about-hero-v2-copy .about-hero-sub { color: var(--mm-text-light-muted); }
+/* hero-icon.png has an opaque cream background baked in — no CSS filter
+   makes that transparent, so it stays a light badge chip (a deliberate
+   bright accent against the dark hero, not a leftover light background). */
+.hero-icon-badge { background: var(--mm-cream-warm); border: 1px solid var(--mm-surface-border); box-shadow: 0 0 60px var(--mm-glow), var(--mm-shadow-lg); }
+
+.about-diagnostic-cta { background: var(--mm-green-soft); border: 1px solid rgba(52, 211, 153, 0.25); }
+.about-diagnostic-cta p { color: var(--mm-text-light); }
+.about-diagnostic-cta a { background: var(--mm-green); color: var(--mm-bg-deep); }
+.about-diagnostic-cta a:hover { background: var(--mm-text-light); }
+
+.cost-compare { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
+.cost-compare-label { color: var(--mm-text-light-soft); }
+.cost-compare-track { background: var(--mm-bg-deep); border: 1px solid var(--mm-surface-border); }
+.cost-compare-value { color: var(--mm-text-light); }
+
+.bento-tile { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
+.bento-tile:hover { border-color: var(--mm-green); }
+.bento-tile h3 { color: var(--mm-text-light); }
+.bento-tile p { color: var(--mm-text-light-muted); }
+.bento-tile--dark { background: var(--mm-bg-deep); border-color: var(--mm-surface-border); }
+.bento-tile--dark h3 { color: var(--mm-text-light); }
+.bento-tile--dark p { color: var(--mm-text-light-muted); }
+/* The handshake source image has a near-white background baked in —
+   darkening it with a filter alone just produces flat gray, not a moody
+   dark tone (there's no color there to deepen). Show it contained on a
+   light chip instead, the same reliable pattern used for the small
+   icon badges, rather than forcing it full-bleed onto a dark surface. */
+.bento-tile--image:not(.bento-tile--tree) { padding: 28px 28px 0 !important; align-items: center; }
+.bento-tile--image:not(.bento-tile--tree) img {
+    flex: none !important;
+    width: 88px; height: 88px;
+    min-height: 0 !important;
+    object-fit: contain !important;
+    background: var(--mm-cream-warm);
+    border-radius: 50%;
+    padding: 18px;
+    box-sizing: border-box;
+}
+/* The tree image is already saturated green, not near-white, so darkening
+   it genuinely deepens the color and reads as intentional. */
+.bento-tile--tree img { filter: brightness(0.55) saturate(1.2); }
+
+.trust-block { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); border-left: 4px solid var(--mm-gold); }
+.trust-block h2 { color: var(--mm-text-light) !important; }
+.trust-block p { color: var(--mm-text-light-muted) !important; }
+.money-flow-node { background: var(--mm-bg-deep); border: 1px solid var(--mm-surface-border); }
+.money-flow-label { color: var(--mm-text-light); }
+.money-flow-sub { color: var(--mm-text-light-soft); }
+.money-flow-arrow { color: var(--mm-green); }
+.money-flow-arrow-label { color: var(--mm-text-light-soft); }
+
+.timeline-track { background: var(--mm-surface-border); }
+.timeline-step h3 { color: var(--mm-text-light); }
+.timeline-step p { color: var(--mm-text-light-muted); }
+.step-number { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+
+.faq-list details { border-bottom: 1px solid var(--mm-surface-border); }
+.faq-list summary { color: var(--mm-text-light); }
+.faq-list summary::after { color: var(--mm-green); }
+.faq-list details p { color: var(--mm-text-light-muted); }
+
+.about-cta { background: linear-gradient(135deg, rgba(52, 211, 153, 0.10), rgba(52, 211, 153, 0.02)) !important; }
+.about-cta h2 { color: var(--mm-text-light) !important; }
+.cta-button { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+.cta-button:hover { background: var(--mm-text-light) !important; }
+.cta-button--ghost { border-color: var(--mm-surface-border) !important; color: var(--mm-text-light) !important; }
+.cta-button--ghost:hover { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; border-color: var(--mm-green) !important; }
+.pull-quote { border-left-color: var(--mm-green); }
+.pull-quote p { color: var(--mm-text-light); }
+
+/* =====================================================
+   Tools page components
+   ===================================================== */
+.native-diagnostics { background: var(--mm-bg-deep) !important; }
+.native-diagnostics h2 { color: var(--mm-text-light); }
+.native-diagnostics-sub { color: var(--mm-text-light-muted); }
+.tools-hero-icon-row img { background: var(--mm-cream-warm); box-shadow: var(--mm-shadow-sm); }
+
+.section2--secondary { background: var(--mm-bg) !important; }
+.section2--secondary h2 { color: var(--mm-text-light-muted) !important; }
+.section2-intro { color: var(--mm-text-light-soft); }
+
+.feature-tools { background: var(--mm-bg) !important; }
+.feature-tools h2 { color: var(--mm-text-light); }
+.feature-tools-sub { color: var(--mm-text-light-muted); }
+.feature-tool-card { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; color: var(--mm-text-light-muted); }
+.feature-tool-card:hover { border-color: var(--mm-green) !important; }
+.feature-tool-card h3 { color: var(--mm-text-light) !important; }
+.feature-tool-card p { color: var(--mm-text-light-muted) !important; }
+.feature-tool-icon { background: var(--mm-cream-warm); }
+/* Third segment used --mm-charcoal, which is now too close to the dark
+   card background to read as a distinct slice. */
+.mini-donut { background: conic-gradient(var(--mm-green) 0% 60%, var(--mm-gold) 60% 85%, var(--mm-text-light-soft) 85% 100%); }
+.mini-donut::after { background: var(--mm-surface); }
+.feature-tools-footnote { color: var(--mm-text-light-soft); }
+.feature-tools-footnote a { color: var(--mm-green); }
+
+.plus-section { background: var(--mm-bg-deep) !important; }
+.plus-section h2 { color: var(--mm-text-light); }
+.plus-sub { color: var(--mm-text-light-muted); }
+.plus-card { background: var(--mm-surface) !important; color: var(--mm-text-light) !important; border: 1px solid var(--mm-surface-border); }
+.plus-card-period { color: var(--mm-text-light-soft) !important; }
+.plus-card-list li { color: var(--mm-text-light-muted) !important; }
+.plus-card .connect-btn.plus-card-cta { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+.plus-card .connect-btn.plus-card-cta:hover { background: var(--mm-text-light) !important; }
+.plus-card-note { color: var(--mm-text-light-soft) !important; }
+.plus-preview-links a { color: var(--mm-green); }
+
+/* =====================================================
+   Blog page components
+   ===================================================== */
+.blog-hero-v2 {
+    /* Layer a dark scrim over the illustration (light cream/gold source
+       image) so the full-bleed hero reads dark, not a bright rectangle. */
+    background-image:
+        linear-gradient(135deg, rgba(2, 5, 4, 0.96), rgba(7, 13, 10, 0.93)),
+        url('../images/blog-background.png') !important;
+}
+.blog-hero-v2-scrim {
+    background: rgba(16, 25, 21, 0.72) !important;
+    border: 1px solid var(--mm-surface-border);
+}
+.blog-hero-v2-scrim h1 { color: var(--mm-text-light) !important; }
+.blog-hero-v2-scrim p { color: var(--mm-text-light-muted) !important; }
+
+.blog-coming-soon { background: var(--mm-bg) !important; }
+.blog-coming-soon h2 { color: var(--mm-text-light); }
+.blog-coming-soon-sub { color: var(--mm-text-light-muted); }
+.topic-card { background: var(--mm-surface) !important; border: 1px dashed var(--mm-surface-border) !important; }
+.topic-card:hover { border-color: var(--mm-green) !important; }
+.topic-card-icon { background: var(--mm-cream-warm); }
+.topic-card-tag { background: var(--mm-gold-soft); color: var(--mm-gold); }
+.topic-card h3 { color: var(--mm-text-light); }
+.topic-card p { color: var(--mm-text-light-muted); }
+
+.blog-empty-state { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
+.blog-empty-state h2 { color: var(--mm-text-light); }
+.blog-empty-state p { color: var(--mm-text-light-muted); }
+.blog-card { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
+.blog-card:hover { border-color: var(--mm-green); }
+.blog-card .blog-excerpt { color: var(--mm-text-light-muted); }
+.blog-card .read-more { color: var(--mm-green); }
+.blog-post .blog-main h1, .blog-card h2 { color: var(--mm-text-light); }
+.blog-content h2, .blog-content h3 { color: var(--mm-text-light); }
+.blog-content > p:first-of-type::first-letter { color: var(--mm-green); }
+
+/* =====================================================
+   Privacy Policy: data deletion request card
+   ===================================================== */
+.data-request-card { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
+.data-request-card h3 { color: var(--mm-text-light); }
+.data-request-card p { color: var(--mm-text-light-muted); }
+.data-request-form input[type="email"] {
+    background: var(--mm-bg-deep);
+    border: 1px solid var(--mm-surface-border);
+    color: var(--mm-text-light);
+}
+.data-request-status--success { color: var(--mm-green); }
+.data-request-status--error { color: #FF8A75; }
+
+/* =====================================================
+   Contact page
+   ===================================================== */
+.contact-option {
+    background: var(--mm-surface);
+    border: 1px solid var(--mm-surface-border);
+}
+.contact-option h3 { color: var(--mm-text-light); }
+.contact-option p { color: var(--mm-text-light-muted); }
+.contact-option-btn { color: var(--mm-green); }
+.contact-form label { color: var(--mm-text-light-muted); }
+.contact-form input, .contact-form textarea {
+    background: var(--mm-surface);
+    border: 1px solid var(--mm-surface-border);
+    color: var(--mm-text-light);
+}
+
+/* =====================================================
+   Native tool pages (Budget / Retirement / Investment) —
+   pure presentation reskin, the calculator JS files are untouched.
+   ===================================================== */
+.tool-intro h1 { color: var(--mm-text-light); }
+.tool-intro .first-p { color: var(--mm-text-light-muted); }
+.tool-panel { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
+.tool-panel h2 { color: var(--mm-text-light) !important; }
+.tool-field label { color: var(--mm-text-light-muted) !important; }
+.tool-field .tool-field-hint { color: var(--mm-text-light-soft) !important; }
+.tool-field input[type="number"], .tool-field input[type="text"] {
+    background: var(--mm-bg-deep) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+.tool-field input[type="number"]:focus, .tool-field input[type="text"]:focus { background: var(--mm-bg-deep) !important; }
+.tool-field-group { border-top-color: var(--mm-surface-border) !important; }
+.tool-field-group-label { color: var(--mm-green) !important; }
+.tool-toggle { background: var(--mm-bg-deep) !important; border: 1px solid var(--mm-surface-border) !important; }
+.tool-toggle button { color: var(--mm-text-light-muted) !important; }
+.tool-toggle button.is-active { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+.tool-radio-btn span { background: var(--mm-bg-deep) !important; border: 1px solid var(--mm-surface-border) !important; color: var(--mm-text-light-muted) !important; }
+.tool-radio-btn input:checked + span { background: var(--mm-green) !important; border-color: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+
+.tool-stat-value { color: var(--mm-text-light) !important; }
+.tool-stat-value.is-negative { color: #FF8A75 !important; }
+.tool-stat-sub { color: var(--mm-text-light-muted) !important; }
+.tool-breakdown li { background: var(--mm-bg-deep) !important; border: 1px solid var(--mm-surface-border) !important; }
+.tool-breakdown-name { color: var(--mm-text-light) !important; }
+.tool-breakdown-figures { color: var(--mm-text-light-soft) !important; }
+.tool-tag.good { background: rgba(52, 211, 153, 0.16) !important; color: var(--mm-green) !important; }
+.tool-tag.caution { background: var(--mm-gold-soft) !important; color: var(--mm-gold) !important; }
+.tool-tag.attention { background: rgba(255, 138, 117, 0.14) !important; color: #FF8A75 !important; }
+.tool-bar-track { background: var(--mm-surface-border) !important; }
+.tool-bar-fill.is-over { background: #FF8A75 !important; }
+.tool-bar-target { background: var(--mm-text-light) !important; }
+.tool-bar-target::after { color: var(--mm-text-light-soft) !important; }
+.tool-donut-block h3 { color: var(--mm-text-light-soft) !important; }
+/* No !important — this is only the pre-JS placeholder ring. The
+   investment tool's JS sets the real data-driven conic-gradient via an
+   inline style, which must be allowed to win once it runs. */
+.tool-donut { background: conic-gradient(var(--mm-surface-border) 0 100%); }
+.tool-donut::after { background: var(--mm-surface) !important; }
+.tool-legend li { color: var(--mm-text-light-muted) !important; }
+.tool-note { color: var(--mm-text-light-soft) !important; border-top-color: var(--mm-surface-border) !important; }
+.tool-next-steps a { color: var(--mm-text-light) !important; }
+.tool-next-steps a:hover { color: var(--mm-green) !important; }
+
+/* Legacy download-button (Net Worth calculator + Advanced tools spreadsheets) */
+.download-button { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+.download-button:hover { background: var(--mm-text-light) !important; }
+.how-to-text { color: var(--mm-text-light); }
+.dropdown-arrow { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+.dropdown-details { background: var(--mm-surface) !important; color: var(--mm-text-light-muted) !important; box-shadow: var(--mm-shadow-md); }
+.dropdown-details .green { color: var(--mm-green) !important; }
+.dropdown-details .black-white { background: var(--mm-bg-deep) !important; color: var(--mm-text-light) !important; }
+.dropdown-details .lightblue { color: #7DD3FC !important; }
+.tool-card { background: var(--mm-surface); box-shadow: var(--mm-shadow-sm); }
+.tool-card h2 { color: var(--mm-text-light); }

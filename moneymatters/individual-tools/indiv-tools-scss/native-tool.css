@@ -33,6 +33,7 @@
 }
 .tool-intro .how-to-container { margin: 0 0 0; }
 .tool-intro .dropdown-details { text-align: left; }
+.tool-intro img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
 
 .tool-app {
     max-width: 1100px;
@@ -350,7 +351,7 @@
 .tool-next-steps a:hover { color: var(--mm-green-deep); border-color: var(--mm-green); }
 
 @media (max-width: 900px) {
-    .tool-app-grid { grid-template-columns: 1fr; }
+    .tool-app-grid { grid-template-columns: minmax(0, 1fr); }
     .tool-app-results { position: static; }
     .tool-field-row { grid-template-columns: 1fr; }
     .tool-donut-row { grid-template-columns: 1fr 1fr; gap: 12px; }

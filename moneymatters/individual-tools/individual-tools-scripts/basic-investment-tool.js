@@ -8,7 +8,7 @@
     3: { label: 'Aggressive', equities: 90, bonds: 8, cash: 2 },
   };
   var EXPECTED_RETURN = { equities: 8, bonds: 4, cash: 2, other: 5 };
-  var COLORS = { equities: '#62A974', bonds: '#C49A47', cash: '#1A2B23', other: '#9CA9A0' };
+  var COLORS = { equities: '#34D399', bonds: '#E3B04B', cash: '#F2F6F3', other: '#718276' };
   var LABELS = { equities: 'Stocks / Equities', bonds: 'Bonds / Fixed Income', cash: 'Cash / Equivalents', other: 'Other / Alternative' };
 
   var ids = ['inv-equities', 'inv-bonds', 'inv-cash', 'inv-other'];
