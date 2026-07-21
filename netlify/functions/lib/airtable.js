@@ -67,6 +67,19 @@ async function countRecentRequestsByIp(table, ip, windowSeconds, tokenTtlSeconds
   return data.records ? data.records.length : 0;
 }
 
+// Counts records tagged with `ip` in the "Request IP" field whose own
+// timestampField falls within the last windowSeconds. Simpler sibling of
+// countRecentRequestsByIp for tables that have a real creation-time field
+// (no need to infer it from an unrelated Expires At field).
+async function countRecentByIpSince(table, ip, windowSeconds, timestampField) {
+  const formula = `AND({Request IP} = '${escapeFormulaValue(ip)}', IS_AFTER({${timestampField}}, DATEADD(NOW(), -${windowSeconds}, 'seconds')))`;
+  const data = await airtableFetch(
+    table,
+    `?maxRecords=50&filterByFormula=${encodeURIComponent(formula)}`
+  );
+  return data.records ? data.records.length : 0;
+}
+
 async function createRecord(table, fields) {
   return airtableFetch(table, '', {
     method: 'POST',
@@ -81,12 +94,30 @@ async function updateRecord(table, recordId, fields) {
   });
 }
 
+async function deleteRecord(table, recordId) {
+  return airtableFetch(table, `/${recordId}`, {
+    method: 'DELETE',
+  });
+}
+
+async function findAllByFormula(table, formula) {
+  const data = await airtableFetch(
+    table,
+    `?filterByFormula=${encodeURIComponent(formula)}`
+  );
+  return data.records || [];
+}
+
 module.exports = {
   findOneByFormula,
+  findAllByFormula,
   findByEmail,
   findByToken,
   findActiveTokenByEmail,
   countRecentRequestsByIp,
+  countRecentByIpSince,
   createRecord,
   updateRecord,
+  deleteRecord,
+  escapeFormulaValue,
 };

@@ -65,7 +65,7 @@
                 <section class="page-hero fade-up">
                   <h1>Privacy Policy.</h1>
                 </section>
-                <p>Last updated: May 2025</p>
+                <p>Last updated: July 2026</p>
 
                 <p>MoneyMatters ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website.</p>
 
@@ -75,14 +75,37 @@
                     <li>Sign up for our community newsletter via the email form</li>
                     <li>Contact us through the contact form</li>
                     <li>Use our diagnostic and calculator tools</li>
+                    <li>Subscribe to MoneyMatters+ ($5/month)</li>
                 </ul>
-                <p>This information may include your name and email address. Contact form submissions are processed through Formspree. Newsletter signups are processed through Beehiiv. In addition to newsletter and contact form signups, our diagnostic and calculator tools collect the financial information you enter (income, balances, goals) in order to generate your results and, if you choose, match you with a financial advisor.</p>
+                <p>This information may include your name and email address. Contact form submissions are processed through Formspree. Newsletter signups are processed through Beehiiv. In addition to newsletter and contact form signups, our diagnostic and calculator tools collect the financial information you enter (income, balances, goals) in order to generate your results and, if you choose, connect you with a financial advisor. If you choose to be considered for an advisor match, we also derive a general value bucket from signals like investible assets, net worth, and opportunity size — used only to route your snapshot to advisors working in that range.</p>
 
                 <h2>How We Use Your Information</h2>
-                <p>We use your information to generate your results, save your progress, send relevant follow-ups, and — only with your explicit, separate consent — share it with a financial advisor you choose to connect with. We do not sell your data. We do not share it with advisors, or anyone else, without your consent for that specific purpose.</p>
+                <p>We use your information to generate your results, save your progress, send relevant follow-ups, and administer your MoneyMatters+ subscription if you have one. We do not sell your data. We do not share it with advisors, or anyone else, beyond what's described below, and only with your consent for that specific purpose.</p>
+
+                <h2>How We Share Your Information With Advisors</h2>
+                <p>If you opt in to be connected with an advisor, MoneyMatters does not simply hand your information to a single advisor as a one-off referral. Instead, you're placed into a value bucket based on signals like investible assets, net worth, and opportunity size. Advisors in our network can browse users within their bucket. What they see is a snapshot — your first name, a general age bracket, family composition, the location detail you've chosen to share (see below), and your financial signals. They do not see your last name, email, phone number, or any other direct contact information at this stage.</p>
+                <p>Because advisors browse within a bucket rather than receiving a single assigned referral, more than one advisor may see your snapshot before you connect with anyone. Opting in means consenting to be browsed by advisors in your bucket — not to being handed off to one specific advisor. An advisor who wants to pursue a match shares their own profile with you, and you decide whether to take the meeting. Nothing is shared with an advisor unless you've opted in to this matching process.</p>
+
+                <h2>Optional Situational Details</h2>
+                <p>When you opt in to advisor matching, you can separately choose to add situational details to your snapshot — for example, "expecting an inheritance," "recently sold a business," or "new to investing" — to help match you with an advisor who specializes in your situation. This is its own explicit choice: we never infer or add these details on your behalf, and you can opt in to advisor matching without providing any of them.</p>
+
+                <h2>Location Shown to Advisors</h2>
+                <p>You choose and confirm the level of location detail that appears in your advisor snapshot (for example, a metro area or region) rather than us defaulting to a fixed level of detail for everyone. You're free to pick something broad enough that you're comfortable with it.</p>
 
                 <h2>Your Choices</h2>
-                <p>You can withdraw consent to be matched with an advisor at any time, and you can request deletion of your data by contacting us. Advisor sharing is opt-in per connection — not a blanket agreement made at signup.</p>
+                <p>You can withdraw consent to be matched with an advisor at any time. Advisor bucket-browsing is opt-in — not a blanket agreement made at signup — and you can stop it going forward whenever you like.</p>
+                <p>You can also request deletion of your data at any time using the form below, or by reaching out via our <a href="contact.html">Contact page</a>. Deletion requests are reviewed and processed by our team within 14 days; once complete, this permanently removes your account record and any diagnostic answers on file. This is a manual review process today, not an instant self-service action, so you'll get a confirmation email when your request is received and again once it's done.</p>
+
+                <div class="data-request-card">
+                  <h3>Request data deletion</h3>
+                  <p>Enter the email address on your MoneyMatters account. We'll email you to confirm once your data has been removed.</p>
+                  <form id="delete-data-form" class="data-request-form">
+                    <label for="delete-email" class="sr-only">Email address</label>
+                    <input type="email" id="delete-email" name="email" placeholder="you@example.com" required>
+                    <button type="submit" class="connect-btn">Request deletion</button>
+                  </form>
+                  <p id="delete-data-status" class="data-request-status" hidden></p>
+                </div>
 
                 <h2>Cookies and Analytics</h2>
                 <p>We may use basic analytics tools to understand site traffic and usage patterns. These tools may set cookies. No personally identifiable information is collected through cookies.</p>
@@ -133,6 +156,7 @@
 
         <script src="scripts/hamburger.js"></script>
         <script src="scripts/scroll-animations.js"></script>
+        <script src="scripts/request-deletion.js"></script>
     </body>
 
 </html>
