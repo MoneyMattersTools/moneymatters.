@@ -1091,7 +1091,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     min-height: 420px;
     display: flex;
     align-items: center;
-    background-image: url('../images/blog-background.png');
+    background-image: url('../images/blog-background.jpg');
     background-size: cover;
     background-position: center;
     padding: 0 8%;

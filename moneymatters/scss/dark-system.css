@@ -456,7 +456,7 @@ body main .hero {
        image) so the full-bleed hero reads dark, not a bright rectangle. */
     background-image:
         linear-gradient(135deg, rgba(2, 5, 4, 0.96), rgba(7, 13, 10, 0.93)),
-        url('../images/blog-background.png') !important;
+        url('../images/blog-background.jpg') !important;
 }
 .blog-hero-v2-scrim {
     background: rgba(16, 25, 21, 0.72) !important;
