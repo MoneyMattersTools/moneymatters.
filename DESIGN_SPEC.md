@@ -80,3 +80,25 @@ Any messaging claiming "no login," "no signup," or similar must be checked again
 
 - Verify every change against the live deployed URL (money-matters.site) only. Never rely on a local `file://` preview as proof of anything - it cannot reflect backend behavior, can be served from stale browser cache, and has caused real confusion earlier in this project. Confirm every change is committed, pushed, and deployed before reporting it done.
 - When claiming something is "comprehensive" or "structurally new," prove it - e.g. via git diff against the pre-change commit, or literal before/after screenshots - rather than asserting it. If a claim turns out to be a re-skin rather than a real structural change, say so plainly rather than describing it as more than it is.
+## 13. Hybrid Direction (locked, supersedes prior sections 2/6/7/10 where they conflict)
+
+This section resolves the tension between "cinematic/alive" and "minimal/restrained" - both are wanted, split by page purpose, not blended uniformly everywhere.
+
+### Palette (supersedes Section 2)
+Grey base with darker green undertones - a muted, sophisticated grey-green, not a saturated forest green. The "deep living forest" feeling should read as mood/undertone, not as the dominant hue. Gold accent role unchanged.
+
+### Page Scope Split (supersedes Section 10's uniform treatment)
+- **Cinematic treatment** (motion, floating annotation cards, the illustrated signature score visual, ambient scroll/cursor reactivity, dramatic large-scale headline typography): Homepage, About Us, Blogs, Contact.
+- **Utility-first / restrained treatment** (calm, functional, minimal decoration, no ambient motion competing with content, precise smaller type): Tools listing page AND every individual native tool calculator page (Budget, Retirement, Investment, Net Worth, both Advanced tools). These are working interfaces, not narrative pages - navigation and task completion are the priority here, not atmosphere. This also resolves the earlier open concern about dense numeric content staying scannable in a dark cinematic theme.
+
+### Reference Direction
+Pull heavy visual inspiration from minimal.gallery/tag/finance - specifically the restraint, whitespace, and typographic precision of sites like Fey, Runway Financial, Composer, and Acctual. Blend this quality WITH the cinematic motion/floating-card concept already built on the cinematic-treatment pages - this is about craft and polish, not replacing the existing concept. The floating cards, signature dial/line visual, and current site functionality should stay conceptually - refine the execution so it reads as intentional and premium rather than templated.
+
+### Imagery (supersedes Section 6 for tool-explanation contexts)
+Real product screenshots are appropriate specifically to explain/showcase the tools (on the Tools page and/or homepage tool-preview sections). On the cinematic pages (About, Blogs, Contact), continue using web-sourced material and existing site assets for photography, video, and data/motion graphics - not app screenshots as primary hero imagery there.
+
+### Typography (supersedes Section 3's uniform guidance)
+Keep the large, dramatic headline scale for hero/impact moments on cinematic pages. Restrain scale and decoration elsewhere - body copy, interior sections, and everything on the Tools/tool-calculator pages.
+
+### Creative Latitude
+Real creative freedom is intended within this framework - the reference link and this section are guidance on direction and restraint, not a pixel-exact spec. Use judgment on composition and detail while staying inside these boundaries.
