@@ -1,9 +1,14 @@
 /* =====================================================
-   MoneyMatters — Dark Cinematic System (redesign round 2)
-   Supersedes the light editorial look. Loaded last on every
-   page, after site-base.css and any page-specific stylesheet.
-   Reuses existing markup/classes everywhere — presentation
-   layer only, no structural or logic changes.
+   MoneyMatters — Dark Forest System (redesign round 3)
+   Supersedes the round-2 near-black cinematic look. Loaded last
+   on every page, after site-base.css and any page-specific
+   stylesheet. Reuses existing markup/classes everywhere —
+   presentation layer only, no structural or logic changes.
+
+   Palette intent: a deep, living forest green base (not black,
+   not grey) with the emerald accent and gold counterpoint doing
+   the "alive" work against it — deliberately not the generic
+   AI-default "black bg + one bright accent" look.
    ===================================================== */
 
 :root {
@@ -15,24 +20,26 @@
     --mm-green-soft: rgba(52, 211, 153, 0.14);
     --mm-gold: #E3B04B;
     --mm-gold-soft: rgba(227, 176, 75, 0.16);
-    --mm-border: rgba(255, 255, 255, 0.10);
-    --mm-shadow-sm: 0 2px 14px rgba(0, 0, 0, 0.35);
-    --mm-shadow-md: 0 10px 34px rgba(0, 0, 0, 0.45);
-    --mm-shadow-lg: 0 26px 64px rgba(0, 0, 0, 0.55);
+    --mm-border: rgba(190, 214, 199, 0.12);
+    --mm-shadow-sm: 0 2px 14px rgba(3, 8, 6, 0.40);
+    --mm-shadow-md: 0 10px 34px rgba(3, 8, 6, 0.50);
+    --mm-shadow-lg: 0 26px 64px rgba(3, 8, 6, 0.60);
 
     /* New tokens for the dark surface system. --mm-cream/--mm-charcoal/
        --mm-text etc. are left alone at :root — they're used as BOTH
        backgrounds and light-on-dark text colors throughout the existing
        CSS, so redefining them would fix one usage and break the other.
-       These new tokens are applied via explicit overrides below instead. */
-    --mm-bg: #070D0A;
-    --mm-bg-deep: #020504;
-    --mm-surface: #101915;
-    --mm-surface-raised: #17221C;
-    --mm-surface-border: rgba(255, 255, 255, 0.09);
+       These new tokens are applied via explicit overrides below instead.
+       Each carries a deliberate forest-green cast (not neutral grey/black) —
+       verified >= 4.5:1 contrast against every text token below. */
+    --mm-bg: #0E1612;
+    --mm-bg-deep: #080C0B;
+    --mm-surface: #15211C;
+    --mm-surface-raised: #1F2E28;
+    --mm-surface-border: rgba(190, 214, 199, 0.11);
     --mm-text-light: #F2F6F3;
     --mm-text-light-muted: #A8B8AD;
-    --mm-text-light-soft: #718276;
+    --mm-text-light-soft: #85978B;
     --mm-glow: rgba(52, 211, 153, 0.5);
 }
 
@@ -82,6 +89,133 @@ body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { 
 }
 .cursor-glow.is-active { opacity: 0.5; }
 @media (pointer: coarse) { .cursor-glow { display: none; } }
+
+/* =====================================================
+   Signature motif — the site's recurring visual identity.
+   A radial score-ring + rising line-graph, injected by
+   scripts/signature-motif.js on every page. Ties every page
+   back to the diagnostic's actual score visualization instead
+   of decorating with unrelated shapes. Fixed, aria-hidden,
+   pointer-events:none, z-index:-1 — an ambient watermark that
+   sits behind all real content, never a functional element.
+   ===================================================== */
+.mm-signature-motif {
+    position: fixed;
+    top: clamp(-210px, -14vw, -140px);
+    right: clamp(-210px, -14vw, -140px);
+    width: clamp(320px, 34vw, 560px);
+    height: clamp(320px, 34vw, 560px);
+    z-index: -1;
+    pointer-events: none;
+}
+.mm-signature-motif svg { width: 100%; height: 100%; display: block; }
+.mm-sig-ring-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 1.5; opacity: 0.55; }
+.mm-sig-ring-fill {
+    fill: none;
+    stroke: var(--mm-green);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    opacity: 0.4;
+    transform: rotate(-90deg);
+    transform-origin: 300px 300px;
+    transition: stroke-dashoffset 0.1s linear;
+}
+.mm-sig-ring-outer { fill: none; stroke: var(--mm-gold); stroke-width: 1; stroke-dasharray: 2 10; opacity: 0.35; }
+.mm-sig-ticks { transform-origin: 300px 300px; }
+.mm-sig-tick { stroke: var(--mm-text-light-soft); stroke-width: 1.5; opacity: 0.3; }
+.mm-sig-line-path { fill: none; stroke: var(--mm-green); stroke-width: 2; stroke-linecap: round; opacity: 0.5; }
+.mm-sig-dot { fill: var(--mm-gold); opacity: 0.55; }
+.mm-sig-dot-2, .mm-sig-dot-3 { fill: var(--mm-green); }
+
+@media (max-width: 700px) {
+    .mm-signature-motif { width: clamp(220px, 52vw, 320px); height: clamp(220px, 52vw, 320px); opacity: 0.7; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .mm-sig-ticks, .mm-sig-line { transform: none !important; }
+    .mm-sig-ring-fill { stroke-dashoffset: 0 !important; }
+}
+
+/* =====================================================
+   Onboarding gate — sitewide modal for unverified visitors.
+   Injected by scripts/onboarding-gate.js. Reuses .connect-card/
+   .connect-btn/.kicker (already styled by dark-system.css above)
+   so it matches the diagnostic hero's visual language exactly.
+   ===================================================== */
+html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
+
+.mm-gate-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    box-sizing: border-box;
+    background: radial-gradient(ellipse 900px 700px at 50% 20%, rgba(52, 211, 153, 0.10), transparent 60%), rgba(6, 10, 9, 0.82);
+    backdrop-filter: blur(6px);
+    animation: mm-gate-fade 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes mm-gate-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.mm-gate-modal {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    background: var(--mm-surface-raised);
+    border: 1px solid var(--mm-surface-border);
+    border-radius: 24px;
+    padding: 44px 40px 40px;
+    box-sizing: border-box;
+    box-shadow: var(--mm-shadow-lg), 0 0 90px var(--mm-glow);
+    text-align: center;
+    animation: mm-gate-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes mm-gate-rise { from { opacity: 0; transform: translateY(18px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.mm-gate-modal h2 {
+    font-family: var(--mm-serif);
+    font-size: clamp(26px, 3.4vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--mm-text-light);
+    margin: 10px 0 12px;
+}
+.mm-gate-sub { color: var(--mm-text-light-muted); font-size: 16px; line-height: 1.55; max-width: 480px; margin: 0 auto 8px; }
+
+.mm-gate-skip {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: var(--mm-bg-deep);
+    border: 1px solid var(--mm-surface-border);
+    color: var(--mm-text-light-muted);
+    font-family: var(--mm-sans);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 14px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.mm-gate-skip:hover, .mm-gate-skip:focus-visible { color: var(--mm-text-light); border-color: var(--mm-green); }
+
+.mm-gate-grid.entry-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    max-width: 600px;
+    margin: 32px auto 0;
+    text-align: left;
+}
+.mm-gate-grid .connect-card { padding: 28px !important; }
+@media (max-width: 640px) {
+    .mm-gate-grid.entry-grid { grid-template-columns: 1fr; }
+    .mm-gate-modal { padding: 56px 24px 28px; }
+    .mm-gate-skip { font-size: 12px; padding: 8px 12px; right: 12px; top: 12px; }
+}
 
 /* =====================================================
    Header / nav — already dark, deepen + add glow-on-scroll hook
@@ -266,6 +400,84 @@ body main .hero {
 }
 .tools-container > div:hover { border-color: var(--mm-green) !important; }
 .tools-container > div img { background: rgba(52, 211, 153, 0.06) !important; }
+
+/* --- "Popular tools" cards: live data visualizations instead of static
+   illustration images — real product concepts (spend breakdown, retirement
+   readiness, growth trend), not stock art. --- */
+.tool-card-viz {
+    width: 100%;
+    height: 200px;
+    box-sizing: border-box;
+    border-radius: 14px;
+    background: rgba(52, 211, 153, 0.06);
+    margin-bottom: 22px;
+    padding: 24px 26px;
+    display: flex;
+}
+.tool-card-viz--bars { flex-direction: column; justify-content: center; gap: 14px; }
+.tcv-bar {
+    position: relative;
+    display: block;
+    height: 9px;
+    width: 0%;
+    background: var(--mm-green);
+    border-radius: 5px;
+    transition: width 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tcv-bar--gold { background: var(--mm-gold); }
+.tcv-bar em {
+    position: absolute;
+    left: 0; bottom: 100%;
+    margin-bottom: 5px;
+    font-style: normal;
+    font-family: var(--mm-sans);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--mm-text-light-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.section2.is-visible .tcv-bar { width: var(--w); }
+
+.tool-card-viz--ring { align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
+.tool-card-viz--ring svg { width: 108px; height: 108px; }
+.tcv-ring-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 9; }
+.tcv-ring-fill {
+    fill: none;
+    stroke: var(--mm-green);
+    stroke-width: 9;
+    stroke-linecap: round;
+    stroke-dasharray: 314;
+    stroke-dashoffset: 314;
+    transform: rotate(-90deg);
+    transform-origin: 60px 60px;
+    transition: stroke-dashoffset 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section2.is-visible .tcv-ring-fill { stroke-dashoffset: 69; }
+.tcv-ring-label { font-family: var(--mm-sans); font-size: 12px; font-weight: 700; color: var(--mm-text-light-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.tool-card-viz--trend { align-items: center; }
+.tool-card-viz--trend svg { width: 100%; height: 100%; overflow: visible; }
+.tcv-trend-path {
+    fill: none;
+    stroke: var(--mm-green);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 260;
+    stroke-dashoffset: 260;
+    transition: stroke-dashoffset 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section2.is-visible .tcv-trend-path { stroke-dashoffset: 0; }
+.tcv-trend-dot { fill: var(--mm-gold); opacity: 0; transition: opacity 0.4s ease 1.1s; }
+.section2.is-visible .tcv-trend-dot { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+    .tcv-bar { width: var(--w) !important; transition: none !important; }
+    .tcv-ring-fill { stroke-dashoffset: 69 !important; transition: none !important; }
+    .tcv-trend-path { stroke-dashoffset: 0 !important; transition: none !important; }
+    .tcv-trend-dot { opacity: 1 !important; }
+}
 .tools-container > div h3 { color: var(--mm-text-light) !important; }
 .tools-container > div p { color: var(--mm-text-light-muted) !important; }
 
@@ -455,11 +667,11 @@ body main .hero {
     /* Layer a dark scrim over the illustration (light cream/gold source
        image) so the full-bleed hero reads dark, not a bright rectangle. */
     background-image:
-        linear-gradient(135deg, rgba(2, 5, 4, 0.96), rgba(7, 13, 10, 0.93)),
+        linear-gradient(135deg, rgba(6, 10, 9, 0.96), rgba(11, 18, 15, 0.93)),
         url('../images/blog-background.jpg') !important;
 }
 .blog-hero-v2-scrim {
-    background: rgba(16, 25, 21, 0.72) !important;
+    background: rgba(21, 33, 28, 0.72) !important;
     border: 1px solid var(--mm-surface-border);
 }
 .blog-hero-v2-scrim h1 { color: var(--mm-text-light) !important; }
@@ -499,6 +711,44 @@ body main .hero {
 }
 .data-request-status--success { color: var(--mm-green); }
 .data-request-status--error { color: #FF8A75; }
+
+/* =====================================================
+   Contact page: advisor-connection feature
+   Real photography earns its place here specifically — a
+   person-to-person moment, not a lead hero visual.
+   ===================================================== */
+.advisor-connect {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 44px;
+    align-items: center;
+    max-width: 1080px;
+    margin: 0 auto 70px;
+    padding: 0 6%;
+    box-sizing: border-box;
+}
+.advisor-connect-photo {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--mm-surface-border);
+    box-shadow: var(--mm-shadow-md);
+    aspect-ratio: 3 / 2;
+}
+.advisor-connect-photo img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0 !important; }
+.advisor-connect-copy h2 {
+    font-family: var(--mm-serif);
+    font-size: clamp(24px, 2.8vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--mm-text-light);
+    margin: 12px 0 14px;
+    line-height: 1.2;
+}
+.advisor-connect-copy p { color: var(--mm-text-light-muted); font-size: 16px; line-height: 1.6; margin: 0 0 22px; }
+.advisor-connect-copy .connect-btn { display: inline-flex; }
+@media (max-width: 800px) {
+    .advisor-connect { grid-template-columns: 1fr; gap: 24px; }
+}
 
 /* =====================================================
    Contact page

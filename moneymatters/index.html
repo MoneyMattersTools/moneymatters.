@@ -22,7 +22,7 @@
             <span class="value-divider">●</span>
             <span class="value-item">Free in under 2 minutes.</span>
             <span class="value-divider">●</span>
-            <span class="value-item">No login, no upsell, no catch.</span>
+            <span class="value-item">Free to start, no cost, ever.</span>
             <span class="value-divider">●</span>
             <span class="value-item">Real advisors, actually vetted.</span>
             <span class="value-divider">●</span>
@@ -34,7 +34,7 @@
             <span class="value-divider">●</span>
             <span class="value-item">Free in under 2 minutes.</span>
             <span class="value-divider">●</span>
-            <span class="value-item">No login, no upsell, no catch.</span>
+            <span class="value-item">Free to start, no cost, ever.</span>
             <span class="value-divider">●</span>
             <span class="value-item">Real advisors, actually vetted.</span>
             <span class="value-divider">●</span>
@@ -180,7 +180,12 @@
                 <div class="tools-container">
                     <div>
                         <a href="individual-tools/basic-tools/basic-budget-tool.html">
-                        <img src="images/budget-img.png" alt="Budgeting">
+                        <div class="tool-card-viz tool-card-viz--bars" aria-hidden="true">
+                          <span class="tcv-bar" style="--w:82%"><em>Housing</em></span>
+                          <span class="tcv-bar" style="--w:64%"><em>Food</em></span>
+                          <span class="tcv-bar tcv-bar--gold" style="--w:45%"><em>Savings</em></span>
+                          <span class="tcv-bar" style="--w:28%"><em>Other</em></span>
+                        </div>
                         <h3>Basic Budget Tool</h3>
                         <p>Do you know how you spend your money?</p>
                         </a>
@@ -188,7 +193,10 @@
 
                     <div>
                         <a href="individual-tools/basic-tools/basic-retirement-tool.html">
-                        <img src="images/retirement-img.png" alt="Retirement">
+                        <div class="tool-card-viz tool-card-viz--ring" aria-hidden="true">
+                          <svg viewBox="0 0 120 120"><circle class="tcv-ring-track" cx="60" cy="60" r="50"/><circle class="tcv-ring-fill" cx="60" cy="60" r="50"/></svg>
+                          <span class="tcv-ring-label">On track</span>
+                        </div>
                         <h3>Retirement Planning Tool</h3>
                         <p>Are you on track to retire comfortably?</p>
                         </a>
@@ -196,7 +204,9 @@
 
                     <div>
                         <a href="individual-tools/basic-tools/basic-investment-tool .html">
-                        <img src="images/investment-img.png" alt="Investing">
+                        <div class="tool-card-viz tool-card-viz--trend" aria-hidden="true">
+                          <svg viewBox="0 0 220 120" preserveAspectRatio="none"><path class="tcv-trend-path" d="M 10 95 L 55 78 L 100 85 L 145 45 L 210 18"/><circle class="tcv-trend-dot" cx="210" cy="18" r="5"/></svg>
+                        </div>
                         <h3>Investment Management Tool</h3>
                         <p>Does your investment strategy match your goals?</p>
                         </a>
@@ -292,6 +302,8 @@
         <script src="scripts/hamburger.js"></script>
         <script src="scripts/scroll-animations.js"></script>
         <script src="scripts/cinematic-motion.js"></script>
+        <script src="scripts/signature-motif.js"></script>
+        <script src="scripts/onboarding-gate.js"></script>
         <script src="scripts/video-autoplay.js"></script>
         <script src="scripts/diagnostic.js"></script>
     </body>
