@@ -14,13 +14,6 @@
     try { window.sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
   }
 
-  function rootPrefix() {
-    var homeLink = document.querySelector('header nav a[href$="index.html"]');
-    if (!homeLink) return '';
-    var href = homeLink.getAttribute('href');
-    return href.replace(/index\.html$/, '');
-  }
-
   fetch('/api/session')
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -35,7 +28,6 @@
     });
 
   function showGate() {
-    var root = rootPrefix();
     var overlay = document.createElement('div');
     overlay.className = 'mm-gate-overlay';
     overlay.innerHTML =
@@ -45,12 +37,12 @@
         '<h2 id="mm-gate-heading">Where do you actually stand with money?</h2>' +
         '<p class="mm-gate-sub">Pick a starting point — free, takes under 2 minutes. Or skip and browse freely.</p>' +
         '<div class="entry-grid mm-gate-grid">' +
-          '<a class="connect-card" id="mm-gate-health-score" href="' + root + 'index.html?start=health-score">' +
+          '<a class="connect-card" id="mm-gate-health-score" href="/index.html?start=health-score">' +
             '<h3>Check my Financial Health Score</h3>' +
             '<p>A quick, honest read on where you stand — and what to do next.</p>' +
             '<span class="connect-btn">Start <span aria-hidden="true">&rarr;</span></span>' +
           '</a>' +
-          '<a class="connect-card" id="mm-gate-net-worth" href="' + root + 'individual-tools/basic-tools/net-worth-calculator.html">' +
+          '<a class="connect-card" id="mm-gate-net-worth" href="/individual-tools/basic-tools/net-worth-calculator.html">' +
             '<h3>See my Net Worth</h3>' +
             '<p>Add up what you own and owe to see the full picture.</p>' +
             '<span class="connect-btn">Start <span aria-hidden="true">&rarr;</span></span>' +
