@@ -16,32 +16,15 @@
     </head>
 
     <body>
-        <div class="value-strip" aria-label="Why MoneyMatters">
-          <div class="value-strip-track">
-            <span class="value-item">You can't fix what you can't see. See it first.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Free in under 2 minutes.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Free to start, no cost, ever.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Real advisors, actually vetted.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Your data, your call.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Built by people who've been confused too.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">You can't fix what you can't see. See it first.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Free in under 2 minutes.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Free to start, no cost, ever.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Real advisors, actually vetted.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Your data, your call.</span>
-            <span class="value-divider">●</span>
-            <span class="value-item">Built by people who've been confused too.</span>
-            <span class="value-divider">●</span>
+        <div class="trust-band" aria-label="Why MoneyMatters">
+          <div class="trust-band__inner">
+            <span class="trust-item"><strong>Free to start,</strong> no cost, ever.</span>
+            <span class="trust-div" aria-hidden="true"></span>
+            <span class="trust-item">Real advisors, <strong>actually vetted.</strong></span>
+            <span class="trust-div" aria-hidden="true"></span>
+            <span class="trust-item">Your data, <strong>your call.</strong></span>
+            <span class="trust-div" aria-hidden="true"></span>
+            <span class="trust-item">Built by people <strong>who have been confused too.</strong></span>
           </div>
         </div>
         <header>
@@ -66,6 +49,7 @@
         <main>
 
             <div class="hero" id="diagnostic-hero" data-active-step="choice">
+                <div class="hero-grid-texture" aria-hidden="true"></div>
                 <div class="mesh-blob mesh-blob-1" aria-hidden="true"></div>
                 <div class="mesh-blob mesh-blob-2" aria-hidden="true"></div>
                 <div class="mesh-blob mesh-blob-3" aria-hidden="true"></div>
@@ -76,16 +60,16 @@
                     <span class="kicker"><span class="kicker-dot"></span>Personal finance, simplified</span>
                     <h1>Where do you actually stand with <em class="h-italic-accent">money</em>?</h1>
                     <p class="hero-sub">Pick a starting point. Takes less than 2 minutes.</p>
-                    <div class="entry-grid">
-                      <button type="button" class="connect-card" id="start-health-score">
+                    <div class="entry-grid entry-grid--asymmetric">
+                      <button type="button" class="connect-card connect-card--primary" id="start-health-score">
                         <h3>Check my Financial Health Score</h3>
                         <p>A quick, honest read on where you stand — and what to do next.</p>
                         <span class="connect-btn">Start <span aria-hidden="true">→</span></span>
                       </button>
-                      <a class="connect-card" href="individual-tools/basic-tools/net-worth-calculator.html">
+                      <a class="connect-card connect-card--secondary" href="individual-tools/basic-tools/net-worth-calculator.html">
                         <h3>See my Net Worth</h3>
-                        <p>Add up what you own and owe to see the full picture.</p>
-                        <span class="connect-btn">Start <span aria-hidden="true">→</span></span>
+                        <p>Add up what you own and owe.</p>
+                        <span class="connect-btn connect-btn--ghost">Start <span aria-hidden="true">→</span></span>
                       </a>
                     </div>
                   </div>
@@ -171,10 +155,13 @@
                 </div>
 
                 <div class="hero-signature-viz" id="hero-signature-viz" aria-hidden="true">
+                  <div class="hsv-float hsv-float-a"><span class="hsv-float-value">+12 pts</span><span class="hsv-float-label">vs. last check</span></div>
+                  <div class="hsv-float hsv-float-b"><span class="hsv-float-value">Solid Ground</span><span class="hsv-float-label">your band, once scored</span></div>
                   <svg viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg">
                     <g class="hsv-ring">
                       <circle class="hsv-ring-track" cx="230" cy="230" r="188"/>
-                      <circle class="hsv-ring-fill" cx="230" cy="230" r="188"/>
+                      <circle class="hsv-ring-fill hsv-ring-fill-a" cx="230" cy="230" r="188"/>
+                      <circle class="hsv-ring-fill hsv-ring-fill-b" cx="230" cy="230" r="188"/>
                     </g>
                     <g class="hsv-line-group">
                       <path class="hsv-line-path" d="M 90 320 Q 150 260 210 240 T 340 160 Q 380 140 400 90"/>
@@ -183,7 +170,7 @@
                     </g>
                   </svg>
                   <div class="hsv-caption">
-                    <span class="hsv-caption-label">Your financial picture</span>
+                    <span class="hsv-caption-label">Financial Health Score</span>
                     <span class="hsv-caption-sub">Two minutes to see it clearly</span>
                   </div>
                 </div>

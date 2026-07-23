@@ -91,6 +91,48 @@ body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { 
 @media (pointer: coarse) { .cursor-glow { display: none; } }
 
 /* =====================================================
+   Trust band — replaces the value-strip scrolling marquee
+   sitewide. A scrolling ticker reads as a template default;
+   this is a bolder, static statement instead. Same underlying
+   claims, curated to the four strongest and no longer looping.
+   ===================================================== */
+.trust-band {
+    background: var(--mm-bg-deep) !important;
+    border-bottom: 1px solid var(--mm-surface-border) !important;
+    padding: 16px 6% !important;
+    box-sizing: border-box;
+}
+.trust-band__inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+}
+.trust-item {
+    font-family: var(--mm-sans-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mm-text-light-muted);
+    padding: 4px 22px;
+    white-space: nowrap;
+}
+.trust-item strong { color: var(--mm-text-light); font-weight: 700; }
+.trust-item:nth-child(4n+1) strong { color: var(--mm-green); }
+.trust-item:nth-child(4n+3) strong { color: var(--mm-gold); }
+.trust-div { width: 1px; height: 14px; background: var(--mm-surface-border); flex-shrink: 0; }
+@media (max-width: 900px) {
+    .trust-band { padding: 14px 5% !important; }
+    .trust-item { font-size: 12.5px; padding: 4px 14px; white-space: normal; }
+}
+@media (max-width: 560px) {
+    .trust-div { display: none; }
+    .trust-item { width: 100%; text-align: center; padding: 5px 0; }
+}
+
+/* =====================================================
    Signature motif — the site's recurring visual identity.
    A radial score-ring + rising line-graph, injected by
    scripts/signature-motif.js on every page. Ties every page
@@ -299,7 +341,9 @@ body main .hero {
 
 .hero .hero-text h1 {
     color: var(--mm-text-light) !important;
-    font-size: clamp(52px, 7.2vw, 96px) !important;
+    font-size: clamp(56px, 8vw, 108px) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -0.03em !important;
     text-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
 }
 .hero .hero-text h1 em, .hero .hero-text h1 .h-italic-accent { color: var(--mm-green) !important; }
@@ -327,6 +371,32 @@ body main .hero {
 #diagnostic-hero .connect-card > p { color: var(--mm-text-light-muted) !important; }
 #diagnostic-hero .connect-btn { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
 #diagnostic-hero .connect-btn:hover { background: var(--mm-text-light) !important; }
+
+/* Asymmetric choice cards — a hierarchy (primary/secondary), not a
+   coin-flip between two identical boxes. */
+#diagnostic-hero .entry-grid.entry-grid--asymmetric {
+    grid-template-columns: 1.6fr 1fr !important;
+    align-items: stretch !important;
+}
+#diagnostic-hero .connect-card--primary {
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.16), rgba(52, 211, 153, 0.02)) !important;
+    border: 1px solid rgba(52, 211, 153, 0.35) !important;
+}
+#diagnostic-hero .connect-card--primary h3 { font-size: 28px !important; }
+#diagnostic-hero .connect-card--secondary {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    justify-content: center !important;
+}
+#diagnostic-hero .connect-btn--ghost {
+    background: var(--mm-surface-raised) !important;
+    color: var(--mm-text-light) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+}
+#diagnostic-hero .connect-btn--ghost:hover { border-color: var(--mm-green) !important; }
+@media (max-width: 640px) {
+    #diagnostic-hero .entry-grid.entry-grid--asymmetric { grid-template-columns: 1fr !important; }
+}
 
 /* Email / quiz form fields */
 #diagnostic-hero .form-side label { color: var(--mm-text-light-muted) !important; }
@@ -397,6 +467,37 @@ body main .hero {
    is already managed by diagnostic.js, nothing here touches
    funnel logic.
    ===================================================== */
+/* diagnostic.css spans .hero-text across both grid columns at the choice
+   step, because #hero-visual is display:none there (nothing to share the
+   row with). Now that .hero-signature-viz occupies column 2 at that same
+   step, .hero-text must go back to a single column or the two overlap. */
+#diagnostic-hero[data-active-step="choice"] .hero-text {
+    max-width: none !important;
+    text-align: left !important;
+    grid-column: 1 !important;
+    margin: 0 !important;
+}
+#diagnostic-hero[data-active-step="choice"] .hero-text .hero-sub { margin-left: 0 !important; margin-right: 0 !important; }
+@media (max-width: 900px) {
+    #diagnostic-hero[data-active-step="choice"] .hero-text {
+        grid-column: 1 !important;
+        text-align: center !important;
+        max-width: 640px !important;
+        margin: 0 auto !important;
+    }
+    #diagnostic-hero[data-active-step="choice"] .hero-text .hero-sub { margin-left: auto !important; margin-right: auto !important; }
+}
+
+.hero-grid-texture {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(var(--mm-surface-border) 1px, transparent 1px), linear-gradient(90deg, var(--mm-surface-border) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse 900px 700px at 68% 32%, black, transparent 72%);
+    mask-image: radial-gradient(ellipse 900px 700px at 68% 32%, black, transparent 72%);
+    opacity: 0.55;
+    pointer-events: none;
+}
 .hero-signature-viz {
     display: none;
     grid-column: 2;
@@ -405,21 +506,31 @@ body main .hero {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    z-index: 2;
 }
 #diagnostic-hero[data-active-step="choice"] .hero-signature-viz { display: flex; }
-.hero-signature-viz svg { width: min(100%, 420px); height: auto; overflow: visible; }
-.hsv-ring { transform-origin: 230px 230px; animation: hsv-rotate 40s linear infinite; }
+.hero-signature-viz svg { width: min(100%, 520px); height: auto; overflow: visible; }
+.hsv-ring { transform-origin: 230px 230px; animation: hsv-rotate 50s linear infinite; }
 .hsv-ring-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 2; }
 .hsv-ring-fill {
     fill: none;
-    stroke: var(--mm-green);
-    stroke-width: 2.5;
+    stroke-width: 3;
     stroke-linecap: round;
-    stroke-dasharray: 1181;
-    stroke-dashoffset: 520;
-    transform: rotate(-90deg);
     transform-origin: 230px 230px;
-    animation: hsv-breathe 5s ease-in-out infinite;
+}
+.hsv-ring-fill-a {
+    stroke: var(--mm-green);
+    stroke-dasharray: 826 1181;
+    stroke-dashoffset: 0;
+    transform: rotate(-90deg);
+    animation: hsv-breathe-a 5s ease-in-out infinite;
+}
+.hsv-ring-fill-b {
+    stroke: var(--mm-gold);
+    stroke-dasharray: 212 1181;
+    stroke-dashoffset: -826;
+    transform: rotate(-90deg);
+    opacity: 0.9;
 }
 .hsv-line-path { fill: none; stroke: var(--mm-gold); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0.9; }
 .hsv-dot-1 { fill: var(--mm-gold); }
@@ -428,19 +539,42 @@ body main .hero {
 .hsv-caption-label {
     display: block;
     font-family: var(--mm-sans-display);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--mm-text-light-soft);
 }
-.hsv-caption-sub { display: block; font-family: var(--mm-serif); font-size: 21px; color: var(--mm-text-light); margin-top: 8px; }
-@keyframes hsv-breathe { 0%, 100% { opacity: 0.75; stroke-dashoffset: 520; } 50% { opacity: 1; stroke-dashoffset: 460; } }
+.hsv-caption-sub { display: block; font-family: var(--mm-serif); font-size: 23px; color: var(--mm-text-light); margin-top: 8px; }
+
+/* Floating annotation cards — the "doing real visual work" detail from
+   the approved concept, not just a static ring. */
+.hsv-float {
+    position: absolute;
+    background: var(--mm-surface-raised);
+    border: 1px solid var(--mm-surface-border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    box-shadow: var(--mm-shadow-md);
+    backdrop-filter: blur(6px);
+    animation: hsv-drift 7s ease-in-out infinite;
+}
+.hsv-float-value { display: block; font-family: var(--mm-sans-display); font-size: 14px; font-weight: 700; }
+.hsv-float-label { display: block; font-size: 11px; color: var(--mm-text-light-soft); margin-top: 2px; }
+.hsv-float-a { top: -4%; left: -10%; animation-delay: 0s; }
+.hsv-float-a .hsv-float-value { color: var(--mm-gold); }
+.hsv-float-b { bottom: 2%; right: -14%; animation-delay: 3.5s; }
+.hsv-float-b .hsv-float-value { color: var(--mm-green); }
+
+@keyframes hsv-breathe-a { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
 @keyframes hsv-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@media (max-width: 900px) { .hero-signature-viz { grid-column: 1; grid-row: 2; margin-top: 20px; } }
+@keyframes hsv-drift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@media (max-width: 900px) {
+    .hero-signature-viz { grid-column: 1; grid-row: 2; margin-top: 20px; }
+    .hsv-float { display: none; }
+}
 @media (prefers-reduced-motion: reduce) {
-    .hsv-ring { animation: none; }
-    .hsv-ring-fill { animation: none; stroke-dashoffset: 460; }
+    .hsv-ring, .hsv-ring-fill-a, .hsv-float { animation: none; }
 }
 
 /* =====================================================
@@ -708,7 +842,10 @@ body main .hero {
 .about-cta h2 { color: var(--mm-text-light) !important; }
 .cta-button { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
 .cta-button:hover { background: var(--mm-text-light) !important; }
-.cta-button--ghost { border-color: var(--mm-surface-border) !important; color: var(--mm-text-light) !important; }
+/* .cta-button--ghost only overrode color/border, never background — the
+   plain .cta-button rule's forced green background (!important) bled
+   through underneath, producing near-white text on green at 1.76:1. */
+.cta-button--ghost { background: transparent !important; border-color: var(--mm-surface-border) !important; color: var(--mm-text-light) !important; }
 .cta-button--ghost:hover { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; border-color: var(--mm-green) !important; }
 .pull-quote { border-left-color: var(--mm-green); }
 .pull-quote p { color: var(--mm-text-light); }
@@ -718,7 +855,10 @@ body main .hero {
    ===================================================== */
 .native-diagnostics { background: var(--mm-bg-deep) !important; }
 .native-diagnostics h2 { color: var(--mm-text-light); }
-.native-diagnostics-sub { color: var(--mm-text-light-muted); }
+/* site-base.css targets this with the extra .native-diagnostics parent
+   selector (0,2,0), which outranks a bare .native-diagnostics-sub rule
+   (0,1,0) regardless of load order — match its specificity exactly. */
+.native-diagnostics .native-diagnostics-sub, .native-diagnostics-sub { color: var(--mm-text-light-muted); }
 .tools-hero-icon-row img { background: var(--mm-cream-warm); box-shadow: var(--mm-shadow-sm); }
 
 .section2--secondary { background: var(--mm-bg) !important; }
@@ -803,6 +943,16 @@ body main .hero {
 .data-request-status--success { color: var(--mm-green); }
 .data-request-status--error { color: #FF8A75; }
 
+/* Prose links inside the footer disclaimer and About Us FAQ never had a
+   color rule anywhere in the cascade (light or dark), so they rendered
+   as the literal browser default link blue (#0000EE) at 2:1 contrast on
+   a near-black background — present on every page via the shared footer. */
+.disclaimer p a, .faq-list details p a {
+    color: var(--mm-green) !important;
+    text-decoration: underline;
+}
+.disclaimer p a:hover, .faq-list details p a:hover { color: var(--mm-text-light) !important; }
+
 /* =====================================================
    Contact page: advisor-connection feature
    Real photography earns its place here specifically — a
@@ -850,7 +1000,13 @@ body main .hero {
 }
 .contact-option h3 { color: var(--mm-text-light); }
 .contact-option p { color: var(--mm-text-light-muted); }
-.contact-option-btn { color: var(--mm-green); }
+/* homestyling.css's .contact-option-btn is a solid pill button (light-green
+   bg + white text) — the earlier dark-mode override only swapped the text
+   color, leaving the light-mode green background in place underneath,
+   which produced green-on-green at 1.47:1. Override both, matching the
+   .connect-btn pill pattern used elsewhere. */
+.contact-option-btn { background: var(--mm-green); color: var(--mm-bg-deep) !important; }
+a.contact-option:hover .contact-option-btn { background: var(--mm-text-light); }
 .contact-form label { color: var(--mm-text-light-muted); }
 .contact-form input, .contact-form textarea {
     background: var(--mm-surface);
