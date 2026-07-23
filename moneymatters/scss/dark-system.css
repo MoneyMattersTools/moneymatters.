@@ -1,14 +1,24 @@
 /* =====================================================
-   MoneyMatters — Dark Forest System (redesign round 3)
-   Supersedes the round-2 near-black cinematic look. Loaded last
-   on every page, after site-base.css and any page-specific
-   stylesheet. Reuses existing markup/classes everywhere —
-   presentation layer only, no structural or logic changes.
+   MoneyMatters — Hybrid Cinematic/Utility System (round 4,
+   per DESIGN_SPEC.md §13). Loaded last on every page, after
+   site-base.css and any page-specific stylesheet. Reuses
+   existing markup/classes everywhere — presentation layer
+   only, no structural or logic changes.
 
-   Palette intent: a deep, living forest green base (not black,
-   not grey) with the emerald accent and gold counterpoint doing
-   the "alive" work against it — deliberately not the generic
-   AI-default "black bg + one bright accent" look.
+   Palette intent (§13, supersedes round 3's saturated forest
+   green): a muted, sophisticated grey-green — the "living
+   forest" feeling now reads as undertone/mood, not as the
+   dominant hue. Gold stays the counterpoint accent.
+
+   Page treatment is split by purpose, not uniform (§13):
+   Homepage/About/Blogs/Contact keep the full cinematic
+   treatment (motion, floating cards, ambient signature motif,
+   dramatic headline scale). Tools + every native tool
+   calculator page pull toward a calmer, restrained,
+   utility-first treatment — no ambient motion, smaller precise
+   type — since those are working interfaces, not narrative
+   pages. See page-specific selectors below for where that
+   split is implemented.
    ===================================================== */
 
 :root {
@@ -30,16 +40,16 @@
        backgrounds and light-on-dark text colors throughout the existing
        CSS, so redefining them would fix one usage and break the other.
        These new tokens are applied via explicit overrides below instead.
-       Each carries a deliberate forest-green cast (not neutral grey/black) —
-       verified >= 4.5:1 contrast against every text token below. */
-    --mm-bg: #0E1612;
-    --mm-bg-deep: #080C0B;
-    --mm-surface: #15211C;
-    --mm-surface-raised: #1F2E28;
-    --mm-surface-border: rgba(190, 214, 199, 0.11);
+       Muted grey-green undertone per §13 — verified >= 4.5:1 contrast
+       against every text token below (re-verified after this retint). */
+    --mm-bg: #101312;
+    --mm-bg-deep: #090B0A;
+    --mm-surface: #1A1F1C;
+    --mm-surface-raised: #242B28;
+    --mm-surface-border: rgba(190, 214, 199, 0.10);
     --mm-text-light: #F2F6F3;
     --mm-text-light-muted: #A8B8AD;
-    --mm-text-light-soft: #85978B;
+    --mm-text-light-soft: #939F99;
     --mm-glow: rgba(52, 211, 153, 0.5);
 }
 
@@ -334,9 +344,12 @@ body main .hero {
         linear-gradient(180deg, var(--mm-bg-deep) 0%, var(--mm-bg) 55%, var(--mm-bg) 100%) !important;
     min-height: 720px !important;
 }
-.hero .mesh-blob-1 { background: radial-gradient(circle, rgba(52, 211, 153, 0.30), transparent 60%); }
-.hero .mesh-blob-2 { background: radial-gradient(circle, rgba(227, 176, 75, 0.18), transparent 60%); }
-.hero .mesh-blob-3 { background: radial-gradient(circle, rgba(52, 211, 153, 0.12), transparent 60%); }
+/* Toned down for restraint per DESIGN_SPEC.md §13 (Fey/Runway/Composer/
+   Acctual reference) — the floating-card/signature-visual concept stays,
+   executed with a quieter hand rather than removed. */
+.hero .mesh-blob-1 { background: radial-gradient(circle, rgba(52, 211, 153, 0.16), transparent 60%); }
+.hero .mesh-blob-2 { background: radial-gradient(circle, rgba(227, 176, 75, 0.10), transparent 60%); }
+.hero .mesh-blob-3 { background: radial-gradient(circle, rgba(52, 211, 153, 0.07), transparent 60%); }
 .hero::after { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent) !important; }
 
 .hero .hero-text h1 {
@@ -495,7 +508,7 @@ body main .hero {
     background-size: 56px 56px;
     -webkit-mask-image: radial-gradient(ellipse 900px 700px at 68% 32%, black, transparent 72%);
     mask-image: radial-gradient(ellipse 900px 700px at 68% 32%, black, transparent 72%);
-    opacity: 0.55;
+    opacity: 0.32;
     pointer-events: none;
 }
 .hero-signature-viz {
@@ -553,14 +566,14 @@ body main .hero {
     position: absolute;
     background: var(--mm-surface-raised);
     border: 1px solid var(--mm-surface-border);
-    border-radius: 14px;
-    padding: 12px 16px;
-    box-shadow: var(--mm-shadow-md);
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: var(--mm-shadow-sm);
     backdrop-filter: blur(6px);
     animation: hsv-drift 7s ease-in-out infinite;
 }
-.hsv-float-value { display: block; font-family: var(--mm-sans-display); font-size: 14px; font-weight: 700; }
-.hsv-float-label { display: block; font-size: 11px; color: var(--mm-text-light-soft); margin-top: 2px; }
+.hsv-float-value { display: block; font-family: var(--mm-sans-display); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+.hsv-float-label { display: block; font-size: 10.5px; color: var(--mm-text-light-soft); margin-top: 2px; }
 .hsv-float-a { top: -4%; left: -10%; animation-delay: 0s; }
 .hsv-float-a .hsv-float-value { color: var(--mm-gold); }
 .hsv-float-b { bottom: 2%; right: -14%; animation-delay: 3.5s; }
@@ -739,6 +752,17 @@ body main .hero {
 }
 .page-hero h1, .about-hero h1, .tools-hero h1 { color: var(--mm-text-light) !important; }
 .page-hero p, .about-hero p, .about-hero-sub, .tools-hero-sub { color: var(--mm-text-light-muted) !important; }
+
+/* Utility pages (Tools, native tool calculators, Privacy) pull toward
+   calm/restrained per DESIGN_SPEC.md §13 — flatten the ambient hero
+   glow to a plain surface and shrink the display type. Scoped to
+   .utility-page specifically since .page-hero is shared with Contact,
+   which stays fully cinematic. */
+.utility-page .page-hero,
+.utility-page .tools-hero { background: var(--mm-bg-deep) !important; }
+.utility-page .page-hero h1,
+.utility-page .tools-hero h1 { font-size: clamp(30px, 3.4vw, 42px) !important; letter-spacing: -0.015em !important; }
+.utility-page .tool-intro h1 { font-size: clamp(26px, 2.8vw, 36px) !important; }
 .about-section h2 { color: var(--mm-text-light) !important; }
 .about-section p { color: var(--mm-text-light-muted) !important; }
 .simple-page { color: var(--mm-text-light-muted); }
@@ -860,6 +884,17 @@ body main .hero {
    (0,1,0) regardless of load order — match its specificity exactly. */
 .native-diagnostics .native-diagnostics-sub, .native-diagnostics-sub { color: var(--mm-text-light-muted); }
 .tools-hero-icon-row img { background: var(--mm-cream-warm); box-shadow: var(--mm-shadow-sm); }
+
+/* Real product screenshots per DESIGN_SPEC.md §13 — replaces the abstract
+   mini-bar/donut previews with actual tool UI, since this is a utility
+   page and the point is to show what you're actually clicking into. */
+.feature-tool-screenshot {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid var(--mm-surface-border);
+}
+.feature-tool-screenshot img { width: 100%; height: auto; display: block; border-radius: 0 !important; }
 
 .section2--secondary { background: var(--mm-bg) !important; }
 .section2--secondary h2 { color: var(--mm-text-light-muted) !important; }

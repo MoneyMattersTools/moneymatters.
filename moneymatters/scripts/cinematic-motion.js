@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isFinePointer = window.matchMedia('(pointer: fine)').matches;
+  // Utility pages (Tools + native tool calculators) opt out of ambient
+  // atmosphere per DESIGN_SPEC.md §13 — working interfaces, not narrative
+  // pages. Scroll-reveal and magnetic hover below stay on everywhere;
+  // only the cursor-glow and grain-overlay are cinematic-only.
+  var isUtilityPage = document.body.classList.contains('utility-page');
 
   // --- Cursor-follow spotlight (desktop, precise-pointer only) ---
-  if (isFinePointer && !prefersReducedMotion) {
+  if (isFinePointer && !prefersReducedMotion && !isUtilityPage) {
     var glow = document.createElement('div');
     glow.className = 'cursor-glow';
     document.body.appendChild(glow);
@@ -39,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // --- Film-grain overlay (static, cheap) ---
-  if (!prefersReducedMotion) {
+  if (!prefersReducedMotion && !isUtilityPage) {
     var grain = document.createElement('div');
     grain.className = 'grain-overlay';
     document.body.appendChild(grain);
