@@ -8,10 +8,10 @@
   var path = window.location.pathname;
   if (/(^|\/)index\.html$/.test(path) || /\/$/.test(path)) return;
 
-  if (window.sessionStorage.getItem(STORAGE_KEY)) return;
+  if (window.localStorage.getItem(STORAGE_KEY)) return;
 
   function markSeen() {
-    try { window.sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+    try { window.localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
   }
 
   fetch('/api/session')
