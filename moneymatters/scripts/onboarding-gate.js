@@ -65,7 +65,10 @@
     var modal = overlay.querySelector('.mm-gate-modal');
 
     function getFocusable() {
-      return overlay.querySelectorAll('a, button, input');
+      return Array.prototype.filter.call(
+        overlay.querySelectorAll('a, button, input'),
+        function (el) { return !el.hidden && el.offsetParent !== null; }
+      );
     }
 
     function closeGate() {
@@ -73,6 +76,8 @@
       document.documentElement.classList.remove('mm-gate-open');
       overlay.remove();
       document.removeEventListener('keydown', onKeydown);
+      var wordmark = document.querySelector('header a[href$="index.html"]');
+      if (wordmark) wordmark.focus();
     }
 
     function onKeydown(e) {

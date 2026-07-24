@@ -107,6 +107,22 @@
 
   var steps = heroRoot.querySelectorAll('.hero-step');
   var heroVisual = document.getElementById('hero-visual');
+  // Skips focus-management on the very first setStep() call (the page's
+  // initial state, resolved from session/URL before the user has done
+  // anything) so it doesn't fight the site-wide onboarding gate for focus —
+  // the gate runs its own independent /api/session check and may still be
+  // settling into its modal at that moment. Every later, user-driven step
+  // change focuses the new panel's heading.
+  var hasSetStepOnce = false;
+
+  function focusStepHeading(name) {
+    var panel = heroRoot.querySelector('.hero-step[data-step="' + name + '"]');
+    if (!panel) return;
+    var heading = panel.querySelector('h1, h2');
+    var target = heading || panel;
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus();
+  }
 
   function setStep(name) {
     heroRoot.dataset.activeStep = name;
@@ -117,6 +133,8 @@
         el.setAttribute('hidden', '');
       }
     });
+    if (hasSetStepOnce) focusStepHeading(name);
+    hasSetStepOnce = true;
   }
 
   function el(id) {
@@ -199,6 +217,11 @@
       });
       answersEl.appendChild(btn);
     });
+    // renderQuestion() rebuilds the answer list on every click, which
+    // destroys the button the user just activated — move focus to the
+    // (already-updated) question heading so keyboard focus doesn't get
+    // stranded on a removed element, and so aria-live announces the change.
+    el('quiz-question-text').focus();
   }
 
   function submitDiagnostic() {

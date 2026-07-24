@@ -15,7 +15,7 @@
     </head>
 
     <body class="utility-page">
-        <div class="value-strip" aria-label="Why MoneyMatters">
+        <div class="value-strip" aria-hidden="true" aria-label="Why MoneyMatters">
           <div class="value-strip-track">
             <span class="value-item">You can't fix what you can't see. See it first.</span>
             <span class="value-divider">●</span>
@@ -47,13 +47,13 @@
             <div class="top-bar"></div>
                 <a href="index.html"><p><img src="../../images/hero-icon.png" alt="" class="nav-logo-icon">MoneyMatters.</p></a>
 
-                <div class="hamburger">
+                <button type="button" class="hamburger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                  </div>
+                  </button>
 
-                <nav class="top show" id="mobileMenu">
+                <nav class="top show" id="mobileMenu" aria-label="Primary">
                         <a href="../../index.html">Home</a>
                         <a href="../../tools.html">Tools</a>
                         <a href="../../aboutus.html">About Us</a>
@@ -64,11 +64,11 @@
         <main>
             <section class="tool-intro">
                 <h1>Advanced Investment Management Tool.</h1>
-                <p class="first-p">The basic budgeting tool is the best place to start for simple financial guidance. Visualize WHERE your money is spent relative to HOW it should be spent.</p>
+                <p class="first-p">A deeper portfolio-building spreadsheet — pick specific stocks and funds by category and see your allocation take shape.</p>
                 
                 <div class="how-to-container">
                     <p class="how-to-text">Quick Start</p>
-                    <button class="dropdown-arrow" id="toggleDropdown">▼</button>
+                    <button class="dropdown-arrow" id="toggleDropdown" aria-expanded="false" aria-controls="dropdownContent">▼</button>
                   </div>
                   
                 <div class="dropdown-details" id="dropdownContent">
@@ -90,7 +90,7 @@
                     </p>
                   </div>
 
-                <img src="../../images/advanced-investment-laptop.png" alt="Basic Budgeting Tool">
+                <img src="../../images/advanced-investment-laptop.png" alt="Advanced Investment Management Tool spreadsheet">
                 <a href="" class="download-button">Download</a>
             </section>
 
@@ -107,8 +107,8 @@
         </main>
 
         <footer>
-            <p>Money Matters.</p>
-            <nav>
+            <p>MoneyMatters.</p>
+            <nav aria-label="Footer">
                 <a href="../../index.html">Home</a>
                 <a href="../../tools.html">Tools</a>
                 <a href="../../aboutus.html">About Us</a>

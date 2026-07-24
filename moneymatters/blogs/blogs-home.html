@@ -16,7 +16,7 @@
 
 
     <body>
-        <div class="value-strip" aria-label="Why MoneyMatters">
+        <div class="value-strip" aria-hidden="true" aria-label="Why MoneyMatters">
           <div class="value-strip-track">
             <span class="value-item">You can't fix what you can't see. See it first.</span>
             <span class="value-divider">●</span>
@@ -48,13 +48,13 @@
             <div class="top-bar"></div>
                 <a href="index.html"><p><img src="../images/hero-icon.png" alt="" class="nav-logo-icon">MoneyMatters.</p></a>
 
-                <div class="hamburger">
+                <button type="button" class="hamburger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                  </div>
+                  </button>
 
-                <nav class="top show" id="mobileMenu">
+                <nav class="top show" id="mobileMenu" aria-label="Primary">
                         <a href="../index.html">Home</a>
                         <a href="../tools.html">Tools</a>
                         <a href="../aboutus.html">About Us</a>
@@ -132,7 +132,7 @@
 
 <footer>
 <p>MoneyMatters.</p>
-<nav>
+<nav aria-label="Footer">
     <a href="../index.html">Home</a>
     <a href="../tools.html">Tools</a>
     <a href="../aboutus.html">About Us</a>

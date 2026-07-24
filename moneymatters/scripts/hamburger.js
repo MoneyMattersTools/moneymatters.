@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 nav.style.display = "none";
             }
+            menuToggle.setAttribute("aria-expanded", String(isVisible));
         });
     }
 });

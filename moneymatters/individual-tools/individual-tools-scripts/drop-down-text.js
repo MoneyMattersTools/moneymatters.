@@ -5,9 +5,11 @@ document.getElementById('toggleDropdown').addEventListener('click', function () 
     if (content.style.display === 'block') {
       content.style.display = 'none';
       button.classList.remove('open');
+      button.setAttribute('aria-expanded', 'false');
     } else {
       content.style.display = 'block';
       button.classList.add('open');
+      button.setAttribute('aria-expanded', 'true');
     }
   });
   

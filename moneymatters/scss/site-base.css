@@ -188,7 +188,10 @@ body header nav a.block-link {
 body header nav a.block-link:hover {
     background: var(--mm-green) !important; color: var(--mm-cream) !important;
 }
-body header .hamburger { display: none; cursor: pointer; }
+body header .hamburger {
+    display: none; cursor: pointer;
+    border: 0; background: none; padding: 0; -webkit-appearance: none; appearance: none;
+}
 body header .hamburger span { width: 25px; height: 3px; background: var(--mm-cream); border-radius: 2px; margin: 3px 0; }
 @media (max-width: 768px) {
     body header nav, body header nav.top {
