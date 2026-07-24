@@ -121,3 +121,17 @@ Tools page and all native tool calculator pages stay utility-first/restrained pe
 
 ### Page Weight Exception (approved 2026-07-24, amends Section 11)
 The homepage hero's desktop video background is an approved exception to the well-under-1MB budget (desktop total ~2.6MB) - this is a deliberate cinematic choice, not an oversight. The hard, non-negotiable line is mobile: mobile must stay fully protected (no video bytes requested at all, poster image only) regardless of desktop weight. Any future cinematic video use follows the same rule - desktop can carry real video weight, mobile never does.
+
+## 15. Round 5 Feedback (locked 2026-07-24)
+
+1. **Onboarding gate verification**: confirm via a genuinely clean session (new Playwright context, zero cookies) that the gate renders correctly on a non-homepage page. Report proof, not assertion - this keeps getting asked because prior "verified" claims didn't match what Ethan could see himself (usually a session/cache issue on his end, but prove it cleanly each time regardless).
+
+2. **Homepage score panel**: confirmed correct as-is - only appears for a verified session with submitted results, never as the default for a fresh visitor. No change needed, this was a session-state misunderstanding, not a design problem.
+
+3. **Remove the decorative line-graph ("loopy lines") visual** from the homepage hero. Replace with empty/clean space by default. If a logged-in user with submitted results is viewing (the state that currently shows the score panel), that same space may show relevant user info/data instead - but for a fresh/anonymous visitor, leave it clean rather than filling it with decoration.
+
+4. **Logo**: use the icon symbol (the hero-icon.png mark) together with the "MoneyMatters" wordmark in the top-left nav - both together, not wordmark alone.
+
+5. **Marquee reverts to rotating/scrolling** (undoes the "static trust band" change from Section 5) - bring back the original full phrase set: "You can't fix what you can't see. See it first." / "Free in under 2 minutes." / "Real advisors, actually vetted." / "Your data, your call." / "Built by people who've been confused too." Use "Free to start, no cost, ever." in place of the old "No login, no upsell, no catch." line specifically, since that claim is no longer accurate post-onboarding-gate.
+
+6. **Palette adjustment**: overall site reads as too dark/too close to black still. Shift the base tone lighter - more "shadowy dark forest," less near-black - while keeping the dark theme and forest identity intact. This is a lightness adjustment, not a hue change.
