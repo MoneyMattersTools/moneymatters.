@@ -135,3 +135,12 @@ The homepage hero's desktop video background is an approved exception to the wel
 5. **Marquee reverts to rotating/scrolling** (undoes the "static trust band" change from Section 5) - bring back the original full phrase set: "You can't fix what you can't see. See it first." / "Free in under 2 minutes." / "Real advisors, actually vetted." / "Your data, your call." / "Built by people who've been confused too." Use "Free to start, no cost, ever." in place of the old "No login, no upsell, no catch." line specifically, since that claim is no longer accurate post-onboarding-gate.
 
 6. **Palette adjustment**: overall site reads as too dark/too close to black still. Shift the base tone lighter - more "shadowy dark forest," less near-black - while keeping the dark theme and forest identity intact. This is a lightness adjustment, not a hue change.
+
+## 16. Round 6 Feedback (locked 2026-07-24, overrides Section 15 item 1 and Section 8/13's homepage exclusion)
+
+1. **Onboarding gate now applies site-wide, homepage included, no exceptions** - this reverses the earlier "homepage excluded" decision. Any visitor without a valid verified session sees the gate on every page, including the homepage.
+2. **Gate must handle two distinct visitor types**, since the login system is passwordless (magic-link email only - there is no username/password to check against):
+   - **No prior account**: show the existing diagnostic choice (Financial Health Score / Net Worth).
+   - **Has an account but no current valid session** (cleared cookies, new device, etc.) - the system cannot know this until the visitor identifies themselves, so the gate should offer BOTH the new-diagnostic choice AND a clearly separate "Already have an account? Enter your email to get back in" option that sends a fresh magic link to an existing Users record. Do not build a password field - stay within the existing passwordless model.
+3. **Extend the earlier "remove decorative line-graph visual" fix to the results-view hero state too** (not just the anonymous choice-step state) - same clean/empty treatment for anonymous visitors.
+4. **Newsletter/email subscribe box**: center it and restyle to match the current dark theme - currently an unstyled default embed that clashes with the surrounding design.
