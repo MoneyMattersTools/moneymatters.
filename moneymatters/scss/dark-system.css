@@ -265,10 +265,71 @@ html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
     text-align: left;
 }
 .mm-gate-grid .connect-card { padding: 28px !important; }
+
+/* §16.2: the "already have an account" path — visually a clearly
+   separate, secondary route below the two diagnostic choices, not
+   competing with them for attention. */
+.mm-gate-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 600px;
+    margin: 30px auto 0;
+    color: var(--mm-text-light-soft);
+    font-family: var(--mm-sans-display);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+.mm-gate-divider::before, .mm-gate-divider::after { content: ''; flex: 1; height: 1px; background: var(--mm-surface-border); }
+.mm-gate-returning { max-width: 440px; margin: 18px auto 0; text-align: center; }
+.mm-gate-returning-label { font-size: 14px; color: var(--mm-text-light-muted); margin: 0 0 12px; }
+.mm-gate-returning-form { display: flex; gap: 10px; }
+.mm-gate-sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+.mm-gate-returning-form input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    background: var(--mm-bg-deep);
+    border: 1px solid var(--mm-surface-border);
+    border-radius: 10px;
+    color: var(--mm-text-light);
+    font-family: var(--mm-sans);
+    font-size: 14px;
+    box-sizing: border-box;
+}
+.mm-gate-returning-form input[type="email"]:focus { outline: none; border-color: var(--mm-green); box-shadow: 0 0 0 3px var(--mm-green-soft); }
+.mm-gate-returning-form button {
+    flex-shrink: 0;
+    padding: 12px 18px;
+    background: var(--mm-surface-raised);
+    border: 1px solid var(--mm-surface-border);
+    border-radius: 10px;
+    color: var(--mm-text-light);
+    font-family: var(--mm-sans-display);
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+.mm-gate-returning-form button:hover:not(:disabled) { border-color: var(--mm-green); color: var(--mm-green); }
+.mm-gate-returning-form button:disabled { opacity: 0.6; cursor: default; }
+.mm-gate-returning-status { font-size: 13.5px; color: var(--mm-green); margin: 10px 0 0; }
 @media (max-width: 640px) {
     .mm-gate-grid.entry-grid { grid-template-columns: 1fr; }
     .mm-gate-modal { padding: 56px 24px 28px; }
     .mm-gate-skip { font-size: 12px; padding: 8px 12px; right: 12px; top: 12px; }
+    .mm-gate-returning-form { flex-direction: column; }
 }
 
 /* =====================================================
@@ -575,6 +636,13 @@ body main .hero {
    showing real user data in this space was floated as a possible
    future direction, not built now. */
 #diagnostic-hero[data-active-step="choice"] .hero-signature-viz { display: none; }
+/* DESIGN_SPEC.md §16.3: extends the same clean/empty treatment to the
+   results-view hero state — the pre-existing curve asset (#hero-visual,
+   band-retinted by diagnostic.js) is a separate element from the ring+
+   line composition above, and was still showing here. Grid auto-
+   placement already leaves this column empty (no full-width override
+   needed the way choice step required one), so hiding it is sufficient. */
+#diagnostic-hero[data-active-step="results"] .hero-visual { display: none !important; }
 .hero-signature-viz svg { width: min(100%, 520px); height: auto; overflow: visible; }
 .hsv-ring { transform-origin: 230px 230px; animation: hsv-rotate 50s linear infinite; }
 .hsv-ring-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 2; }
@@ -792,6 +860,34 @@ body main .hero {
 }
 
 .newsletter-cta { background: var(--mm-bg) !important; }
+/* §16.4: was a bare, unlabeled third-party embed with zero surrounding
+   copy — real heading text plus a styled dark "frame" around the
+   (cross-origin, unrestylable) Beehiiv iframe, so it reads as an
+   intentional feature instead of a floating unstyled widget. */
+.newsletter-cta__inner { text-align: center; }
+.newsletter-cta__inner .kicker { display: inline-flex; }
+.newsletter-cta__inner h2 {
+    font-family: var(--mm-serif);
+    font-size: clamp(24px, 2.6vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--mm-text-light);
+    margin: 12px 0 10px;
+}
+.newsletter-cta__inner > p {
+    color: var(--mm-text-light-muted);
+    font-size: 15.5px;
+    max-width: 480px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+}
+.newsletter-cta__embed {
+    background: var(--mm-surface);
+    border: 1px solid var(--mm-surface-border);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: var(--mm-shadow-sm);
+}
 
 /* =====================================================
    Shared page hero (About / Tools / Blog legacy .page-hero) +

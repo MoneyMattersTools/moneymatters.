@@ -1,13 +1,8 @@
 (function () {
   var STORAGE_KEY = 'mm_gate_seen';
 
-  // The homepage hero already presents this exact same choice, unblocked,
-  // as its primary content — stacking a modal on top of it would just
-  // hide identical content behind identical content. Every other page
-  // gets the gate.
-  var path = window.location.pathname;
-  if (/(^|\/)index\.html$/.test(path) || /\/$/.test(path)) return;
-
+  // DESIGN_SPEC.md §16.1: applies site-wide now, homepage included —
+  // reverses the earlier homepage exclusion.
   if (window.localStorage.getItem(STORAGE_KEY)) return;
 
   function markSeen() {
@@ -48,6 +43,16 @@
             '<span class="connect-btn">Start <span aria-hidden="true">&rarr;</span></span>' +
           '</a>' +
         '</div>' +
+        '<div class="mm-gate-divider"><span>or</span></div>' +
+        '<div class="mm-gate-returning" id="mm-gate-returning">' +
+          '<p class="mm-gate-returning-label">Already have an account?</p>' +
+          '<form id="mm-gate-returning-form" class="mm-gate-returning-form" novalidate>' +
+            '<label for="mm-gate-returning-email" class="mm-gate-sr-only">Email</label>' +
+            '<input type="email" id="mm-gate-returning-email" placeholder="you@example.com" autocomplete="email" required>' +
+            '<button type="submit" id="mm-gate-returning-submit">Email me a login link</button>' +
+          '</form>' +
+          '<p class="mm-gate-returning-status" id="mm-gate-returning-status" hidden></p>' +
+        '</div>' +
       '</div>';
     document.body.appendChild(overlay);
     document.documentElement.classList.add('mm-gate-open');
@@ -58,9 +63,10 @@
 
     var skipBtn = document.getElementById('mm-gate-skip');
     var modal = overlay.querySelector('.mm-gate-modal');
-    var focusable = overlay.querySelectorAll('a, button');
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
+
+    function getFocusable() {
+      return overlay.querySelectorAll('a, button, input');
+    }
 
     function closeGate() {
       markSeen();
@@ -74,7 +80,11 @@
         closeGate();
         return;
       }
-      if (e.key === 'Tab' && focusable.length) {
+      if (e.key === 'Tab') {
+        var focusable = getFocusable();
+        if (!focusable.length) return;
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
           last.focus();
@@ -84,6 +94,45 @@
         }
       }
     }
+
+    // §16.2: a visitor with an existing account but no valid session
+    // (cleared cookies, new device) can't be told apart from a brand-new
+    // visitor until they identify themselves — this path sends a fresh
+    // magic link to whatever email they enter. The response is identical
+    // whether or not that email has an account (server-side, to avoid
+    // leaking which emails are registered), so the UI always shows the
+    // same generic confirmation.
+    var returningForm = document.getElementById('mm-gate-returning-form');
+    var returningEmail = document.getElementById('mm-gate-returning-email');
+    var returningStatus = document.getElementById('mm-gate-returning-status');
+    var returningSubmit = document.getElementById('mm-gate-returning-submit');
+    var returningBox = document.getElementById('mm-gate-returning');
+
+    returningForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = returningEmail.value.trim();
+      if (!email) return;
+      returningSubmit.disabled = true;
+      returningSubmit.textContent = 'Sending…';
+      fetch('/api/resend-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email }),
+      })
+        .then(function (res) { return res.json().catch(function () { return {}; }); })
+        .then(function () {
+          returningForm.hidden = true;
+          returningStatus.textContent = 'If that email has an account, a login link is on its way — check your inbox.';
+          returningStatus.hidden = false;
+          markSeen();
+        })
+        .catch(function () {
+          returningSubmit.disabled = false;
+          returningSubmit.textContent = 'Email me a login link';
+          returningStatus.textContent = 'Something went wrong. Please try again.';
+          returningStatus.hidden = false;
+        });
+    });
 
     skipBtn.addEventListener('click', closeGate);
     overlay.addEventListener('click', function (e) {

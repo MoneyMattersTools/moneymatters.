@@ -55,37 +55,55 @@ exports.handler = async (event) => {
     await updateRecord('Verification Tokens', tokenRecord.id, { 'Used At': new Date().toISOString() });
 
     const email = fields.Email;
-    let answers = {};
-    try {
-      answers = JSON.parse(fields['Pending Answers'] || '{}');
-    } catch {
-      answers = {};
-    }
-    const { score, breakdown } = computeScore(answers);
-    const band = determineBand(score);
     const nowIso = new Date().toISOString();
+    let score, band, breakdown;
 
-    const existingUser = await findByEmail('Users', email);
-    if (existingUser) {
-      await updateRecord('Users', existingUser.id, {
-        Verified: true,
-        'Health Score': score,
-        'Health Score Band': band,
-        'Health Score Answers': JSON.stringify(answers),
-        'Health Score Completed At': nowIso,
-        'Last Verified At': nowIso,
-      });
+    if (fields.Purpose === 'returning_login') {
+      // A returning-user token never carries Pending Answers — there's
+      // nothing new to score. Pull the visitor's existing result straight
+      // from their Users record instead of recomputing anything.
+      const existingUser = await findByEmail('Users', email);
+      if (!existingUser || !existingUser.fields || !existingUser.fields.Verified) {
+        return json(404, { ok: false, error: 'invalid' });
+      }
+      score = existingUser.fields['Health Score'];
+      band = existingUser.fields['Health Score Band'];
+      breakdown = null;
+      await updateRecord('Users', existingUser.id, { 'Last Verified At': nowIso });
     } else {
-      await createRecord('Users', {
-        Email: email,
-        Verified: true,
-        'Health Score': score,
-        'Health Score Band': band,
-        'Health Score Answers': JSON.stringify(answers),
-        'Health Score Completed At': nowIso,
-        Source: 'Health Score Diagnostic',
-        'Last Verified At': nowIso,
-      });
+      let answers = {};
+      try {
+        answers = JSON.parse(fields['Pending Answers'] || '{}');
+      } catch {
+        answers = {};
+      }
+      const computed = computeScore(answers);
+      score = computed.score;
+      breakdown = computed.breakdown;
+      band = determineBand(score);
+
+      const existingUser = await findByEmail('Users', email);
+      if (existingUser) {
+        await updateRecord('Users', existingUser.id, {
+          Verified: true,
+          'Health Score': score,
+          'Health Score Band': band,
+          'Health Score Answers': JSON.stringify(answers),
+          'Health Score Completed At': nowIso,
+          'Last Verified At': nowIso,
+        });
+      } else {
+        await createRecord('Users', {
+          Email: email,
+          Verified: true,
+          'Health Score': score,
+          'Health Score Band': band,
+          'Health Score Answers': JSON.stringify(answers),
+          'Health Score Completed At': nowIso,
+          Source: 'Health Score Diagnostic',
+          'Last Verified At': nowIso,
+        });
+      }
     }
 
     const cookieValue = signSession({ email, healthScore: score, healthBand: band });
