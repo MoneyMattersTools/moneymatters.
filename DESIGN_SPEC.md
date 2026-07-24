@@ -102,3 +102,19 @@ Keep the large, dramatic headline scale for hero/impact moments on cinematic pag
 
 ### Creative Latitude
 Real creative freedom is intended within this framework - the reference link and this section are guidance on direction and restraint, not a pixel-exact spec. Use judgment on composition and detail while staying inside these boundaries.
+## 14. Cinematic Direction Correction (locked, supersedes §13 where they conflict)
+
+Reviewed Ethan's actual favorited references directly (runway.com, hasko.com, oldtomcapital.com, munropartners.com). These are heavy, cinematic, real-photography/video-driven production sites - closer to the original Izanami/Benjamin Hardman references from early in this project than to the light-SaaS restraint (Fey/Acctual/Composer) §13 pointed toward. That earlier steer was a miscalibration - correcting it here.
+
+### Imagery Sourcing (supersedes §13's imagery section)
+- Real photography and video are now central, not secondary - source properly-licensed stock video/photography (Pexels Videos, Coverr, Pexels/Unsplash photos - same sources the marketing agent already uses) for cinematic full-bleed hero/section backgrounds on Home, About, Blogs, Contact.
+- Do NOT scrape or download video from YouTube directly - this violates YouTube's Terms of Service regardless of stated purpose. A YouTube video may only be used via YouTube's own official embed/iframe player, never downloaded or re-hosted.
+- Data/motion-graphics (charts, score visualizations) stay in the mix - blend creatively with real photography/video rather than replacing them. Avoid anything that reads as generic/templated - creative, specific compositions over default patterns.
+
+### Motion/Technical Scope
+- Lightweight scroll-linked animation and parallax are in scope, applied where reasonable and only where mobile performance and usability hold up - do not degrade the mobile experience for a desktop-only effect.
+- No framework rewrite (no React/Three.js/build-step introduction) - stay within the current vanilla HTML/CSS/JS, no-build-step architecture. This preserves the earlier mobile-app-portability goal (backend as a clean reusable API layer) - a heavy new frontend framework would undermine that.
+
+### Scope Split (confirms §13, unchanged)
+Cinematic treatment (now meaning real photography/video + data-viz blended, with lightweight scroll motion) still applies to Homepage, About Us, Blogs, Contact only.
+Tools page and all native tool calculator pages stay utility-first/restrained per §13 - apply the updated palette/theme for visual consistency, but stay product-and-function-focused first; do not import heavy cinematic imagery/motion there.
