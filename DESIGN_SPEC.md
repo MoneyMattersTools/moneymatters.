@@ -144,3 +144,13 @@ The homepage hero's desktop video background is an approved exception to the wel
    - **Has an account but no current valid session** (cleared cookies, new device, etc.) - the system cannot know this until the visitor identifies themselves, so the gate should offer BOTH the new-diagnostic choice AND a clearly separate "Already have an account? Enter your email to get back in" option that sends a fresh magic link to an existing Users record. Do not build a password field - stay within the existing passwordless model.
 3. **Extend the earlier "remove decorative line-graph visual" fix to the results-view hero state too** (not just the anonymous choice-step state) - same clean/empty treatment for anonymous visitors.
 4. **Newsletter/email subscribe box**: center it and restyle to match the current dark theme - currently an unstyled default embed that clashes with the surrounding design.
+
+## 17. Round 7 Feedback (locked 2026-07-25)
+
+1. **Onboarding gate copy simplification**: replace the current heading/subhead wordiness with just "Choose a place to start" and the tool links/cards below - strip the extra explanatory sentences.
+2. **Advisor-review CTA on the results screen** (scoped version, per Ethan's confirmation - see chat): a clear "Review with an advisor, free" call-to-action appears once a user has results. Clicking it opens a short intake form collecting the opt-in situational checklist (Section on advisor snapshot format - inheritance, business sale, etc.) plus location confirmation, and saves a "wants advisor review" request to Airtable. This feeds the existing manual/concierge advisor process - no automated advisor-facing matching UI yet, per the standing MVP-concierge decision.
+3. **About Us and other pages: reduce copy length throughout** - less is more, brief and clear. Apply the same discipline to Tools and any other wordy page.
+4. **Font size**: moderate increase in body/key copy sitewide for readability - not a dramatic size jump, stay within the "sleek, clean, minimal" identity rather than working against it.
+5. **Subscribe button** now links to a new dedicated page explaining subscription value/benefits at each tier - name TBD (see chat). This page should lead with user value/leverage messaging, not just a feature list - the core positioning (user has the leverage, gets free access to vetted advisors) should be emphasized here specifically.
+6. **Contact page layout**: fix left-alignment issue - content currently sits too far left, needs better centering/balance.
+7. **Homepage hero video**: extend loop length (longer clip and/or slower playback) so the loop point is less noticeable - currently a short ~7s clip that repeats too quickly.
