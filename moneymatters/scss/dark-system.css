@@ -40,13 +40,15 @@
        backgrounds and light-on-dark text colors throughout the existing
        CSS, so redefining them would fix one usage and break the other.
        These new tokens are applied via explicit overrides below instead.
-       Muted grey-green undertone per §13 — verified >= 4.5:1 contrast
-       against every text token below (re-verified after this retint). */
-    --mm-bg: #101312;
-    --mm-bg-deep: #090B0A;
-    --mm-surface: #1A1F1C;
-    --mm-surface-raised: #242B28;
-    --mm-surface-border: rgba(190, 214, 199, 0.10);
+       §15.6: lifted lighter than round 4's muted grey-green — "shadowy
+       dark forest," not near-black — same hue, slightly more saturation
+       so the green identity still reads at the lighter tone. Re-verified
+       >= 4.5:1 contrast against every text token below after this lift. */
+    --mm-bg: #1A231F;
+    --mm-bg-deep: #121715;
+    --mm-surface: #25322C;
+    --mm-surface-raised: #32433C;
+    --mm-surface-border: rgba(190, 214, 199, 0.12);
     --mm-text-light: #F2F6F3;
     --mm-text-light-muted: #A8B8AD;
     --mm-text-light-soft: #939F99;
@@ -565,7 +567,14 @@ body main .hero {
     flex-direction: column;
     z-index: 2;
 }
-#diagnostic-hero[data-active-step="choice"] .hero-signature-viz { display: flex; }
+/* DESIGN_SPEC.md §15.3: the ring+line composition read as unclear
+   decoration ("loopy lines") to a fresh/anonymous visitor rather than
+   meaningful content — removed for the choice step, left as clean
+   space over the hero photo/video instead. Markup/JS stays intact
+   (unused) rather than deleted, since a logged-in-with-results state
+   showing real user data in this space was floated as a possible
+   future direction, not built now. */
+#diagnostic-hero[data-active-step="choice"] .hero-signature-viz { display: none; }
 .hero-signature-viz svg { width: min(100%, 520px); height: auto; overflow: visible; }
 .hsv-ring { transform-origin: 230px 230px; animation: hsv-rotate 50s linear infinite; }
 .hsv-ring-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 2; }
