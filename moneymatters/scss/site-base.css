@@ -909,7 +909,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     margin: 0;
     line-height: 1.6;
 }
-.about-hero-v2-visual { position: relative; display: flex; align-items: center; justify-content: center; }
+.about-hero-v2-visual { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; }
 .hero-icon-badge {
     width: 220px; height: 220px;
     border-radius: 50%;

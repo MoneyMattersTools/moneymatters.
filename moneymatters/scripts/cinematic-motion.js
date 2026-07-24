@@ -69,6 +69,31 @@ document.addEventListener('DOMContentLoaded', function () {
     revealTargets.forEach(function (el) { revealObserver.observe(el); });
   }
 
+  // --- Lightweight parallax drift on hero photo/video backdrops
+  // (DESIGN_SPEC.md §14). Transform-only, passive scroll listener,
+  // rAF-throttled — compositor-friendly, no layout thrash. Skipped
+  // entirely on utility pages (none exist there) and reduced-motion. ---
+  var mediaLayers = document.querySelectorAll('.hero-media-poster, .hero-media-video');
+  if (mediaLayers.length && !prefersReducedMotion) {
+    var parallaxTicking = false;
+    function applyParallax() {
+      parallaxTicking = false;
+      mediaLayers.forEach(function (el) {
+        var rect = el.parentElement.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+        var offset = rect.top * 0.12;
+        el.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0) scale(1.08)';
+      });
+    }
+    window.addEventListener('scroll', function () {
+      if (!parallaxTicking) {
+        parallaxTicking = true;
+        requestAnimationFrame(applyParallax);
+      }
+    }, { passive: true });
+    applyParallax();
+  }
+
   // --- Magnetic hover on primary CTAs (desktop only) ---
   if (isFinePointer && !prefersReducedMotion) {
     document.querySelectorAll('.magnetic').forEach(function (el) {
