@@ -286,6 +286,7 @@ html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
 .mm-gate-returning { max-width: 440px; margin: 18px auto 0; text-align: center; }
 .mm-gate-returning-label { font-size: 14px; color: var(--mm-text-light-muted); margin: 0 0 12px; }
 .mm-gate-returning-form { display: flex; gap: 10px; }
+.mm-gate-returning-form[hidden] { display: none; }
 .mm-gate-sr-only {
     position: absolute;
     width: 1px; height: 1px;
