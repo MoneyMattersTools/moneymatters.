@@ -177,3 +177,22 @@ The homepage hero's desktop video background is an approved exception to the wel
 11. **Terminology clarity going forward**: "Subscribe" refers to the newsletter signup (Beehiiv embed). The paid tier CTA is "MoneyMatters+" / "Learn more," a separate thing - keep this distinction clear in copy so it does not read as the same button.
 
 12. **Navigation**: add "MoneyMatters+" and the new "Connect with an Advisor" page to the primary top navigation bar, alongside Home/Tools/About Us/Blogs - both are real destinations, not secondary links.
+
+## 19. Round 9 Feedback and Content (locked 2026-07-25)
+
+### Quick fixes
+1. Rename nav item "Connect with an Advisor" to "Advisor Connect."
+2. The "MoneyMatters+" nav/CTA button should use the same visual formatting/weight as the "Get Connected!" button (matching prominence, not a lesser link style).
+
+### MoneyMatters+ page — additional content to build
+Beyond the existing "You have the leverage" hero and "Why the model is different" section, add:
+- **What's included** (the $5/month tier, expand from the pricing model already locked): all advanced tools, every new tool as it ships, explainer/how-to videos for each tool, live webinars, advisor Q&A sessions, full community access.
+- **Free vs. MoneyMatters+ comparison**: a simple two-column layout - Free (diagnostic, basic tools, browse-only community access) vs. MoneyMatters+ (everything above).
+- **FAQ**: cancel anytime / no long-term commitment; does this affect advisor matching (no - that's always free regardless of tier); what counts as a "new tool."
+
+### Advisor Connect page — additional content to build
+Beyond the existing process/vetting-criteria/coming-soon structure, add:
+- **How matching actually works**, described simply and positively for an end user (not the internal bucket-mechanics framing): "We ask a few questions about your situation, then match you with a vetted advisor who actually specializes in it - not just whoever's next in line."
+- **Vetting standard, stated plainly**: CFP-certified, fee-only, fiduciary - every advisor, no exceptions.
+- **What happens after you request a connection**: short numbered sequence - you share a bit more context -> our team reviews and matches you -> the advisor shares their background with you first -> you decide whether to take the meeting, no pressure either way.
+- **Trust reinforcement**: no cost, no obligation, you can stop at any point.
