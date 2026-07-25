@@ -196,3 +196,7 @@ Beyond the existing process/vetting-criteria/coming-soon structure, add:
 - **Vetting standard, stated plainly**: CFP-certified, fee-only, fiduciary - every advisor, no exceptions.
 - **What happens after you request a connection**: short numbered sequence - you share a bit more context -> our team reviews and matches you -> the advisor shares their background with you first -> you decide whether to take the meeting, no pressure either way.
 - **Trust reinforcement**: no cost, no obligation, you can stop at any point.
+
+## 20. Round 9 Confirmation (locked 2026-07-25)
+
+- Keep the Get Connected/Contact page. Move it into a dropdown under the "About Us" nav item, rather than a standalone top-level nav item - top-nav "Get Connected!" CTA button now points to MoneyMatters+ instead.
