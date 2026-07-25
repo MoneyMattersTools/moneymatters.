@@ -59,6 +59,8 @@
                         <a href="tools.html">Tools</a>
                         <a href="aboutus.html">About Us</a>
                         <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
+                    <a href="moneymatters-plus.html">MoneyMatters+</a>
+                    <a href="connect-with-advisor.html">Connect with an Advisor</a>
                     <a href="contact.html" class="block-link">Get Connected!</a>
                 </nav>
         </header>
@@ -80,7 +82,7 @@
 
                   <div class="hero-step" data-step="choice">
                     <span class="kicker"><span class="kicker-dot"></span>Personal finance, simplified</span>
-                    <h1>Where do you actually stand with <em class="h-italic-accent">money</em>?</h1>
+                    <h1>Do you know your <em class="h-italic-accent">money</em>?</h1>
                     <p class="hero-sub">Pick a starting point. Takes less than 2 minutes.</p>
                     <h2 class="sr-only">Pick a starting point</h2>
                     <div class="entry-grid entry-grid--asymmetric">
@@ -170,13 +172,21 @@
                     <p class="hero-sub">Optional — only share what's relevant. This goes to our team to match you with the right advisor, not to any advisor directly.</p>
                     <form id="advisor-intake-form" class="advisor-intake-form" novalidate>
                       <fieldset class="advisor-intake-checklist">
-                        <legend>Does any of this apply to you?</legend>
-                        <label><input type="checkbox" name="situational" value="Expecting an inheritance"> Expecting an inheritance</label>
-                        <label><input type="checkbox" name="situational" value="Recently sold a business"> Recently sold a business</label>
+                        <legend>What are you looking for help with?</legend>
+                        <label><input type="checkbox" name="situational" value="Saving for retirement"> Saving for retirement</label>
+                        <label><input type="checkbox" name="situational" value="Paying off debt"> Paying off debt</label>
+                        <label><input type="checkbox" name="situational" value="Buying a home"> Buying a home</label>
+                        <label><input type="checkbox" name="situational" value="Growing my investments"> Growing my investments</label>
+                        <label><input type="checkbox" name="situational" value="Saving for a child's education"> Saving for a child's education</label>
+                        <label><input type="checkbox" name="situational" value="Inheritance or major windfall"> Inheritance or major windfall</label>
+                        <label><input type="checkbox" name="situational" value="Selling a business or equity compensation"> Selling a business or equity compensation</label>
                         <label><input type="checkbox" name="situational" value="New to investing"> New to investing</label>
-                        <label><input type="checkbox" name="situational" value="Equity compensation (RSUs, stock options)"> Equity compensation (RSUs, stock options)</label>
-                        <label><input type="checkbox" name="situational" value="Major life change (marriage, divorce, retirement)"> Major life change (marriage, divorce, retirement)</label>
+                        <label><input type="checkbox" name="situational" value="Not sure — just want general guidance"> Not sure — just want general guidance</label>
                       </fieldset>
+                      <div class="advisor-intake-freetext">
+                        <label for="advisor-intake-freetext-input">Anything else we should know?</label>
+                        <textarea id="advisor-intake-freetext-input" name="details" rows="3" placeholder="Optional — describe your situation in your own words" maxlength="600"></textarea>
+                      </div>
                       <div class="advisor-intake-location">
                         <label for="advisor-intake-location-input">Location shown to advisors</label>
                         <input type="text" id="advisor-intake-location-input" name="location" placeholder="e.g. Bucks County, PA or Denver metro" aria-describedby="advisor-intake-location-hint">
@@ -232,7 +242,7 @@
             <section class="how-it-works fade-up">
               <div class="how-it-works__inner">
                 <span class="kicker"><span class="kicker-dot"></span>How it works</span>
-                <h2>From unclear to certain, in three steps.</h2>
+                <h2>From unclear to understanding, in three steps.</h2>
                 <div class="timeline">
                   <div class="timeline-track" aria-hidden="true"><div class="timeline-track-fill"></div></div>
                   <div class="timeline-step">

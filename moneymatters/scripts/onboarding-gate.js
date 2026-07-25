@@ -27,7 +27,6 @@
     overlay.className = 'mm-gate-overlay';
     overlay.innerHTML =
       '<div class="mm-gate-modal" role="dialog" aria-modal="true" aria-labelledby="mm-gate-heading" tabindex="-1">' +
-        '<button type="button" class="mm-gate-skip" id="mm-gate-skip">Skip, just show me the site <span aria-hidden="true">&times;</span></button>' +
         '<h2 id="mm-gate-heading">Choose a place to start</h2>' +
         '<div class="entry-grid mm-gate-grid">' +
           '<a class="connect-card" id="mm-gate-health-score" href="/index.html?start=health-score">' +
@@ -51,6 +50,7 @@
           '</form>' +
           '<p class="mm-gate-returning-status" id="mm-gate-returning-status" hidden></p>' +
         '</div>' +
+        '<button type="button" class="mm-gate-skip" id="mm-gate-skip">Skip, just show me the site</button>' +
       '</div>';
     document.body.appendChild(overlay);
     document.documentElement.classList.add('mm-gate-open');
@@ -142,6 +142,8 @@
       if (!modal.contains(e.target)) closeGate();
     });
     document.addEventListener('keydown', onKeydown);
-    skipBtn.focus();
+    // §18.1: skip now reads as a quiet exit, not an equally-weighted
+    // option — initial focus goes to the first real choice instead of it.
+    document.getElementById('mm-gate-health-score').focus();
   }
 })();

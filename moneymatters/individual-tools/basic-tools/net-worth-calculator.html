@@ -1,4 +1,4 @@
-﻿<html>
+<html>
     <head>
         <title>Net Worth Calculator Tool</title>
         <meta charset="UTF-8">
@@ -58,40 +58,94 @@
                         <a href="../../tools.html">Tools</a>
                         <a href="../../aboutus.html">About Us</a>
                         <a href="../../blogs/blogs-home.html" class="blog-link">Blogs</a>
+                    <a href="../../moneymatters-plus.html">MoneyMatters+</a>
+                    <a href="../../connect-with-advisor.html">Connect with an Advisor</a>
                     <a href="../../contact.html" class="block-link">Get Connected!</a>
                 </nav>
         </header>
         <main>
             <section class="tool-intro">
-                <h1>Net Worth Calculator Tool.</h1>
-                <p class="first-p">Add up everything you own and everything you owe to see your full financial picture in one number.</p>
-                <p class="first-p">Our full Net Worth diagnostic is coming soon — for now, here's our calculator.</p>
+                <h1>Net Worth Calculator.</h1>
+                <p class="first-p">Add up everything you own and everything you owe — enter your numbers below and the total updates instantly.</p>
 
                 <div class="how-to-container">
                     <p class="how-to-text">Quick Start</p>
                     <button class="dropdown-arrow" id="toggleDropdown" aria-expanded="false" aria-controls="dropdownContent">▼</button>
                   </div>
-                  
+
                   <div class="dropdown-details" id="dropdownContent">
-                    <p>The <span class="green">Net Worth Calculator Tool</span> helps to categorize, organize, and visualize your total Assets vs. total Liabilities.
+                    <p>The <span class="green">Net Worth Calculator</span> totals your assets and liabilities to show where you actually stand.
 
                         <ul>
+                            <li>Enter what you own under Assets and what you owe under Liabilities. Results update as you type — nothing is saved or sent anywhere.</li>
 
-                            <li>Adjust the <span class="black-white">black cells with white font</span> to record your information. (This is personal to you only and MoneyMatters does not have access until you share it with us)</li>
-                            
-                            <li>Is your total Net Worth what you were expecting? Higher or lower than expected? Notice the breakdown of ownership % of different key assets. Is there a specific area of debt that needs to be paid down before others?</li>
-                            
-                            <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The next step is to <span class="bold">share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
-                            
-                            
+                            <li>Your <span class="bold">Net Worth</span> is simply Assets minus Liabilities. It's a snapshot, not a judgment — what matters more is the trend over time.</li>
+
+                            <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The <span class="bold">next step is to share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
                         </ul>
                         THIS IS NOT FINANCIAL ADVICE. INVESTMENTS HAVE RISK. MONEYMATTERS IS NOT RESPONSIBLE FOR ANY DECISION YOU MAKE BASED ON THE USE OF THESE TOOLS
-                    
+
                     </p>
                   </div>
-                  
-                <img src="../../images/net-worth-calculator-laptop.png" alt="Net Worth Calculator spreadsheet">
-                <a href="https://docs.google.com/spreadsheets/u/1/d/1W-8gy9wNQUZ_y0DTY-2zIbUYHg77Kn5oU1TDoRekulw/copy?usp=sharing" class="download-button" target="_blank">Download</a>
+            </section>
+
+            <section class="tool-app fade-up">
+              <div class="tool-app-grid">
+                <div class="tool-panel tool-app-inputs">
+                  <h2>What you own and owe</h2>
+                  <div class="tool-field-group">
+                    <span class="tool-field-group-label">Assets</span>
+                    <div class="tool-field">
+                      <label for="networth-asset-cash">Cash &amp; savings</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-asset-cash" placeholder="15000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-asset-investments">Investment accounts</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-asset-investments" placeholder="40000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-asset-retirement">Retirement accounts</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-asset-retirement" placeholder="60000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-asset-realestate">Real estate</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-asset-realestate" placeholder="350000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-asset-vehicles">Vehicles</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-asset-vehicles" placeholder="18000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-asset-otherassets">Other assets</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-asset-otherassets" placeholder="0">
+                    </div>
+                  </div>
+                  <div class="tool-field-group">
+                    <span class="tool-field-group-label">Liabilities</span>
+                    <div class="tool-field">
+                      <label for="networth-liability-mortgage">Mortgage balance</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-liability-mortgage" placeholder="280000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-liability-auto">Auto loans</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-liability-auto" placeholder="12000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-liability-student">Student loans</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-liability-student" placeholder="20000">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-liability-creditcard">Credit card debt</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-liability-creditcard" placeholder="0">
+                    </div>
+                    <div class="tool-field">
+                      <label for="networth-liability-otherdebt">Other debt</label>
+                      <input type="number" inputmode="decimal" min="0" id="networth-liability-otherdebt" placeholder="0">
+                    </div>
+                  </div>
+                </div>
+                <div class="tool-panel tool-app-results" id="networth-results" aria-live="polite"></div>
+              </div>
             </section>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
@@ -125,7 +179,6 @@
                 </div>
             </div>
 
-
             <div class="disclaimer">
                 <h3>Disclaimer</h3>
                 <p>The information and tools provided on this website are for educational and informational purposes only. We aim to assist individuals in budgeting, investing, and planning for improved financial health by offering accessible resources. However, the content on this site is not intended as professional financial advice or formal recommendations.
@@ -140,11 +193,13 @@
             <p class="footer-signoff">Built with care for the long view.</p>
         </footer>
 
-
         <script src="../individual-tools-scripts/drop-down-text.js"></script>
         <script src="../../scripts/hamburger.js"></script>
+        <script src="../../scripts/scroll-animations.js"></script>
         <script src="../../scripts/cinematic-motion.js"></script>
         <script src="../../scripts/onboarding-gate.js"></script>
+        <script src="../individual-tools-scripts/tool-utils.js"></script>
+        <script src="../individual-tools-scripts/net-worth-calculator.js"></script>
     </body>
 
 </html>

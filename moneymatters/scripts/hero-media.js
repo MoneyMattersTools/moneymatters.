@@ -13,15 +13,16 @@
   // check passes, so those visitors never request the video file at all.
   if (!wideEnough || !finePointer || reducedMotion || saveData || slowConnection) return;
 
-  // The source clip is a ~7s loop — played back at half speed so the
-  // repeat point (§17.7) is far less noticeable, at zero extra page weight.
-  // load() resets playbackRate to its default, so it has to be set after —
-  // 'loadedmetadata' is the earliest point that's reliably true post-load.
+  // The source clip is a ~7s loop. §17.7 first tried half speed (14s loop)
+  // but the reset was still noticeable (§18.4) — slowed further to 0.35x
+  // (~20s loop), at zero extra page weight either way. load() resets
+  // playbackRate to its default, so it has to be set after — 'loadedmetadata'
+  // is the earliest point that's reliably true post-load.
   video.addEventListener('loadedmetadata', function () {
-    video.playbackRate = 0.5;
+    video.playbackRate = 0.35;
   });
   video.addEventListener('canplay', function () {
-    video.playbackRate = 0.5;
+    video.playbackRate = 0.35;
     video.classList.add('is-playing');
   });
   video.src = 'video/hero-forest.mp4';

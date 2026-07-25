@@ -278,13 +278,14 @@
         function (input) { return input.value; }
       );
       var location = el('advisor-intake-location-input').value.trim();
+      var details = el('advisor-intake-freetext-input').value.trim();
       var submitBtn = el('advisor-intake-submit');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
       fetch('/api/request-advisor-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ situational: situational, location: location }),
+        body: JSON.stringify({ situational: situational, location: location, details: details }),
       })
         .then(function (res) { return res.json().catch(function () { return {}; }); })
         .then(function (result) {

@@ -5,18 +5,25 @@ const { createRecord, countRecentByIpSince, findOneByFormula, escapeFormulaValue
 const { readSessionFromRequest } = sessionLib;
 
 const LOCATION_MAX_LENGTH = 120;
+const DETAILS_MAX_LENGTH = 600;
 const MAX_SITUATIONAL_ITEMS = 10;
 const SITUATIONAL_ITEM_MAX_LENGTH = 80;
 
 // Must match the checkbox values in index.html's advisor-intake-checklist
 // exactly — keeps "Situational Details" a controlled checklist rather than
 // unrestricted free text, per DESIGN_SPEC.md's advisor-snapshot format.
+// Broadened per §18.9 — the original 5 covered only niche windfall
+// scenarios, not the majority of real reasons people seek an advisor.
 const ALLOWED_SITUATIONAL = new Set([
-  'Expecting an inheritance',
-  'Recently sold a business',
+  'Saving for retirement',
+  'Paying off debt',
+  'Buying a home',
+  'Growing my investments',
+  "Saving for a child's education",
+  'Inheritance or major windfall',
+  'Selling a business or equity compensation',
   'New to investing',
-  'Equity compensation (RSUs, stock options)',
-  'Major life change (marriage, divorce, retirement)',
+  'Not sure — just want general guidance',
 ]);
 
 const IP_RATE_LIMIT_WINDOW_SECONDS = 60;
@@ -79,6 +86,8 @@ export default async (request, context) => {
   const situational = cleanSituational(payload.situational);
   const rawLocation = typeof payload.location === 'string' ? payload.location.trim().slice(0, LOCATION_MAX_LENGTH) : '';
   const location = neutralizeFormulaPrefix(rawLocation);
+  const rawDetails = typeof payload.details === 'string' ? payload.details.trim().slice(0, DETAILS_MAX_LENGTH) : '';
+  const details = neutralizeFormulaPrefix(rawDetails);
 
   const clientIp = getClientIp(request, context);
 
@@ -110,6 +119,7 @@ export default async (request, context) => {
     await createRecord('Advisor Review Requests', {
       Email: session.email,
       'Situational Details': JSON.stringify(situational),
+      Details: details,
       Location: location,
       'Requested At': new Date().toISOString(),
       'Request IP': clientIp,

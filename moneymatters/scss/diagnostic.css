@@ -5,7 +5,18 @@
 
 #diagnostic-hero .hero-step[hidden] { display: none !important; }
 
-#diagnostic-hero[data-active-step="choice"] .hero-visual { display: none !important; }
+/* DESIGN_SPEC.md §18.8: the old curve-SVG (#hero-visual) was removed from
+   the choice and results states individually across two prior rounds, but
+   never from the states in between — email, quiz, verify-confirm,
+   verifying, verify, verify-error, advisor-intake. A visitor who clicks
+   the magic-link email lands on verify-confirm/verifying before ever
+   reaching results, so the decorative curve kept showing there regardless
+   of how many times "the results state" was fixed. Hidden unconditionally
+   here instead of per-state, so no future step can reintroduce it by
+   omission — this is the entire, permanent replacement for both of the
+   old state-scoped rules (deleted from here and from dark-system.css).
+   #hero-signature-viz is the real signature visual in this space now. */
+#diagnostic-hero .hero-visual { display: none !important; }
 #diagnostic-hero[data-active-step="choice"] .hero-text {
     max-width: 920px !important;
     text-align: center !important;
@@ -264,6 +275,23 @@
     flex-shrink: 0;
     accent-color: var(--mm-green);
     cursor: pointer;
+}
+#diagnostic-hero .advisor-intake-freetext { margin-bottom: 24px; }
+#diagnostic-hero .advisor-intake-freetext label {
+    display: block;
+    font-family: var(--mm-sans);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+#diagnostic-hero .advisor-intake-freetext textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: var(--mm-sans);
+    font-size: 16px;
+    resize: vertical;
 }
 #diagnostic-hero .advisor-intake-location { margin-bottom: 24px; }
 #diagnostic-hero .advisor-intake-location label {

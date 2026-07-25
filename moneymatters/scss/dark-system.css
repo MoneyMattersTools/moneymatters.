@@ -239,21 +239,21 @@ html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
 }
 
 .mm-gate-skip {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    background: var(--mm-bg-deep);
-    border: 1px solid var(--mm-surface-border);
-    color: var(--mm-text-light-muted);
+    display: block;
+    margin: 20px auto 0;
+    background: none;
+    border: none;
+    color: var(--mm-text-light-soft);
     font-family: var(--mm-sans);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 9px 14px;
-    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
 }
-.mm-gate-skip:hover, .mm-gate-skip:focus-visible { color: var(--mm-text-light); border-color: var(--mm-green); }
+.mm-gate-skip:hover, .mm-gate-skip:focus-visible { color: var(--mm-text-light-muted); }
 
 .mm-gate-grid.entry-grid {
     display: grid;
@@ -327,8 +327,7 @@ html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
 .mm-gate-returning-status { font-size: 13.5px; color: var(--mm-green); margin: 10px 0 0; }
 @media (max-width: 640px) {
     .mm-gate-grid.entry-grid { grid-template-columns: 1fr; }
-    .mm-gate-modal { padding: 56px 24px 28px; }
-    .mm-gate-skip { font-size: 12px; padding: 8px 12px; right: 12px; top: 12px; }
+    .mm-gate-modal { padding: 32px 24px 28px; }
     .mm-gate-returning-form { flex-direction: column; }
 }
 
@@ -460,8 +459,8 @@ body main .hero {
 }
 #diagnostic-hero .connect-card--primary h3 { font-size: 28px !important; }
 #diagnostic-hero .connect-card--secondary {
-    background: var(--mm-surface) !important;
-    border: 1px solid var(--mm-surface-border) !important;
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.16), rgba(52, 211, 153, 0.02)), var(--mm-surface) !important;
+    border: 1px solid rgba(52, 211, 153, 0.35) !important;
     justify-content: center !important;
 }
 #diagnostic-hero .connect-btn--ghost {
@@ -507,6 +506,13 @@ body main .hero {
 #diagnostic-hero .advisor-review-cta:hover { background: var(--mm-text-light) !important; }
 #diagnostic-hero .advisor-intake-checklist legend { color: var(--mm-text-light) !important; }
 #diagnostic-hero .advisor-intake-checklist label { color: var(--mm-text-light-muted) !important; }
+#diagnostic-hero .advisor-intake-freetext label { color: var(--mm-text-light) !important; }
+#diagnostic-hero .advisor-intake-freetext textarea {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+#diagnostic-hero .advisor-intake-freetext textarea:focus { border-color: var(--mm-green) !important; box-shadow: 0 0 0 3px var(--mm-green-soft) !important; }
 #diagnostic-hero .advisor-intake-location label { color: var(--mm-text-light) !important; }
 #diagnostic-hero .advisor-intake-location input {
     background: var(--mm-surface) !important;
@@ -650,13 +656,10 @@ body main .hero {
    showing real user data in this space was floated as a possible
    future direction, not built now. */
 #diagnostic-hero[data-active-step="choice"] .hero-signature-viz { display: none; }
-/* DESIGN_SPEC.md §16.3: extends the same clean/empty treatment to the
-   results-view hero state — the pre-existing curve asset (#hero-visual,
-   band-retinted by diagnostic.js) is a separate element from the ring+
-   line composition above, and was still showing here. Grid auto-
-   placement already leaves this column empty (no full-width override
-   needed the way choice step required one), so hiding it is sufficient. */
-#diagnostic-hero[data-active-step="results"] .hero-visual { display: none !important; }
+/* §18.8: the old #hero-visual curve is now hidden unconditionally in
+   scss/diagnostic.css (one rule for every step, not one per named state)
+   — see that file for why the two former per-state rules here and there
+   didn't actually eliminate it. */
 .hero-signature-viz svg { width: min(100%, 520px); height: auto; overflow: visible; }
 .hsv-ring { transform-origin: 230px 230px; animation: hsv-rotate 50s linear infinite; }
 .hsv-ring-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 2; }
@@ -874,10 +877,14 @@ body main .hero {
 }
 
 .newsletter-cta { background: var(--mm-bg) !important; }
-/* §16.4: was a bare, unlabeled third-party embed with zero surrounding
-   copy — real heading text plus a styled dark "frame" around the
-   (cross-origin, unrestylable) Beehiiv iframe, so it reads as an
-   intentional feature instead of a floating unstyled widget. */
+/* §16.4/§18.7: the Beehiiv iframe is cross-origin and genuinely
+   unrestylable — it always renders its own light/cream internal theme,
+   confirmed live (it's not a loading-state artifact). A dark frame
+   around a light iframe reads as a clash no matter how it's padded, so
+   instead of fighting that, the frame now matches the iframe's own
+   cream tone with the site's existing cream tokens — one continuous
+   light card sitting deliberately on the dark page, not a mismatched
+   box around an unstyled widget. */
 .newsletter-cta__inner { text-align: center; }
 .newsletter-cta__inner .kicker { display: inline-flex; }
 .newsletter-cta__inner h2 {
@@ -896,11 +903,13 @@ body main .hero {
     line-height: 1.6;
 }
 .newsletter-cta__embed {
-    background: var(--mm-surface);
-    border: 1px solid var(--mm-surface-border);
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--mm-cream-warm);
+    border: 1px solid rgba(26, 43, 35, 0.08);
     border-radius: 16px;
-    padding: 18px;
-    box-shadow: var(--mm-shadow-sm);
+    padding: 28px;
+    box-shadow: var(--mm-shadow-md);
 }
 
 /* =====================================================
@@ -1246,6 +1255,7 @@ a.contact-option:hover .contact-option-btn { background: var(--mm-text-light); }
 .tool-breakdown li { background: var(--mm-bg-deep) !important; border: 1px solid var(--mm-surface-border) !important; }
 .tool-breakdown-name { color: var(--mm-text-light) !important; }
 .tool-breakdown-figures { color: var(--mm-text-light-soft) !important; }
+.tool-breakdown-group-label { color: var(--mm-text-light-soft) !important; }
 .tool-tag.good { background: rgba(52, 211, 153, 0.16) !important; color: var(--mm-green) !important; }
 .tool-tag.caution { background: var(--mm-gold-soft) !important; color: var(--mm-gold) !important; }
 .tool-tag.attention { background: rgba(255, 138, 117, 0.14) !important; color: #FF8A75 !important; }
