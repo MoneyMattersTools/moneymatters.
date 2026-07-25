@@ -161,3 +161,17 @@ The homepage hero's desktop video background is an approved exception to the wel
 - Font size: confirmed moderate increase, prioritize balance and readability (avoid too-small text for some users) over dramatic size change.
 
 12. **Navigation**: add "MoneyMatters+" and the new "Connect with an Advisor" page to the primary top navigation bar, alongside Home/Tools/About Us/Blogs - both are real destinations, not secondary links.
+
+## 18. Round 8 Feedback (locked 2026-07-25)
+
+1. **Skip button**: make much smaller, move to the bottom of the gate, remove the border/pill styling - should read as a quiet exit, not an equally-weighted option next to the real choices.
+2. **Net Worth Calculator**: still shows the old Google Sheets download UI ("coming soon" placeholder). Build it as a native in-site calculator matching the pattern already used for Budget/Retirement/Investment - this was always the intended end state, the Google Sheets version was an interim placeholder.
+3. **Homepage choice cards**: both cards should match the more opaque/filled styling currently only on the left card - the right card currently reads as too see-through/washed out against the video background.
+4. **Hero video/scene speed**: slow further - the loop reset is still noticeable. Apply consistently everywhere this forest scene (video or photo) is used across the cinematic pages, not just the homepage.
+5. **Homepage headline**: change to "Do you know your money?" (shorter, replaces "Where do you actually stand with money?").
+6. **"How it works" section headline**: change to "From unclear to understanding, in three steps." (replaces "...to certain...").
+7. **Newsletter box**: still not properly centered/theme-matched after the last fix - needs a real fix this time, verify visually before reporting done, not just via code review.
+8. **Swirls/line-graph decorative visual**: still reappearing in the post-verification results flow (after clicking the email link) despite being removed twice already. Find the actual root cause this time - check every hero/results-state variant, not just the ones checked before.
+9. **Advisor intake form**: add a free-text field for the user to describe their own specific needs, in addition to the checkbox list. Review and revise the checkbox options - current ones don't cover the majority of real reasons users are likely seeking advisor help; broaden them.
+10. **New page: "Connect with an Advisor"** (or similar name) - a real page explaining what the advisor-connection process offers, positioned as the bones for a future advisor directory/ratings page once real advisors are onboarded. Build the structure now, populate later.
+11. **Terminology clarity going forward**: "Subscribe" refers to the newsletter signup (Beehiiv embed). The paid tier CTA is "MoneyMatters+" / "Learn more," a separate thing - keep this distinction clear in copy so it does not read as the same button.
