@@ -252,6 +252,66 @@
       });
   }
 
+  // --- advisor review intake (§17.2) ---
+  var advisorCta = el('advisor-review-cta');
+  var advisorConfirm = el('advisor-intake-confirm');
+  if (advisorCta) {
+    advisorCta.addEventListener('click', function () {
+      // Reset in case this is a re-open after an earlier submit in the same
+      // session — otherwise the panel would show the confirmation message
+      // under a heading that still reads "What should your advisor know?".
+      advisorForm.reset();
+      advisorForm.hidden = false;
+      advisorConfirm.hidden = true;
+      setStep('advisor-intake');
+    });
+  }
+
+  var advisorForm = el('advisor-intake-form');
+  if (advisorForm) {
+    advisorForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var errorEl = el('advisor-intake-error');
+      errorEl.hidden = true;
+      var situational = Array.prototype.map.call(
+        advisorForm.querySelectorAll('input[name="situational"]:checked'),
+        function (input) { return input.value; }
+      );
+      var location = el('advisor-intake-location-input').value.trim();
+      var submitBtn = el('advisor-intake-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      fetch('/api/request-advisor-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ situational: situational, location: location }),
+      })
+        .then(function (res) { return res.json().catch(function () { return {}; }); })
+        .then(function (result) {
+          if (!result.ok) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send to our team';
+            errorEl.textContent = 'Something went wrong. Please try again.';
+            errorEl.hidden = false;
+            return;
+          }
+          advisorForm.hidden = true;
+          advisorConfirm.hidden = false;
+          var confirmHeading = advisorConfirm.querySelector('p');
+          if (confirmHeading) {
+            confirmHeading.setAttribute('tabindex', '-1');
+            confirmHeading.focus();
+          }
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send to our team';
+          errorEl.textContent = 'Something went wrong. Please try again.';
+          errorEl.hidden = false;
+        });
+    });
+  }
+
   // --- results rendering ---
   function animateScore(target) {
     var numberEl = el('score-number');

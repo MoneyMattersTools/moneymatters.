@@ -224,6 +224,70 @@
 }
 #diagnostic-hero .next-steps a:hover { color: var(--mm-green-deep) !important; border-color: var(--mm-green) !important; }
 
+/* --- Advisor review intake (§17.2) --- */
+#diagnostic-hero .advisor-review-cta {
+    display: inline-block;
+    margin-top: 24px;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+#diagnostic-hero .advisor-intake-form { max-width: 480px; margin-top: 20px; }
+#diagnostic-hero .advisor-intake-checklist {
+    border: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+#diagnostic-hero .advisor-intake-checklist legend {
+    font-family: var(--mm-sans);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+    padding: 0;
+}
+#diagnostic-hero .advisor-intake-checklist label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    font-family: var(--mm-sans);
+    font-size: 15px;
+    cursor: pointer;
+}
+#diagnostic-hero .advisor-intake-checklist input[type="checkbox"] {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--mm-green);
+    cursor: pointer;
+}
+#diagnostic-hero .advisor-intake-location { margin-bottom: 24px; }
+#diagnostic-hero .advisor-intake-location label {
+    display: block;
+    font-family: var(--mm-sans);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+#diagnostic-hero .advisor-intake-location input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: var(--mm-sans);
+    font-size: 16px;
+}
+#diagnostic-hero .advisor-intake-hint {
+    font-size: 13px;
+    margin: 8px 0 0;
+}
+#diagnostic-hero .advisor-intake-form .step-back { display: block; margin-top: 14px; }
+#diagnostic-hero .advisor-intake-confirm { max-width: 480px; margin-top: 20px; }
+
 /* --- Score-band curve retint (reuses existing SVG motif, no new artwork) --- */
 .hero-visual--band-starting .curve-stroke { stroke: var(--mm-text-soft) !important; }
 .hero-visual--band-starting .curve-dot { fill: var(--mm-text-soft) !important; }

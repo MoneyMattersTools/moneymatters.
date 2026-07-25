@@ -16,6 +16,9 @@
   video.addEventListener('canplay', function () {
     video.classList.add('is-playing');
   });
+  // The source clip is a ~7s loop — played back at half speed so the
+  // repeat point (§17.7) is far less noticeable, at zero extra page weight.
+  video.playbackRate = 0.5;
   video.src = 'video/hero-forest.mp4';
   video.load();
   video.play().catch(function () {});

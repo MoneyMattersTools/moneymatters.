@@ -210,6 +210,13 @@ body header .hamburger span { width: 25px; height: 3px; background: var(--mm-cre
 }
 
 body main { margin: 0 !important; padding: 0 !important; }
+/* .simple-page (Contact) needs its own centered column — the blanket
+   `body main` reset above was overriding homestyling.css's centering
+   margin, leaving the content stuck against the left edge. */
+body main.simple-page { max-width: 800px !important; margin: 80px auto !important; padding: 0 24px !important; }
+@media (max-width: 640px) {
+    body main.simple-page { margin: 48px auto !important; }
+}
 body main .hero {
     position: relative !important;
     overflow: hidden !important;
@@ -509,7 +516,7 @@ body main .hero {
     letter-spacing: -0.015em !important;
     padding-right: 50px !important;
 }
-.section3 .resource-card p { font-family: var(--mm-sans) !important; font-size: 15px !important; color: var(--mm-text-muted) !important; margin: 0 !important; line-height: 1.5; }
+.section3 .resource-card p { font-family: var(--mm-sans) !important; font-size: 16px !important; color: var(--mm-text-muted) !important; margin: 0 !important; line-height: 1.5; }
 .section3 .video-card-wrapper { width: 100%; }
 .section3 .video-card-wrapper .video-card { width: 100% !important; max-width: none !important; }
 .video-card { background: var(--mm-cream); border: 1px solid var(--mm-border); border-radius: 20px; overflow: hidden; transition: all 0.3s ease; box-shadow: var(--mm-shadow-md); }
@@ -550,7 +557,7 @@ body main .hero {
     color: var(--mm-charcoal);
     letter-spacing: -0.015em !important;
 }
-.video-card p { font-family: var(--mm-sans) !important; font-size: 16px !important; color: var(--mm-text-muted); margin: 0; }
+.video-card p { font-family: var(--mm-sans) !important; font-size: 17px !important; color: var(--mm-text-muted); margin: 0; }
 .video-container { display: none !important; }
 @media (max-width: 900px) { .section3 .section3-split { grid-template-columns: 1fr !important; } }
 
@@ -572,7 +579,7 @@ body main .hero {
 .connect-card { background: var(--mm-cream) !important; border: 1px solid rgba(98, 169, 116, 0.25) !important; border-radius: 20px !important; padding: 36px !important; text-decoration: none !important; color: var(--mm-text) !important; display: flex !important; flex-direction: column !important; transition: all 0.3s ease; box-sizing: border-box !important; }
 a.connect-card:hover { transform: translateY(-4px); border-color: var(--mm-green); box-shadow: 0 16px 36px rgba(0,0,0,0.25); }
 .connect-card h3 { font-family: var(--mm-serif) !important; font-size: 26px !important; font-weight: 600 !important; margin-bottom: 10px !important; color: var(--mm-charcoal) !important; letter-spacing: -0.015em !important; }
-.connect-card > p { font-family: var(--mm-sans) !important; font-size: 16px !important; color: var(--mm-text-muted) !important; margin-bottom: 24px !important; line-height: 1.6; }
+.connect-card > p { font-family: var(--mm-sans) !important; font-size: 17px !important; color: var(--mm-text-muted) !important; margin-bottom: 24px !important; line-height: 1.6; }
 .connect-btn, .connect-section .submit-btn, .connect-section button[type="submit"] {
     display: inline-block !important; padding: 13px 28px !important; background: var(--mm-charcoal) !important; color: var(--mm-cream) !important; border-radius: 10px !important;
     font-family: var(--mm-sans) !important; font-weight: 700 !important; font-size: 15px !important;
@@ -867,7 +874,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     transition: all 0.3s ease;
 }
 .blog-card:hover { transform: translateY(-6px); border-color: var(--mm-green); box-shadow: var(--mm-shadow-lg); }
-.blog-card .blog-excerpt { font-family: var(--mm-sans); color: var(--mm-text-muted); font-size: 15px; line-height: 1.6; margin: 10px 0 20px; }
+.blog-card .blog-excerpt { font-family: var(--mm-sans); color: var(--mm-text-muted); font-size: 16px; line-height: 1.6; margin: 10px 0 20px; }
 .blog-card .read-more { font-family: var(--mm-sans); font-weight: 700; color: var(--mm-green-deep); text-decoration: none; font-size: 14px; }
 .blog-card .read-more:hover { color: var(--mm-charcoal); }
 
@@ -966,7 +973,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 }
 .bento-tile:hover { transform: translateY(-5px); border-color: var(--mm-green); box-shadow: var(--mm-shadow-md); }
 .bento-tile h3 { font-family: var(--mm-serif); font-size: 22px; font-weight: 600; margin: 0 0 8px; color: var(--mm-charcoal); }
-.bento-tile p { font-family: var(--mm-sans); font-size: 15px; color: var(--mm-text-muted); margin: 0; line-height: 1.6; }
+.bento-tile p { font-family: var(--mm-sans); font-size: 16px; color: var(--mm-text-muted); margin: 0; line-height: 1.6; }
 .bento-tile--wide { grid-column: 1 / 3; grid-row: 1; display: flex; flex-direction: column; justify-content: center; }
 .bento-tile--dark { background: var(--mm-charcoal); border-color: var(--mm-charcoal); }
 .bento-tile--dark h3 { color: var(--mm-cream); }
@@ -1016,7 +1023,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .timeline-step { position: relative; z-index: 1; text-align: center; padding: 0 12px; }
 .timeline-step .step-number { position: relative; z-index: 1; margin: 0 auto 14px; }
 .timeline-step h3 { font-size: 19px; margin-bottom: 6px; font-family: var(--mm-serif); font-weight: 600; color: var(--mm-charcoal); }
-.timeline-step p { font-size: 15px; color: var(--mm-text-muted); margin: 0; }
+.timeline-step p { font-size: 16px; color: var(--mm-text-muted); margin: 0; }
 @media (max-width: 760px) {
     .timeline { grid-template-columns: 1fr; gap: 34px; }
     .timeline-track { display: none; }
@@ -1041,7 +1048,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .feature-tools { padding: 30px 6% 90px; text-align: center; background: var(--mm-cream); position: relative; }
 .feature-tools .kicker { display: inline-block; }
 .feature-tools h2 { font-family: var(--mm-serif); font-size: clamp(30px, 3.6vw, 44px); margin: 0 0 14px; color: var(--mm-charcoal); font-weight: 500; letter-spacing: -0.02em; }
-.feature-tools-sub { font-family: var(--mm-sans); font-size: 16px; color: var(--mm-text-muted); max-width: 560px; margin: 0 auto 44px; line-height: 1.6; }
+.feature-tools-sub { font-family: var(--mm-sans); font-size: 17px; color: var(--mm-text-muted); max-width: 560px; margin: 0 auto 44px; line-height: 1.6; }
 .feature-tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; max-width: 1100px; margin: 0 auto; }
 .feature-tool-card {
     background: white; border: 1px solid var(--mm-border); border-radius: 22px;
@@ -1052,7 +1059,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .feature-tool-icon { width: 64px; height: 64px; border-radius: 16px; overflow: hidden; margin-bottom: 18px; background: var(--mm-cream-warm); }
 .feature-tool-icon img { width: 100%; height: 100%; object-fit: contain; }
 .feature-tool-card h3 { font-family: var(--mm-serif); font-size: 21px; font-weight: 600; margin: 0 0 8px; color: var(--mm-charcoal); }
-.feature-tool-card p { font-family: var(--mm-sans); font-size: 14.5px; color: var(--mm-text-muted); margin: 0 0 20px; line-height: 1.55; flex-grow: 1; }
+.feature-tool-card p { font-family: var(--mm-sans); font-size: 15.5px; color: var(--mm-text-muted); margin: 0 0 20px; line-height: 1.55; flex-grow: 1; }
 .feature-tool-card .connect-btn { align-self: flex-start; }
 .feature-tool-preview { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
 .mini-bar { display: block; height: 8px; width: var(--w); background: var(--c); border-radius: 4px; }
@@ -1070,7 +1077,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .plus-section { padding: 30px 6% 100px; text-align: center; background: var(--mm-cream-warm); }
 .plus-section .kicker { display: inline-block; }
 .plus-section h2 { font-family: var(--mm-serif); font-size: clamp(32px, 4vw, 48px); margin: 0 0 12px; color: var(--mm-charcoal); font-weight: 500; }
-.plus-sub { font-family: var(--mm-sans); font-size: 16px; color: var(--mm-text-muted); margin: 0 auto 40px; }
+.plus-sub { font-family: var(--mm-sans); font-size: 17px; color: var(--mm-text-muted); margin: 0 auto 40px; }
 .plus-card {
     max-width: 420px; margin: 0 auto; background: var(--mm-charcoal); color: var(--mm-cream);
     border-radius: 24px; padding: 44px 40px; box-shadow: var(--mm-shadow-lg);
@@ -1079,7 +1086,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .plus-card-amount { font-family: var(--mm-serif); font-size: 56px; font-weight: 500; }
 .plus-card-period { font-family: var(--mm-sans); font-size: 16px; color: rgba(250, 250, 247, 0.6); }
 .plus-card-list { list-style: none; margin: 0 0 30px; padding: 0; text-align: left; display: flex; flex-direction: column; gap: 12px; }
-.plus-card-list li { font-family: var(--mm-sans); font-size: 15px; padding-left: 26px; position: relative; color: rgba(250, 250, 247, 0.9); }
+.plus-card-list li { font-family: var(--mm-sans); font-size: 16px; padding-left: 26px; position: relative; color: rgba(250, 250, 247, 0.9); }
 .plus-card-list li::before { content: '✓'; position: absolute; left: 0; color: var(--mm-green); font-weight: 700; }
 .plus-card .connect-btn.plus-card-cta { width: 100%; box-sizing: border-box; background: var(--mm-cream) !important; color: var(--mm-charcoal) !important; }
 .plus-card .connect-btn.plus-card-cta:hover { background: var(--mm-green) !important; color: var(--mm-cream) !important; }
@@ -1131,7 +1138,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .blog-coming-soon { padding: 90px 6% 80px; text-align: center; background: var(--mm-cream); }
 .blog-coming-soon .kicker { display: inline-block; }
 .blog-coming-soon h2 { font-family: var(--mm-serif); font-size: clamp(30px, 3.6vw, 44px); margin: 0 0 14px; color: var(--mm-charcoal); font-weight: 500; }
-.blog-coming-soon-sub { font-family: var(--mm-sans); font-size: 16px; color: var(--mm-text-muted); max-width: 560px; margin: 0 auto 46px; line-height: 1.6; }
+.blog-coming-soon-sub { font-family: var(--mm-sans); font-size: 17px; color: var(--mm-text-muted); max-width: 560px; margin: 0 auto 46px; line-height: 1.6; }
 .topic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
 .topic-card {
     background: white; border: 1px dashed var(--mm-border); border-radius: 20px;

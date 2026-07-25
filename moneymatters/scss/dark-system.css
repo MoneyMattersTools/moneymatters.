@@ -235,9 +235,8 @@ html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
     font-weight: 500;
     letter-spacing: -0.02em;
     color: var(--mm-text-light);
-    margin: 10px 0 12px;
+    margin: 6px 0 24px;
 }
-.mm-gate-sub { color: var(--mm-text-light-muted); font-size: 16px; line-height: 1.55; max-width: 480px; margin: 0 auto 8px; }
 
 .mm-gate-skip {
     position: absolute;
@@ -503,6 +502,20 @@ body main .hero {
 
 #diagnostic-hero [data-step="verify"] strong,
 #diagnostic-hero [data-step="verify-error"] strong { color: var(--mm-text-light) !important; }
+
+#diagnostic-hero .advisor-review-cta { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+#diagnostic-hero .advisor-review-cta:hover { background: var(--mm-text-light) !important; }
+#diagnostic-hero .advisor-intake-checklist legend { color: var(--mm-text-light) !important; }
+#diagnostic-hero .advisor-intake-checklist label { color: var(--mm-text-light-muted) !important; }
+#diagnostic-hero .advisor-intake-location label { color: var(--mm-text-light) !important; }
+#diagnostic-hero .advisor-intake-location input {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+#diagnostic-hero .advisor-intake-location input:focus { border-color: var(--mm-green) !important; box-shadow: 0 0 0 3px var(--mm-green-soft) !important; }
+#diagnostic-hero .advisor-intake-hint { color: var(--mm-text-light-soft) !important; }
+#diagnostic-hero .advisor-intake-form[hidden] { display: none !important; }
 
 /* Results: score reveal gets the display-number treatment */
 #diagnostic-hero .score-number {
@@ -1174,7 +1187,7 @@ body main .hero {
     margin: 12px 0 14px;
     line-height: 1.2;
 }
-.advisor-connect-copy p { color: var(--mm-text-light-muted); font-size: 16px; line-height: 1.6; margin: 0 0 22px; }
+.advisor-connect-copy p { color: var(--mm-text-light-muted); font-size: 17px; line-height: 1.6; margin: 0 0 22px; }
 .advisor-connect-copy .connect-btn { display: inline-flex; }
 @media (max-width: 800px) {
     .advisor-connect { grid-template-columns: 1fr; gap: 24px; }

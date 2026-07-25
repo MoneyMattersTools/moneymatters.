@@ -63,10 +63,20 @@ function readSessionFromEvent(event) {
   return raw ? verifySessionValue(raw) : null;
 }
 
+// Same as readSessionFromEvent, but for the newer ESM functions that receive
+// a Web-standard Request object instead of the classic Netlify `event`.
+function readSessionFromRequest(request) {
+  const cookieHeader = request.headers.get('cookie') || '';
+  const cookies = parseCookies(cookieHeader);
+  const raw = cookies[COOKIE_NAME];
+  return raw ? verifySessionValue(raw) : null;
+}
+
 module.exports = {
   COOKIE_NAME,
   signSession,
   verifySessionValue,
   buildSetCookie,
   readSessionFromEvent,
+  readSessionFromRequest,
 };

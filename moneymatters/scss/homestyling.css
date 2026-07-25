@@ -1151,7 +1151,7 @@ footer nav {
 }
 .simple-page p,
 .simple-page li {
-  font-size: 1rem;
+  font-size: 1.0625rem;
   line-height: 1.7;
   color: #1F2937;
 }

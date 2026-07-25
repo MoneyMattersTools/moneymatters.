@@ -28,9 +28,7 @@
     overlay.innerHTML =
       '<div class="mm-gate-modal" role="dialog" aria-modal="true" aria-labelledby="mm-gate-heading" tabindex="-1">' +
         '<button type="button" class="mm-gate-skip" id="mm-gate-skip">Skip, just show me the site <span aria-hidden="true">&times;</span></button>' +
-        '<span class="kicker"><span class="kicker-dot"></span>Before you dive in</span>' +
-        '<h2 id="mm-gate-heading">Where do you actually stand with money?</h2>' +
-        '<p class="mm-gate-sub">Pick a starting point — free, takes under 2 minutes. Or skip and browse freely.</p>' +
+        '<h2 id="mm-gate-heading">Choose a place to start</h2>' +
         '<div class="entry-grid mm-gate-grid">' +
           '<a class="connect-card" id="mm-gate-health-score" href="/index.html?start=health-score">' +
             '<h3>Check my Financial Health Score</h3>' +
