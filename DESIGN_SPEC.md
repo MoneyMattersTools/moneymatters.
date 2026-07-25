@@ -154,3 +154,8 @@ The homepage hero's desktop video background is an approved exception to the wel
 5. **Subscribe button** now links to a new dedicated page explaining subscription value/benefits at each tier - name TBD (see chat). This page should lead with user value/leverage messaging, not just a feature list - the core positioning (user has the leverage, gets free access to vetted advisors) should be emphasized here specifically.
 6. **Contact page layout**: fix left-alignment issue - content currently sits too far left, needs better centering/balance.
 7. **Homepage hero video**: extend loop length (longer clip and/or slower playback) so the loop point is less noticeable - currently a short ~7s clip that repeats too quickly.
+
+### Round 7 confirmations (2026-07-25)
+- Advisor-review CTA: confirmed scope is the intake-form MVP version (item 2 above) - not the full automated marketplace.
+- Subscription page name: "MoneyMatters+". "Membership" may work as a section heading within the page.
+- Font size: confirmed moderate increase, prioritize balance and readability (avoid too-small text for some users) over dramatic size change.
