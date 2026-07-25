@@ -175,3 +175,5 @@ The homepage hero's desktop video background is an approved exception to the wel
 9. **Advisor intake form**: add a free-text field for the user to describe their own specific needs, in addition to the checkbox list. Review and revise the checkbox options - current ones don't cover the majority of real reasons users are likely seeking advisor help; broaden them.
 10. **New page: "Connect with an Advisor"** (or similar name) - a real page explaining what the advisor-connection process offers, positioned as the bones for a future advisor directory/ratings page once real advisors are onboarded. Build the structure now, populate later.
 11. **Terminology clarity going forward**: "Subscribe" refers to the newsletter signup (Beehiiv embed). The paid tier CTA is "MoneyMatters+" / "Learn more," a separate thing - keep this distinction clear in copy so it does not read as the same button.
+
+12. **Navigation**: add "MoneyMatters+" and the new "Connect with an Advisor" page to the primary top navigation bar, alongside Home/Tools/About Us/Blogs - both are real destinations, not secondary links.
