@@ -159,3 +159,5 @@ The homepage hero's desktop video background is an approved exception to the wel
 - Advisor-review CTA: confirmed scope is the intake-form MVP version (item 2 above) - not the full automated marketplace.
 - Subscription page name: "MoneyMatters+". "Membership" may work as a section heading within the page.
 - Font size: confirmed moderate increase, prioritize balance and readability (avoid too-small text for some users) over dramatic size change.
+
+12. **Navigation**: add "MoneyMatters+" and the new "Connect with an Advisor" page to the primary top navigation bar, alongside Home/Tools/About Us/Blogs - both are real destinations, not secondary links.
