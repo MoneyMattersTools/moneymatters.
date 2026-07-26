@@ -55,12 +55,17 @@
             <nav class="top show" id="mobileMenu" aria-label="Primary">
                 <a href="index.html">Home</a>
                 <a href="tools.html">Tools</a>
-                <a href="aboutus.html">About Us</a>
+                <span class="nav-item-with-dropdown">
+                  <a href="aboutus.html">About Us</a>
+                  <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-controls="nav-about-dropdown" aria-label="Show more About Us links">&#9662;</button>
+                  <div class="nav-dropdown-menu" id="nav-about-dropdown" hidden>
+                    <a href="contact.html">Contact</a>
+                  </div>
+                </span>
                 <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
-                <a href="moneymatters-plus.html">MoneyMatters+</a>
-                <a href="connect-with-advisor.html">Connect with an Advisor</a>
-                <a href="contact.html" class="block-link">Get Connected!</a>
-            </nav>
+                <a href="connect-with-advisor.html">Advisor Connect</a>
+                <a href="moneymatters-plus.html" class="block-link">MoneyMatters+</a>
+                </nav>
         </header>
         <main>
             <section class="tools-hero fade-up">
@@ -121,6 +126,31 @@
             </section>
 
             <section class="about-section fade-up">
+              <h2>Free vs. MoneyMatters+</h2>
+              <div class="tier-compare-grid">
+                <div class="tier-compare-col">
+                  <h3>Free</h3>
+                  <ul class="tier-compare-list">
+                    <li>Financial Health Score &amp; Net Worth diagnostics</li>
+                    <li>Basic Budget, Retirement &amp; Investment tools</li>
+                    <li>Browse-only community access</li>
+                  </ul>
+                </div>
+                <div class="tier-compare-col tier-compare-col--plus">
+                  <h3>MoneyMatters+</h3>
+                  <ul class="tier-compare-list">
+                    <li>Everything in Free</li>
+                    <li>Advanced Budget &amp; Investment tools</li>
+                    <li>Every new tool, automatically</li>
+                    <li>Explainer videos &amp; live webinars</li>
+                    <li>Advisor Q&amp;A sessions</li>
+                    <li>Full community access</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="about-section fade-up">
               <h2>Frequently asked questions</h2>
               <div class="faq-list faq-list--v2">
                 <details>
@@ -134,6 +164,10 @@
                 <details>
                   <summary>Can I cancel anytime?</summary>
                   <p>Yes — no lock-in. Cancel anytime and keep access through the end of your billing period.</p>
+                </details>
+                <details>
+                  <summary>What counts as a "new tool"?</summary>
+                  <p>Any calculator or feature we add to the native toolset after you join — it's included automatically, no extra charge and nothing to re-subscribe to.</p>
                 </details>
               </div>
             </section>
@@ -192,6 +226,7 @@
         </footer>
 
         <script src="scripts/hamburger.js"></script>
+<script src="scripts/nav-dropdown.js"></script>
         <script src="scripts/scroll-animations.js"></script>
         <script src="scripts/cinematic-motion.js"></script>
         <script src="scripts/signature-motif.js"></script>

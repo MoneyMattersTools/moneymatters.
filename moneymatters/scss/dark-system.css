@@ -343,6 +343,7 @@ body header nav a.block-link {
     color: var(--mm-bg-deep) !important;
 }
 body header nav a.block-link:hover { background: var(--mm-text-light) !important; }
+body header .nav-dropdown-menu { background: var(--mm-bg-deep) !important; border: 1px solid var(--mm-surface-border) !important; }
 @media (max-width: 768px) {
     body header nav, body header nav.top { background: var(--mm-bg-deep) !important; border: 1px solid var(--mm-surface-border); }
 }
@@ -1036,6 +1037,7 @@ body main .hero {
 
 .about-cta { background: linear-gradient(135deg, rgba(52, 211, 153, 0.10), rgba(52, 211, 153, 0.02)) !important; }
 .about-cta h2 { color: var(--mm-text-light) !important; }
+.about-cta-note { color: var(--mm-text-light-soft) !important; }
 .cta-button { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
 .cta-button:hover { background: var(--mm-text-light) !important; }
 /* .cta-button--ghost only overrode color/border, never background — the
@@ -1125,6 +1127,14 @@ body main .hero {
 .topic-card { background: var(--mm-surface) !important; border: 1px dashed var(--mm-surface-border) !important; }
 .topic-card:hover { border-color: var(--mm-green) !important; }
 .topic-card-icon { background: var(--mm-cream-warm); }
+
+.tier-compare-col { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
+.tier-compare-col h3 { color: var(--mm-text-light) !important; }
+.tier-compare-col .tier-compare-list li { color: var(--mm-text-light-muted) !important; }
+.tier-compare-col .tier-compare-list li::before { color: var(--mm-green) !important; }
+.tier-compare-col--plus { background: var(--mm-green-soft) !important; border-color: var(--mm-green) !important; }
+.tier-compare-col--plus h3 { color: var(--mm-text-light) !important; }
+.tier-compare-col--plus .tier-compare-list li { color: var(--mm-text-light) !important; }
 .topic-card-tag { background: var(--mm-gold-soft); color: var(--mm-gold); }
 .topic-card h3 { color: var(--mm-text-light); }
 .topic-card p { color: var(--mm-text-light-muted); }

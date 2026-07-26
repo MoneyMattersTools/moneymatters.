@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Connect with an Advisor — MoneyMatters.</title>
+        <title>Advisor Connect — MoneyMatters.</title>
         <meta charset="UTF-8">
         <meta name="description" content="Connect with a vetted, fee-only, fiduciary financial advisor — free, once you've taken your Financial Health Score.">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,18 +55,27 @@
             <nav class="top show" id="mobileMenu" aria-label="Primary">
                 <a href="index.html">Home</a>
                 <a href="tools.html">Tools</a>
-                <a href="aboutus.html">About Us</a>
+                <span class="nav-item-with-dropdown">
+                  <a href="aboutus.html">About Us</a>
+                  <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-controls="nav-about-dropdown" aria-label="Show more About Us links">&#9662;</button>
+                  <div class="nav-dropdown-menu" id="nav-about-dropdown" hidden>
+                    <a href="contact.html">Contact</a>
+                  </div>
+                </span>
                 <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
-                <a href="moneymatters-plus.html">MoneyMatters+</a>
-                <a href="connect-with-advisor.html">Connect with an Advisor</a>
-                <a href="contact.html" class="block-link">Get Connected!</a>
-            </nav>
+                <a href="connect-with-advisor.html">Advisor Connect</a>
+                <a href="moneymatters-plus.html" class="block-link">MoneyMatters+</a>
+                </nav>
         </header>
         <main>
             <section class="tools-hero fade-up">
               <span class="kicker"><span class="kicker-dot"></span>Real advisors, actually vetted</span>
-              <h1>Connect with an Advisor</h1>
+              <h1>Advisor Connect</h1>
               <p class="tools-hero-sub">Every advisor in our network is fee-only, fiduciary, and vetted before they ever see your name. Matching is free — it unlocks once you've taken your Financial Health Score.</p>
+            </section>
+
+            <section class="about-diagnostic-cta fade-up">
+              <p>We ask a few questions about your situation, then match you with a vetted advisor who actually specializes in it — not just whoever's next in line.</p>
             </section>
 
             <section class="about-section fade-up">
@@ -91,8 +100,36 @@
               </div>
             </section>
 
+            <section class="about-section fade-up">
+              <h2>After you request a connection</h2>
+              <div class="timeline">
+                <div class="timeline-track" aria-hidden="true"><div class="timeline-track-fill"></div></div>
+                <div class="timeline-step">
+                  <div class="step-number">1</div>
+                  <h3>You share a bit more context</h3>
+                  <p>The short intake form on your results page — what you need help with, and how specific to be about your location.</p>
+                </div>
+                <div class="timeline-step">
+                  <div class="step-number">2</div>
+                  <h3>Our team reviews and matches</h3>
+                  <p>We pair your situation with an advisor who actually specializes in it.</p>
+                </div>
+                <div class="timeline-step">
+                  <div class="step-number">3</div>
+                  <h3>The advisor shares their background first</h3>
+                  <p>You see who they are and how they work before anything else happens.</p>
+                </div>
+                <div class="timeline-step">
+                  <div class="step-number">4</div>
+                  <h3>You decide — no pressure either way</h3>
+                  <p>Take the meeting or don't. There's no cost and no obligation, and you can stop at any point.</p>
+                </div>
+              </div>
+            </section>
+
             <section class="about-section about-differentiators fade-up">
               <h2>What "vetted" actually means</h2>
+              <p class="feature-tools-sub">CFP&reg;-certified, fee-only, fiduciary — every advisor, no exceptions.</p>
               <div class="bento-grid">
                 <div class="bento-tile bento-tile--wide bento-tile--dark">
                   <h3>CFP&reg; certified.</h3>
@@ -139,6 +176,7 @@
                 <a href="index.html?start=health-score" class="cta-button">Start my Financial Health Score →</a>
                 <a href="aboutus.html#how-we-make-money" class="cta-button cta-button--ghost">How we make money</a>
               </div>
+              <p class="about-cta-note">No cost. No obligation. Stop at any point.</p>
             </section>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
@@ -187,6 +225,7 @@
         </footer>
 
         <script src="scripts/hamburger.js"></script>
+<script src="scripts/nav-dropdown.js"></script>
         <script src="scripts/scroll-animations.js"></script>
         <script src="scripts/cinematic-motion.js"></script>
         <script src="scripts/signature-motif.js"></script>

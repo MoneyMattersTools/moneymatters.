@@ -55,14 +55,19 @@
                   </button>
 
                 <nav class="top show" id="mobileMenu" aria-label="Primary">
-                        <a href="index.html">Home</a>
-                        <a href="tools.html">Tools</a>
-                        <a href="aboutus.html">About Us</a>
-                        <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
-                    <a href="moneymatters-plus.html">MoneyMatters+</a>
-                    <a href="connect-with-advisor.html">Connect with an Advisor</a>
-                    <a href="contact.html" class="block-link">Get Connected!</a>
-                </nav>
+                    <a href="index.html">Home</a>
+                    <a href="tools.html">Tools</a>
+                    <span class="nav-item-with-dropdown">
+                      <a href="aboutus.html">About Us</a>
+                      <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-controls="nav-about-dropdown" aria-label="Show more About Us links">&#9662;</button>
+                      <div class="nav-dropdown-menu" id="nav-about-dropdown" hidden>
+                        <a href="contact.html">Contact</a>
+                      </div>
+                    </span>
+                    <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
+                    <a href="connect-with-advisor.html">Advisor Connect</a>
+                    <a href="moneymatters-plus.html" class="block-link">MoneyMatters+</a>
+                    </nav>
         </header>
 
         <main>
@@ -398,6 +403,7 @@
         </footer>
 
         <script src="scripts/hamburger.js"></script>
+<script src="scripts/nav-dropdown.js"></script>
         <script src="scripts/scroll-animations.js"></script>
         <script src="scripts/cinematic-motion.js"></script>
         <script src="scripts/signature-motif.js"></script>
