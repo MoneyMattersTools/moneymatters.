@@ -141,7 +141,6 @@ export default async (request, context) => {
     // Airtable table yet, Airtable rejects the whole create with an
     // unknown-field error. Try with it first, but fall back to the record
     // without it rather than losing the entire request over one field.
-    let sharedScoresSaved = false;
     if (shareScores) {
       const user = await findByEmail('Users', session.email);
       fields['Shared Scores'] = JSON.stringify({
@@ -152,7 +151,6 @@ export default async (request, context) => {
       });
       try {
         await createRecord('Advisor Review Requests', fields);
-        sharedScoresSaved = true;
       } catch (fieldErr) {
         console.error('request-advisor-review Shared Scores field write failed, retrying without it:', fieldErr);
         delete fields['Shared Scores'];
@@ -177,7 +175,7 @@ export default async (request, context) => {
       console.error('request-advisor-review confirmation email error:', emailErr);
     }
 
-    return json(200, shareScores ? { ok: true, sharedScoresSaved } : { ok: true });
+    return json(200, { ok: true });
   } catch (err) {
     console.error('request-advisor-review error:', err);
     return json(500, { ok: false, error: 'server_error' });
