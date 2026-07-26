@@ -81,16 +81,21 @@ async function countRecentByIpSince(table, ip, windowSeconds, timestampField) {
 }
 
 async function createRecord(table, fields) {
+  // typecast lets Airtable auto-register a new option on a single-select
+  // field (e.g. a Purpose value used for the first time) instead of 422ing.
+  // Without it, any code path writing a select value that predates the
+  // field's known options fails outright — this bit resend-login.mjs when
+  // 'returning_login' wasn't yet a registered Purpose option.
   return airtableFetch(table, '', {
     method: 'POST',
-    body: JSON.stringify({ fields }),
+    body: JSON.stringify({ fields, typecast: true }),
   });
 }
 
 async function updateRecord(table, recordId, fields) {
   return airtableFetch(table, `/${recordId}`, {
     method: 'PATCH',
-    body: JSON.stringify({ fields }),
+    body: JSON.stringify({ fields, typecast: true }),
   });
 }
 
