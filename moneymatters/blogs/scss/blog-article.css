@@ -1,0 +1,181 @@
+/* ===========================================================
+   Blog article layout — individual post pages.
+   Dark cinematic theme, matching dark-system.css tokens (loaded
+   alongside this file on every post page). Single-column, no
+   sidebar — kept simple per the sitewide "less is more" copy
+   discipline (DESIGN_SPEC.md §17.3).
+   =========================================================== */
+
+.blog-article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 90px;
+}
+
+.blog-article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    color: var(--mm-text-light-soft);
+    font-family: var(--mm-sans);
+    font-size: 14px;
+}
+
+.blog-article h1 {
+    font-family: var(--mm-serif);
+    font-size: clamp(32px, 4.4vw, 46px);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--mm-text-light);
+    margin: 0 0 18px;
+}
+
+.blog-article-dek {
+    font-family: var(--mm-sans);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--mm-text-light-muted);
+    margin: 0 0 40px;
+}
+
+.blog-article-body {
+    font-family: var(--mm-sans);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--mm-text-light-muted);
+}
+.blog-article-body p { margin: 0 0 22px; }
+.blog-article-body h2 {
+    font-family: var(--mm-serif);
+    font-size: clamp(22px, 2.6vw, 28px);
+    font-weight: 500;
+    color: var(--mm-text-light);
+    margin: 44px 0 16px;
+    letter-spacing: -0.01em;
+}
+.blog-article-body h3 {
+    font-family: var(--mm-sans-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--mm-text-light);
+    margin: 28px 0 12px;
+}
+.blog-article-body ul, .blog-article-body ol {
+    margin: 0 0 22px 22px;
+    padding-left: 6px;
+}
+.blog-article-body li { margin-bottom: 10px; }
+.blog-article-body strong { color: var(--mm-text-light); }
+.blog-article-body a {
+    color: var(--mm-green);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid var(--mm-green-soft);
+}
+.blog-article-body a:hover { border-color: var(--mm-green); }
+
+.blog-article-callout {
+    background: var(--mm-surface);
+    border: 1px solid var(--mm-surface-border);
+    border-left: 3px solid var(--mm-gold);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 28px 0;
+    font-style: italic;
+    color: var(--mm-text-light-muted);
+}
+
+.blog-article-faq {
+    margin-top: 48px;
+    padding-top: 8px;
+    border-top: 1px solid var(--mm-surface-border);
+}
+.blog-article-faq h2 {
+    font-family: var(--mm-serif);
+    font-size: clamp(22px, 2.6vw, 28px);
+    font-weight: 500;
+    color: var(--mm-text-light);
+    margin: 40px 0 20px;
+}
+.blog-article-faq-item { margin-bottom: 22px; }
+.blog-article-faq-item h3 {
+    font-family: var(--mm-sans-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--mm-text-light);
+    margin: 0 0 8px;
+}
+.blog-article-faq-item p {
+    font-family: var(--mm-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--mm-text-light-muted);
+    margin: 0;
+}
+
+.blog-article-cta {
+    margin-top: 48px;
+    padding: 32px;
+    border-radius: 16px;
+    background: var(--mm-surface);
+    border: 1px solid var(--mm-surface-border);
+    text-align: center;
+}
+.blog-article-cta h2 {
+    font-family: var(--mm-serif);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--mm-text-light);
+    margin: 0 0 10px;
+}
+.blog-article-cta p {
+    font-family: var(--mm-sans);
+    color: var(--mm-text-light-muted);
+    margin: 0 0 20px;
+    font-size: 15.5px;
+}
+.blog-article-cta-links {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.blog-article-cta-links a {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-family: var(--mm-sans-display);
+    font-weight: 700;
+    font-size: 14.5px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.blog-article-cta-links a.cta-primary {
+    background: var(--mm-green);
+    color: var(--mm-bg-deep);
+}
+.blog-article-cta-links a.cta-primary:hover { background: var(--mm-text-light); }
+.blog-article-cta-links a.cta-secondary {
+    background: transparent;
+    border: 1px solid var(--mm-surface-border);
+    color: var(--mm-text-light);
+}
+.blog-article-cta-links a.cta-secondary:hover { border-color: var(--mm-green); color: var(--mm-green); }
+
+.blog-article-back {
+    display: inline-block;
+    margin-bottom: 28px;
+    color: var(--mm-text-light-soft);
+    font-family: var(--mm-sans);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.blog-article-back:hover { color: var(--mm-green); }
+
+@media (max-width: 640px) {
+    .blog-article { padding: 48px 20px 70px; }
+    .blog-article-cta { padding: 26px 20px; }
+}

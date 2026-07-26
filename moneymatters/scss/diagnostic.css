@@ -293,6 +293,40 @@
     font-size: 16px;
     resize: vertical;
 }
+#diagnostic-hero .advisor-intake-consent { margin-bottom: 24px; }
+#diagnostic-hero .advisor-intake-consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-family: var(--mm-sans);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+}
+#diagnostic-hero .advisor-intake-consent-label input[type="checkbox"] {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--mm-green);
+    cursor: pointer;
+}
+#diagnostic-hero .advisor-intake-networth { margin-top: 14px; }
+#diagnostic-hero .advisor-intake-networth label {
+    display: block;
+    font-family: var(--mm-sans);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+#diagnostic-hero .advisor-intake-networth input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: var(--mm-sans);
+    font-size: 16px;
+}
 #diagnostic-hero .advisor-intake-location { margin-bottom: 24px; }
 #diagnostic-hero .advisor-intake-location label {
     display: block;

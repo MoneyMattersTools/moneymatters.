@@ -1,13 +1,16 @@
 import airtableLib from './lib/airtable.js';
 import sessionLib from './lib/session.js';
+import resendLib from './lib/resend.js';
 
-const { createRecord, countRecentByIpSince, findOneByFormula, escapeFormulaValue } = airtableLib;
+const { createRecord, countRecentByIpSince, findOneByFormula, findByEmail, escapeFormulaValue } = airtableLib;
 const { readSessionFromRequest } = sessionLib;
+const { sendEmail } = resendLib;
 
 const LOCATION_MAX_LENGTH = 120;
 const DETAILS_MAX_LENGTH = 600;
 const MAX_SITUATIONAL_ITEMS = 10;
 const SITUATIONAL_ITEM_MAX_LENGTH = 80;
+const NET_WORTH_MAX_ABS = 1e9;
 
 // Must match the checkbox values in index.html's advisor-intake-checklist
 // exactly — keeps "Situational Details" a controlled checklist rather than
@@ -89,6 +92,15 @@ export default async (request, context) => {
   const rawDetails = typeof payload.details === 'string' ? payload.details.trim().slice(0, DETAILS_MAX_LENGTH) : '';
   const details = neutralizeFormulaPrefix(rawDetails);
 
+  // §21.2: separate, off-by-default consent for sharing the Financial
+  // Health Score + Net Worth specifically with the matched advisor — distinct
+  // from the situational checklist above, which is about goals, not figures.
+  const shareScores = payload.shareScores === true;
+  const netWorth =
+    typeof payload.netWorth === 'number' && Number.isFinite(payload.netWorth) && Math.abs(payload.netWorth) <= NET_WORTH_MAX_ABS
+      ? Math.round(payload.netWorth)
+      : null;
+
   const clientIp = getClientIp(request, context);
 
   try {
@@ -116,14 +128,44 @@ export default async (request, context) => {
       return json(429, { ok: false, error: 'cooldown_active' });
     }
 
-    await createRecord('Advisor Review Requests', {
+    const fields = {
       Email: session.email,
       'Situational Details': JSON.stringify(situational),
       Details: details,
       Location: location,
       'Requested At': new Date().toISOString(),
       'Request IP': clientIp,
-    });
+    };
+
+    if (shareScores) {
+      // The health score itself lives on the Users record (session only
+      // carries what was true at sign-in) — look up the current value so
+      // the shared snapshot reflects the user's latest result.
+      const user = await findByEmail('Users', session.email);
+      fields['Shared Scores'] = JSON.stringify({
+        consent: true,
+        healthScore: user && user.fields ? user.fields['Health Score'] : null,
+        healthScoreBand: user && user.fields ? user.fields['Health Score Band'] : null,
+        netWorth: netWorth,
+      });
+    }
+
+    await createRecord('Advisor Review Requests', fields);
+
+    // §21 addendum: confirm receipt by email — this previously only wrote
+    // to Airtable with no user-facing confirmation beyond the on-page
+    // message. Best-effort: a delivery failure here shouldn't fail the
+    // request, since the record is already saved.
+    try {
+      await sendEmail({
+        to: session.email,
+        subject: 'We got your advisor review request',
+        text: "Thanks — we've received your request to be reviewed for a free advisor match.\n\nOur team will look it over and follow up by email once we've matched you with a fee-only, fiduciary advisor. There's no cost and no obligation.\n\nDidn't request this? You can ignore this email.",
+        html: "<p>Thanks — we've received your request to be reviewed for a free advisor match.</p><p>Our team will look it over and follow up by email once we've matched you with a fee-only, fiduciary advisor. There's no cost and no obligation.</p><p>Didn't request this? You can ignore this email.</p>",
+      });
+    } catch (emailErr) {
+      console.error('request-advisor-review confirmation email error:', emailErr);
+    }
 
     return json(200, { ok: true });
   } catch (err) {

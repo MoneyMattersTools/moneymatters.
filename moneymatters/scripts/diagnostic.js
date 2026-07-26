@@ -263,7 +263,19 @@
       advisorForm.reset();
       advisorForm.hidden = false;
       advisorConfirm.hidden = true;
+      if (netWorthWrap) netWorthWrap.hidden = true;
       setStep('advisor-intake');
+    });
+  }
+
+  // §21.2: separate, off-by-default opt-in for sharing the Financial
+  // Health Score + Net Worth specifically — distinct from the situational
+  // checklist above, which is about the user's goals, not their figures.
+  var shareScoresCheckbox = el('advisor-intake-share-scores');
+  var netWorthWrap = el('advisor-intake-networth-wrap');
+  if (shareScoresCheckbox && netWorthWrap) {
+    shareScoresCheckbox.addEventListener('change', function () {
+      netWorthWrap.hidden = !shareScoresCheckbox.checked;
     });
   }
 
@@ -279,13 +291,22 @@
       );
       var location = el('advisor-intake-location-input').value.trim();
       var details = el('advisor-intake-freetext-input').value.trim();
+      var shareScores = !!(shareScoresCheckbox && shareScoresCheckbox.checked);
+      var netWorthRaw = el('advisor-intake-networth-input').value.trim();
+      var netWorth = shareScores && netWorthRaw ? Number(netWorthRaw.replace(/[^0-9.-]/g, '')) : null;
       var submitBtn = el('advisor-intake-submit');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
       fetch('/api/request-advisor-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ situational: situational, location: location, details: details }),
+        body: JSON.stringify({
+          situational: situational,
+          location: location,
+          details: details,
+          shareScores: shareScores,
+          netWorth: netWorth,
+        }),
       })
         .then(function (res) { return res.json().catch(function () { return {}; }); })
         .then(function (result) {

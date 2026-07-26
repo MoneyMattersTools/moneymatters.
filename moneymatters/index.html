@@ -1,10 +1,16 @@
 ﻿<html>
 
     <head>
-        <title>Money Matters.</title>
+        <title>MoneyMatters — Free Financial Health Score &amp; Net Worth Diagnostic</title>
         <meta charset="UTF-8">
-        <meta name="description" content="Financial Calculators">
+        <meta name="description" content="See where you actually stand with money in under 2 minutes. Free Financial Health Score and Net Worth diagnostic, transparent tools, and vetted fee-only advisors.">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="canonical" href="https://www.money-matters.site/">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="MoneyMatters — Free Financial Health Score &amp; Net Worth Diagnostic">
+        <meta property="og:description" content="See where you actually stand with money in under 2 minutes. Free Financial Health Score and Net Worth diagnostic, transparent tools, and vetted fee-only advisors.">
+        <meta property="og:url" content="https://www.money-matters.site/">
+        <meta name="twitter:card" content="summary">
         <link rel="stylesheet" href="scss/homestyling.css">
         <link rel="stylesheet" href="scss/site-base.css">
         <link rel="stylesheet" href="scss/diagnostic.css">
@@ -13,6 +19,20 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
         <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "MoneyMatters",
+          "url": "https://www.money-matters.site/",
+          "logo": "https://www.money-matters.site/images/hero-icon.png",
+          "sameAs": [
+            "https://www.instagram.com/moneymatters.tools",
+            "https://www.facebook.com/share/14wpjLu4Zze/",
+            "https://www.tiktok.com/@moneymatters.tools"
+          ]
+        }
+        </script>
     </head>
 
     <body>
@@ -67,6 +87,7 @@
                     <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
                     <a href="connect-with-advisor.html">Advisor Connect</a>
                     <a href="moneymatters-plus.html" class="block-link">MoneyMatters+</a>
+                    <button type="button" class="nav-sign-in-link" id="nav-sign-in">Sign In</button>
                     </nav>
         </header>
 
@@ -191,6 +212,17 @@
                       <div class="advisor-intake-freetext">
                         <label for="advisor-intake-freetext-input">Anything else we should know?</label>
                         <textarea id="advisor-intake-freetext-input" name="details" rows="3" placeholder="Optional — describe your situation in your own words" maxlength="600"></textarea>
+                      </div>
+                      <div class="advisor-intake-consent">
+                        <label class="advisor-intake-consent-label">
+                          <input type="checkbox" id="advisor-intake-share-scores" name="shareScores">
+                          Also share my Financial Health Score and Net Worth with my advisor match
+                        </label>
+                        <p class="advisor-intake-hint">Off by default. If you turn this on, your current Financial Health Score is included automatically — adding your Net Worth below is optional.</p>
+                        <div class="advisor-intake-networth" id="advisor-intake-networth-wrap" hidden>
+                          <label for="advisor-intake-networth-input">Your Net Worth (optional)</label>
+                          <input type="text" inputmode="numeric" id="advisor-intake-networth-input" name="netWorth" placeholder="e.g. 150000">
+                        </div>
                       </div>
                       <div class="advisor-intake-location">
                         <label for="advisor-intake-location-input">Location shown to advisors</label>
@@ -408,6 +440,7 @@
         <script src="scripts/cinematic-motion.js"></script>
         <script src="scripts/signature-motif.js"></script>
         <script src="scripts/onboarding-gate.js"></script>
+        <script src="scripts/sign-in.js"></script>
         <script src="scripts/hero-media.js"></script>
         <script src="scripts/timeline-fill.js"></script>
         <script src="scripts/video-autoplay.js"></script>

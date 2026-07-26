@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="description" content="MoneyMatters+ membership: every tool, plus free access to vetted, fee-only advisors.">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="canonical" href="https://www.money-matters.site/moneymatters-plus.html">
         <link rel="stylesheet" href="scss/about-us-styling.css">
         <link rel="stylesheet" href="scss/site-base.css">
         <link rel="stylesheet" href="scss/dark-system.css">
@@ -11,6 +12,34 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
         <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Do I have to join MoneyMatters+ to talk to an advisor?",
+              "acceptedAnswer": { "@type": "Answer", "text": "No. Advisor matching is free whether or not you're on MoneyMatters+ — it unlocks once you've taken your Financial Health Score, not once you've paid." }
+            },
+            {
+              "@type": "Question",
+              "name": "What if I just want the free tools?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Stay free as long as you like. The diagnostic and the Budget, Retirement, and Investment tools have no signup wall and never require a subscription." }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I cancel anytime?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Yes — no lock-in. Cancel anytime and keep access through the end of your billing period." }
+            },
+            {
+              "@type": "Question",
+              "name": "What counts as a \"new tool\"?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Any calculator or feature added to the native toolset after you join — it's included automatically, no extra charge and nothing to re-subscribe to." }
+            }
+          ]
+        }
+        </script>
     </head>
 
     <body>
@@ -65,6 +94,7 @@
                 <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
                 <a href="connect-with-advisor.html">Advisor Connect</a>
                 <a href="moneymatters-plus.html" class="block-link">MoneyMatters+</a>
+                    <button type="button" class="nav-sign-in-link" id="nav-sign-in">Sign In</button>
                 </nav>
         </header>
         <main>
@@ -231,6 +261,7 @@
         <script src="scripts/cinematic-motion.js"></script>
         <script src="scripts/signature-motif.js"></script>
         <script src="scripts/onboarding-gate.js"></script>
+        <script src="scripts/sign-in.js"></script>
     </body>
 
 </html>
