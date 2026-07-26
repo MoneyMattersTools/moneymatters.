@@ -200,3 +200,11 @@ Beyond the existing process/vetting-criteria/coming-soon structure, add:
 ## 20. Round 9 Confirmation (locked 2026-07-25)
 
 - Keep the Get Connected/Contact page. Move it into a dropdown under the "About Us" nav item, rather than a standalone top-level nav item - top-nav "Get Connected!" CTA button now points to MoneyMatters+ instead.
+
+## 21. Round 10 Feedback (locked 2026-07-25)
+
+1. **Add a persistent "Sign In" link to the primary nav** - separate from the onboarding gate. Clicking it opens the same passwordless magic-link flow (enter email, get a link) already built into the gate, but must be reachable at any time, not just on a first, ungated visit.
+2. **Add a specific opt-in checkbox for sharing preliminary results with advisors**: a new, separate consent checkbox (distinct from the situational-details checklist) letting the user choose whether their Financial Health Score and Net Worth figure specifically are shared with advisors to aid matching. Off by default - explicit opt-in, not opt-out. Update Privacy Policy language to reflect this specific, separate consent.
+3. **Community infrastructure, built ahead of traffic** (not content, just structure): Discord server structure is manual/Ethan's action (see chat) - no code change needed here from Claude Code.
+4. **Blog / SEO**: get real posts live. Attempt to post the originally-planned blog content first; if that content has issues (missing, unusable, etc.), draft new short posts specifically for SEO purposes rather than leaving the "coming soon" placeholder live. Separately, do a full technical SEO pass sitewide: meta titles/descriptions on every page, sitemap.xml, robots.txt, structured data/schema markup where relevant (e.g. FAQ schema on FAQ content), proper heading hierarchy, alt text on all images. Fix what is missing or wrong.
+5. **Testing**: thoroughly test the email/notification system across every place the site sends email (diagnostic verification, advisor-review confirmation, sign-in magic link once built) and the full onboarding flow end to end, for a genuinely new user - confirm every step is smooth, not just individually functional.
