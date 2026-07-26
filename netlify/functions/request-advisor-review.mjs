@@ -137,10 +137,11 @@ export default async (request, context) => {
       'Request IP': clientIp,
     };
 
+    // 'Shared Scores' is a newer field — if it hasn't been added to the
+    // Airtable table yet, Airtable rejects the whole create with an
+    // unknown-field error. Try with it first, but fall back to the record
+    // without it rather than losing the entire request over one field.
     if (shareScores) {
-      // The health score itself lives on the Users record (session only
-      // carries what was true at sign-in) — look up the current value so
-      // the shared snapshot reflects the user's latest result.
       const user = await findByEmail('Users', session.email);
       fields['Shared Scores'] = JSON.stringify({
         consent: true,
@@ -148,9 +149,16 @@ export default async (request, context) => {
         healthScoreBand: user && user.fields ? user.fields['Health Score Band'] : null,
         netWorth: netWorth,
       });
+      try {
+        await createRecord('Advisor Review Requests', fields);
+      } catch (fieldErr) {
+        console.error('request-advisor-review Shared Scores field write failed, retrying without it:', fieldErr);
+        delete fields['Shared Scores'];
+        await createRecord('Advisor Review Requests', fields);
+      }
+    } else {
+      await createRecord('Advisor Review Requests', fields);
     }
-
-    await createRecord('Advisor Review Requests', fields);
 
     // §21 addendum: confirm receipt by email — this previously only wrote
     // to Airtable with no user-facing confirmation beyond the on-page
