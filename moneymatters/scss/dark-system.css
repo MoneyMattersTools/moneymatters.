@@ -980,6 +980,14 @@ body main .hero {
 .bento-tile:hover { border-color: var(--mm-green); }
 .bento-tile h3 { color: var(--mm-text-light); }
 .bento-tile p { color: var(--mm-text-light-muted); }
+
+.persuasion-tile { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
+.persuasion-tile h3 { color: var(--mm-text-light); }
+.persuasion-tile p { color: var(--mm-text-light-muted); }
+.persuasion-tile--dark { background: var(--mm-bg-deep); border-color: var(--mm-surface-border); }
+.persuasion-tile--dark h3 { color: var(--mm-text-light); }
+.persuasion-tile--dark p { color: var(--mm-text-light-muted); }
+.persuasion-reinforcement { background: var(--mm-green-soft); color: var(--mm-text-light); }
 .bento-tile--dark { background: var(--mm-bg-deep); border-color: var(--mm-surface-border); }
 .bento-tile--dark h3 { color: var(--mm-text-light); }
 .bento-tile--dark p { color: var(--mm-text-light-muted); }
