@@ -67,7 +67,7 @@
         '<p class="tool-stat-sub">' + toolFormatCurrency(totalSpent) + ' spent of ' + toolFormatCurrency(income) + ' income entered.</p>' +
       '</div>' +
       '<ul class="tool-breakdown">' + rows + '</ul>' +
-      '<p class="tool-note">Target percentages are a general budgeting guideline (28% housing, 15% transportation, 12% food, 8% utilities, 10% insurance, 20% savings/debt repayment, 7% discretionary), not personalized advice — your right mix depends on your city, family size, and goals. The recommended $ column is simply that target percentage applied to the income you entered.</p>' +
+      '<p class="tool-note">Target percentages are a general budgeting guideline (28% housing, 15% transportation, 12% food, 8% utilities, 10% insurance, 20% savings/debt repayment, 7% discretionary), not personalized advice. Your right mix depends on your city, family size, and goals. The recommended $ column is simply that target percentage applied to the income you entered.</p>' +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../contact.html">Talk to an advisor</a>' +

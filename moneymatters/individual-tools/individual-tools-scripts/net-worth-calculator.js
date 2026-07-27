@@ -64,9 +64,9 @@
         '<div class="tool-stat-value' + (isNegative ? ' is-negative' : '') + '">' + toolFormatCurrency(netWorth) + '</div>' +
         '<p class="tool-stat-sub">' + toolFormatCurrency(totalAssets) + ' in assets &minus; ' + toolFormatCurrency(totalLiabilities) + ' in liabilities.</p>' +
       '</div>' +
-      '<p class="tool-breakdown-group-label">Assets — ' + toolFormatCurrency(totalAssets) + '</p>' +
+      '<p class="tool-breakdown-group-label">Assets: ' + toolFormatCurrency(totalAssets) + '</p>' +
       '<ul class="tool-breakdown">' + breakdownRows(ASSET_CATEGORIES, assetInputs, totalAssets) + '</ul>' +
-      '<p class="tool-breakdown-group-label">Liabilities — ' + toolFormatCurrency(totalLiabilities) + '</p>' +
+      '<p class="tool-breakdown-group-label">Liabilities: ' + toolFormatCurrency(totalLiabilities) + '</p>' +
       '<ul class="tool-breakdown">' + breakdownRows(LIABILITY_CATEGORIES, liabilityInputs, totalLiabilities) + '</ul>' +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +

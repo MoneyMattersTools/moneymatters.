@@ -532,6 +532,7 @@ body main .hero {
 }
 #diagnostic-hero .score-band { color: var(--mm-green) !important; }
 #diagnostic-hero .score-copy, #diagnostic-hero .hero-sub { color: var(--mm-text-light-muted) !important; }
+#diagnostic-hero .quiz-next-hint { color: var(--mm-text-light-soft) !important; }
 #diagnostic-hero .score-breakdown-toggle { color: var(--mm-green) !important; }
 #diagnostic-hero .score-breakdown li {
     background: var(--mm-surface) !important;

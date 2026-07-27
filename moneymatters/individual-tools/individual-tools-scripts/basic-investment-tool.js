@@ -107,7 +107,7 @@
         '</div>' +
       '</div>' +
       '<ul class="tool-legend">' + legendHtml(currentSegments) + '</ul>' +
-      '<p class="tool-note">' + gapNote + ' Target mix and expected returns (equities 8%, bonds 4%, cash 2%, other 5%) are long-run rule-of-thumb assumptions, not a projection or guarantee — actual returns vary and your right mix depends on your full financial picture.</p>' +
+      '<p class="tool-note">' + gapNote + ' Target mix and expected returns (equities 8%, bonds 4%, cash 2%, other 5%) are long-run rule-of-thumb assumptions, not a projection or guarantee. Actual returns vary and your right mix depends on your full financial picture.</p>' +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../contact.html">Talk to an advisor</a>' +

@@ -68,7 +68,7 @@
         '<li><div class="tool-breakdown-top"><span class="tool-breakdown-name">Projected savings at ' + retireAge + '</span><span class="tool-breakdown-figures">' + toolFormatCurrency(projected) + '</span></div></li>' +
         '<li><div class="tool-breakdown-top"><span class="tool-breakdown-name">Years until retirement</span><span class="tool-breakdown-figures">' + t + '</span></div></li>' +
       '</ul>' +
-      '<p class="tool-note">Target nest egg uses the 4% rule: (current income &times; wage replacement ratio) &divide; 4%. Projected savings compounds your current balance and monthly contributions at the return rate entered. This does not account for Social Security, pensions, or other retirement income — those would reduce the savings you actually need.</p>' +
+      '<p class="tool-note">Target nest egg uses the 4% rule: (current income &times; wage replacement ratio) &divide; 4%. Projected savings compounds your current balance and monthly contributions at the return rate entered. This does not account for Social Security, pensions, or other retirement income. Those would reduce the savings you actually need.</p>' +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../contact.html">Talk to an advisor</a>' +
@@ -94,7 +94,7 @@
         '<div class="tool-stat">' +
           '<span class="tool-stat-label">Additional $ Needed</span>' +
           '<div class="tool-stat-value is-negative">' + toolFormatCurrency(gap) + '</div>' +
-          '<p class="tool-stat-sub">To sustain savings through age ' + lifeExpectancy + ', reduce annual spending by about ' + toolFormatCurrency(reduction) + ' (' + toolFormatCurrency(reduction / 12) + '/mo) — or plan to supplement with other income.</p>' +
+          '<p class="tool-stat-sub">To sustain savings through age ' + lifeExpectancy + ', reduce annual spending by about ' + toolFormatCurrency(reduction) + ' (' + toolFormatCurrency(reduction / 12) + '/mo), or plan to supplement with other income.</p>' +
         '</div>';
     } else {
       gapHtml = '' +
@@ -111,7 +111,7 @@
         '<li><div class="tool-breakdown-top"><span class="tool-breakdown-name">Current savings</span><span class="tool-breakdown-figures">' + toolFormatCurrency(currentSavings) + '</span></div></li>' +
         '<li><div class="tool-breakdown-top"><span class="tool-breakdown-name">Years of retirement remaining</span><span class="tool-breakdown-figures">' + n + '</span></div></li>' +
       '</ul>' +
-      '<p class="tool-note">Savings needed is the present value of your annual spending as a fixed withdrawal stream over your remaining years, at the return rate entered. This does not account for Social Security, pensions, inflation, or other income — those would reduce the savings you actually need.</p>' +
+      '<p class="tool-note">Savings needed is the present value of your annual spending as a fixed withdrawal stream over your remaining years, at the return rate entered. This does not account for Social Security, pensions, inflation, or other income. Those would reduce the savings you actually need.</p>' +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../contact.html">Talk to an advisor</a>' +

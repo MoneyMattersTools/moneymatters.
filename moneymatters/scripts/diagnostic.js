@@ -7,7 +7,7 @@
       id: 'q1',
       text: 'If you lost your main source of income today, how many months of expenses could you cover with savings you could access quickly?',
       options: [
-        { value: 'a', label: "None — I don't have savings I could access quickly" },
+        { value: 'a', label: "None, I don't have savings I could access quickly" },
         { value: 'b', label: 'About 1 month' },
         { value: 'c', label: '3–5 months' },
         { value: 'd', label: '6+ months' },
@@ -55,7 +55,7 @@
     },
     {
       id: 'q6',
-      text: 'If something went wrong tomorrow — job loss, illness, a big repair — how protected do you feel?',
+      text: 'If something went wrong tomorrow (job loss, illness, a big repair), how protected do you feel?',
       options: [
         { value: 'a', label: 'Not at all' },
         { value: 'b', label: 'Somewhat' },
@@ -77,7 +77,7 @@
 
   var BAND_COPY = {
     'Starting Point': {
-      body: "You're at the beginning, and that's a real place to start from. Right now, the basics — an emergency fund, a handle on debt, knowing where your money goes — need the most attention.",
+      body: "You're at the beginning, and that's a real place to start from. Right now, the basics (an emergency fund, a handle on debt, knowing where your money goes) need the most attention.",
     },
     'Needs Work': {
       body: 'You are managing the basics, but a few gaps are costing you more than you think.',

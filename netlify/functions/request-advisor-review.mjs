@@ -26,7 +26,7 @@ const ALLOWED_SITUATIONAL = new Set([
   'Inheritance or major windfall',
   'Selling a business or equity compensation',
   'New to investing',
-  'Not sure — just want general guidance',
+  'Not sure, just want general guidance',
 ]);
 
 const IP_RATE_LIMIT_WINDOW_SECONDS = 60;

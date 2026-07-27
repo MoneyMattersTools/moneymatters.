@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function () {
           form.hidden = true;
           statusEl.className = 'data-request-status data-request-status--success';
           statusEl.textContent = result.data.alreadyPending
-            ? "You already have a deletion request in progress for this email — we'll email you once it's complete."
+            ? "You already have a deletion request in progress for this email. We'll email you once it's complete."
             : "Request received. We'll email you at that address, and your data will be removed within 14 days.";
         } else if (result.data && result.data.error === 'rate_limited') {
           statusEl.className = 'data-request-status data-request-status--error';
-          statusEl.textContent = 'Too many requests — please try again in a minute.';
+          statusEl.textContent = 'Too many requests. Please try again in a minute.';
         } else if (result.data && result.data.error === 'invalid_email') {
           statusEl.className = 'data-request-status data-request-status--error';
           statusEl.textContent = 'Please enter a valid email address.';

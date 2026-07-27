@@ -83,7 +83,7 @@
         .then(function (res) { return res.json().catch(function () { return {}; }); })
         .then(function () {
           form.hidden = true;
-          statusEl.textContent = 'If that email has an account, a login link is on its way — check your inbox.';
+          statusEl.textContent = 'If that email has an account, a login link is on its way. Check your inbox.';
           statusEl.hidden = false;
         })
         .catch(function () {

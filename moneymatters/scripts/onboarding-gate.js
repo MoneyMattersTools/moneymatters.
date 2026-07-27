@@ -31,7 +31,7 @@
         '<div class="entry-grid mm-gate-grid">' +
           '<a class="connect-card" id="mm-gate-health-score" href="/index.html?start=health-score">' +
             '<h3>Check my Financial Health Score</h3>' +
-            '<p>A quick, honest read on where you stand — and what to do next.</p>' +
+            '<p>A quick, honest read on where you stand, and what to do next.</p>' +
             '<span class="connect-btn">Start <span aria-hidden="true">&rarr;</span></span>' +
           '</a>' +
           '<a class="connect-card" id="mm-gate-net-worth" href="/individual-tools/basic-tools/net-worth-calculator.html">' +
@@ -125,7 +125,7 @@
         .then(function (res) { return res.json().catch(function () { return {}; }); })
         .then(function () {
           returningForm.hidden = true;
-          returningStatus.textContent = 'If that email has an account, a login link is on its way — check your inbox.';
+          returningStatus.textContent = 'If that email has an account, a login link is on its way. Check your inbox.';
           returningStatus.hidden = false;
           markSeen();
         })

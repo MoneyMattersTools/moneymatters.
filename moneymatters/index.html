@@ -1,13 +1,13 @@
 ﻿<html>
 
     <head>
-        <title>MoneyMatters — Free Financial Health Score &amp; Net Worth Diagnostic</title>
+        <title>MoneyMatters: Free Financial Health Score &amp; Net Worth Diagnostic</title>
         <meta charset="UTF-8">
         <meta name="description" content="See where you actually stand with money in under 2 minutes. Free Financial Health Score and Net Worth diagnostic, transparent tools, and vetted fee-only advisors.">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="canonical" href="https://www.money-matters.site/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="MoneyMatters — Free Financial Health Score &amp; Net Worth Diagnostic">
+        <meta property="og:title" content="MoneyMatters: Free Financial Health Score &amp; Net Worth Diagnostic">
         <meta property="og:description" content="See where you actually stand with money in under 2 minutes. Free Financial Health Score and Net Worth diagnostic, transparent tools, and vetted fee-only advisors.">
         <meta property="og:url" content="https://www.money-matters.site/">
         <meta name="twitter:card" content="summary">
@@ -114,7 +114,7 @@
                     <div class="entry-grid entry-grid--asymmetric">
                       <button type="button" class="connect-card connect-card--primary" id="start-health-score">
                         <h3>Check my Financial Health Score</h3>
-                        <p>A quick, honest read on where you stand — and what to do next.</p>
+                        <p>A quick, honest read on where you stand, and what to do next.</p>
                         <span class="connect-btn">Start <span aria-hidden="true">→</span></span>
                       </button>
                       <a class="connect-card connect-card--secondary" href="individual-tools/basic-tools/net-worth-calculator.html">
@@ -128,7 +128,7 @@
                   <div class="hero-step" data-step="email" hidden>
                     <span class="kicker"><span class="kicker-dot"></span>Financial Health Score</span>
                     <h2>First, where should we send your results?</h2>
-                    <p class="hero-sub">Enter your email to get your full results. We will send you a link — no password needed.</p>
+                    <p class="hero-sub">Enter your email to get your full results. We will send you a link. No password needed.</p>
                     <form id="diagnostic-email-form" class="diagnostic-form form-side" novalidate>
                       <label for="diagnostic-email">Email</label>
                       <input type="email" id="diagnostic-email" name="email" required placeholder="you@example.com" autocomplete="email">
@@ -147,6 +147,7 @@
                     <div class="quiz-answers" id="quiz-answers"></div>
                     <button type="button" class="step-back" id="quiz-back">← Back</button>
                     <p class="diagnostic-error" id="quiz-error" hidden></p>
+                    <p class="quiz-next-hint">We will email your results as soon as you finish. No separate signup step.</p>
                   </div>
 
                   <div class="hero-step" data-step="verify-confirm" hidden>
@@ -195,7 +196,7 @@
                   <div class="hero-step" data-step="advisor-intake" hidden>
                     <span class="kicker"><span class="kicker-dot"></span>Free advisor review</span>
                     <h2>What should your advisor know?</h2>
-                    <p class="hero-sub">Optional — only share what's relevant. This goes to our team to match you with the right advisor, not to any advisor directly.</p>
+                    <p class="hero-sub">Optional: only share what's relevant. This goes to our team to match you with the right advisor, not to any advisor directly.</p>
                     <form id="advisor-intake-form" class="advisor-intake-form" novalidate>
                       <fieldset class="advisor-intake-checklist">
                         <legend>What are you looking for help with?</legend>
@@ -207,18 +208,18 @@
                         <label><input type="checkbox" name="situational" value="Inheritance or major windfall"> Inheritance or major windfall</label>
                         <label><input type="checkbox" name="situational" value="Selling a business or equity compensation"> Selling a business or equity compensation</label>
                         <label><input type="checkbox" name="situational" value="New to investing"> New to investing</label>
-                        <label><input type="checkbox" name="situational" value="Not sure — just want general guidance"> Not sure — just want general guidance</label>
+                        <label><input type="checkbox" name="situational" value="Not sure, just want general guidance"> Not sure, just want general guidance</label>
                       </fieldset>
                       <div class="advisor-intake-freetext">
                         <label for="advisor-intake-freetext-input">Anything else we should know?</label>
-                        <textarea id="advisor-intake-freetext-input" name="details" rows="3" placeholder="Optional — describe your situation in your own words" maxlength="600"></textarea>
+                        <textarea id="advisor-intake-freetext-input" name="details" rows="3" placeholder="Optional: describe your situation in your own words" maxlength="600"></textarea>
                       </div>
                       <div class="advisor-intake-consent">
                         <label class="advisor-intake-consent-label">
                           <input type="checkbox" id="advisor-intake-share-scores" name="shareScores">
                           Also share my Financial Health Score and Net Worth with my advisor match
                         </label>
-                        <p class="advisor-intake-hint">Off by default. If you turn this on, your current Financial Health Score is included automatically — adding your Net Worth below is optional.</p>
+                        <p class="advisor-intake-hint">Off by default. If you turn this on, your current Financial Health Score is included automatically. Adding your Net Worth below is optional.</p>
                         <div class="advisor-intake-networth" id="advisor-intake-networth-wrap" hidden>
                           <label for="advisor-intake-networth-input">Your Net Worth (optional)</label>
                           <input type="text" inputmode="numeric" id="advisor-intake-networth-input" name="netWorth" placeholder="e.g. 150000">
@@ -227,14 +228,14 @@
                       <div class="advisor-intake-location">
                         <label for="advisor-intake-location-input">Location shown to advisors</label>
                         <input type="text" id="advisor-intake-location-input" name="location" placeholder="e.g. Bucks County, PA or Denver metro" aria-describedby="advisor-intake-location-hint">
-                        <p class="advisor-intake-hint" id="advisor-intake-location-hint">Pick something broad enough that you're comfortable with — a metro area or region works well. You choose the detail, we don't default to anything specific.</p>
+                        <p class="advisor-intake-hint" id="advisor-intake-location-hint">Pick something broad enough that you're comfortable with: a metro area or region works well. You choose the detail, we don't default to anything specific.</p>
                       </div>
                       <button type="submit" class="hero-cta" id="advisor-intake-submit">Send to our team</button>
                       <button type="button" class="step-back" data-back="results">← Back to results</button>
                       <p class="diagnostic-error" id="advisor-intake-error" role="alert" hidden></p>
                     </form>
                     <div class="advisor-intake-confirm" id="advisor-intake-confirm" aria-live="polite" hidden>
-                      <p class="hero-sub">Got it — our team will review your Financial Health Score and reach out with a fee-only, fiduciary advisor match.</p>
+                      <p class="hero-sub">Got it. Our team will review your Financial Health Score and reach out with a fee-only, fiduciary advisor match.</p>
                       <button type="button" class="step-back" data-back="results">← Back to results</button>
                     </div>
                   </div>
@@ -285,7 +286,7 @@
                   <div class="timeline-step">
                     <div class="step-number">1</div>
                     <h3>See where you stand</h3>
-                    <p>Take the free Financial Health Score or Net Worth diagnostic — under 2 minutes, no signup required to start.</p>
+                    <p>Take the free Financial Health Score or Net Worth diagnostic. Under 2 minutes, no signup required to start.</p>
                   </div>
                   <div class="timeline-step">
                     <div class="step-number">2</div>
@@ -357,7 +358,7 @@
                     <a class="resource-card" href="https://www.irs.gov/help/ita" target="_blank" rel="noopener">
                       <span class="resource-card__label">IRS</span>
                       <h3>IRS interactive tax tools</h3>
-                      <p>Interactive Tax Assistant — answer tax questions and get instant guidance.</p>
+                      <p>Interactive Tax Assistant: answer tax questions and get instant guidance.</p>
                     </a>
                     <a class="resource-card" href="https://www.consumerfinance.gov/" target="_blank" rel="noopener">
                       <span class="resource-card__label">CFPB</span>
@@ -386,7 +387,7 @@
               <div class="newsletter-cta__inner">
                 <span class="kicker"><span class="kicker-dot"></span>Stay in the loop</span>
               <h2>Get the occasional useful email.</h2>
-              <p>No spam, no daily noise — just real updates when we ship something worth knowing about.</p>
+              <p>No spam, no daily noise, just real updates when we ship something worth knowing about.</p>
               <div class="newsletter-cta__embed">
                 <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="4405be90-24ce-4ad8-9f1b-8fcd2e692491"></script>
               </div>
@@ -423,7 +424,7 @@
             <div class="disclaimer">
                 <h3>Disclaimer</h3>
                 <p>The information and tools provided on this website are for educational and informational purposes only. We aim to assist individuals in budgeting, investing, and planning for improved financial health by offering accessible resources. However, the content on this site is not intended as professional financial advice or formal recommendations.
-                    MoneyMatters may receive referral compensation when you connect with an advisor through our platform. This never affects which advisor you're matched with — see our <a href="aboutus.html#how-we-make-money">About page</a> for details.
+                    MoneyMatters may receive referral compensation when you connect with an advisor through our platform. This never affects which advisor you're matched with. See our <a href="aboutus.html#how-we-make-money">About page</a> for details.
                     Users are encouraged to seek personalized advice from a licensed financial professional before making any financial decisions. We do not assume any responsibility or liability for actions taken based on the information or recommendations provided on this site. By using the tools and resources available, users acknowledge and agree that they do so at their own risk.
                     </p>
             </div>

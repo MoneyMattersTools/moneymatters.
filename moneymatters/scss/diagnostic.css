@@ -144,6 +144,12 @@
     border-color: var(--mm-green);
     background: var(--mm-green-soft);
 }
+#diagnostic-hero .quiz-next-hint {
+    margin-top: 18px;
+    font-family: var(--mm-sans);
+    font-size: 13px;
+    color: var(--mm-text-soft);
+}
 
 /* --- Verify / verifying steps --- */
 #diagnostic-hero [data-step="verify"] strong,

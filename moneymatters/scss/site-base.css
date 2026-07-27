@@ -680,7 +680,12 @@ body footer .social-links img { width: 30px !important; height: 30px !important;
 body footer .social-media { position: static !important; left: auto !important; bottom: auto !important; margin-bottom: 26px !important; }
 body footer .disclaimer { font-size: 13px !important; color: rgba(250, 250, 247, 0.55) !important; line-height: 1.7 !important; margin-bottom: 18px !important; max-width: 900px !important; }
 body footer .disclaimer h3 { font-family: var(--mm-sans-display) !important; font-size: 13px !important; color: rgba(250, 250, 247, 0.75) !important; margin-bottom: 8px !important; font-weight: 700 !important; }
-body footer .disclaimer p { color: rgba(250, 250, 247, 0.55) !important; font-size: 13px !important; }
+/* A generic `footer p` rule (homestyling.css, meant only for the
+   "MoneyMatters." wordmark paragraph) also matches this paragraph and
+   sets display:flex + text-align:center — turning the inline <a> mid
+   sentence into a flex item instead of flowing text, which breaks the
+   paragraph into a garbled two-column-looking wrap (DESIGN_SPEC.md §24.1). */
+body footer .disclaimer p { display: block !important; text-align: left !important; color: rgba(250, 250, 247, 0.55) !important; font-size: 13px !important; }
 body footer .credits, body footer .credits p { font-size: 13px !important; color: rgba(250, 250, 247, 0.45) !important; }
 body footer .footer-signoff { font-family: var(--mm-serif) !important; font-style: italic !important; font-size: 15px !important; color: rgba(250, 250, 247, 0.5) !important; margin-top: 24px !important; padding-top: 24px !important; border-top: 1px solid rgba(250, 250, 247, 0.1) !important; }
 
@@ -1128,10 +1133,15 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 }
 @media (prefers-reduced-motion: reduce) { .timeline.is-filled .timeline-track-fill { transition: none; } }
 
-/* --- About: FAQ two-column + CTA actions --- */
-.faq-list--v2 { column-count: 2; column-gap: 40px; margin-top: 24px; }
-.faq-list--v2 details { break-inside: avoid; margin-bottom: 4px; }
-@media (max-width: 760px) { .faq-list--v2 { column-count: 1; } }
+/* --- About: FAQ + CTA actions ---
+   Was CSS column-count: 2 — multi-column layout rebalances column heights
+   whenever any <details> element's content height changes, so opening one
+   question visually shifted/displaced the others between columns. Looked
+   like accordions closing each other; no JS or `name` grouping was
+   actually forcing that (DESIGN_SPEC.md §26.3). Single-column stack avoids
+   the reflow entirely — opening a question just pushes content below it
+   down, which is the expected behavior. */
+.faq-list--v2 { display: flex; flex-direction: column; gap: 4px; margin-top: 24px; max-width: 720px; margin-left: auto; margin-right: auto; }
 .about-cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
 .about-cta-note { font-family: var(--mm-sans); font-size: 13.5px; color: var(--mm-text-muted); text-align: center; margin: 18px 0 0; }
 .cta-button--ghost { background: transparent; border: 2px solid var(--mm-charcoal); color: var(--mm-charcoal); }
