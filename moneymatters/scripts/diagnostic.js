@@ -292,8 +292,8 @@
       var location = el('advisor-intake-location-input').value.trim();
       var details = el('advisor-intake-freetext-input').value.trim();
       var shareScores = !!(shareScoresCheckbox && shareScoresCheckbox.checked);
-      var netWorthRaw = el('advisor-intake-networth-input').value.trim();
-      var netWorth = shareScores && netWorthRaw ? Number(netWorthRaw.replace(/[^0-9.-]/g, '')) : null;
+      var netWorthRangeRaw = el('advisor-intake-networth-input').value;
+      var netWorthRange = shareScores && netWorthRangeRaw ? netWorthRangeRaw : null;
       var submitBtn = el('advisor-intake-submit');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
@@ -305,7 +305,7 @@
           location: location,
           details: details,
           shareScores: shareScores,
-          netWorth: netWorth,
+          netWorthRange: netWorthRange,
         }),
       })
         .then(function (res) { return res.json().catch(function () { return {}; }); })

@@ -10,7 +10,11 @@ const LOCATION_MAX_LENGTH = 120;
 const DETAILS_MAX_LENGTH = 600;
 const MAX_SITUATIONAL_ITEMS = 10;
 const SITUATIONAL_ITEM_MAX_LENGTH = 80;
-const NET_WORTH_MAX_ABS = 1e9;
+
+// §26.7: a range bucket, not an exact figure — users are unlikely to be
+// comfortable sharing a specific net worth number even when opted in.
+// Must match the <select> options in index.html's advisor-intake-networth.
+const ALLOWED_NET_WORTH_RANGES = new Set(['0-250k', '250k-500k', '500k-1mm', '1mm-5mm', '5mm+']);
 
 // Must match the checkbox values in index.html's advisor-intake-checklist
 // exactly — keeps "Situational Details" a controlled checklist rather than
@@ -93,12 +97,12 @@ export default async (request, context) => {
   const details = neutralizeFormulaPrefix(rawDetails);
 
   // §21.2: separate, off-by-default consent for sharing the Financial
-  // Health Score + Net Worth specifically with the matched advisor — distinct
+  // Health Score + Net Worth range with the matched advisor, distinct
   // from the situational checklist above, which is about goals, not figures.
   const shareScores = payload.shareScores === true;
-  const netWorth =
-    typeof payload.netWorth === 'number' && Number.isFinite(payload.netWorth) && Math.abs(payload.netWorth) <= NET_WORTH_MAX_ABS
-      ? Math.round(payload.netWorth)
+  const netWorthRange =
+    typeof payload.netWorthRange === 'string' && ALLOWED_NET_WORTH_RANGES.has(payload.netWorthRange)
+      ? payload.netWorthRange
       : null;
 
   const clientIp = getClientIp(request, context);
@@ -147,7 +151,7 @@ export default async (request, context) => {
         consent: true,
         healthScore: user && user.fields ? user.fields['Health Score'] : null,
         healthScoreBand: user && user.fields ? user.fields['Health Score Band'] : null,
-        netWorth: netWorth,
+        netWorthRange: netWorthRange,
       });
     }
 
@@ -178,8 +182,8 @@ export default async (request, context) => {
       await sendEmail({
         to: session.email,
         subject: 'We got your advisor review request',
-        text: "Thanks — we've received your request to be reviewed for a free advisor match.\n\nOur team will look it over and follow up by email once we've matched you with a fee-only, fiduciary advisor. There's no cost and no obligation.\n\nDidn't request this? You can ignore this email.",
-        html: "<p>Thanks — we've received your request to be reviewed for a free advisor match.</p><p>Our team will look it over and follow up by email once we've matched you with a fee-only, fiduciary advisor. There's no cost and no obligation.</p><p>Didn't request this? You can ignore this email.</p>",
+        text: "Thanks. We've received your request to be reviewed for a free advisor match.\n\nOur team will look it over and follow up by email once we've matched you with a fee-only, fiduciary advisor. There's no cost and no obligation.\n\nDidn't request this? You can ignore this email.",
+        html: "<p>Thanks. We've received your request to be reviewed for a free advisor match.</p><p>Our team will look it over and follow up by email once we've matched you with a fee-only, fiduciary advisor. There's no cost and no obligation.</p><p>Didn't request this? You can ignore this email.</p>",
       });
     } catch (emailErr) {
       console.error('request-advisor-review confirmation email error:', emailErr);

@@ -217,12 +217,20 @@
                       <div class="advisor-intake-consent">
                         <label class="advisor-intake-consent-label">
                           <input type="checkbox" id="advisor-intake-share-scores" name="shareScores">
-                          Also share my Financial Health Score and Net Worth with my advisor match
+                          Also share my Financial Health Score and Net Worth range with my advisor match
                         </label>
-                        <p class="advisor-intake-hint">Off by default. If you turn this on, your current Financial Health Score is included automatically. Adding your Net Worth below is optional.</p>
+                        <p class="advisor-intake-hint">Off by default. If you turn this on, your current Financial Health Score is included automatically. Adding your Net Worth range below is optional.</p>
                         <div class="advisor-intake-networth" id="advisor-intake-networth-wrap" hidden>
-                          <label for="advisor-intake-networth-input">Your Net Worth (optional)</label>
-                          <input type="text" inputmode="numeric" id="advisor-intake-networth-input" name="netWorth" placeholder="e.g. 150000">
+                          <label for="advisor-intake-networth-input">Your Net Worth range (optional)</label>
+                          <select id="advisor-intake-networth-input" name="netWorthRange">
+                            <option value="">Prefer not to say</option>
+                            <option value="0-250k">$0 &ndash; $250k</option>
+                            <option value="250k-500k">$250k &ndash; $500k</option>
+                            <option value="500k-1mm">$500k &ndash; $1mm</option>
+                            <option value="1mm-5mm">$1mm &ndash; $5mm</option>
+                            <option value="5mm+">$5mm+</option>
+                          </select>
+                          <p class="advisor-intake-hint">A range, not an exact number. Enough to help with matching, without sharing the specific figure.</p>
                         </div>
                       </div>
                       <div class="advisor-intake-location">

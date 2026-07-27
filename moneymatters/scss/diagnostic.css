@@ -325,13 +325,19 @@
     font-size: 14px;
     margin-bottom: 8px;
 }
-#diagnostic-hero .advisor-intake-networth input {
+#diagnostic-hero .advisor-intake-networth input,
+#diagnostic-hero .advisor-intake-networth select {
     width: 100%;
     box-sizing: border-box;
     padding: 12px 14px;
     border-radius: 10px;
     font-family: var(--mm-sans);
     font-size: 16px;
+    cursor: pointer;
+}
+#diagnostic-hero .advisor-intake-networth .advisor-intake-hint {
+    margin-top: 8px;
+    margin-bottom: 0;
 }
 #diagnostic-hero .advisor-intake-location { margin-bottom: 24px; }
 #diagnostic-hero .advisor-intake-location label {

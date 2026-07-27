@@ -207,6 +207,7 @@ html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
     padding: 24px;
     box-sizing: border-box;
     background: radial-gradient(ellipse 900px 700px at 50% 20%, rgba(52, 211, 153, 0.10), transparent 60%), rgba(6, 10, 9, 0.82);
+    -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
     animation: mm-gate-fade 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -216,7 +217,13 @@ html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
     position: relative;
     width: 100%;
     max-width: 720px;
+    /* 100vh includes mobile Safari's address-bar space, which isn't
+       actually visible, so this can size the modal taller than the real
+       viewport and push the skip button out of reach without scrolling.
+       dvh (dynamic viewport height) accounts for the visible chrome;
+       kept the vh fallback for browsers that don't support dvh yet. */
     max-height: calc(100vh - 48px);
+    max-height: calc(100dvh - 48px);
     overflow-y: auto;
     background: var(--mm-surface-raised);
     border: 1px solid var(--mm-surface-border);
@@ -521,6 +528,13 @@ body main .hero {
     color: var(--mm-text-light) !important;
 }
 #diagnostic-hero .advisor-intake-location input:focus { border-color: var(--mm-green) !important; box-shadow: 0 0 0 3px var(--mm-green-soft) !important; }
+#diagnostic-hero .advisor-intake-networth label { color: var(--mm-text-light) !important; }
+#diagnostic-hero .advisor-intake-networth select {
+    background: var(--mm-surface) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+#diagnostic-hero .advisor-intake-networth select:focus { border-color: var(--mm-green) !important; box-shadow: 0 0 0 3px var(--mm-green-soft) !important; }
 #diagnostic-hero .advisor-intake-hint { color: var(--mm-text-light-soft) !important; }
 #diagnostic-hero .advisor-intake-form[hidden] { display: none !important; }
 
@@ -709,6 +723,7 @@ body main .hero {
     border-radius: 10px;
     padding: 10px 14px;
     box-shadow: var(--mm-shadow-sm);
+    -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
     animation: hsv-drift 7s ease-in-out infinite;
 }
@@ -985,6 +1000,10 @@ body main .hero {
 .persuasion-tile { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
 .persuasion-tile h3 { color: var(--mm-text-light); }
 .persuasion-tile p { color: var(--mm-text-light-muted); }
+.plus-visual-card { background: var(--mm-surface) !important; border-color: var(--mm-surface-border) !important; }
+.plus-visual-card h3 { color: var(--mm-text-light) !important; }
+.plus-visual-card p { color: var(--mm-text-light-muted) !important; }
+.plus-visuals-note { color: var(--mm-text-light-soft) !important; }
 .persuasion-tile--dark { background: var(--mm-bg-deep); border-color: var(--mm-surface-border); }
 .persuasion-tile--dark h3 { color: var(--mm-text-light); }
 .persuasion-tile--dark p { color: var(--mm-text-light-muted); }
@@ -1126,6 +1145,7 @@ body main .hero {
 .blog-hero-v2-scrim {
     background: rgba(21, 33, 28, 0.55) !important;
     border: 1px solid var(--mm-surface-border);
+    -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
 }
 .blog-hero-v2-scrim h1 { color: var(--mm-text-light) !important; }
@@ -1334,6 +1354,15 @@ a.contact-option:hover .contact-option-btn { background: var(--mm-text-light); }
 .tool-note { color: var(--mm-text-light-soft) !important; border-top-color: var(--mm-surface-border) !important; }
 .tool-next-steps a { color: var(--mm-text-light) !important; }
 .tool-next-steps a:hover { color: var(--mm-green) !important; }
+.tool-email-results { border-top-color: var(--mm-surface-border) !important; }
+.tool-email-results-toggle { color: var(--mm-green) !important; }
+.tool-email-results-form input[type="email"] {
+    background: var(--mm-surface) !important;
+    border-color: var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+.tool-email-results-form button { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; border-color: var(--mm-green) !important; }
+.tool-email-results-status { color: var(--mm-green) !important; }
 
 /* Legacy download-button (Net Worth calculator + Advanced tools spreadsheets) */
 .download-button { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
