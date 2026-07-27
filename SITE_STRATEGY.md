@@ -208,3 +208,6 @@ Geographic granularity should scale with local population density - county/regio
 
 - Users can opt in to a checklist of situational details when electing to connect with an advisor (e.g. "expecting inheritance," "recently sold a business," "new to investing," etc.) - this enhances their snapshot and helps match them with an advisor who specializes in that situation. User-elected, not inferred - they choose what to surface.
 - Geography in the snapshot should not default to a fixed granularity (e.g. always "town"). Let the user see and select/confirm the area description shown to advisors, broad enough to avoid re-identification in low-population areas while still being locally useful. Replaces the earlier "scale granularity to population density" auto-rule with a user-facing choice instead.
+
+## Traffic/Marketing (flagged 2026-07-26, not yet actioned)
+Site design work has consumed most of this project's recent sessions. Once the current build round (DESIGN_SPEC.md Section 28) ships, traffic generation becomes the real priority - the site is close to nothing without visitors. Scope to brainstorm: SEO (technical SEO pass already done, content pipeline via marketing agent started), organic social, paid social ads, and other acquisition channels. Not started yet.
