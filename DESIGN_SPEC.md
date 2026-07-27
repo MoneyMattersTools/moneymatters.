@@ -272,3 +272,29 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 
 ### Native tool pages (spot-checked via Basic Budget Tool, check all)
 1. Mid-sentence ALL-CAPS emphasis ("See WHERE your money is going relative to HOW it should be going") is a stylistic holdover inconsistent with the more refined voice established elsewhere on the site - normalize to standard sentence case with italics/bold for emphasis instead. Check Retirement/Investment/Net Worth tool intros for the same pattern.
+
+## 26. Round 14 Feedback — Real User Testing (locked 2026-07-26)
+
+### Bugs (fix these first, real functional breaks)
+1. **Onboarding redirect bug**: after a user enters their email, they are being routed to the newsletter/blog page instead of back to the main site/tools. Trace the actual post-email-submission redirect logic and fix - this breaks the core funnel.
+2. **Broken logo link on tool pages**: clicking the MoneyMatters logo on the Basic Budget Tool page returns an error instead of navigating home. Audit every internal link sitewide for correctness, specifically checking relative-path depth across the three folder levels in this repo (root pages, blogs/blogs-home.html at one level deep, individual-tools/basic-tools/* and individual-tools/advanced-tools/* at two levels deep) - this is the exact failure class flagged as a known risk in the last session's handoff notes.
+3. **FAQ accordions currently close each other**: opening one question should not collapse another - all opened questions should stay open, pushing remaining content down, not replacing it.
+
+### Onboarding clarity
+4. Make the quiz's "what happens next" clearer at each step - the flow should feel airtight and self-explanatory, not just functionally correct.
+
+### Style
+5. **Remove em-dashes sitewide**, restructuring sentences around periods, colons, or shorter clauses instead - this applies everywhere, not just headers (same category as the earlier gold-dot-eyebrow fix, reads as a generic AI-writing tell). This is a full copy pass, not a find-and-replace.
+
+### MoneyMatters+ visuals
+6. Add real visuals to reduce the page's text-heaviness: screenshots of the Advanced Budget and Advanced Investment tools (both the original spreadsheet version and the in-browser native version, side by side or toggled). For the private Discord group and advisor call sessions - neither exists yet - use simple illustrative/conceptual visuals (not fabricated screenshots of things that don't exist), clearly evocative rather than literal.
+
+### Net Worth privacy refinement
+7. **Change the Net Worth sharing consent from an exact figure to a range bucket**: $0-250k, $250k-500k, $500k-1mm, $1mm-5mm, $5mm+. Users are unlikely to be comfortable sharing an exact number even opted-in - a range preserves the matching signal without the specific figure. Update the checkbox UI, the underlying data field, and the Privacy Policy language (currently says "Net Worth figure specifically" - needs to say "Net Worth range").
+
+### Tool results email (scoped version - see chat for the larger dashboard idea, deferred separately)
+8. Add a "email me these results" option on the Basic Budget Tool (and the same pattern extends naturally to Retirement/Investment/Net Worth) - a simple one-time email via the existing Resend setup, no new backend persistence required.
+
+### Explicitly deferred, not part of this round
+9. Basic Budget Tool has known logic/function issues - flagged for a future round, do not address now.
+10. Live dashboard/"financial snapshot" view showing saved Budget/Net Worth results on login (same treatment as the Financial Health Score currently gets) - this requires real backend persistence for tools that are currently stateless/anonymous by design. Scope as its own future round, not part of Round 14.
