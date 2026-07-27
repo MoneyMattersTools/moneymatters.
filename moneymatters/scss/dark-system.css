@@ -189,6 +189,12 @@ body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { 
     .mm-sig-ring-fill { stroke-dashoffset: 0 !important; }
 }
 
+/* Eyebrow label (§27.1) — site-base.css's --mm-gold-ink is tuned for
+   legibility on the light cream background; on this site's actual dark
+   theme, the brighter --mm-gold reads better and matches every other gold
+   accent already used against dark surfaces. */
+.kicker { color: var(--mm-gold) !important; }
+
 /* =====================================================
    Onboarding gate — sitewide modal for unverified visitors.
    Injected by scripts/onboarding-gate.js. Reuses .connect-card/
@@ -991,6 +997,8 @@ body main .hero {
 .cost-compare-track { background: var(--mm-bg-deep); border: 1px solid var(--mm-surface-border); }
 .cost-compare-value { color: var(--mm-text-light); }
 .cost-compare-note { color: var(--mm-text-light-muted); }
+.fee-slider-label { color: var(--mm-text-light-muted); }
+.fee-slider-label span { color: var(--mm-text-light); }
 
 .bento-tile { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
 .bento-tile:hover { border-color: var(--mm-green); }
@@ -1175,6 +1183,24 @@ body main .hero {
 .topic-card-tag { background: var(--mm-gold-soft); color: var(--mm-gold); }
 .topic-card h3 { color: var(--mm-text-light); }
 .topic-card p { color: var(--mm-text-light-muted); }
+
+.principle-card { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
+.principle-card:hover { border-color: var(--mm-green) !important; }
+.principle-card-tag { background: var(--mm-gold-soft); color: var(--mm-gold); }
+.principle-card h3 { color: var(--mm-text-light); }
+.principle-card p { color: var(--mm-text-light-muted); }
+
+.advisor-preview { background: var(--mm-bg) !important; }
+.advisor-preview h2 { color: var(--mm-text-light); }
+.advisor-preview-sub { color: var(--mm-text-light-muted); }
+.advisor-card { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
+.advisor-card:hover { border-color: var(--mm-green) !important; }
+.advisor-card-badge { background: var(--mm-bg-deep); color: var(--mm-text-light-soft); }
+.advisor-card-avatar { background: rgba(52, 211, 153, 0.16); color: var(--mm-green); }
+.advisor-card h3 { color: var(--mm-text-light); }
+.advisor-card-specialty { color: var(--mm-text-light-muted); }
+.advisor-card-rating { color: var(--mm-gold); }
+.advisor-card-note { color: var(--mm-text-light-soft); }
 
 .blog-empty-state { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
 .blog-empty-state h2 { color: var(--mm-text-light); }

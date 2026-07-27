@@ -104,13 +104,13 @@
                 <img class="hero-media-poster" src="images/hero-forest-spring.jpg" alt="" width="1440" height="760" loading="eager">
                 <div class="hero-media-scrim"></div>
               </div>
-              <span class="kicker"><span class="kicker-dot"></span>You have the leverage</span>
+              <span class="kicker">You have the leverage</span>
               <h1>MoneyMatters+</h1>
               <p class="tools-hero-sub">Most advisors cost you a percentage of your money for as long as you're a client, a quiet drag on your future regardless of how well things go. Here, $5/month gets you every tool we build, real control over your own numbers, and a vetted, fee-only advisor connection that's always free.</p>
             </section>
 
             <section class="about-section fade-up">
-              <span class="kicker"><span class="kicker-dot"></span>The value case</span>
+              <span class="kicker">The value case</span>
               <h2>Why the model is different</h2>
               <p class="feature-tools-sub">Elsewhere, advisors gatekeep by asset minimums, and firms profit whether or not their advice actually helps you. Here, you already know your numbers before you ever talk to anyone: the diagnostic is free, with just a quick email verification (no password, ever), and every basic tool is free to use with no account needed at all.</p>
 
@@ -125,16 +125,20 @@
                 </div>
                 <div class="persuasion-tile persuasion-tile--stat">
                   <h3>The math, briefly.</h3>
-                  <div class="cost-compare cost-compare--mini">
-                    <div class="cost-compare-row">
-                      <span class="cost-compare-label">$150,000 portfolio &middot; typical 1% fee</span>
-                      <div class="cost-compare-track"><div class="cost-compare-fill cost-compare-fill--full"></div></div>
-                      <span class="cost-compare-value">$1,500 every year</span>
-                    </div>
-                    <div class="cost-compare-row">
-                      <span class="cost-compare-label">MoneyMatters+ &middot; any portfolio size</span>
-                      <div class="cost-compare-track"><div class="cost-compare-fill cost-compare-fill--min"></div></div>
-                      <span class="cost-compare-value">$60 a year</span>
+                  <div class="fee-slider">
+                    <label for="fee-slider-input" class="fee-slider-label">Try your own portfolio size: <span id="fee-slider-value">$150,000</span></label>
+                    <input type="range" id="fee-slider-input" min="10000" max="500000" step="10000" value="150000" aria-describedby="fee-slider-advisor-value">
+                    <div class="cost-compare cost-compare--mini">
+                      <div class="cost-compare-row">
+                        <span class="cost-compare-label">Typical 1% advisor fee</span>
+                        <div class="cost-compare-track"><div class="cost-compare-fill cost-compare-fill--full" id="fee-slider-fill"></div></div>
+                        <span class="cost-compare-value" id="fee-slider-advisor-value">$1,500 every year</span>
+                      </div>
+                      <div class="cost-compare-row">
+                        <span class="cost-compare-label">MoneyMatters+ &middot; any portfolio size</span>
+                        <div class="cost-compare-track"><div class="cost-compare-fill cost-compare-fill--min"></div></div>
+                        <span class="cost-compare-value">$60 a year</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -148,7 +152,7 @@
             </section>
 
             <section class="plus-section fade-up">
-              <span class="kicker"><span class="kicker-dot"></span>Membership</span>
+              <span class="kicker">Membership</span>
               <h2>What's included</h2>
               <p class="plus-sub">One subscription. Everything beyond the free tools, in one place.</p>
 
@@ -175,7 +179,7 @@
             </section>
 
             <section class="about-section fade-up">
-              <span class="kicker"><span class="kicker-dot"></span>A closer look</span>
+              <span class="kicker">A closer look</span>
               <h2>What you actually get</h2>
               <div class="plus-visuals-grid">
                 <div class="plus-visual-card">
@@ -273,7 +277,7 @@
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
               <div class="newsletter-cta__inner">
-                <span class="kicker"><span class="kicker-dot"></span>Stay in the loop</span>
+                <span class="kicker">Stay in the loop</span>
               <h2>Get the occasional useful email.</h2>
               <p>No spam, no daily noise, just real updates when we ship something worth knowing about.</p>
               <div class="newsletter-cta__embed">
@@ -323,6 +327,7 @@
         <script src="scripts/signature-motif.js"></script>
         <script src="scripts/onboarding-gate.js"></script>
         <script src="scripts/sign-in.js"></script>
+        <script src="scripts/fee-slider.js"></script>
     </body>
 
 </html>
