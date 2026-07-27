@@ -238,3 +238,14 @@ Beyond the existing process/vetting-criteria/coming-soon structure, add:
 1. **Footer disclaimer spacing**: currently rendering as a two-column text layout, causing the inline "About page" link to break awkwardly mid-sentence between columns. Switch to single-column flow (or a wider max-width single block) - readability over compression.
 2. **Real mobile Safari review needed**: iPhone Safari specifically shows spacing issues not caught by prior CDP/Chrome-based mobile emulation. CDP device-metrics emulation approximates viewport size but is still Chrome's rendering engine, not Safari/WebKit - some spacing bugs are WebKit-specific and won't surface in Chrome emulation. Do a genuinely careful pass across the whole site at mobile widths, and flag explicitly if anything found is likely Safari/WebKit-specific rather than a general responsive bug, since that changes how it should be tested going forward.
 3. **Full end-to-end funnel timing test**: walk through the complete real user journey in one continuous session - land on site -> complete a diagnostic -> receive and click verification email -> land back verified -> submit the advisor-connect intake form. Time each step and the whole sequence. Report where real friction or slowness exists (not just "it works") - the goal is landing-to-advisor-request speed and efficiency, not just functional correctness.
+
+## 25. Tone/Content Review — Page by Page (started 2026-07-26)
+
+Review criteria for every page: consistency, clarity, avoid "AI-sounding" generic phrasing, cut length where the same meaning fits in fewer words. Mission to reinforce throughout, explicitly where natural: MoneyMatters empowers ordinary people to understand and control their own finances, and gives them real leverage/information edge in conversations with advisors - advisors work for the user, not the other way around.
+
+### About Us (reviewed)
+1. Vary word repetition of "serious" between the hero headline and the "Why we exist" section.
+2. The phrase "independently vetted for CFP(R) certification, fee-only compensation, and fiduciary duty" appears verbatim twice on this page (Vetted-not-sold card + How We Make Money section) - reword one instance.
+3. Break the "How we make money" paragraph into shorter, more scannable sentences/lines rather than one dense block.
+4. Add an explicit line stating the leverage framing directly - the advisor works for the user, not the reverse - this is currently only implied through transparency/vetting language, not stated.
+5. "Built on real principles" section uses finance jargon (zero-based budgeting, compound-interest modeling, standard net-worth accounting) without translation, inconsistent with the plain-spoken voice elsewhere on the page - simplify or add a brief plain-language gloss per term.
