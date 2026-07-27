@@ -974,6 +974,7 @@ body main .hero {
 .cost-compare-label { color: var(--mm-text-light-soft); }
 .cost-compare-track { background: var(--mm-bg-deep); border: 1px solid var(--mm-surface-border); }
 .cost-compare-value { color: var(--mm-text-light); }
+.cost-compare-note { color: var(--mm-text-light-muted); }
 
 .bento-tile { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
 .bento-tile:hover { border-color: var(--mm-green); }
@@ -1211,6 +1212,47 @@ body main .hero {
 @media (max-width: 800px) {
     .advisor-connect { grid-template-columns: 1fr; gap: 24px; }
 }
+
+/* Compact left-aligned numbered list — deliberately not the centered
+   vertical .timeline-with-track-line pattern, so a photo+copy section
+   reads as a distinct composition rather than a re-skinned timeline. */
+.advisor-connect-steps {
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+    counter-reset: advisor-connect-step;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.advisor-connect-steps li {
+    counter-increment: advisor-connect-step;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+.advisor-connect-steps li::before {
+    content: counter(advisor-connect-step);
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--mm-green-soft);
+    color: var(--mm-green);
+    font-family: var(--mm-sans-display);
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.advisor-connect-steps h3 {
+    font-family: var(--mm-sans-display);
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--mm-text-light);
+    margin: 0 0 3px;
+}
+.advisor-connect-steps p { font-size: 14.5px; color: var(--mm-text-light-muted); margin: 0; line-height: 1.5; }
 
 /* =====================================================
    Contact page

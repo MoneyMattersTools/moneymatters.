@@ -135,12 +135,12 @@ export default async (request, context) => {
       Location: location,
       'Requested At': new Date().toISOString(),
       'Request IP': clientIp,
+      // §22.4: manual data-tracking only, no site-facing UI. The team
+      // advances this by hand in Airtable as a request moves through
+      // Matched / Meeting Taken — this just seeds the starting state.
+      Status: 'Requested',
     };
 
-    // 'Shared Scores' is a newer field — if it hasn't been added to the
-    // Airtable table yet, Airtable rejects the whole create with an
-    // unknown-field error. Try with it first, but fall back to the record
-    // without it rather than losing the entire request over one field.
     if (shareScores) {
       const user = await findByEmail('Users', session.email);
       fields['Shared Scores'] = JSON.stringify({
@@ -149,15 +149,25 @@ export default async (request, context) => {
         healthScoreBand: user && user.fields ? user.fields['Health Score Band'] : null,
         netWorth: netWorth,
       });
+    }
+
+    // 'Status' and 'Shared Scores' are newer, optional fields — if either
+    // hasn't been added to the Airtable table yet, Airtable rejects the
+    // whole create with an unknown-field error. Drop them one at a time on
+    // failure rather than losing the entire request over an optional field.
+    const optionalFieldOrder = ['Status', 'Shared Scores'];
+    let attempt = { ...fields };
+    for (let i = 0; i <= optionalFieldOrder.length; i += 1) {
       try {
-        await createRecord('Advisor Review Requests', fields);
+        await createRecord('Advisor Review Requests', attempt);
+        break;
       } catch (fieldErr) {
-        console.error('request-advisor-review Shared Scores field write failed, retrying without it:', fieldErr);
-        delete fields['Shared Scores'];
-        await createRecord('Advisor Review Requests', fields);
+        const fieldToDrop = optionalFieldOrder[i];
+        if (!fieldToDrop || !(fieldToDrop in attempt)) throw fieldErr;
+        console.error(`request-advisor-review '${fieldToDrop}' field write failed, retrying without it:`, fieldErr);
+        const { [fieldToDrop]: _dropped, ...rest } = attempt;
+        attempt = rest;
       }
-    } else {
-      await createRecord('Advisor Review Requests', fields);
     }
 
     // §21 addendum: confirm receipt by email — this previously only wrote

@@ -42,21 +42,27 @@ body h4, body h5, body h6 { font-family: var(--mm-sans-display); font-weight: 70
 body, body p, body a, body input, body button, body textarea, body label { font-family: var(--mm-sans); }
 body p { line-height: 1.7; }
 
+/* Eyebrow label — deliberately not the ubiquitous "uppercase caps + round
+   dot" template convention. Uses the same italic-serif emphasis already
+   established for in-copy accents (.h-italic-accent) so it reads as part
+   of MoneyMatters' own typographic system, paired with a short gold rule
+   (echoing the signature dial/line motif) instead of a generic bullet. */
 .kicker {
     display: inline-block;
-    font-family: var(--mm-sans) !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
+    font-family: var(--mm-serif) !important;
+    font-style: italic;
+    font-size: 15px !important;
+    font-weight: 500 !important;
     color: var(--mm-green-deep) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.14em !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
     margin-bottom: 16px !important;
 }
 .kicker-dot {
     display: inline-block;
-    width: 6px; height: 6px;
+    width: 20px; height: 2px;
     background: var(--mm-gold);
-    border-radius: 50%;
+    border-radius: 1px;
     margin-right: 10px;
     vertical-align: middle;
 }
@@ -216,7 +222,7 @@ body header .nav-dropdown-toggle {
     border: none !important;
     color: var(--mm-cream) !important;
     padding: 4px !important;
-    font-size: 11px !important;
+    font-size: 16px !important;
     cursor: pointer !important;
     line-height: 1 !important;
 }
@@ -1003,6 +1009,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .cost-compare-fill--full { width: 100%; background: linear-gradient(90deg, var(--mm-gold), #B3432B); }
 .cost-compare-fill--min { width: 8%; background: var(--mm-green); }
 .cost-compare-value { font-family: var(--mm-sans); font-size: 14px; color: var(--mm-text); font-weight: 600; }
+.cost-compare-note { font-family: var(--mm-sans); font-style: italic; font-size: 15px; color: var(--mm-text-muted); margin: 18px 0 0; }
 @media (max-width: 900px) { .why-split { grid-template-columns: 1fr; } }
 
 /* --- About: bento grid (replaces uniform differentiator cards) --- */
@@ -1220,7 +1227,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .topic-card-tag {
     position: absolute; top: 24px; right: 24px;
     font-family: var(--mm-sans); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--mm-gold); background: var(--mm-gold-soft); padding: 4px 10px; border-radius: 20px;
+    color: var(--mm-gold); background: var(--mm-gold-soft); padding: 6px 14px; border-radius: 20px;
 }
 .topic-card h3 { font-family: var(--mm-serif); font-size: 20px; font-weight: 600; margin: 0 0 8px; color: var(--mm-charcoal); }
 .topic-card p { font-family: var(--mm-sans); font-size: 14.5px; color: var(--mm-text-muted); margin: 0; line-height: 1.6; }
