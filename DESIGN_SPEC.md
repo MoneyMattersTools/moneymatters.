@@ -211,3 +211,14 @@ Beyond the existing process/vetting-criteria/coming-soon structure, add:
 
 ### Round 10 addition: advisor-review confirmation email (2026-07-26)
 `request-advisor-review.mjs` currently only writes to Airtable - it should also send a simple confirmation email via Resend (same account/domain already configured for the diagnostic verification email, no new service). Keep it minimal for MVP: confirm the request was received, set expectations (team reviews and follows up), no need for anything fancier yet. This resolves the open question from item 5 - item 5's "advisor-review confirmation" email now exists to test, build it as part of this round.
+
+## 22. Round 11 Feedback (locked 2026-07-26)
+
+1. **About Us dropdown arrow**: too small relative to surrounding lettering - increase size to match.
+2. **Advisor Connect page**: sections currently look too visually similar to each other - vary layout/composition between sections (not every section should use the same card grid pattern).
+3. **"Coming Soon" badge spacing**: too tight on the Advisor Connect page - increase padding.
+4. **Advisor tracking**: do NOT build a new site-facing dashboard yet. Add a `Status` field (Requested / Matched / Meeting Taken) to the existing Advisor Review Requests Airtable table instead - this gives real tracking with no new build. A user-facing ratings/self-select-advisor directory is a documented future phase (ties to the existing "Browse advisors directly - Coming Soon" section) - do not build now, revisit once real advisors and real completed matches exist to seed it.
+5. **Blog content pipeline**: prompt the existing marketing agent (separate system, not part of this site rebuild) to generate additional pre-written SEO blog drafts beyond the current 3 live posts - this is a marketing-agent task, not a Claude Code site-build task.
+6. **MoneyMatters+ copy - make the value proposition land harder**: illustrate the $5/month cost against realistic savings (e.g. compare to what a percentage-based advisor fee would cost on real dollar amounts, or everyday cost comparisons). Blend emotional appeal (confidence, control, peace of mind) with logical ROI argument. Real persuasive copywriting, not a feature list.
+7. **Add imagery/video/live visualization to MoneyMatters+ and Advisor Connect pages** - both currently under-decorated relative to the rest of the cinematic pages. These two pages now join the cinematic-treatment group (Section 13/14) alongside Home/About/Blogs/Contact - Tools and the tool calculators remain the only utility-first pages.
+8. **Gold-dot-plus-eyebrow-text header pattern**: this reads as a common templated/AI-site convention. Keep the concept but redesign the visual treatment to feel more custom and specific to MoneyMatters, not a default pattern.
