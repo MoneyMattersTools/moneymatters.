@@ -222,3 +222,13 @@ Beyond the existing process/vetting-criteria/coming-soon structure, add:
 6. **MoneyMatters+ copy - make the value proposition land harder**: illustrate the $5/month cost against realistic savings (e.g. compare to what a percentage-based advisor fee would cost on real dollar amounts, or everyday cost comparisons). Blend emotional appeal (confidence, control, peace of mind) with logical ROI argument. Real persuasive copywriting, not a feature list.
 7. **Add imagery/video/live visualization to MoneyMatters+ and Advisor Connect pages** - both currently under-decorated relative to the rest of the cinematic pages. These two pages now join the cinematic-treatment group (Section 13/14) alongside Home/About/Blogs/Contact - Tools and the tool calculators remain the only utility-first pages.
 8. **Gold-dot-plus-eyebrow-text header pattern**: this reads as a common templated/AI-site convention. Keep the concept but redesign the visual treatment to feel more custom and specific to MoneyMatters, not a default pattern.
+
+## 23. Round 12 Feedback (locked 2026-07-26)
+
+1. **Imagery repetition sitewide**: Advisor Connect and About Us/Contact currently use the same stock photo. Audit the whole site for repeated images and diversify - source distinct photos/video per page/section from the same free-licensed stock sources already in use (Pexels, Unsplash, Coverr). Original and varied over reused, throughout.
+2. **MoneyMatters+ page - condense the dollar-comparison chart to one small section**, not the page's main focus. Build out additional persuasion angles alongside it, blending logical and emotional appeal subtly rather than leaning on one chart to do all the work:
+   - Loss-aversion framing (what ongoing confusion/inaction costs, distinct from the AUM-fee comparison)
+   - Simplicity/low-commitment framing (cancel anytime, no lock-in, no long-term contract)
+   - Identity/aspiration framing (the kind of person who has their financial life handled - confidence, control, peace of mind)
+   - Reinforce that advisor matching is free regardless of tier - this should not read as bundled into the $5 ask
+   - Do NOT fabricate social proof - no invented testimonials, review counts, or user numbers. Real social proof gets added once it exists, not before.
