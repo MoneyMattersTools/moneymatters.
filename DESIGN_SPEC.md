@@ -298,3 +298,9 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 ### Explicitly deferred, not part of this round
 9. Basic Budget Tool has known logic/function issues - flagged for a future round, do not address now.
 10. Live dashboard/"financial snapshot" view showing saved Budget/Net Worth results on login (same treatment as the Financial Health Score currently gets) - this requires real backend persistence for tools that are currently stateless/anonymous by design. Scope as its own future round, not part of Round 14.
+
+## 27. Round 15 Feedback (locked 2026-07-26)
+
+1. **Eyebrow/kicker pattern still not fully fixed**: the homepage still shows a small gold dash/line before the eyebrow text (e.g. "— Your Financial Health Score"). Remove the dash/rule entirely - do not replace it with any line/underline device. Instead, use the gold color as the text color itself, and change/enlarge the font treatment for emphasis. Apply consistently sitewide - audit every page, since About Us's version of this element has already drifted to a different (green, no-dash) treatment independently. One consistent final treatment across all pages.
+2. **Advisor Connect - add a placeholder-but-real-feeling advisor list**: a scrollable section showing advisor cards with name/specialty/rating elements, clearly usable even though no real advisors are onboarded yet (use clearly-labeled placeholder/sample entries, not fabricated as real people). Add a "Connect with an Advisor" button at the top of the page that takes the user directly into the existing intake flow.
+3. **MoneyMatters+, Advisor Connect, and About Us still read as too text-heavy**: add live/interactive visualization or scroll/interaction-driven movement to these three pages specifically, consistent with the cinematic treatment already established elsewhere (Section 13/14) - reduce the sense of walls of text, not by cutting content further but by giving it more visual/interactive structure.
