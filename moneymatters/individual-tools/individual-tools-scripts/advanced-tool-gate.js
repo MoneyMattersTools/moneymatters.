@@ -13,6 +13,11 @@
       if (data && data.loggedIn && data.plan === 'plus') {
         locked.hidden = true;
         app.hidden = false;
+        // The fade-up scroll-reveal observer (scroll-animations.js) never
+        // adds .is-visible here: it ran while this section was still
+        // hidden, so it was never a valid intersection target. Without
+        // this, the now-unlocked calculator stays at opacity:0 forever.
+        app.classList.add('is-visible');
       }
     })
     .catch(function () {});
