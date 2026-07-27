@@ -304,3 +304,25 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 1. **Eyebrow/kicker pattern still not fully fixed**: the homepage still shows a small gold dash/line before the eyebrow text (e.g. "— Your Financial Health Score"). Remove the dash/rule entirely - do not replace it with any line/underline device. Instead, use the gold color as the text color itself, and change/enlarge the font treatment for emphasis. Apply consistently sitewide - audit every page, since About Us's version of this element has already drifted to a different (green, no-dash) treatment independently. One consistent final treatment across all pages.
 2. **Advisor Connect - add a placeholder-but-real-feeling advisor list**: a scrollable section showing advisor cards with name/specialty/rating elements, clearly usable even though no real advisors are onboarded yet (use clearly-labeled placeholder/sample entries, not fabricated as real people). Add a "Connect with an Advisor" button at the top of the page that takes the user directly into the existing intake flow.
 3. **MoneyMatters+, Advisor Connect, and About Us still read as too text-heavy**: add live/interactive visualization or scroll/interaction-driven movement to these three pages specifically, consistent with the cinematic treatment already established elsewhere (Section 13/14) - reduce the sense of walls of text, not by cutting content further but by giving it more visual/interactive structure.
+
+## 28. Round 16 Feedback (locked 2026-07-26)
+
+### Financial Snapshot Dashboard (new scope, reverses the Round 14 deferral)
+1. For logged-in/verified users, the homepage's top area becomes a "Financial Snapshot" dashboard populated with their submitted tool results (Financial Health Score, Net Worth, Budget, Retirement, Investment - whichever they have completed).
+2. Add a "Submit" button on every tool/quiz (Financial Health Score already has this via the diagnostic flow) that: (a) emails the user a confirmation of their results, and (b) saves the result to their account record so it populates the dashboard. This requires real backend persistence for Budget/Retirement/Investment/Net Worth, which were previously stateless by design - this is the scope expansion flagged in Round 14 item 10, now explicitly in scope.
+3. Dashboard also tracks advisor engagement (requested / matched / meeting taken - reuses the Status field already on Advisor Review Requests).
+4. **Tiered dashboard**: basic dashboard for free users, an advanced dashboard with additional analysis/functionality for MoneyMatters+ users.
+5. **Tier-gating dependency**: no payment processor exists yet. Build tier-gating logic against a simple manual Airtable flag (e.g. a "Plan" field on the Users table, manually settable to free/plus for testing) rather than waiting for Stripe. This flag gets replaced with real Stripe-driven tier assignment in a future round, not rebuilt from scratch.
+
+### Advanced Tools
+6. **Advanced Budget and Advanced Investment tools need real native in-browser versions built** (same pattern as the basic tools) - currently spreadsheet-only. Keep the downloadable spreadsheet version available alongside the new native version, not replacing it - offer both.
+7. Add an Advanced Tools section to the Tools page, visible to all visitors but gated to MoneyMatters+ for actual access (visible-but-locked is intentional - it should attract free users toward upgrading, not be hidden entirely). Uses the same manual tier flag from item 5.
+
+### Bugs / cleanup
+8. Homepage's "See what's driving this" link under the score does nothing - remove it entirely.
+9. "Join the community" link should point to the Contact page, where Discord is clearly linked - fix the link target.
+10. Delete all "Quick Start" dropdown info from every tool page - tools should be intuitive without an explainer dropdown.
+
+### Noted for later, not this round
+11. Plan for a private Discord channel/space specifically for MoneyMatters+ members - future work, tied to real Stripe tier-gating.
+12. Traffic/marketing brainstorm (SEO, social, paid ads, other acquisition channels) - flagged as a tracked priority item, not part of this build round. See SITE_STRATEGY.md Next Steps.
