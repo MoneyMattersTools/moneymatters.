@@ -249,3 +249,8 @@ Review criteria for every page: consistency, clarity, avoid "AI-sounding" generi
 3. Break the "How we make money" paragraph into shorter, more scannable sentences/lines rather than one dense block.
 4. Add an explicit line stating the leverage framing directly - the advisor works for the user, not the reverse - this is currently only implied through transparency/vetting language, not stated.
 5. "Built on real principles" section uses finance jargon (zero-based budgeting, compound-interest modeling, standard net-worth accounting) without translation, inconsistent with the plain-spoken voice elsewhere on the page - simplify or add a brief plain-language gloss per term.
+
+### Tools (reviewed)
+1. "Start here" heading immediately followed by "Start with a 2-minute diagnostic" - redundant repetition of "Start," vary wording.
+2. "Want your full financial picture instead?" - "instead" reads awkwardly (unclear what it is instead of). Simplify to "Want your full financial picture?"
+Note: this page intentionally stays functional/utility-first, not persuasive - correct per Section 13/14, no mission language needed here.
