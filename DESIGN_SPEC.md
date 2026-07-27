@@ -254,3 +254,21 @@ Review criteria for every page: consistency, clarity, avoid "AI-sounding" generi
 1. "Start here" heading immediately followed by "Start with a 2-minute diagnostic" - redundant repetition of "Start," vary wording.
 2. "Want your full financial picture instead?" - "instead" reads awkwardly (unclear what it is instead of). Simplify to "Want your full financial picture?"
 Note: this page intentionally stays functional/utility-first, not persuasive - correct per Section 13/14, no mission language needed here.
+
+### MoneyMatters+ (reviewed)
+1. Two headings stacked back to back with near-duplicate meaning: "Why people choose MoneyMatters+" immediately followed by "Why the model is different" - consolidate to one, remove the redundant leftover.
+2. Possible accuracy issue: "the diagnostic and every basic tool are free, no account required" - confirm this is still accurate given the site-wide onboarding gate now requires email verification to reach full results. Correct the claim if it no longer holds.
+
+### Advisor Connect (reviewed)
+1. The section intro line "You see who they are before anything else happens" previews Step 3's own text almost verbatim ("You see who they are and how they work before anything else happens") directly below it - redundant, tighten one.
+2. Real bug, not just wording: a heading literally labeled "How we make money" is followed by unrelated copy ("No cost. No obligation. Stop at any point.") that does not explain revenue at all - looks like the wrong heading or missing/swapped content. Needs a real content fix.
+
+### Blog (reviewed)
+1. "No jargon, no gatekeeping — just the same transparent approach as the tools themselves" appears twice verbatim on the same page (hero subhead + "Start here" section intro) - vary one instance.
+
+### Contact (reviewed) - no issues found, appropriately concise.
+
+### Privacy Policy (reviewed) - no issues found, accurate and appropriately precise for the genre.
+
+### Native tool pages (spot-checked via Basic Budget Tool, check all)
+1. Mid-sentence ALL-CAPS emphasis ("See WHERE your money is going relative to HOW it should be going") is a stylistic holdover inconsistent with the more refined voice established elsewhere on the site - normalize to standard sentence case with italics/bold for emphasis instead. Check Retirement/Investment/Net Worth tool intros for the same pattern.
