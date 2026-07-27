@@ -232,3 +232,9 @@ Beyond the existing process/vetting-criteria/coming-soon structure, add:
    - Identity/aspiration framing (the kind of person who has their financial life handled - confidence, control, peace of mind)
    - Reinforce that advisor matching is free regardless of tier - this should not read as bundled into the $5 ask
    - Do NOT fabricate social proof - no invented testimonials, review counts, or user numbers. Real social proof gets added once it exists, not before.
+
+## 24. Round 13 Feedback (locked 2026-07-26)
+
+1. **Footer disclaimer spacing**: currently rendering as a two-column text layout, causing the inline "About page" link to break awkwardly mid-sentence between columns. Switch to single-column flow (or a wider max-width single block) - readability over compression.
+2. **Real mobile Safari review needed**: iPhone Safari specifically shows spacing issues not caught by prior CDP/Chrome-based mobile emulation. CDP device-metrics emulation approximates viewport size but is still Chrome's rendering engine, not Safari/WebKit - some spacing bugs are WebKit-specific and won't surface in Chrome emulation. Do a genuinely careful pass across the whole site at mobile widths, and flag explicitly if anything found is likely Safari/WebKit-specific rather than a general responsive bug, since that changes how it should be tested going forward.
+3. **Full end-to-end funnel timing test**: walk through the complete real user journey in one continuous session - land on site -> complete a diagnostic -> receive and click verification email -> land back verified -> submit the advisor-connect intake form. Time each step and the whole sequence. Report where real friction or slowness exists (not just "it works") - the goal is landing-to-advisor-request speed and efficiency, not just functional correctness.
