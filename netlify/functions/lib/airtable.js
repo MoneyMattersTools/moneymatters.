@@ -43,6 +43,17 @@ async function findByEmail(table, email) {
   return findOneByFormula(table, `LOWER({Email}) = '${escapeFormulaValue(email.toLowerCase())}'`);
 }
 
+// Like findOneByFormula, but sorted so "most recent" queries (e.g. a
+// user's latest Advisor Review Requests record) get the right record when
+// more than one matches.
+async function findLatestByFormula(table, formula, sortField) {
+  const data = await airtableFetch(
+    table,
+    `?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}&sort[0][field]=${encodeURIComponent(sortField)}&sort[0][direction]=desc`
+  );
+  return data.records && data.records[0] ? data.records[0] : null;
+}
+
 async function findByToken(table, token) {
   return findOneByFormula(table, `{Token} = '${escapeFormulaValue(token)}'`);
 }
@@ -115,6 +126,7 @@ async function findAllByFormula(table, formula) {
 
 module.exports = {
   findOneByFormula,
+  findLatestByFormula,
   findAllByFormula,
   findByEmail,
   findByToken,

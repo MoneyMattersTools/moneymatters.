@@ -31,6 +31,9 @@
     liabilityInputs[cat.key] = document.getElementById('networth-liability-' + cat.key);
   });
 
+  var lastResult = null;
+  var actions = toolWireResultsActions(resultsEl, 'networth', 'networth', 'Net Worth Calculator', function () { return lastResult; });
+
   function breakdownRows(categories, inputs, total) {
     return categories.map(function (cat) {
       var amount = toolParseNumber(inputs[cat.key] ? inputs[cat.key].value : 0);
@@ -58,6 +61,26 @@
     var netWorth = totalAssets - totalLiabilities;
     var isNegative = netWorth < 0;
 
+    var summaryRows = [
+      { label: 'Total assets', value: toolFormatCurrency(totalAssets) },
+      { label: 'Total liabilities', value: toolFormatCurrency(totalLiabilities) },
+    ].concat(
+      ASSET_CATEGORIES.filter(function (cat) {
+        return toolParseNumber(assetInputs[cat.key] ? assetInputs[cat.key].value : 0) > 0;
+      }).map(function (cat) {
+        return { label: cat.label, value: toolFormatCurrency(toolParseNumber(assetInputs[cat.key].value)) };
+      }),
+      LIABILITY_CATEGORIES.filter(function (cat) {
+        return toolParseNumber(liabilityInputs[cat.key] ? liabilityInputs[cat.key].value : 0) > 0;
+      }).map(function (cat) {
+        return { label: cat.label, value: toolFormatCurrency(toolParseNumber(liabilityInputs[cat.key].value)) };
+      })
+    );
+    lastResult = {
+      headline: { label: 'Net Worth', value: toolFormatCurrency(netWorth) },
+      summary: summaryRows,
+    };
+
     resultsEl.innerHTML = '' +
       '<div class="tool-stat">' +
         '<span class="tool-stat-label">Net Worth</span>' +
@@ -68,10 +91,12 @@
       '<ul class="tool-breakdown">' + breakdownRows(ASSET_CATEGORIES, assetInputs, totalAssets) + '</ul>' +
       '<p class="tool-breakdown-group-label">Liabilities: ' + toolFormatCurrency(totalLiabilities) + '</p>' +
       '<ul class="tool-breakdown">' + breakdownRows(LIABILITY_CATEGORIES, liabilityInputs, totalLiabilities) + '</ul>' +
+      toolResultsActionsHtml('networth') +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../connect-with-advisor.html">Talk to an advisor</a>' +
       '</div>';
+    actions.refresh();
   }
 
   ASSET_CATEGORIES.forEach(function (cat) {

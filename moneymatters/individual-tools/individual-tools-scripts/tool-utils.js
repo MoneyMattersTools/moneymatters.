@@ -48,3 +48,127 @@ function toolDebounceInput(el, handler) {
   el.addEventListener('input', handler);
   el.addEventListener('change', handler);
 }
+
+// §28.2: shared "email me these results" / "save to my dashboard" widget
+// for the native tools. Anonymous visitors get the email-only path (no
+// account needed, matches how these tools have always worked); a session
+// swaps it for a one-click save-and-email "Submit" action. The markup
+// lives inside each tool's results panel, which gets its innerHTML fully
+// replaced on every recalculation — so callers must call
+// actions.refresh() at the end of their own render() to reapply the
+// known login state each time, since the fresh HTML always starts from
+// the anonymous-default markup.
+function toolResultsActionsHtml(idPrefix) {
+  return '' +
+    '<div class="tool-results-actions">' +
+      '<button type="button" class="tool-email-results-toggle" id="' + idPrefix + '-email-toggle">Email me these results</button>' +
+      '<button type="button" class="tool-submit-dashboard-btn" id="' + idPrefix + '-submit-btn" hidden>Save to my dashboard</button>' +
+      '<form class="tool-email-results-form" id="' + idPrefix + '-email-form" hidden novalidate>' +
+        '<label for="' + idPrefix + '-email-input" class="sr-only">Email</label>' +
+        '<input type="email" id="' + idPrefix + '-email-input" placeholder="you@example.com" autocomplete="email" required>' +
+        '<button type="submit" id="' + idPrefix + '-email-submit">Send</button>' +
+      '</form>' +
+      '<p class="tool-email-results-status" id="' + idPrefix + '-status" hidden></p>' +
+    '</div>';
+}
+
+function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResult) {
+  var isLoggedIn = false;
+
+  function updateVisibility() {
+    var toggle = document.getElementById(idPrefix + '-email-toggle');
+    var submitBtn = document.getElementById(idPrefix + '-submit-btn');
+    if (!toggle || !submitBtn) return;
+    toggle.hidden = isLoggedIn;
+    submitBtn.hidden = !isLoggedIn;
+  }
+
+  fetch('/api/session')
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      isLoggedIn = !!(data && data.loggedIn);
+      updateVisibility();
+    })
+    .catch(function () {});
+
+  resultsEl.addEventListener('click', function (e) {
+    if (e.target.closest('#' + idPrefix + '-email-toggle')) {
+      var form = document.getElementById(idPrefix + '-email-form');
+      form.hidden = !form.hidden;
+      if (!form.hidden) document.getElementById(idPrefix + '-email-input').focus();
+      return;
+    }
+    if (e.target.closest('#' + idPrefix + '-submit-btn')) {
+      var result = getResult();
+      var statusEl = document.getElementById(idPrefix + '-status');
+      var submitBtn = document.getElementById(idPrefix + '-submit-btn');
+      if (!result) return;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving…';
+      fetch('/api/submit-tool-result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tool: toolKey, headline: result.headline, summary: result.summary }),
+      })
+        .then(function (res) { return res.json().catch(function () { return {}; }); })
+        .then(function (res) {
+          if (!res.ok) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Save to my dashboard';
+            statusEl.textContent = 'Something went wrong. Please try again.';
+            statusEl.hidden = false;
+            return;
+          }
+          submitBtn.hidden = true;
+          statusEl.textContent = 'Saved to your dashboard. Check your inbox for a copy.';
+          statusEl.hidden = false;
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Save to my dashboard';
+          statusEl.textContent = 'Something went wrong. Please try again.';
+          statusEl.hidden = false;
+        });
+    }
+  });
+
+  resultsEl.addEventListener('submit', function (e) {
+    var form = e.target.closest('#' + idPrefix + '-email-form');
+    if (!form) return;
+    e.preventDefault();
+    var result = getResult();
+    var input = document.getElementById(idPrefix + '-email-input');
+    var statusEl = document.getElementById(idPrefix + '-status');
+    var submitBtn = document.getElementById(idPrefix + '-email-submit');
+    var email = input.value.trim();
+    if (!email || !result) return;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    fetch('/api/email-tool-results', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, toolName: toolLabel, summary: result.summary }),
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send';
+          statusEl.textContent = 'Something went wrong. Please try again.';
+          statusEl.hidden = false;
+          return;
+        }
+        form.hidden = true;
+        statusEl.textContent = 'Sent. Check your inbox.';
+        statusEl.hidden = false;
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send';
+        statusEl.textContent = 'Something went wrong. Please try again.';
+        statusEl.hidden = false;
+      });
+  });
+
+  return { refresh: updateVisibility };
+}

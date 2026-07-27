@@ -547,17 +547,17 @@ body main .hero {
 #diagnostic-hero .score-band { color: var(--mm-green) !important; }
 #diagnostic-hero .score-copy, #diagnostic-hero .hero-sub { color: var(--mm-text-light-muted) !important; }
 #diagnostic-hero .quiz-next-hint { color: var(--mm-text-light-soft) !important; }
-#diagnostic-hero .score-breakdown-toggle { color: var(--mm-green) !important; }
-#diagnostic-hero .score-breakdown li {
-    background: var(--mm-surface) !important;
-    border: 1px solid var(--mm-surface-border) !important;
-}
-#diagnostic-hero .breakdown-dimension { color: var(--mm-text-light) !important; }
-#diagnostic-hero .breakdown-tag.strong { background: rgba(52, 211, 153, 0.16) !important; color: var(--mm-green) !important; }
-#diagnostic-hero .breakdown-tag.good { background: var(--mm-gold-soft) !important; color: var(--mm-gold) !important; }
-#diagnostic-hero .breakdown-tag.attention { background: rgba(255, 138, 117, 0.14) !important; color: #FF8A75 !important; }
 #diagnostic-hero .next-steps a { color: var(--mm-text-light) !important; border-bottom-color: var(--mm-gold) !important; }
 #diagnostic-hero .next-steps a:hover { color: var(--mm-green) !important; border-color: var(--mm-green) !important; }
+#diagnostic-hero .mm-dashboard { border-top-color: var(--mm-surface-border) !important; }
+#diagnostic-hero .mm-dashboard-heading { color: var(--mm-text-light) !important; }
+#diagnostic-hero .mm-dashboard-card { background: var(--mm-surface) !important; border-color: var(--mm-surface-border) !important; }
+#diagnostic-hero .mm-dashboard-card-label { color: var(--mm-text-light-soft) !important; }
+#diagnostic-hero .mm-dashboard-card-value { color: var(--mm-text-light) !important; }
+#diagnostic-hero .mm-dashboard-card-sub { color: var(--mm-text-light-muted) !important; }
+#diagnostic-hero .mm-dashboard-card-cta { color: var(--mm-green) !important; }
+#diagnostic-hero .mm-dashboard-advisor { color: var(--mm-text-light-muted) !important; }
+#diagnostic-hero .mm-dashboard-plus p { color: var(--mm-text-light) !important; }
 
 /* Score-band curve retint stays vivid against the dark visual panel */
 .hero-visual--band-starting .curve-stroke { stroke: var(--mm-text-light-soft) !important; }
@@ -1129,6 +1129,13 @@ body main .hero {
 .plus-card-note { color: var(--mm-text-light-soft) !important; }
 .plus-preview-links a { color: var(--mm-green); }
 
+.advanced-tools { background: var(--mm-bg) !important; }
+.advanced-tools h2 { color: var(--mm-text-light); }
+.advanced-tools-sub { color: var(--mm-text-light-muted); }
+.advanced-tool-card { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
+.advanced-tool-card h3 { color: var(--mm-text-light) !important; }
+.advanced-tool-card p { color: var(--mm-text-light-muted) !important; }
+
 /* =====================================================
    Blog page components
    ===================================================== */
@@ -1354,8 +1361,8 @@ a.contact-option:hover .contact-option-btn { background: var(--mm-text-light); }
 .tool-note { color: var(--mm-text-light-soft) !important; border-top-color: var(--mm-surface-border) !important; }
 .tool-next-steps a { color: var(--mm-text-light) !important; }
 .tool-next-steps a:hover { color: var(--mm-green) !important; }
-.tool-email-results { border-top-color: var(--mm-surface-border) !important; }
-.tool-email-results-toggle { color: var(--mm-green) !important; }
+.tool-results-actions { border-top-color: var(--mm-surface-border) !important; }
+.tool-email-results-toggle, .tool-submit-dashboard-btn { color: var(--mm-green) !important; }
 .tool-email-results-form input[type="email"] {
     background: var(--mm-surface) !important;
     border-color: var(--mm-surface-border) !important;
@@ -1367,6 +1374,24 @@ a.contact-option:hover .contact-option-btn { background: var(--mm-text-light); }
 /* Legacy download-button (Net Worth calculator + Advanced tools spreadsheets) */
 .download-button { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
 .download-button:hover { background: var(--mm-text-light) !important; }
+
+/* Advanced Tools: locked state, spreadsheet block, holdings rows (§28.6/28.7) */
+.tool-locked-inner { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
+.tool-locked-badge { background: var(--mm-gold-soft) !important; color: var(--mm-gold) !important; }
+.tool-locked-inner h2 { color: var(--mm-text-light) !important; }
+.tool-locked-inner p { color: var(--mm-text-light-muted) !important; }
+.tool-locked-cta { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
+.tool-locked-cta:hover { background: var(--mm-text-light) !important; }
+.tool-spreadsheet .first-p { color: var(--mm-text-light-muted) !important; }
+.tool-holding-row input, .tool-holding-row select {
+    background: var(--mm-bg-deep) !important;
+    border: 1px solid var(--mm-surface-border) !important;
+    color: var(--mm-text-light) !important;
+}
+.tool-holding-remove { background: var(--mm-bg-deep) !important; border: 1px solid var(--mm-surface-border) !important; color: var(--mm-text-light-soft) !important; }
+.tool-holding-remove:hover { background: rgba(255, 138, 117, 0.14) !important; border-color: #FF8A75 !important; color: #FF8A75 !important; }
+.tool-add-holding-btn { border-color: var(--mm-surface-border) !important; color: var(--mm-green) !important; }
+.tool-add-holding-btn:hover { border-color: var(--mm-green) !important; background: rgba(52, 211, 153, 0.1) !important; }
 .how-to-text { color: var(--mm-text-light); }
 .dropdown-arrow { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
 .dropdown-details { background: var(--mm-surface) !important; color: var(--mm-text-light-muted) !important; box-shadow: var(--mm-shadow-md); }

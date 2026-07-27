@@ -73,32 +73,51 @@
         <main>
             <section class="tool-intro">
                 <h1>Advanced Investment Management Tool.</h1>
-                <p class="first-p">A deeper portfolio-building spreadsheet. Pick specific stocks and funds by category and see your allocation take shape.</p>
-                
-                <div class="how-to-container">
-                    <p class="how-to-text">Quick Start</p>
-                    <button class="dropdown-arrow" id="toggleDropdown" aria-expanded="false" aria-controls="dropdownContent">▼</button>
+                <p class="first-p">Add your actual holdings by name and category and watch your real allocation take shape &mdash; live in your browser, or as a downloadable spreadsheet.</p>
+            </section>
+
+            <section class="tool-locked" id="tool-locked" aria-live="polite">
+              <div class="tool-locked-inner">
+                <span class="tool-locked-badge">MoneyMatters+</span>
+                <h2>This tool is a MoneyMatters+ feature.</h2>
+                <p>Add individual stocks and funds by name and category, and compare your real allocation to your risk tolerance target.</p>
+                <a href="../../moneymatters-plus.html" class="tool-locked-cta">See MoneyMatters+</a>
+              </div>
+            </section>
+
+            <section class="tool-app fade-up" id="tool-app" hidden>
+              <div class="tool-app-grid">
+                <div class="tool-panel tool-app-inputs">
+                  <h2>Your holdings</h2>
+                  <div class="tool-field">
+                    <label>Risk tolerance</label>
+                    <div class="tool-radio-group">
+                      <label class="tool-radio-btn">
+                        <input type="radio" name="adv-inv-risk" value="1">
+                        <span>Conservative</span>
+                      </label>
+                      <label class="tool-radio-btn">
+                        <input type="radio" name="adv-inv-risk" value="2" checked>
+                        <span>Moderate</span>
+                      </label>
+                      <label class="tool-radio-btn">
+                        <input type="radio" name="adv-inv-risk" value="3">
+                        <span>Aggressive</span>
+                      </label>
+                    </div>
                   </div>
-                  
-                <div class="dropdown-details" id="dropdownContent">
-                    <p>
-                        The <span class="green">Advanced Investment Management Tool</span> helps to categorize, project, and optimize your investments and curate an investment strategy that works for your goals.
-
-                        <ul>
-                            <li>Adjust the <span class="black-white">black cells with white font</span> to record your information. Adjust the Risk Tolerance Cell (<span class="bold">1,2,3</span>). <span class="bold">1 being the least risky</span> recommended for generally older individuals (55+) who rely on capital preservation and liquidity to live on. <span class="bold">2 is moderate risk</span> for those looking to steadily grow while preserving capital through increased equity exposure. <span class="bold">3 is the greatest risk</span> allocation of the options in this tool designed for young people with time to make gains and generally less capital at risk. (This is personal to you only and MoneyMatters does not have access until you share it with us)</li>
-
-                            <li>On the “<span class="lightblue">Recommendations</span>” tab, adjust the <span class="black-white">black cells with white font</span> to input the security of your choosing from the recommended list below. The allocation % and $ is displayed to the right based on your chosen risk level. These securities are not regularly updated but are a good basis to start from. Do some research and find the best match for you!</li>
-
-                            <li>Notice your asset type breakdown in the pie chart. How does it compare to the recommended asset allocation based on your risk tolerance? How does <span class="bold">your portfolio's expected return</span> compared to the <span class="bold">projected return target</span> for your circumstances?</li>
-
-                            <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The next step is to <span class="bold">share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
-
-                        </ul>
-                        THIS IS NOT FINANCIAL ADVICE. INVESTMENTS HAVE RISK. MONEYMATTERS IS NOT RESPONSIBLE FOR ANY DECISION YOU MAKE BASED ON THE USE OF THESE TOOLS
-                                            
-                    </p>
+                  <div class="tool-field-group">
+                    <span class="tool-field-group-label">Holdings</span>
+                    <div id="adv-inv-holdings-list" class="tool-holdings-list"></div>
+                    <button type="button" id="adv-inv-add-holding" class="tool-add-holding-btn">+ Add a holding</button>
                   </div>
+                </div>
+                <div class="tool-panel tool-app-results" id="adv-investment-results" aria-live="polite"></div>
+              </div>
+            </section>
 
+            <section class="tool-spreadsheet">
+                <p class="first-p">Prefer a spreadsheet? Download the full version below.</p>
                 <img src="../../images/advanced-investment-laptop.png" alt="Advanced Investment Management Tool spreadsheet">
                 <a href="" class="download-button">Download</a>
             </section>
@@ -150,12 +169,14 @@
         </footer>
 
 
-        <script src="../individual-tools-scripts/drop-down-text.js"></script>
         <script src="../../scripts/hamburger.js"></script>
 <script src="../../scripts/nav-dropdown.js"></script>
         <script src="../../scripts/cinematic-motion.js"></script>
         <script src="../../scripts/onboarding-gate.js"></script>
         <script src="../../scripts/sign-in.js"></script>
+        <script src="../individual-tools-scripts/tool-utils.js"></script>
+        <script src="../individual-tools-scripts/advanced-investment-tool.js"></script>
+        <script src="../individual-tools-scripts/advanced-tool-gate.js"></script>
     </body>
 
 </html>

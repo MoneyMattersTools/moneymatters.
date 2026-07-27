@@ -350,13 +350,7 @@
     requestAnimationFrame(frame);
   }
 
-  function tagForRatio(ratio) {
-    if (ratio >= 0.8) return { cls: 'strong', label: 'Strong' };
-    if (ratio >= 0.5) return { cls: 'good', label: 'Good' };
-    return { cls: 'attention', label: 'Needs attention' };
-  }
-
-  function renderResults(score, band, breakdown) {
+  function renderResults(score, band) {
     var copy = BAND_COPY[band] || BAND_COPY['Needs Work'];
     el('score-band').textContent = band;
     el('score-copy').textContent = copy.body;
@@ -369,28 +363,68 @@
       heroVisual.classList.add('hero-visual--band-' + (BAND_SLUG[band] || 'needs-work'));
     }
 
-    var toggleBtn = el('score-breakdown-toggle');
-    var listEl = el('score-breakdown');
-    if (breakdown && breakdown.length) {
-      listEl.innerHTML = '';
-      breakdown.forEach(function (item) {
-        var li = document.createElement('li');
-        var tag = tagForRatio(item.earned / item.max);
-        li.innerHTML =
-          '<span class="breakdown-dimension">' + item.dimension + '</span>' +
-          '<span class="breakdown-tag ' + tag.cls + '">' + tag.label + '</span>';
-        listEl.appendChild(li);
-      });
-      toggleBtn.hidden = false;
-      toggleBtn.addEventListener('click', function () {
-        listEl.hidden = !listEl.hidden;
-        toggleBtn.textContent = listEl.hidden ? 'See what is driving this' : 'Hide breakdown';
-      });
-    } else {
-      toggleBtn.hidden = true;
+    setStep('results');
+  }
+
+  // --- dashboard (§28.1-4): purely additive to the score panel above,
+  // not a redesign of it. Renders whichever tool results the user has
+  // submitted, empty-state prompts for the rest, advisor status if any,
+  // and a bonus combined-analysis panel for Plus accounts.
+  var DASHBOARD_TOOLS = [
+    { key: 'networth', label: 'Net Worth', href: 'individual-tools/basic-tools/net-worth-calculator.html' },
+    { key: 'budget', label: 'Budget', href: 'individual-tools/basic-tools/basic-budget-tool.html' },
+    { key: 'retirement', label: 'Retirement', href: 'individual-tools/basic-tools/basic-retirement-tool.html' },
+    { key: 'investment', label: 'Investment', href: 'individual-tools/basic-tools/basic-investment-tool%20.html' },
+  ];
+
+  function renderDashboard(data) {
+    var dashEl = el('mm-dashboard');
+    if (!dashEl) return;
+    var tools = data.tools || {};
+
+    var cardsHtml = DASHBOARD_TOOLS.map(function (tool) {
+      var result = tools[tool.key];
+      if (result && result.headline) {
+        return (
+          '<a class="mm-dashboard-card" href="' + tool.href + '">' +
+            '<span class="mm-dashboard-card-label">' + tool.label + '</span>' +
+            '<span class="mm-dashboard-card-value">' + result.headline.value + '</span>' +
+            '<span class="mm-dashboard-card-sub">' + result.headline.label + '</span>' +
+          '</a>'
+        );
+      }
+      return (
+        '<a class="mm-dashboard-card mm-dashboard-card--empty" href="' + tool.href + '">' +
+          '<span class="mm-dashboard-card-label">' + tool.label + '</span>' +
+          '<span class="mm-dashboard-card-cta">Add your numbers →</span>' +
+        '</a>'
+      );
+    }).join('');
+
+    var advisorHtml = '';
+    if (data.advisorStatus) {
+      advisorHtml = '<p class="mm-dashboard-advisor">Advisor status: <strong>' + data.advisorStatus + '</strong></p>';
     }
 
-    setStep('results');
+    var submitted = DASHBOARD_TOOLS.filter(function (tool) { return tools[tool.key] && tools[tool.key].headline; });
+    var plusHtml = '';
+    if (data.plan === 'plus') {
+      var overviewLine = submitted.length
+        ? submitted.map(function (tool) { return tool.label + ': ' + tools[tool.key].headline.value; }).join(' &middot; ')
+        : 'Submit results from the tools above to build your combined overview.';
+      plusHtml =
+        '<div class="mm-dashboard-plus">' +
+          '<span class="mm-dashboard-plus-badge">MoneyMatters+ overview</span>' +
+          '<p>' + overviewLine + '</p>' +
+        '</div>';
+    }
+
+    dashEl.innerHTML =
+      '<h3 class="mm-dashboard-heading">Your dashboard</h3>' +
+      '<div class="mm-dashboard-grid">' + cardsHtml + '</div>' +
+      advisorHtml +
+      plusHtml;
+    dashEl.hidden = false;
   }
 
   function renderVerifyError(reason) {
@@ -446,7 +480,17 @@
                 renderVerifyError(result.data && result.data.error);
                 return;
               }
-              renderResults(result.data.score, result.data.band, result.data.breakdown);
+              renderResults(result.data.score, result.data.band);
+              // The dashboard (submitted tool results, plan, advisor
+              // status) needs a live Users-table read that /api/verify-token
+              // doesn't return — fetch it separately so the score reveal
+              // itself isn't held up by the extra round trip.
+              fetch('/api/session')
+                .then(function (res) { return res.json(); })
+                .then(function (sessionData) {
+                  if (sessionData && sessionData.loggedIn) renderDashboard(sessionData);
+                })
+                .catch(function () {});
             })
             .catch(function () {
               renderVerifyError('server_error');
@@ -460,7 +504,8 @@
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (data && data.loggedIn && typeof data.healthScore === 'number') {
-          renderResults(data.healthScore, data.healthBand, null);
+          renderResults(data.healthScore, data.healthBand);
+          renderDashboard(data);
         } else if (startParam === 'health-score') {
           stripStartParam();
           setStep('email');

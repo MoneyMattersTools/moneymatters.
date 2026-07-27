@@ -18,6 +18,9 @@
   var resultsEl = document.getElementById('investment-results');
   if (!resultsEl || !riskInputs.length) return;
 
+  var lastResult = null;
+  var actions = toolWireResultsActions(resultsEl, 'investment', 'investment', 'Investment Tool', function () { return lastResult; });
+
   function currentRisk() {
     var checked = document.querySelector('input[name="inv-risk"]:checked');
     return checked ? checked.value : '2';
@@ -90,6 +93,18 @@
           : 'Your equity exposure is ' + toolFormatPercent(Math.abs(equityGap), 0) + ' ' + (equityGap > 0 ? 'above' : 'below') + ' the ' + risk.label.toLowerCase() + ' target of ' + risk.equities + '%.')
       : 'Enter your portfolio holdings to see how your allocation compares.';
 
+    lastResult = {
+      headline: { label: 'Portfolio Value', value: toolFormatCurrency(total) },
+      summary: [
+        { label: 'Expected blended return', value: toolFormatPercent(currentReturn, 1) + ' vs. ' + toolFormatPercent(targetReturn, 1) + ' target' },
+        { label: 'Risk profile', value: risk.label },
+      ].concat(
+        currentSegments.filter(function (s) { return s.pct > 0; }).map(function (s) {
+          return { label: LABELS[s.key], value: toolFormatPercent(s.pct, 0) };
+        })
+      ),
+    };
+
     resultsEl.innerHTML = '' +
       '<div class="tool-stat">' +
         '<span class="tool-stat-label">Portfolio Value</span>' +
@@ -108,10 +123,12 @@
       '</div>' +
       '<ul class="tool-legend">' + legendHtml(currentSegments) + '</ul>' +
       '<p class="tool-note">' + gapNote + ' Target mix and expected returns (equities 8%, bonds 4%, cash 2%, other 5%) are long-run rule-of-thumb assumptions, not a projection or guarantee. Actual returns vary and your right mix depends on your full financial picture.</p>' +
+      toolResultsActionsHtml('investment') +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../contact.html">Talk to an advisor</a>' +
       '</div>';
+    actions.refresh();
   }
 
   ids.forEach(function (id) { toolDebounceInput(el[id], render); });

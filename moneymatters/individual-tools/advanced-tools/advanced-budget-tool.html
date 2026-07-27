@@ -73,32 +73,79 @@
         <main>
             <section class="tool-intro">
                 <h1>Advanced Budget Tool.</h1>
-                <p class="first-p">A deeper budgeting spreadsheet with fixed vs. variable expense breakdowns and personalized savings recommendations based on your income.</p>
-                
-                <div class="how-to-container">
-                    <p class="how-to-text">Quick Start</p>
-                    <button class="dropdown-arrow" id="toggleDropdown" aria-expanded="false" aria-controls="dropdownContent">▼</button>
+                <p class="first-p">Fixed vs. variable expense breakdowns and a personalized savings recommendation based on your income &mdash; live in your browser, or as a downloadable spreadsheet.</p>
+            </section>
+
+            <section class="tool-locked" id="tool-locked" aria-live="polite">
+              <div class="tool-locked-inner">
+                <span class="tool-locked-badge">MoneyMatters+</span>
+                <h2>This tool is a MoneyMatters+ feature.</h2>
+                <p>Fixed vs. variable expense breakdowns and a personalized savings recommendation, calculated live as you type.</p>
+                <a href="../../moneymatters-plus.html" class="tool-locked-cta">See MoneyMatters+</a>
+              </div>
+            </section>
+
+            <section class="tool-app fade-up" id="tool-app" hidden>
+              <div class="tool-app-grid">
+                <div class="tool-panel tool-app-inputs">
+                  <h2>Your monthly numbers</h2>
+                  <div class="tool-field">
+                    <label for="adv-budget-income">Monthly take-home income</label>
+                    <input type="number" inputmode="decimal" min="0" id="adv-budget-income" placeholder="5000">
                   </div>
-                  
-                <div class="dropdown-details" id="dropdownContent">
-                    <p>
-                        The <span class="green">Advanced Budget Tool</span> helps to record, visualize, and make recommendations based on spending patterns.
-
-                        <ul>
-                            <li>Adjust the <span class="black-white">black cells with white font</span> to record your information (This is personal to you only and MoneyMatters does not have access until you share it with us)</li>
-
-                            <li>Notice the monthly trend bar charts relating to each expense. Do certain expenses spike during different times of the year? How can your average monthly spending help you project spending for next year?</li>
-
-                            <li>On the “<span class="lightblue">Analysis</span>” tab, note an automated recommended budget based on your income. These spending recommendations are helpful as a frame of reference, not an exact figure for what works for your household. In a similar manner, the automated saver tool recommends how much your household can save annually by cutting down on key expenses. Also, note the recommend savings breakdown for future investing.</li>
-
-                            <li>The key to driving the most value out of this tool and all our tools is establishing a foundational understanding of your financial situation. The next step is to <span class="bold">share this information with a trusted financial advisor</span> to help you make the right choices to improve your financial health.</li>
-
-                        </ul>
-                        THIS IS NOT FINANCIAL ADVICE. INVESTMENTS HAVE RISK. MONEYMATTERS IS NOT RESPONSIBLE FOR ANY DECISION YOU MAKE BASED ON THE USE OF THESE TOOLS
-                                            
-                    </p>
+                  <div class="tool-field-group">
+                    <span class="tool-field-group-label">Fixed expenses</span>
+                    <div class="tool-field">
+                      <label for="adv-budget-housing">Housing (rent / mortgage)</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-housing" placeholder="1400">
+                    </div>
+                    <div class="tool-field">
+                      <label for="adv-budget-insurance">Insurance</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-insurance" placeholder="300">
+                    </div>
+                    <div class="tool-field">
+                      <label for="adv-budget-debt">Loan &amp; debt payments</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-debt" placeholder="400">
+                    </div>
+                    <div class="tool-field">
+                      <label for="adv-budget-subscriptions">Subscriptions &amp; memberships</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-subscriptions" placeholder="60">
+                    </div>
+                    <div class="tool-field">
+                      <label for="adv-budget-otherfixed">Other fixed</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-otherfixed" placeholder="0">
+                    </div>
                   </div>
+                  <div class="tool-field-group">
+                    <span class="tool-field-group-label">Variable expenses</span>
+                    <div class="tool-field">
+                      <label for="adv-budget-food">Food &amp; groceries</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-food" placeholder="500">
+                    </div>
+                    <div class="tool-field">
+                      <label for="adv-budget-transportation">Transportation</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-transportation" placeholder="250">
+                    </div>
+                    <div class="tool-field">
+                      <label for="adv-budget-entertainment">Entertainment</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-entertainment" placeholder="150">
+                    </div>
+                    <div class="tool-field">
+                      <label for="adv-budget-shopping">Shopping</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-shopping" placeholder="150">
+                    </div>
+                    <div class="tool-field">
+                      <label for="adv-budget-othervariable">Other variable</label>
+                      <input type="number" inputmode="decimal" min="0" id="adv-budget-othervariable" placeholder="0">
+                    </div>
+                  </div>
+                </div>
+                <div class="tool-panel tool-app-results" id="adv-budget-results" aria-live="polite"></div>
+              </div>
+            </section>
 
+            <section class="tool-spreadsheet">
+                <p class="first-p">Prefer a spreadsheet? Download the full version below.</p>
                 <img src="../../images/advanced-budget-laptop.png" alt="Advanced Budget Tool spreadsheet">
                 <a href="" class="download-button">Download</a>
             </section>
@@ -150,12 +197,14 @@
         </footer>
 
 
-        <script src="../individual-tools-scripts/drop-down-text.js"></script>
         <script src="../../scripts/hamburger.js"></script>
 <script src="../../scripts/nav-dropdown.js"></script>
         <script src="../../scripts/cinematic-motion.js"></script>
         <script src="../../scripts/onboarding-gate.js"></script>
         <script src="../../scripts/sign-in.js"></script>
+        <script src="../individual-tools-scripts/tool-utils.js"></script>
+        <script src="../individual-tools-scripts/advanced-budget-tool.js"></script>
+        <script src="../individual-tools-scripts/advanced-tool-gate.js"></script>
     </body>
 
 </html>

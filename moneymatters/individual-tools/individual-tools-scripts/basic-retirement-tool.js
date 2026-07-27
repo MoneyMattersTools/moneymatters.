@@ -10,6 +10,8 @@
   if (!toggleButtons.length || !resultsEl) return;
 
   var mode = 'working';
+  var lastResult = null;
+  var actions = toolWireResultsActions(resultsEl, 'retirement', 'retirement', 'Retirement Tool', function () { return lastResult; });
 
   var ids = [
     'ret-current-age', 'ret-retire-age', 'ret-income', 'ret-current-savings',
@@ -62,6 +64,15 @@
         '</div>';
     }
 
+    lastResult = {
+      headline: { label: gap > 0 ? 'Projected Shortfall' : 'Projected Surplus', value: toolFormatCurrency(Math.abs(gap)) },
+      summary: [
+        { label: 'Target nest egg', value: toolFormatCurrency(targetNestEgg) },
+        { label: 'Projected savings at age ' + retireAge, value: toolFormatCurrency(projected) },
+        { label: 'Years until retirement', value: String(t) },
+      ],
+    };
+
     resultsEl.innerHTML = gapHtml +
       '<ul class="tool-breakdown">' +
         '<li><div class="tool-breakdown-top"><span class="tool-breakdown-name">Target nest egg</span><span class="tool-breakdown-figures">' + toolFormatCurrency(targetNestEgg) + '</span></div></li>' +
@@ -69,10 +80,12 @@
         '<li><div class="tool-breakdown-top"><span class="tool-breakdown-name">Years until retirement</span><span class="tool-breakdown-figures">' + t + '</span></div></li>' +
       '</ul>' +
       '<p class="tool-note">Target nest egg uses the 4% rule: (current income &times; wage replacement ratio) &divide; 4%. Projected savings compounds your current balance and monthly contributions at the return rate entered. This does not account for Social Security, pensions, or other retirement income. Those would reduce the savings you actually need.</p>' +
+      toolResultsActionsHtml('retirement') +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../contact.html">Talk to an advisor</a>' +
       '</div>';
+    actions.refresh();
   }
 
   function renderRetired() {
@@ -105,6 +118,15 @@
         '</div>';
     }
 
+    lastResult = {
+      headline: { label: gap > 0 ? 'Additional $ Needed' : 'Projected Surplus', value: toolFormatCurrency(Math.abs(gap)) },
+      summary: [
+        { label: 'Savings needed to sustain spending', value: toolFormatCurrency(requiredPrincipal) },
+        { label: 'Current savings', value: toolFormatCurrency(currentSavings) },
+        { label: 'Years of retirement remaining', value: String(n) },
+      ],
+    };
+
     resultsEl.innerHTML = gapHtml +
       '<ul class="tool-breakdown">' +
         '<li><div class="tool-breakdown-top"><span class="tool-breakdown-name">Savings needed to sustain spending</span><span class="tool-breakdown-figures">' + toolFormatCurrency(requiredPrincipal) + '</span></div></li>' +
@@ -112,10 +134,12 @@
         '<li><div class="tool-breakdown-top"><span class="tool-breakdown-name">Years of retirement remaining</span><span class="tool-breakdown-figures">' + n + '</span></div></li>' +
       '</ul>' +
       '<p class="tool-note">Savings needed is the present value of your annual spending as a fixed withdrawal stream over your remaining years, at the return rate entered. This does not account for Social Security, pensions, inflation, or other income. Those would reduce the savings you actually need.</p>' +
+      toolResultsActionsHtml('retirement') +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../contact.html">Talk to an advisor</a>' +
       '</div>';
+    actions.refresh();
   }
 
   function render() {
