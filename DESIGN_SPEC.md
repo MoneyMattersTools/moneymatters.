@@ -1,5 +1,5 @@
-ï»¿# MoneyMatters â€” Design Spec
-Full reference for the site redesign. This supersedes prior incremental redesign prompts â€” build against this document as the single source of truth, not fragments of chat history.
+# MoneyMatters — Design Spec
+Full reference for the site redesign. This supersedes prior incremental redesign prompts — build against this document as the single source of truth, not fragments of chat history.
 
 ## 1. Design Philosophy
 
@@ -102,11 +102,11 @@ Keep the large, dramatic headline scale for hero/impact moments on cinematic pag
 
 ### Creative Latitude
 Real creative freedom is intended within this framework - the reference link and this section are guidance on direction and restraint, not a pixel-exact spec. Use judgment on composition and detail while staying inside these boundaries.
-## 14. Cinematic Direction Correction (locked, supersedes Â§13 where they conflict)
+## 14. Cinematic Direction Correction (locked, supersedes §13 where they conflict)
 
-Reviewed Ethan's actual favorited references directly (runway.com, hasko.com, oldtomcapital.com, munropartners.com). These are heavy, cinematic, real-photography/video-driven production sites - closer to the original Izanami/Benjamin Hardman references from early in this project than to the light-SaaS restraint (Fey/Acctual/Composer) Â§13 pointed toward. That earlier steer was a miscalibration - correcting it here.
+Reviewed Ethan's actual favorited references directly (runway.com, hasko.com, oldtomcapital.com, munropartners.com). These are heavy, cinematic, real-photography/video-driven production sites - closer to the original Izanami/Benjamin Hardman references from early in this project than to the light-SaaS restraint (Fey/Acctual/Composer) §13 pointed toward. That earlier steer was a miscalibration - correcting it here.
 
-### Imagery Sourcing (supersedes Â§13's imagery section)
+### Imagery Sourcing (supersedes §13's imagery section)
 - Real photography and video are now central, not secondary - source properly-licensed stock video/photography (Pexels Videos, Coverr, Pexels/Unsplash photos - same sources the marketing agent already uses) for cinematic full-bleed hero/section backgrounds on Home, About, Blogs, Contact.
 - Do NOT scrape or download video from YouTube directly - this violates YouTube's Terms of Service regardless of stated purpose. A YouTube video may only be used via YouTube's own official embed/iframe player, never downloaded or re-hosted.
 - Data/motion-graphics (charts, score visualizations) stay in the mix - blend creatively with real photography/video rather than replacing them. Avoid anything that reads as generic/templated - creative, specific compositions over default patterns.
@@ -115,9 +115,9 @@ Reviewed Ethan's actual favorited references directly (runway.com, hasko.com, ol
 - Lightweight scroll-linked animation and parallax are in scope, applied where reasonable and only where mobile performance and usability hold up - do not degrade the mobile experience for a desktop-only effect.
 - No framework rewrite (no React/Three.js/build-step introduction) - stay within the current vanilla HTML/CSS/JS, no-build-step architecture. This preserves the earlier mobile-app-portability goal (backend as a clean reusable API layer) - a heavy new frontend framework would undermine that.
 
-### Scope Split (confirms Â§13, unchanged)
+### Scope Split (confirms §13, unchanged)
 Cinematic treatment (now meaning real photography/video + data-viz blended, with lightweight scroll motion) still applies to Homepage, About Us, Blogs, Contact only.
-Tools page and all native tool calculator pages stay utility-first/restrained per Â§13 - apply the updated palette/theme for visual consistency, but stay product-and-function-focused first; do not import heavy cinematic imagery/motion there.
+Tools page and all native tool calculator pages stay utility-first/restrained per §13 - apply the updated palette/theme for visual consistency, but stay product-and-function-focused first; do not import heavy cinematic imagery/motion there.
 
 ### Page Weight Exception (approved 2026-07-24, amends Section 11)
 The homepage hero's desktop video background is an approved exception to the well-under-1MB budget (desktop total ~2.6MB) - this is a deliberate cinematic choice, not an oversight. The hard, non-negotiable line is mobile: mobile must stay fully protected (no video bytes requested at all, poster image only) regardless of desktop weight. Any future cinematic video use follows the same rule - desktop can carry real video weight, mobile never does.
@@ -184,13 +184,13 @@ The homepage hero's desktop video background is an approved exception to the wel
 1. Rename nav item "Connect with an Advisor" to "Advisor Connect."
 2. The "MoneyMatters+" nav/CTA button should use the same visual formatting/weight as the "Get Connected!" button (matching prominence, not a lesser link style).
 
-### MoneyMatters+ page â€” additional content to build
+### MoneyMatters+ page — additional content to build
 Beyond the existing "You have the leverage" hero and "Why the model is different" section, add:
 - **What's included** (the $5/month tier, expand from the pricing model already locked): all advanced tools, every new tool as it ships, explainer/how-to videos for each tool, live webinars, advisor Q&A sessions, full community access.
 - **Free vs. MoneyMatters+ comparison**: a simple two-column layout - Free (diagnostic, basic tools, browse-only community access) vs. MoneyMatters+ (everything above).
 - **FAQ**: cancel anytime / no long-term commitment; does this affect advisor matching (no - that's always free regardless of tier); what counts as a "new tool."
 
-### Advisor Connect page â€” additional content to build
+### Advisor Connect page — additional content to build
 Beyond the existing process/vetting-criteria/coming-soon structure, add:
 - **How matching actually works**, described simply and positively for an end user (not the internal bucket-mechanics framing): "We ask a few questions about your situation, then match you with a vetted advisor who actually specializes in it - not just whoever's next in line."
 - **Vetting standard, stated plainly**: CFP-certified, fee-only, fiduciary - every advisor, no exceptions.
@@ -239,7 +239,7 @@ Beyond the existing process/vetting-criteria/coming-soon structure, add:
 2. **Real mobile Safari review needed**: iPhone Safari specifically shows spacing issues not caught by prior CDP/Chrome-based mobile emulation. CDP device-metrics emulation approximates viewport size but is still Chrome's rendering engine, not Safari/WebKit - some spacing bugs are WebKit-specific and won't surface in Chrome emulation. Do a genuinely careful pass across the whole site at mobile widths, and flag explicitly if anything found is likely Safari/WebKit-specific rather than a general responsive bug, since that changes how it should be tested going forward.
 3. **Full end-to-end funnel timing test**: walk through the complete real user journey in one continuous session - land on site -> complete a diagnostic -> receive and click verification email -> land back verified -> submit the advisor-connect intake form. Time each step and the whole sequence. Report where real friction or slowness exists (not just "it works") - the goal is landing-to-advisor-request speed and efficiency, not just functional correctness.
 
-## 25. Tone/Content Review â€” Page by Page (started 2026-07-26)
+## 25. Tone/Content Review — Page by Page (started 2026-07-26)
 
 Review criteria for every page: consistency, clarity, avoid "AI-sounding" generic phrasing, cut length where the same meaning fits in fewer words. Mission to reinforce throughout, explicitly where natural: MoneyMatters empowers ordinary people to understand and control their own finances, and gives them real leverage/information edge in conversations with advisors - advisors work for the user, not the other way around.
 
@@ -264,7 +264,7 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 2. Real bug, not just wording: a heading literally labeled "How we make money" is followed by unrelated copy ("No cost. No obligation. Stop at any point.") that does not explain revenue at all - looks like the wrong heading or missing/swapped content. Needs a real content fix.
 
 ### Blog (reviewed)
-1. "No jargon, no gatekeeping â€” just the same transparent approach as the tools themselves" appears twice verbatim on the same page (hero subhead + "Start here" section intro) - vary one instance.
+1. "No jargon, no gatekeeping — just the same transparent approach as the tools themselves" appears twice verbatim on the same page (hero subhead + "Start here" section intro) - vary one instance.
 
 ### Contact (reviewed) - no issues found, appropriately concise.
 
@@ -273,7 +273,7 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 ### Native tool pages (spot-checked via Basic Budget Tool, check all)
 1. Mid-sentence ALL-CAPS emphasis ("See WHERE your money is going relative to HOW it should be going") is a stylistic holdover inconsistent with the more refined voice established elsewhere on the site - normalize to standard sentence case with italics/bold for emphasis instead. Check Retirement/Investment/Net Worth tool intros for the same pattern.
 
-## 26. Round 14 Feedback â€” Real User Testing (locked 2026-07-26)
+## 26. Round 14 Feedback — Real User Testing (locked 2026-07-26)
 
 ### Bugs (fix these first, real functional breaks)
 1. **Onboarding redirect bug**: after a user enters their email, they are being routed to the newsletter/blog page instead of back to the main site/tools. Trace the actual post-email-submission redirect logic and fix - this breaks the core funnel.
@@ -301,14 +301,14 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 
 ## 27. Round 15 Feedback (locked 2026-07-26)
 
-1. **Eyebrow/kicker pattern still not fully fixed**: the homepage still shows a small gold dash/line before the eyebrow text (e.g. "â€” Your Financial Health Score"). Remove the dash/rule entirely - do not replace it with any line/underline device. Instead, use the gold color as the text color itself, and change/enlarge the font treatment for emphasis. Apply consistently sitewide - audit every page, since About Us's version of this element has already drifted to a different (green, no-dash) treatment independently. One consistent final treatment across all pages.
+1. **Eyebrow/kicker pattern still not fully fixed**: the homepage still shows a small gold dash/line before the eyebrow text (e.g. "— Your Financial Health Score"). Remove the dash/rule entirely - do not replace it with any line/underline device. Instead, use the gold color as the text color itself, and change/enlarge the font treatment for emphasis. Apply consistently sitewide - audit every page, since About Us's version of this element has already drifted to a different (green, no-dash) treatment independently. One consistent final treatment across all pages.
 2. **Advisor Connect - add a placeholder-but-real-feeling advisor list**: a scrollable section showing advisor cards with name/specialty/rating elements, clearly usable even though no real advisors are onboarded yet (use clearly-labeled placeholder/sample entries, not fabricated as real people). Add a "Connect with an Advisor" button at the top of the page that takes the user directly into the existing intake flow.
 3. **MoneyMatters+, Advisor Connect, and About Us still read as too text-heavy**: add live/interactive visualization or scroll/interaction-driven movement to these three pages specifically, consistent with the cinematic treatment already established elsewhere (Section 13/14) - reduce the sense of walls of text, not by cutting content further but by giving it more visual/interactive structure.
 
 ## 28. Round 16 Feedback (locked 2026-07-26)
 
 ### Financial Snapshot Dashboard (new scope, reverses the Round 14 deferral)
-1. For logged-in/verified users, the homepage's top area becomes a "Financial Snapshot" dashboard populated with their submitted tool results (Financial Health Score, Net Worth, Budget, Retirement, Investment - whichever they have completed).
+1. For logged-in/verified users, the homepage's existing score panel EXPANDS to also show additional submitted results (Net Worth, Budget, Retirement, Investment) alongside the current Financial Health Score - this is purely additive. The tree video backdrop, current score display, and overall homepage visual design and layout must NOT be removed, replaced, or restructured. Add new info to the existing panel, do not redesign it.
 2. Add a "Submit" button on every tool/quiz (Financial Health Score already has this via the diagnostic flow) that: (a) emails the user a confirmation of their results, and (b) saves the result to their account record so it populates the dashboard. This requires real backend persistence for Budget/Retirement/Investment/Net Worth, which were previously stateless by design - this is the scope expansion flagged in Round 14 item 10, now explicitly in scope.
 3. Dashboard also tracks advisor engagement (requested / matched / meeting taken - reuses the Status field already on Advisor Review Requests).
 4. **Tiered dashboard**: basic dashboard for free users, an advanced dashboard with additional analysis/functionality for MoneyMatters+ users.
@@ -326,3 +326,4 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 ### Noted for later, not this round
 11. Plan for a private Discord channel/space specifically for MoneyMatters+ members - future work, tied to real Stripe tier-gating.
 12. Traffic/marketing brainstorm (SEO, social, paid ads, other acquisition channels) - flagged as a tracked priority item, not part of this build round. See SITE_STRATEGY.md Next Steps.
+
