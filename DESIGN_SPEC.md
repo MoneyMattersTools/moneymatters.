@@ -351,3 +351,12 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 
 ### Explicitly deferred to a future round, not part of this one
 11. Goal-based onboarding (asking users their specific goals per category during the quiz, then showing the financial snapshot relative to those goals, guiding them toward advisor connect/tools/blog content) - good idea, real scope, needs its own dedicated round rather than folding into an already-large one.
+
+## 30. Round 18 Feedback (locked 2026-07-27)
+
+1. **Dashboard sizing**: enlarge to fill more of the right-side space, and match the visual weight/typography treatment of the score panel on the left (larger numbers, similar hierarchy) - currently reads smaller/lighter than its counterpart.
+2. **Remove the bottom "Want your full financial picture? The Net Worth Calculator..." line from the Tools page** - extra, not needed.
+3. **Footer**: increase spacing between the social media icons and the disclaimer text below - currently too cramped.
+4. **Advisor Connect hero image**: stretch full-width like the hero treatment on other pages - currently boxed/contained, inconsistent with the rest of the site.
+5. **New page variant: MoneyMatters+ for already-subscribed logged-in users.** Once a user is logged in AND has Plan=plus (the manual flag from Section 28), show a different version of the MoneyMatters+ page - not the sales pitch, but the actual full offering: advanced tools access, exclusive community links, exclusive advisor call booking, new tools as they ship, newsletter archive, etc. Build this now against the manual flag so it is ready before real Stripe billing exists.
+6. **About Us scroll redesign**: hold for a follow-up round - real story-arc/scroll-scrubbed treatment needed (likely GSAP ScrollTrigger, free CDN include, does not violate no-build-step architecture), copy to be drafted collaboratively in chat first per the new page-by-page writing process (see below), not handed to Claude Code as a generic brief.
