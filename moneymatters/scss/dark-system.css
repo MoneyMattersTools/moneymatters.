@@ -1137,8 +1137,6 @@ body main .hero {
    card background to read as a distinct slice. */
 .mini-donut { background: conic-gradient(var(--mm-green) 0% 60%, var(--mm-gold) 60% 85%, var(--mm-text-light-soft) 85% 100%); }
 .mini-donut::after { background: var(--mm-surface); }
-.feature-tools-footnote { color: var(--mm-text-light-soft); }
-.feature-tools-footnote a { color: var(--mm-green); }
 
 .plus-section { background: var(--mm-bg-deep) !important; }
 .plus-section h2 { color: var(--mm-text-light); }
@@ -1146,6 +1144,14 @@ body main .hero {
 .plus-card { background: var(--mm-surface) !important; color: var(--mm-text-light) !important; border: 1px solid var(--mm-surface-border); }
 .plus-card-period { color: var(--mm-text-light-soft) !important; }
 .plus-card-coffee { color: var(--mm-text-light-soft) !important; }
+
+.member-benefit-card { background: var(--mm-surface) !important; border-color: var(--mm-surface-border) !important; }
+.member-benefit-card:hover { border-color: var(--mm-green) !important; }
+.member-benefit-card h3 { color: var(--mm-text-light) !important; }
+.member-benefit-card p { color: var(--mm-text-light-muted) !important; }
+.member-benefit-cta { color: var(--mm-green) !important; }
+.member-benefit-soon-badge { background: var(--mm-gold-soft) !important; color: var(--mm-gold) !important; }
+.member-new-tools-note { color: var(--mm-text-light-muted) !important; }
 .plus-card-list li { color: var(--mm-text-light-muted) !important; }
 .plus-card .connect-btn.plus-card-cta { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
 .plus-card .connect-btn.plus-card-cta:hover { background: var(--mm-text-light) !important; }

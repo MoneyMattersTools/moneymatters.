@@ -106,6 +106,52 @@
                 </nav>
         </header>
         <main>
+            <section class="plus-member-view" id="plus-member-view" hidden>
+              <div class="hero-media hero-media--photo-only" aria-hidden="true">
+                <img class="hero-media-poster" src="images/hero-forest-spring.jpg" alt="" width="1440" height="760" loading="eager">
+                <div class="hero-media-scrim"></div>
+              </div>
+              <span class="kicker">You're a member</span>
+              <h1>Welcome back.</h1>
+              <p class="tools-hero-sub">Everything included with your MoneyMatters+ membership, in one place.</p>
+
+              <div class="member-benefits-grid">
+                <a class="member-benefit-card" href="individual-tools/advanced-tools/advanced-budget-tool.html">
+                  <h3>Advanced Budget Tool</h3>
+                  <p>Fixed vs. variable expense breakdowns and a personalized savings recommendation.</p>
+                  <span class="member-benefit-cta">Open tool <span aria-hidden="true">→</span></span>
+                </a>
+                <a class="member-benefit-card" href="individual-tools/advanced-tools/advanced-investment-tool.html">
+                  <h3>Advanced Investment Tool</h3>
+                  <p>Individual holdings by name and category, compared against your risk tolerance.</p>
+                  <span class="member-benefit-cta">Open tool <span aria-hidden="true">→</span></span>
+                </a>
+                <a class="member-benefit-card" href="https://discord.com/invite/DCWFBPxh" target="_blank" rel="noopener">
+                  <h3>Member community</h3>
+                  <p>The private space to trade notes with other members working through the same questions.</p>
+                  <span class="member-benefit-cta">Join on Discord <span aria-hidden="true">→</span></span>
+                </a>
+                <a class="member-benefit-card" href="contact.html">
+                  <h3>Priority advisor call</h3>
+                  <p>Request time directly with our team to get matched and book a call, ahead of the general queue.</p>
+                  <span class="member-benefit-cta">Request a call <span aria-hidden="true">→</span></span>
+                </a>
+                <div class="member-benefit-card member-benefit-card--soon">
+                  <span class="member-benefit-soon-badge">Coming soon</span>
+                  <h3>Advisor Q&amp;A sessions</h3>
+                  <p>Live group sessions with vetted advisors. Building this out now.</p>
+                </div>
+                <div class="member-benefit-card member-benefit-card--soon">
+                  <span class="member-benefit-soon-badge">Coming soon</span>
+                  <h3>Newsletter archive</h3>
+                  <p>Every past issue, searchable. Not live yet.</p>
+                </div>
+              </div>
+
+              <p class="member-new-tools-note">Every new tool we ship is included automatically, no extra charge and nothing to re-subscribe to.</p>
+            </section>
+
+            <div id="plus-sales-view">
             <section class="tools-hero fade-up">
               <div class="hero-media hero-media--photo-only" aria-hidden="true">
                 <!-- Photo by gang liang, via Pexels (free license, pexels.com/photo/37064882) -->
@@ -284,6 +330,7 @@
                 <a href="index.html?start=health-score" class="cta-button cta-button--ghost">Check your Financial Health Score first</a>
               </div>
             </section>
+            </div>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
               <div class="newsletter-cta__inner">
@@ -338,6 +385,7 @@
         <script src="scripts/onboarding-gate.js"></script>
         <script src="scripts/sign-in.js"></script>
         <script src="scripts/fee-slider.js"></script>
+        <script src="scripts/moneymatters-plus-gate.js"></script>
     </body>
 
 </html>
