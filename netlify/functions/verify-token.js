@@ -1,4 +1,4 @@
-const { findByToken, findByEmail, createRecord, updateRecord } = require('./lib/airtable');
+const { findByToken, findByEmail, createRecord, updateRecord, countAll } = require('./lib/airtable');
 const { computeScore, determineBand } = require('./lib/scoring');
 const { signSession, buildSetCookie } = require('./lib/session');
 
@@ -57,6 +57,8 @@ exports.handler = async (event) => {
     const email = fields.Email;
     const nowIso = new Date().toISOString();
     let score, band, breakdown;
+    let isNewAccount = false;
+    let communityCount = null;
 
     if (fields.Purpose === 'returning_login') {
       // A returning-user token never carries Pending Answers — there's
@@ -103,6 +105,14 @@ exports.handler = async (event) => {
           Source: 'Health Score Diagnostic',
           'Last Verified At': nowIso,
         });
+        isNewAccount = true;
+        // Best-effort — the community counter is a nice-to-have popup, not
+        // something that should fail the whole verification if it errors.
+        try {
+          communityCount = await countAll('Users');
+        } catch (countErr) {
+          console.error('verify-token community count error:', countErr);
+        }
       }
     }
 
@@ -110,7 +120,7 @@ exports.handler = async (event) => {
 
     return json(
       200,
-      { ok: true, score, band, breakdown },
+      { ok: true, score, band, breakdown, isNewAccount, communityCount },
       { 'Set-Cookie': buildSetCookie(cookieValue) }
     );
   } catch (err) {

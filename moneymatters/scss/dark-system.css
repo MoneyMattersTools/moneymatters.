@@ -251,6 +251,12 @@ html.mm-gate-open, html.mm-gate-open body { overflow: hidden !important; }
     margin: 6px 0 24px;
 }
 
+/* First-account-created welcome popup (§29.7) — reuses .mm-gate-modal
+   chrome, just its own copy styling. */
+.mm-welcome-modal h2 { margin-bottom: 12px; }
+.mm-welcome-sub { font-family: var(--mm-serif); font-style: italic; font-size: 17px; color: var(--mm-green); margin: 0 0 18px; }
+.mm-welcome-count { font-family: var(--mm-sans); font-size: 15.5px; color: var(--mm-text-light-muted); margin: 0; line-height: 1.6; }
+
 .mm-gate-skip {
     display: block;
     margin: 20px auto 0;
@@ -380,13 +386,18 @@ body > footer, body footer { background: var(--mm-bg-deep) !important; }
 @media (prefers-reduced-motion: reduce) { .reveal-scale { opacity: 1; transform: none; transition: none; } }
 
 /* Staggered children — pure CSS, no JS needed beyond the existing
-   IntersectionObserver adding .is-visible to the parent. */
+   IntersectionObserver adding .is-visible to the parent (§29.2: first
+   real usage, on About Us — completes the base/visible state for direct
+   children, which wasn't wired up until now). */
+.reveal-stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
 .reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.02s; }
 .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.10s; }
 .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.18s; }
 .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.26s; }
 .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.34s; }
 .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.42s; }
+@media (prefers-reduced-motion: reduce) { .reveal-stagger > * { opacity: 1; transform: none; transition: none; } }
 
 /* Magnetic hover — transform nudges toward cursor position, set via
    --mx/--my custom properties from cinematic-motion.js. Falls back to
@@ -555,7 +566,7 @@ body main .hero {
 #diagnostic-hero .quiz-next-hint { color: var(--mm-text-light-soft) !important; }
 #diagnostic-hero .next-steps a { color: var(--mm-text-light) !important; border-bottom-color: var(--mm-gold) !important; }
 #diagnostic-hero .next-steps a:hover { color: var(--mm-green) !important; border-color: var(--mm-green) !important; }
-#diagnostic-hero .mm-dashboard { border-top-color: var(--mm-surface-border) !important; }
+#diagnostic-hero .mm-dashboard { border-left-color: var(--mm-surface-border) !important; border-top-color: var(--mm-surface-border) !important; }
 #diagnostic-hero .mm-dashboard-heading { color: var(--mm-text-light) !important; }
 #diagnostic-hero .mm-dashboard-card { background: var(--mm-surface) !important; border-color: var(--mm-surface-border) !important; }
 #diagnostic-hero .mm-dashboard-card-label { color: var(--mm-text-light-soft) !important; }
@@ -1016,6 +1027,9 @@ body main .hero {
 .persuasion-tile--dark h3 { color: var(--mm-text-light); }
 .persuasion-tile--dark p { color: var(--mm-text-light-muted); }
 .persuasion-reinforcement { background: var(--mm-green-soft); color: var(--mm-text-light); }
+.persuasion-tile sup a { color: var(--mm-green); }
+.persuasion-citation { color: var(--mm-text-light-soft); }
+.persuasion-citation a { color: var(--mm-text-light-soft); }
 .bento-tile--dark { background: var(--mm-bg-deep); border-color: var(--mm-surface-border); }
 .bento-tile--dark h3 { color: var(--mm-text-light); }
 .bento-tile--dark p { color: var(--mm-text-light-muted); }
@@ -1131,6 +1145,7 @@ body main .hero {
 .plus-sub { color: var(--mm-text-light-muted); }
 .plus-card { background: var(--mm-surface) !important; color: var(--mm-text-light) !important; border: 1px solid var(--mm-surface-border); }
 .plus-card-period { color: var(--mm-text-light-soft) !important; }
+.plus-card-coffee { color: var(--mm-text-light-soft) !important; }
 .plus-card-list li { color: var(--mm-text-light-muted) !important; }
 .plus-card .connect-btn.plus-card-cta { background: var(--mm-green) !important; color: var(--mm-bg-deep) !important; }
 .plus-card .connect-btn.plus-card-cta:hover { background: var(--mm-text-light) !important; }

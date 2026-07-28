@@ -102,5 +102,53 @@
     emailInput.focus();
   }
 
-  trigger.addEventListener('click', openModal);
+  // §29.3: once signed in, the nav should say who you are, not just offer
+  // a generic "Sign In" link again — also the first real groundwork for
+  // distinguishing MoneyMatters+ members later.
+  function shortEmail(email) {
+    return email.length > 22 ? email.slice(0, 19) + '…' : email;
+  }
+
+  function toggleAccountMenu(email) {
+    var existing = document.getElementById('mm-account-menu');
+    if (existing) {
+      existing.remove();
+      return;
+    }
+    var menu = document.createElement('div');
+    menu.className = 'mm-account-menu';
+    menu.id = 'mm-account-menu';
+    menu.innerHTML =
+      '<p class="mm-account-menu-email">Signed in as ' + email + '</p>' +
+      '<button type="button" class="mm-account-menu-signout" id="mm-account-signout">Sign out</button>';
+    trigger.insertAdjacentElement('afterend', menu);
+
+    document.getElementById('mm-account-signout').addEventListener('click', function () {
+      fetch('/api/sign-out', { method: 'POST' })
+        .catch(function () {})
+        .then(function () { window.location.reload(); });
+    });
+
+    function onDocClick(e) {
+      if (menu.contains(e.target) || e.target === trigger) return;
+      menu.remove();
+      document.removeEventListener('click', onDocClick);
+    }
+    setTimeout(function () { document.addEventListener('click', onDocClick); }, 0);
+  }
+
+  fetch('/api/session')
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (data && data.loggedIn && data.email) {
+        trigger.textContent = shortEmail(data.email);
+        trigger.classList.add('nav-sign-in-link--account');
+        trigger.addEventListener('click', function () { toggleAccountMenu(data.email); });
+      } else {
+        trigger.addEventListener('click', openModal);
+      }
+    })
+    .catch(function () {
+      trigger.addEventListener('click', openModal);
+    });
 })();

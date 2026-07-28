@@ -56,6 +56,10 @@ function buildSetCookie(value) {
   return `${COOKIE_NAME}=${encodeURIComponent(value)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${MAX_AGE_SECONDS}`;
 }
 
+function buildClearCookie() {
+  return `${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`;
+}
+
 function readSessionFromEvent(event) {
   const cookieHeader = (event.headers && (event.headers.cookie || event.headers.Cookie)) || '';
   const cookies = parseCookies(cookieHeader);
@@ -77,6 +81,7 @@ module.exports = {
   signSession,
   verifySessionValue,
   buildSetCookie,
+  buildClearCookie,
   readSessionFromEvent,
   readSessionFromRequest,
 };

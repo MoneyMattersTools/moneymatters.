@@ -124,10 +124,34 @@ async function findAllByFormula(table, formula) {
   return data.records || [];
 }
 
+// §29.7: paginated total record count for the first-account-created
+// popup's community counter. Airtable's list endpoint has no dedicated
+// count operation, so this pages through with only the Email field
+// requested (keeps payload small) and a safety cap so a malformed
+// response can't loop forever.
+const COUNT_ALL_MAX_PAGES = 50;
+
+async function countAll(table) {
+  let total = 0;
+  let offset;
+  let pages = 0;
+  do {
+    const qs = new URLSearchParams({ pageSize: '100' });
+    qs.append('fields[]', 'Email');
+    if (offset) qs.set('offset', offset);
+    const data = await airtableFetch(table, `?${qs.toString()}`);
+    total += data.records ? data.records.length : 0;
+    offset = data.offset;
+    pages += 1;
+  } while (offset && pages < COUNT_ALL_MAX_PAGES);
+  return total;
+}
+
 module.exports = {
   findOneByFormula,
   findLatestByFormula,
   findAllByFormula,
+  countAll,
   findByEmail,
   findByToken,
   findActiveTokenByEmail,

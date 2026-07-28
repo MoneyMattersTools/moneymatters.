@@ -377,6 +377,36 @@
     { key: 'investment', label: 'Investment', href: 'individual-tools/basic-tools/basic-investment-tool%20.html' },
   ];
 
+  // §29.7: one-time popup on real account creation (not on every login),
+  // framed around a running community counter — doubles as a lightweight
+  // growth-tracking proxy. Reuses .mm-gate-* modal chrome so it matches
+  // the sign-in/onboarding modals exactly, no new chrome needed.
+  function showFirstAccountPopup(count) {
+    var overlay = document.createElement('div');
+    overlay.className = 'mm-gate-overlay';
+    var countText = typeof count === 'number' && count > 0
+      ? 'You’re one of ' + count.toLocaleString('en-US') + ' people building this with us so far.'
+      : 'Glad to have you here.';
+    overlay.innerHTML =
+      '<div class="mm-gate-modal mm-welcome-modal" role="dialog" aria-modal="true" aria-labelledby="mm-welcome-heading" tabindex="-1">' +
+        '<h2 id="mm-welcome-heading">Welcome to MoneyMatters.</h2>' +
+        '<p class="mm-welcome-sub">Building the MoneyMatters community, one story at a time.</p>' +
+        '<p class="mm-welcome-count">' + countText + '</p>' +
+        '<button type="button" class="mm-gate-skip" id="mm-welcome-close">Continue</button>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    document.documentElement.classList.add('mm-gate-open');
+
+    function close() {
+      document.documentElement.classList.remove('mm-gate-open');
+      overlay.remove();
+    }
+    document.getElementById('mm-welcome-close').addEventListener('click', close);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) close();
+    });
+  }
+
   function renderDashboard(data) {
     var dashEl = el('mm-dashboard');
     if (!dashEl) return;
@@ -481,6 +511,9 @@
                 return;
               }
               renderResults(result.data.score, result.data.band);
+              if (result.data.isNewAccount) {
+                showFirstAccountPopup(result.data.communityCount);
+              }
               // The dashboard (submitted tool results, plan, advisor
               // status) needs a live Users-table read that /api/verify-token
               // doesn't return — fetch it separately so the score reveal
