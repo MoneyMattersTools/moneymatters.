@@ -7,9 +7,9 @@ Why: primary entry point - leads with the diagnostic choice per the core funnel 
 Changes requested: headline shortened (Round 8). "See what's driving this" link removed - was dead (Round 18). Financial Snapshot dashboard added beside score for logged-in users (Round 16/18), sized/styled to match score panel (Round 18).
 
 ## About Us (aboutus.html)
-Current: static sections - mission, cost comparison, differentiator cards, money-flow diagram, "How it works," principles grid, FAQ.
+Current: 5-beat scroll story (The Problem / The Insight / The Solution / The Proof / The Invitation) with a scroll-scrubbed signature-dial visual via GSAP ScrollTrigger (Section 31). The old static sections (mission hero, cost comparison, differentiator cards, money-flow diagram, "How it works," principles grid, FAQ) are folded into Beat 4 ("The Proof") as tightened scroll sub-sections rather than cut - money-flow diagram, vetting bento-grid, principles grid, and FAQ all still exist there, just recontextualized.
 Why: trust-building page, most direct mission statement on the site.
-Changes requested: leverage framing added explicitly, duplicate sentence/word-repetition fixed (Round "tone review," Section 25). Being fully restructured into a 5-beat scroll story (Section 31) - this supersedes the static-section version.
+Changes requested: leverage framing added explicitly, duplicate sentence/word-repetition fixed (Round "tone review," Section 25). Fully restructured into the 5-beat scroll story per Section 31 - shipped.
 
 ## Tools (tools.html)
 Current: diagnostic CTA cards up top, 3 native basic tools grid, Advanced Tools section (locked, Round 16), MoneyMatters+ pricing card.
