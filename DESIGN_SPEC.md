@@ -327,3 +327,27 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 11. Plan for a private Discord channel/space specifically for MoneyMatters+ members - future work, tied to real Stripe tier-gating.
 12. Traffic/marketing brainstorm (SEO, social, paid ads, other acquisition channels) - flagged as a tracked priority item, not part of this build round. See SITE_STRATEGY.md Next Steps.
 
+
+## 29. Round 17 Feedback (locked 2026-07-27)
+
+1. **Sample advisor profile cards**: center the row/group on the page - currently left-aligned.
+2. **About Us - scroll-to-reveal storytelling format**: restructure so content reveals progressively as the user scrolls, telling the mission as a story rather than static sections all visible at once. Real creative latitude here within the existing cinematic-page treatment (Section 13/14).
+3. **Logged-in state should show the user's name/email in the nav**, not just a generic "Sign In" link once authenticated - important groundwork for distinguishing MoneyMatters+ members later.
+4. **Testing methodology improvement**: create one persistent real test account (not a fresh disposable inbox each time) to reuse across future verification passes - more efficient than re-registering every round.
+5. **Dashboard layout**: move the financial snapshot info to the right of the score (not below/separate), in larger lettering.
+6. **Mobile-app portability discipline reminder**: continue keeping all business logic server-side in Netlify Functions, never in frontend JS - this remains a hard constraint as more features get added (ref Section 11).
+7. **First-account-created popup**: after a user verifies their email and creates their account for the first time (not on every login), show a one-time popup adding them to a running "community" counter framed around building something new together (e.g. "Building the MoneyMatters community, one story at a time" - refine wording). This also serves as a lightweight growth-tracking proxy.
+8. **Early-user incentive (operational, not a build item)**: plan to manually grant the first N signups free MoneyMatters+ access for a limited time (via the existing manual Plan flag from Section 28) in exchange for product feedback. No code change needed - this uses the tier flag already being built.
+9. **MoneyMatters+ persuasion copy**: add a coffee-cost comparison and a real, cited statistic on the cost of poor financial decisions/opportunity cost of inaction - do not invent numbers, source and cite something real and defensible.
+10. **Google Analytics (GA4)**: add the following tag to the <head> of every page sitewide:
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZXJ5S59FQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-LZXJ5S59FQ");
+</script>
+
+### Explicitly deferred to a future round, not part of this one
+11. Goal-based onboarding (asking users their specific goals per category during the quiz, then showing the financial snapshot relative to those goals, guiding them toward advisor connect/tools/blog content) - good idea, real scope, needs its own dedicated round rather than folding into an already-large one.
