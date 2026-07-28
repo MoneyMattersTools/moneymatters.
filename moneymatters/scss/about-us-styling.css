@@ -964,4 +964,55 @@ footer nav {
   .about-hero h1 { font-size: 36px; }
   .about-section h2 { font-size: 26px; }
 }
+/* =====================================================
+   About Us — cinematic scroll story (DESIGN_SPEC.md §31)
+   Sticky signature-dial visual + 5 narrative beats. Layout only
+   here; dial/text colors tuned for the dark theme live in
+   dark-system.css, same split as the rest of the site.
+   ===================================================== */
+.scroll-story {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 60px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 90px 6% 40px;
+  align-items: start;
+}
+.story-visual-wrap { position: sticky; top: 110px; }
+.story-visual { width: 100%; max-width: 380px; margin: 0 auto; transition: filter 0.3s ease; }
+.story-visual svg { width: 100%; height: auto; display: block; }
+.story-beats { display: flex; flex-direction: column; gap: 130px; padding: 20px 0 60px; }
+.story-beat { max-width: 520px; }
+.story-beat .kicker { display: inline-block; }
+.story-beat h1, .story-beat h2 {
+  font-family: var(--mm-serif);
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 16px;
+}
+.story-beat > p { font-family: var(--mm-sans); font-size: 17px; line-height: 1.65; margin: 0; }
+.story-beat--wide { max-width: none; }
+.story-cta-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
+
+.story-sub { margin-top: 56px; }
+.story-sub:first-of-type { margin-top: 36px; }
+.story-sub h3 {
+  font-family: var(--mm-serif);
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 0 0 22px;
+}
+
+@media (max-width: 900px) {
+  .scroll-story { grid-template-columns: 1fr; gap: 40px; padding: 60px 6% 20px; }
+  .story-visual-wrap { position: static; }
+  .story-visual { max-width: 220px; }
+  .story-beats { gap: 80px; padding: 0 0 40px; }
+  .story-beat, .story-beat--wide { max-width: none; }
+}
+
 /*# sourceMappingURL=about-us-styling.css.map */

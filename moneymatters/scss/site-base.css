@@ -883,20 +883,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     color: var(--mm-text-soft);
 }
 
-/* --- About Us: trust card + diagnostic CTA banner --- */
-.trust-block {
-    max-width: 900px;
-    margin: 0 auto;
-    background: white;
-    border: 1px solid var(--mm-border);
-    border-left: 4px solid var(--mm-gold);
-    border-radius: 16px;
-    padding: 40px 44px;
-    box-shadow: var(--mm-shadow-sm);
-}
-.trust-block h2 { margin-top: 0 !important; }
-.trust-block p { margin-bottom: 0 !important; }
-
+/* --- About Us: diagnostic CTA banner --- */
 .about-diagnostic-cta {
     max-width: 900px;
     margin: 0 auto 20px;
@@ -981,70 +968,9 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 
 @media (max-width: 640px) {
     .about-diagnostic-cta { flex-direction: column; text-align: center; }
-    .trust-block { padding: 32px 26px; }
 }
 
-/* =====================================================
-   About / Tools / Blog full visual redesign (2026-07-20)
-   ===================================================== */
-
-/* --- About: hero v2 with hero-icon badge --- */
-.about-hero-v2 {
-    position: relative;
-    padding: 100px 8% 60px;
-    display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
-    gap: 40px;
-    align-items: center;
-    overflow: hidden;
-    background:
-        radial-gradient(ellipse 700px 500px at 15% 20%, rgba(98, 169, 116, 0.14), transparent 55%),
-        radial-gradient(ellipse 600px 400px at 90% 70%, rgba(196, 154, 71, 0.10), transparent 55%);
-}
-.about-hero-v2-copy { position: relative; z-index: 1; text-align: left; }
-.about-hero-v2-copy h1 {
-    font-family: var(--mm-serif);
-    font-size: clamp(40px, 5.2vw, 64px);
-    margin: 0 0 16px;
-    color: var(--mm-charcoal);
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-}
-.about-hero-v2-copy h1 .h-italic-accent { font-variation-settings: 'opsz' 144; }
-.about-hero-v2-copy .about-hero-sub {
-    font-family: var(--mm-sans);
-    font-size: clamp(17px, 1.3vw, 19px);
-    color: var(--mm-text-muted);
-    max-width: 520px;
-    margin: 0;
-    line-height: 1.6;
-}
-.about-hero-v2-visual { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; }
-.hero-icon-badge {
-    width: 220px; height: 220px;
-    border-radius: 50%;
-    background: var(--mm-cream-warm);
-    border: 1px solid rgba(98, 169, 116, 0.25);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: var(--mm-shadow-lg);
-    animation: mm-badge-float 7s ease-in-out infinite;
-}
-.hero-icon-badge img { width: 62%; height: 62%; object-fit: contain; mix-blend-mode: multiply; }
-@keyframes mm-badge-float {
-    0%, 100% { transform: translateY(0) rotate(-2deg); }
-    50% { transform: translateY(-14px) rotate(2deg); }
-}
-@media (prefers-reduced-motion: reduce) { .hero-icon-badge { animation: none; } }
-@media (max-width: 900px) {
-    .about-hero-v2 { grid-template-columns: 1fr; text-align: center; padding: 70px 6% 40px; }
-    .about-hero-v2-copy { text-align: center; }
-    .about-hero-v2-copy .about-hero-sub { margin: 0 auto; }
-    .hero-icon-badge { width: 140px; height: 140px; }
-}
-
-/* --- About: "why we exist" cost comparison viz --- */
-.why-split { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 48px; align-items: center; }
+/* --- About/MoneyMatters+: cost comparison viz (reused by the fee-slider) --- */
 .cost-compare { display: flex; flex-direction: column; gap: 22px; background: var(--mm-cream-warm); border: 1px solid var(--mm-border); border-radius: 20px; padding: 32px; }
 .cost-compare-row { display: flex; flex-direction: column; gap: 8px; }
 .cost-compare-label { font-family: var(--mm-sans-display); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mm-text-soft); }
@@ -1054,7 +980,6 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .cost-compare-fill--min { width: 8%; background: var(--mm-green); }
 .cost-compare-value { font-family: var(--mm-sans); font-size: 14px; color: var(--mm-text); font-weight: 600; }
 .cost-compare-note { font-family: var(--mm-sans); font-style: italic; font-size: 15px; color: var(--mm-text-muted); margin: 18px 0 0; }
-@media (max-width: 900px) { .why-split { grid-template-columns: 1fr; } }
 
 /* --- MoneyMatters+: persuasion cluster (DESIGN_SPEC.md §23.2) — several
    small distinct angles instead of one dominant dollar chart. --- */
@@ -1127,11 +1052,11 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .bento-tile:hover { transform: translateY(-5px); border-color: var(--mm-green); box-shadow: var(--mm-shadow-md); }
-.bento-tile h3 { font-family: var(--mm-serif); font-size: 22px; font-weight: 600; margin: 0 0 8px; color: var(--mm-charcoal); }
+.bento-tile h3, .bento-tile h4 { font-family: var(--mm-serif); font-size: 22px; font-weight: 600; margin: 0 0 8px; color: var(--mm-charcoal); }
 .bento-tile p { font-family: var(--mm-sans); font-size: 16px; color: var(--mm-text-muted); margin: 0; line-height: 1.6; }
 .bento-tile--wide { grid-column: 1 / 3; grid-row: 1; display: flex; flex-direction: column; justify-content: center; }
 .bento-tile--dark { background: var(--mm-charcoal); border-color: var(--mm-charcoal); }
-.bento-tile--dark h3 { color: var(--mm-cream); }
+.bento-tile--dark h3, .bento-tile--dark h4 { color: var(--mm-cream); }
 .bento-tile--dark p { color: rgba(250, 250, 247, 0.75); }
 .bento-tile:nth-child(3) { grid-column: 1; grid-row: 2; } /* "Free to start" tile */
 .bento-tile--image { grid-column: 3; grid-row: 1 / 3; padding: 0; display: flex; flex-direction: column; }
@@ -1144,7 +1069,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     background: linear-gradient(180deg, transparent, rgba(15, 27, 21, 0.82) 60%);
     height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
 }
-.bento-tile-caption--on-image h3, .bento-tile-caption--on-image p { color: var(--mm-cream); }
+.bento-tile-caption--on-image h3, .bento-tile-caption--on-image h4, .bento-tile-caption--on-image p { color: var(--mm-cream); }
 @media (max-width: 900px) {
     .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
     .bento-tile--wide, .bento-tile:nth-child(3), .bento-tile--image, .bento-tile--tree { grid-column: 1; grid-row: auto; }
@@ -1153,7 +1078,6 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 }
 
 /* --- About: "how we make money" flow diagram --- */
-.trust-block--v2 { padding-bottom: 44px; }
 .money-flow { margin-top: 32px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .money-flow-node { background: var(--mm-cream-warm); border: 1px solid var(--mm-border); border-radius: 14px; padding: 16px 20px; text-align: center; flex: 1; min-width: 130px; }
 .money-flow-label { display: block; font-family: var(--mm-sans-display); font-weight: 700; font-size: 15px; color: var(--mm-charcoal); }
@@ -1177,7 +1101,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .timeline.is-filled .timeline-track-fill { width: 100%; }
 .timeline-step { position: relative; z-index: 1; text-align: center; padding: 0 12px; }
 .timeline-step .step-number { position: relative; z-index: 1; margin: 0 auto 14px; }
-.timeline-step h3 { font-size: 19px; margin-bottom: 6px; font-family: var(--mm-serif); font-weight: 600; color: var(--mm-charcoal); }
+.timeline-step h3, .timeline-step h4 { font-size: 19px; margin-bottom: 6px; font-family: var(--mm-serif); font-weight: 600; color: var(--mm-charcoal); }
 .timeline-step p { font-size: 16px; color: var(--mm-text-muted); margin: 0; }
 @media (max-width: 760px) {
     .timeline { grid-template-columns: 1fr; gap: 34px; }
@@ -1401,7 +1325,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     display: inline-block; font-family: var(--mm-sans); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
     color: var(--mm-gold-ink); background: var(--mm-gold-soft); padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
 }
-.principle-card h3 { font-family: var(--mm-serif); font-size: 17px; font-weight: 600; margin: 0 0 8px; color: var(--mm-charcoal); }
+.principle-card h3, .principle-card h4 { font-family: var(--mm-serif); font-size: 17px; font-weight: 600; margin: 0 0 8px; color: var(--mm-charcoal); }
 .principle-card p { font-family: var(--mm-sans); font-size: 13.5px; color: var(--mm-text-muted); margin: 0; line-height: 1.55; }
 @media (max-width: 900px) { .principles-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .principles-grid { grid-template-columns: 1fr; } }

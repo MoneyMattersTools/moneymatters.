@@ -189,6 +189,44 @@ body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { 
     .mm-sig-ring-fill { stroke-dashoffset: 0 !important; }
 }
 
+/* =====================================================
+   About Us scroll-story dial (§31) — the narrative's visual
+   through-line, driven continuously by scroll progress via
+   scripts/about-scroll-story.js. Distinct classes from the
+   sitewide fixed .mm-signature-motif watermark above (this one
+   is a real embedded, sticky-positioned primary visual, not an
+   ambient corner decoration), same visual language.
+   ===================================================== */
+.story-sig-ring-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 3; }
+.story-sig-ring-fill {
+    fill: none;
+    stroke: var(--mm-green);
+    stroke-width: 4;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 300px 300px;
+    opacity: 0.35;
+    transition: opacity 0.4s ease;
+}
+.story-sig-ring-outer { fill: none; stroke: var(--mm-surface-border); stroke-width: 1; opacity: 0.5; }
+.story-sig-gold-accent {
+    fill: none;
+    stroke: var(--mm-gold);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 9;
+    opacity: 0;
+    transform: rotate(-90deg);
+    transform-origin: 300px 300px;
+}
+.story-sig-ticks { transform-origin: 300px 300px; }
+.story-sig-tick { stroke: var(--mm-text-light-soft); stroke-width: 1.5; opacity: 0.35; }
+.story-sig-line-path { fill: none; stroke: var(--mm-green); stroke-width: 3; stroke-linecap: round; }
+.story-sig-dot { fill: var(--mm-gold); opacity: 0; transition: opacity 0.4s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+    .story-sig-ticks { transform: none !important; }
+}
+
 /* Eyebrow label (§27.1) — site-base.css's --mm-gold-ink is tuned for
    legibility on the light cream background; on this site's actual dark
    theme, the brighter --mm-gold reads better and matches every other gold
@@ -984,20 +1022,6 @@ body main .hero {
 /* =====================================================
    About Us page components
    ===================================================== */
-.about-hero-v2 {
-    background:
-        radial-gradient(ellipse 800px 600px at 15% 20%, rgba(52, 211, 153, 0.16), transparent 55%),
-        radial-gradient(ellipse 700px 500px at 90% 70%, rgba(227, 176, 75, 0.10), transparent 55%),
-        var(--mm-bg-deep) !important;
-}
-.about-hero-v2-copy h1 { color: var(--mm-text-light); }
-.about-hero-v2-copy h1 .h-italic-accent { color: var(--mm-green); }
-.about-hero-v2-copy .about-hero-sub { color: var(--mm-text-light-muted); }
-/* hero-icon.png has an opaque cream background baked in — no CSS filter
-   makes that transparent, so it stays a light badge chip (a deliberate
-   bright accent against the dark hero, not a leftover light background). */
-.hero-icon-badge { background: var(--mm-cream-warm); border: 1px solid var(--mm-surface-border); box-shadow: 0 0 60px var(--mm-glow), var(--mm-shadow-lg); }
-
 .about-diagnostic-cta { background: var(--mm-green-soft); border: 1px solid rgba(52, 211, 153, 0.25); }
 .about-diagnostic-cta p { color: var(--mm-text-light); }
 .about-diagnostic-cta a { background: var(--mm-green); color: var(--mm-bg-deep); }
@@ -1013,7 +1037,7 @@ body main .hero {
 
 .bento-tile { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
 .bento-tile:hover { border-color: var(--mm-green); }
-.bento-tile h3 { color: var(--mm-text-light); }
+.bento-tile h3, .bento-tile h4 { color: var(--mm-text-light); }
 .bento-tile p { color: var(--mm-text-light-muted); }
 
 .persuasion-tile { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
@@ -1031,7 +1055,7 @@ body main .hero {
 .persuasion-citation { color: var(--mm-text-light-soft); }
 .persuasion-citation a { color: var(--mm-text-light-soft); }
 .bento-tile--dark { background: var(--mm-bg-deep); border-color: var(--mm-surface-border); }
-.bento-tile--dark h3 { color: var(--mm-text-light); }
+.bento-tile--dark h3, .bento-tile--dark h4 { color: var(--mm-text-light); }
 .bento-tile--dark p { color: var(--mm-text-light-muted); }
 /* The handshake source image has a near-white background baked in —
    darkening it with a filter alone just produces flat gray, not a moody
@@ -1053,9 +1077,6 @@ body main .hero {
    it genuinely deepens the color and reads as intentional. */
 .bento-tile--tree img { filter: brightness(0.55) saturate(1.2); }
 
-.trust-block { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); border-left: 4px solid var(--mm-gold); }
-.trust-block h2 { color: var(--mm-text-light) !important; }
-.trust-block p { color: var(--mm-text-light-muted) !important; }
 .money-flow-node { background: var(--mm-bg-deep); border: 1px solid var(--mm-surface-border); }
 .money-flow-label { color: var(--mm-text-light); }
 .money-flow-sub { color: var(--mm-text-light-soft); }
@@ -1063,7 +1084,7 @@ body main .hero {
 .money-flow-arrow-label { color: var(--mm-text-light-soft); }
 
 .timeline-track { background: var(--mm-surface-border); }
-.timeline-step h3 { color: var(--mm-text-light); }
+.timeline-step h3, .timeline-step h4 { color: var(--mm-text-light); }
 .timeline-step p { color: var(--mm-text-light-muted); }
 /* Base circular-badge shape lives only in about-us-styling.css (page-scoped),
    which the homepage doesn't load — restated here so .timeline/.step-number
@@ -1208,7 +1229,7 @@ body main .hero {
 .principle-card { background: var(--mm-surface) !important; border: 1px solid var(--mm-surface-border) !important; }
 .principle-card:hover { border-color: var(--mm-green) !important; }
 .principle-card-tag { background: var(--mm-gold-soft); color: var(--mm-gold); }
-.principle-card h3 { color: var(--mm-text-light); }
+.principle-card h3, .principle-card h4 { color: var(--mm-text-light); }
 .principle-card p { color: var(--mm-text-light-muted); }
 
 .advisor-preview { background: var(--mm-bg) !important; }

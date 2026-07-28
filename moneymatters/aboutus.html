@@ -82,197 +82,192 @@
                 </nav>
         </header>
         <main>
-            <section class="about-hero-v2 fade-up">
-              <div class="hero-media hero-media--photo-only" aria-hidden="true">
-                <img class="hero-media-poster" src="images/hero-misty-forest.jpg" alt="" width="1280" height="688" loading="eager">
-                <div class="hero-media-scrim"></div>
-              </div>
-              <div class="about-hero-v2-copy">
-                <span class="kicker">The mission</span>
-                <h1>Serious financial tools, without the <em class="h-italic-accent">gatekeeping</em>.</h1>
-                <p class="about-hero-sub">Most of this industry makes money by keeping you confused. We built the opposite: a free diagnostic, transparent tools, and advisors vetted before they ever see your name.</p>
-              </div>
-              <div class="about-hero-v2-visual" aria-hidden="true">
-                <div class="hero-icon-badge">
-                  <img src="images/hero-icon.png" alt="">
+            <div class="scroll-story" id="scroll-story">
+              <div class="story-visual-wrap">
+                <div class="story-visual" id="story-visual" aria-hidden="true">
+                  <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+                    <g class="story-sig-ticks" id="story-sig-ticks"></g>
+                    <circle class="story-sig-ring-track" cx="300" cy="300" r="230"/>
+                    <circle class="story-sig-ring-fill" id="story-sig-ring-fill" cx="300" cy="300" r="230"/>
+                    <circle class="story-sig-ring-outer" cx="300" cy="300" r="270"/>
+                    <circle class="story-sig-gold-accent" id="story-sig-gold-accent" cx="300" cy="300" r="250"/>
+                    <path class="story-sig-line-path" id="story-sig-line-path" d="M 130 380 Q 190 330 240 300 T 360 220 Q 410 190 460 130"/>
+                    <circle class="story-sig-dot" cx="240" cy="300" r="5"/>
+                    <circle class="story-sig-dot" cx="360" cy="220" r="5"/>
+                    <circle class="story-sig-dot" cx="460" cy="130" r="7"/>
+                  </svg>
                 </div>
               </div>
-            </section>
 
-            <section class="about-diagnostic-cta fade-up">
-              <p>Haven't checked your Financial Health Score yet?</p>
-              <a href="index.html?start=health-score">Start here <span aria-hidden="true">→</span></a>
-            </section>
+              <div class="story-beats">
+                <section class="story-beat fade-up" data-beat="1">
+                  <span class="kicker">The problem</span>
+                  <h1>Most of this industry makes money by keeping you confused.</h1>
+                  <p>Financial advice has a cost problem hiding behind a complexity problem. Firms profit whether their advice helps you or not. The people who need clarity most are usually told they need more money before they can get it.</p>
+                </section>
 
-            <section class="about-section fade-up">
-              <div class="why-split">
-                <div class="why-split-text">
-                  <h2>Why we exist</h2>
-                  <p>Financial planning shouldn't require a six-figure salary or a finance degree.</p>
-                  <p>Professional planners charge hundreds to thousands per session. Most online tools oversimplify your situation, hide their math, or harvest your data to push products you didn't ask for.</p>
-                  <p>MoneyMatters was built to fix that: honest, transparent tools for people who want to understand and control their own money.</p>
-                </div>
-                <div class="why-split-viz" aria-hidden="true">
-                  <div class="cost-compare reveal-stagger">
-                    <div class="cost-compare-row">
-                      <span class="cost-compare-label">Traditional planner</span>
-                      <div class="cost-compare-track"><div class="cost-compare-fill cost-compare-fill--full"></div></div>
-                      <span class="cost-compare-value">$100s&ndash;$1,000s / session</span>
+                <section class="story-beat fade-up" data-beat="2">
+                  <span class="kicker">The insight</span>
+                  <h2>You don't need a finance degree. You need to see clearly.</h2>
+                  <p>Understanding where you stand with money isn't complicated. It's been made to feel that way. The formulas behind every real financial decision are public. Nobody owns them.</p>
+                </section>
+
+                <section class="story-beat fade-up" data-beat="3">
+                  <span class="kicker">The solution</span>
+                  <h2>So we built the opposite.</h2>
+                  <p>A free diagnostic that tells you the truth in two minutes. Tools with every formula visible, not a black box. Advisors vetted before they ever see your name, paid the same whether they help you or not.</p>
+                </section>
+
+                <section class="story-beat story-beat--wide fade-up" data-beat="4">
+                  <span class="kicker">The proof</span>
+                  <h2>How it actually works.</h2>
+
+                  <div class="story-sub">
+                    <h3>The 3-step path</h3>
+                    <div class="timeline reveal-stagger">
+                      <div class="timeline-track" aria-hidden="true"><div class="timeline-track-fill"></div></div>
+                      <div class="timeline-step">
+                        <div class="step-number">1</div>
+                        <h4>See where you stand</h4>
+                        <p>Take the free Financial Health Score or Net Worth diagnostic. Under 2 minutes, no signup required to start.</p>
+                      </div>
+                      <div class="timeline-step">
+                        <div class="step-number">2</div>
+                        <h4>Go deeper for free</h4>
+                        <p>Use the Budget, Retirement, and Investment tools directly on the site. Every formula is visible, nothing is hidden.</p>
+                      </div>
+                      <div class="timeline-step">
+                        <div class="step-number">3</div>
+                        <h4>Level up when ready</h4>
+                        <p>$5/month unlocks advanced tools and advisor Q&amp;As, or get matched with a vetted, fee-only advisor directly.</p>
+                      </div>
                     </div>
-                    <div class="cost-compare-row">
-                      <span class="cost-compare-label">MoneyMatters</span>
-                      <div class="cost-compare-track"><div class="cost-compare-fill cost-compare-fill--min"></div></div>
-                      <span class="cost-compare-value">Free diagnostic &middot; $5/mo for everything else</span>
+                  </div>
+
+                  <div class="story-sub">
+                    <h3 id="how-we-make-money">Where the money goes</h3>
+                    <p>MoneyMatters is free to use because we're paid by the advisors in our network when you choose to connect, not by you. That fee never affects your match: every advisor is vetted for CFP&reg; certification, fee-only pay, and fiduciary duty, full stop.</p>
+                    <p>Your data is only shared when you explicitly choose to connect. Never by default, never sold to anyone else.</p>
+                    <div class="money-flow reveal-stagger" aria-hidden="true">
+                      <div class="money-flow-node">
+                        <span class="money-flow-label">You</span>
+                        <span class="money-flow-sub">Free tools &amp; diagnostic</span>
+                      </div>
+                      <div class="money-flow-arrow">
+                        <svg viewBox="0 0 120 24" preserveAspectRatio="none"><path class="money-flow-path" d="M2 12 H110" /><path d="M100 4 L114 12 L100 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
+                      <div class="money-flow-node">
+                        <span class="money-flow-label">MoneyMatters</span>
+                        <span class="money-flow-sub">Vets &amp; matches</span>
+                      </div>
+                      <div class="money-flow-arrow money-flow-arrow--reverse">
+                        <svg viewBox="0 0 120 24" preserveAspectRatio="none"><path class="money-flow-path" d="M2 12 H110" /><path d="M100 4 L114 12 L100 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span class="money-flow-arrow-label">Referral fee, only on a match</span>
+                      </div>
+                      <div class="money-flow-node">
+                        <span class="money-flow-label">Advisor</span>
+                        <span class="money-flow-sub">Fee-only, CFP&reg;, fiduciary</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </section>
 
-            <section class="about-section about-differentiators fade-up">
-              <h2>What makes us different</h2>
-              <div class="bento-grid reveal-stagger">
-                <div class="bento-tile bento-tile--wide bento-tile--dark">
-                  <h3>Transparent math.</h3>
-                  <p>Every formula behind every tool is visible, not a black box. See exactly how your Financial Health Score, retirement projection, or recommended allocation was calculated.</p>
-                </div>
-                <div class="bento-tile bento-tile--image">
-                  <img src="images/money_mattershandshake.png" alt="" loading="lazy">
-                  <div class="bento-tile-caption">
-                    <h3>Vetted, not sold.</h3>
-                    <p>Every advisor in our network holds CFP&reg; certification, gets paid fee-only, and owes you fiduciary duty, no exceptions. We don't sell your data.</p>
+                  <div class="story-sub">
+                    <h3>What "vetted" means</h3>
+                    <div class="bento-grid reveal-stagger">
+                      <div class="bento-tile bento-tile--wide bento-tile--dark">
+                        <h4>Transparent math.</h4>
+                        <p>Every formula behind every tool is visible. See exactly how your Financial Health Score, retirement projection, or recommended allocation was calculated.</p>
+                      </div>
+                      <div class="bento-tile bento-tile--image">
+                        <img src="images/money_mattershandshake.png" alt="" loading="lazy">
+                        <div class="bento-tile-caption">
+                          <h4>Vetted, not sold.</h4>
+                          <p>Every advisor holds CFP&reg; certification, is paid fee-only, and owes you fiduciary duty. We don't sell your data.</p>
+                        </div>
+                      </div>
+                      <div class="bento-tile">
+                        <h4>Free to start.</h4>
+                        <p>The diagnostic and every basic tool are free, no signup wall. $5/month unlocks advanced tools, webinars, and advisor Q&amp;A.</p>
+                      </div>
+                      <div class="bento-tile bento-tile--image bento-tile--tree">
+                        <img src="images/money_matters-tree.png" alt="" loading="lazy">
+                        <div class="bento-tile-caption bento-tile-caption--on-image">
+                          <h4>Real depth.</h4>
+                          <p>Built by people who use these tools to plan their own finances, not marketers chasing the latest trend.</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="bento-tile">
-                  <h3>Free to start.</h3>
-                  <p>The diagnostic and every basic tool are free, with no signup wall. $5/month unlocks advanced tools, webinars, and advisor Q&amp;A when you want to go deeper.</p>
-                </div>
-                <div class="bento-tile bento-tile--image bento-tile--tree">
-                  <img src="images/money_matters-tree.png" alt="" loading="lazy">
-                  <div class="bento-tile-caption bento-tile-caption--on-image">
-                    <h3>Real depth.</h3>
-                    <p>Built by people who use these tools to plan their own finances, not marketers chasing the latest trend.</p>
-                  </div>
-                </div>
-              </div>
-            </section>
 
-            <section class="about-section fade-up">
-              <div class="trust-block trust-block--v2">
-                <h2 id="how-we-make-money">How we make money (and why it doesn't compromise you)</h2>
-                <p>MoneyMatters is free to use because we're paid by the advisors in our network, not by you. When you choose to connect with an advisor, we may receive a referral fee.</p>
-                <p>That fee never affects which advisor you're matched with. Every advisor in our network is independently vetted for CFP&reg; certification, fee-only compensation, and fiduciary duty, full stop. We don't get paid more for pushing you toward any one advisor, product, or outcome.</p>
-                <p>Put plainly: the advisor works for you, not the other way around. Your data is only shared when you explicitly choose to connect. Never by default, never sold to anyone else.</p>
-                <div class="money-flow reveal-stagger" aria-hidden="true">
-                  <div class="money-flow-node">
-                    <span class="money-flow-label">You</span>
-                    <span class="money-flow-sub">Free tools &amp; diagnostic</span>
+                  <div class="story-sub">
+                    <h3>Built on real principles</h3>
+                    <p class="feature-tools-sub">Grounded in widely-accepted personal finance frameworks, not invented formulas. Where we make assumptions, we tell you what they are and let you adjust them.</p>
+                    <div class="principles-grid reveal-stagger">
+                      <div class="principle-card">
+                        <span class="principle-card-tag">Budgeting</span>
+                        <h4>Zero-based budgeting</h4>
+                        <p>Every dollar gets assigned a job before the month starts.</p>
+                      </div>
+                      <div class="principle-card">
+                        <span class="principle-card-tag">Retirement</span>
+                        <h4>The 4% rule</h4>
+                        <p>A widely-used starting point for how much you can safely withdraw each year.</p>
+                      </div>
+                      <div class="principle-card">
+                        <span class="principle-card-tag">Investing</span>
+                        <h4>Compound growth</h4>
+                        <p>Long-term modeling based on how returns actually compound, not guesswork.</p>
+                      </div>
+                      <div class="principle-card">
+                        <span class="principle-card-tag">Net worth</span>
+                        <h4>Standard accounting</h4>
+                        <p>What you own minus what you owe. No hidden adjustments.</p>
+                      </div>
+                    </div>
                   </div>
-                  <div class="money-flow-arrow">
-                    <svg viewBox="0 0 120 24" preserveAspectRatio="none"><path class="money-flow-path" d="M2 12 H110" /><path d="M100 4 L114 12 L100 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="money-flow-node">
-                    <span class="money-flow-label">MoneyMatters</span>
-                    <span class="money-flow-sub">Vets &amp; matches</span>
-                  </div>
-                  <div class="money-flow-arrow money-flow-arrow--reverse">
-                    <svg viewBox="0 0 120 24" preserveAspectRatio="none"><path class="money-flow-path" d="M2 12 H110" /><path d="M100 4 L114 12 L100 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <span class="money-flow-arrow-label">Referral fee, only on a match</span>
-                  </div>
-                  <div class="money-flow-node">
-                    <span class="money-flow-label">Advisor</span>
-                    <span class="money-flow-sub">Fee-only, CFP&reg;, fiduciary</span>
-                  </div>
-                </div>
-              </div>
-            </section>
 
-            <section class="about-section fade-up">
-              <h2>How it works</h2>
-              <div class="timeline reveal-stagger">
-                <div class="timeline-track" aria-hidden="true"><div class="timeline-track-fill"></div></div>
-                <div class="timeline-step">
-                  <div class="step-number">1</div>
-                  <h3>See where you stand</h3>
-                  <p>Take the free Financial Health Score or Net Worth diagnostic. Under 2 minutes, no signup required to start.</p>
-                </div>
-                <div class="timeline-step">
-                  <div class="step-number">2</div>
-                  <h3>Go deeper for free</h3>
-                  <p>Use the Budget, Retirement, and Investment tools directly on the site. Every formula is visible, nothing is hidden.</p>
-                </div>
-                <div class="timeline-step">
-                  <div class="step-number">3</div>
-                  <h3>Level up when ready</h3>
-                  <p>$5/month unlocks advanced tools and advisor Q&amp;As, or get matched with a vetted, fee-only advisor directly.</p>
-                </div>
-              </div>
-            </section>
+                  <div class="story-sub">
+                    <h3>Questions</h3>
+                    <div class="faq-list faq-list--v2 reveal-stagger">
+                      <details>
+                        <summary>What's actually free?</summary>
+                        <p>The Financial Health Score and Net Worth diagnostics, and the Budget, Retirement, and Investment tools: all free, no signup wall to try them. Creating an account (via a magic-link email, no password) saves your results and unlocks the community and advisor matching.</p>
+                      </details>
+                      <details>
+                        <summary>What do I get for $5/month?</summary>
+                        <p>Advanced versions of the tools, new tools as we release them, explainer and how-to videos, webinar access, and advisor Q&amp;A sessions. One subscription, everything included, no per-tool pricing.</p>
+                      </details>
+                      <details>
+                        <summary>Can I cancel anytime?</summary>
+                        <p>Yes, no lock-in. Cancel anytime and keep access through the end of your billing period.</p>
+                      </details>
+                      <details>
+                        <summary>Is this financial advice?</summary>
+                        <p>No. MoneyMatters tools are educational. For decisions with major consequences, connect with one of our vetted advisors or another licensed financial professional.</p>
+                      </details>
+                      <details>
+                        <summary>How do you actually vet advisors?</summary>
+                        <p>Every advisor in our network is confirmed CFP&reg;-certified, fee-only (no commissions), and held to a fiduciary standard before they're allowed in front of any user. See <a href="#how-we-make-money">where the money goes</a> for the full picture.</p>
+                      </details>
+                      <details>
+                        <summary>How is this different from apps like Mint or YNAB?</summary>
+                        <p>Those are subscription apps built around linking your bank accounts and paywalled tiers. Ours run on numbers you enter yourself, every formula is visible, and going deeper (advanced tools or a real advisor) is your call, not a paywall you hit by accident.</p>
+                      </details>
+                    </div>
+                  </div>
+                </section>
 
-            <section class="about-section fade-up">
-              <h2>Frequently asked questions</h2>
-              <div class="faq-list faq-list--v2 reveal-stagger">
-                <details>
-                  <summary>What's actually free?</summary>
-                  <p>The Financial Health Score and Net Worth diagnostics, and the Budget, Retirement, and Investment tools: all free, no signup wall to try them. Creating an account (via a magic-link email, no password) saves your results and unlocks the community and advisor matching.</p>
-                </details>
-                <details>
-                  <summary>What do I get for $5/month?</summary>
-                  <p>Advanced versions of the tools, new tools as we release them, explainer and how-to videos, webinar access, and advisor Q&amp;A sessions. One subscription, everything included, no per-tool pricing.</p>
-                </details>
-                <details>
-                  <summary>Can I cancel anytime?</summary>
-                  <p>Yes, no lock-in. Cancel anytime and keep access through the end of your billing period.</p>
-                </details>
-                <details>
-                  <summary>Is this financial advice?</summary>
-                  <p>No. MoneyMatters tools are educational. For decisions with major consequences, connect with one of our vetted advisors or another licensed financial professional.</p>
-                </details>
-                <details>
-                  <summary>How do you actually vet advisors?</summary>
-                  <p>Every advisor in our network is confirmed CFP&reg;-certified, fee-only (no commissions), and held to a fiduciary standard before they're allowed in front of any user. See <a href="#how-we-make-money">how we make money</a> for the full picture.</p>
-                </details>
-                <details>
-                  <summary>How is this different from apps like Mint or YNAB?</summary>
-                  <p>Those are subscription apps built around linking your bank accounts and paywalled tiers. Ours run on numbers you enter yourself, every formula is visible, and going deeper (advanced tools or a real advisor) is your call, not a paywall you hit by accident.</p>
-                </details>
+                <section class="story-beat fade-up" data-beat="5">
+                  <span class="kicker">The invitation</span>
+                  <h2>You lead this conversation. Not the advisor.</h2>
+                  <p>Know your number. Know your gaps. Walk into any conversation with an advisor already understanding your own situation, not hoping they'll explain it to you. That's the leverage this is built to give you.</p>
+                  <div class="story-cta-actions">
+                    <a href="index.html?start=health-score" class="cta-button">Start your Financial Health Score →</a>
+                    <a href="tools.html" class="cta-button cta-button--ghost">Browse all tools</a>
+                  </div>
+                </section>
               </div>
-            </section>
-
-            <section class="about-section fade-up">
-              <h2>Built on real principles</h2>
-              <p class="feature-tools-sub">Grounded in widely-accepted personal finance frameworks, not invented formulas. Where we make assumptions (like return rates or inflation), we tell you what they are and let you adjust them.</p>
-              <div class="principles-grid reveal-stagger">
-                <div class="principle-card">
-                  <span class="principle-card-tag">Budgeting</span>
-                  <h3>Zero-based budgeting</h3>
-                  <p>Every dollar gets assigned a job before the month starts.</p>
-                </div>
-                <div class="principle-card">
-                  <span class="principle-card-tag">Retirement</span>
-                  <h3>The 4% rule</h3>
-                  <p>A widely-used starting point for how much you can safely withdraw each year.</p>
-                </div>
-                <div class="principle-card">
-                  <span class="principle-card-tag">Investing</span>
-                  <h3>Compound growth</h3>
-                  <p>Long-term modeling based on how returns actually compound, not guesswork.</p>
-                </div>
-                <div class="principle-card">
-                  <span class="principle-card-tag">Net worth</span>
-                  <h3>Standard accounting</h3>
-                  <p>What you own minus what you owe. No hidden adjustments.</p>
-                </div>
-              </div>
-            </section>
-
-            <section class="about-cta fade-up">
-              <h2>Ready to take control of your money?</h2>
-              <div class="about-cta-actions">
-                <a href="index.html?start=health-score" class="cta-button">Check your Financial Health Score →</a>
-                <a href="tools.html" class="cta-button cta-button--ghost">Browse all tools</a>
-              </div>
-            </section>
+            </div>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">
               <div class="newsletter-cta__inner">
@@ -325,10 +320,13 @@
 <script src="scripts/nav-dropdown.js"></script>
         <script src="scripts/scroll-animations.js"></script>
         <script src="scripts/cinematic-motion.js"></script>
-        <script src="scripts/signature-motif.js"></script>
         <script src="scripts/onboarding-gate.js"></script>
         <script src="scripts/sign-in.js"></script>
         <script src="scripts/timeline-fill.js"></script>
+        <!-- DESIGN_SPEC.md §31: scroll-scrubbed narrative visual. CDN only, no build step. -->
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+        <script src="scripts/about-scroll-story.js"></script>
     </body>
 
 </html>
