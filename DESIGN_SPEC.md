@@ -360,3 +360,35 @@ Note: this page intentionally stays functional/utility-first, not persuasive - c
 4. **Advisor Connect hero image**: stretch full-width like the hero treatment on other pages - currently boxed/contained, inconsistent with the rest of the site.
 5. **New page variant: MoneyMatters+ for already-subscribed logged-in users.** Once a user is logged in AND has Plan=plus (the manual flag from Section 28), show a different version of the MoneyMatters+ page - not the sales pitch, but the actual full offering: advanced tools access, exclusive community links, exclusive advisor call booking, new tools as they ship, newsletter archive, etc. Build this now against the manual flag so it is ready before real Stripe billing exists.
 6. **About Us scroll redesign**: hold for a follow-up round - real story-arc/scroll-scrubbed treatment needed (likely GSAP ScrollTrigger, free CDN include, does not violate no-build-step architecture), copy to be drafted collaboratively in chat first per the new page-by-page writing process (see below), not handed to Claude Code as a generic brief.
+
+## 31. About Us — Cinematic Scroll Story (locked 2026-07-27)
+
+Replaces the current static-sections About Us content. Real scroll-scrubbed narrative via GSAP ScrollTrigger (free CDN include: https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js + ScrollTrigger plugin - script tag only, no build step, no framework change). The signature dial/score visual is the through-line: faint and unfilled during "The Problem," gradually filling and sharpening through each beat, fully resolved and glowing by "The Invitation." Respect prefers-reduced-motion (fall back to simple fade-ins, no scroll-scrubbing, per Section 7/11's existing accessibility requirements). Keep all text as real readable HTML in the DOM at load (not JS-injected-only), for SEO per Section 26 item 4's technical SEO work - motion is presentational, not a content-delivery mechanism.
+
+### Beat 1 — The Problem
+Headline: "Most of this industry makes money by keeping you confused."
+Body: "Financial advice has a cost problem hiding behind a complexity problem. Firms profit whether their advice helps you or not. The people who need clarity most are usually told they need more money before they can get it."
+Visual state: dial faint, unfilled, static.
+
+### Beat 2 — The Insight
+Headline: "You don't need a finance degree. You need to see clearly."
+Body: "Understanding where you stand with money isn't complicated. It's been made to feel that way. The formulas behind every real financial decision are public. Nobody owns them."
+Visual state: dial begins tracing its outline as the user scrolls.
+
+### Beat 3 — The Solution
+Headline: "So we built the opposite."
+Body: "A free diagnostic that tells you the truth in two minutes. Tools with every formula visible, not a black box. Advisors vetted before they ever see your name, paid the same whether they help you or not."
+Visual state: dial fills in, line graph begins climbing.
+
+### Beat 4 — The Proof
+Headline: "How it actually works."
+Body: reuse existing "How it works" 3-step content (See where you stand / Go deeper for free / Level up when ready) and the "How we make money" flow diagram, restructured as scroll beats rather than a static block.
+Visual state: dial fully filled, line graph complete, gold accent settles in.
+
+### Beat 5 — The Invitation
+Headline: "You lead this conversation. Not the advisor."
+Body: "Know your number. Know your gaps. Walk into any conversation with an advisor already understanding your own situation; not hoping they'll explain it to you. That's the leverage this is built to give you."
+CTA: "Start your Financial Health Score ->"
+Visual state: dial glowing/settled, steady state.
+
+Existing content not covered above (vetting-standard cards, "Built on real principles" grid, FAQ) folds into Beat 4 as additional scroll sub-sections rather than being cut - reduce/tighten wording per the ongoing "less is more" standard, do not delete substance.
