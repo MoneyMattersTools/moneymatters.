@@ -964,6 +964,21 @@ footer nav {
   .about-hero h1 { font-size: 36px; }
   .about-section h2 { font-size: 26px; }
 }
+/* --- About Us: social icons near the top of the page, not just the
+   footer (§32.1) --- */
+.top-social-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 22px 6% 0;
+}
+.top-social-links a { display: inline-block; transition: transform 0.2s ease; }
+.top-social-links a:hover { transform: translateY(-2px); }
+.top-social-links img { width: 24px; height: 24px; border-radius: 6px; display: block; }
+@media (max-width: 900px) { .top-social-links { justify-content: center; } }
+
 /* =====================================================
    About Us — cinematic scroll story (DESIGN_SPEC.md §31)
    Sticky signature-dial visual + 5 narrative beats. Layout only
@@ -982,7 +997,7 @@ footer nav {
 .story-visual-wrap { position: sticky; top: 110px; }
 .story-visual { width: 100%; max-width: 380px; margin: 0 auto; transition: filter 0.3s ease; }
 .story-visual svg { width: 100%; height: auto; display: block; }
-.story-beats { display: flex; flex-direction: column; gap: 130px; padding: 20px 0 60px; }
+.story-beats { display: flex; flex-direction: column; gap: 80px; padding: 20px 0 60px; }
 .story-beat { max-width: 520px; }
 .story-beat .kicker { display: inline-block; }
 .story-beat h1, .story-beat h2 {
@@ -999,6 +1014,13 @@ footer nav {
 
 .story-sub { margin-top: 56px; }
 .story-sub:first-of-type { margin-top: 36px; }
+/* §32.4: word-level "living" reveal for each beat's headline + lead
+   paragraph, driven by scripts/about-scroll-story.js. Real text stays in
+   the DOM at load (JS only wraps existing words in spans at runtime for
+   animation targeting — the SEO requirement from §31 is unaffected). */
+.story-word { display: inline-block; opacity: 0; filter: blur(8px); transform: translateY(10px); }
+@media (prefers-reduced-motion: reduce) { .story-word { opacity: 1; filter: none; transform: none; } }
+
 .story-sub h3 {
   font-family: var(--mm-serif);
   font-size: clamp(22px, 2.4vw, 28px);

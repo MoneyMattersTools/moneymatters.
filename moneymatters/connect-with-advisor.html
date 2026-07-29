@@ -177,7 +177,7 @@
               <h2>What a match looks like</h2>
               <p class="advisor-preview-sub">Sample profiles, illustrating the kind of detail you'll see, not real advisors. Once you're matched, you'll get a real bio like this before you ever agree to talk to anyone.</p>
               <div class="advisor-preview-scroll">
-                <div class="advisor-preview-track">
+                <div class="advisor-preview-track" id="advisor-preview-track">
                   <div class="advisor-card">
                     <span class="advisor-card-badge">Sample profile</span>
                     <div class="advisor-card-avatar" aria-hidden="true">JM</div>
@@ -227,6 +227,49 @@
                       <span aria-hidden="true">★★★★★</span> 4.7
                     </div>
                     <p class="advisor-card-note">Fee-only &middot; Fiduciary &middot; 9 years</p>
+                  </div>
+                  <!-- §32.3: duplicate set for a seamless marquee loop — decorative repeat, hidden from assistive tech so the 5 profiles aren't announced twice. -->
+                  <div class="advisor-preview-track-dupe" aria-hidden="true">
+                    <div class="advisor-card">
+                      <span class="advisor-card-badge">Sample profile</span>
+                      <div class="advisor-card-avatar">JM</div>
+                      <h3>J. Martinez, CFP&reg;</h3>
+                      <p class="advisor-card-specialty">Retirement &amp; income planning</p>
+                      <div class="advisor-card-rating"><span>★★★★★</span> 4.9</div>
+                      <p class="advisor-card-note">Fee-only &middot; Fiduciary &middot; 14 years</p>
+                    </div>
+                    <div class="advisor-card">
+                      <span class="advisor-card-badge">Sample profile</span>
+                      <div class="advisor-card-avatar">RK</div>
+                      <h3>R. Kapoor, CFP&reg;</h3>
+                      <p class="advisor-card-specialty">Business owners &amp; equity events</p>
+                      <div class="advisor-card-rating"><span>★★★★★</span> 4.8</div>
+                      <p class="advisor-card-note">Fee-only &middot; Fiduciary &middot; 11 years</p>
+                    </div>
+                    <div class="advisor-card">
+                      <span class="advisor-card-badge">Sample profile</span>
+                      <div class="advisor-card-avatar">SC</div>
+                      <h3>S. Chen, CFP&reg;</h3>
+                      <p class="advisor-card-specialty">Getting started &amp; new investors</p>
+                      <div class="advisor-card-rating"><span>★★★★★</span> 5.0</div>
+                      <p class="advisor-card-note">Fee-only &middot; Fiduciary &middot; 8 years</p>
+                    </div>
+                    <div class="advisor-card">
+                      <span class="advisor-card-badge">Sample profile</span>
+                      <div class="advisor-card-avatar">TO</div>
+                      <h3>T. Okafor, CFP&reg;</h3>
+                      <p class="advisor-card-specialty">Tax-aware investing</p>
+                      <div class="advisor-card-rating"><span>★★★★★</span> 4.9</div>
+                      <p class="advisor-card-note">Fee-only &middot; Fiduciary &middot; 17 years</p>
+                    </div>
+                    <div class="advisor-card">
+                      <span class="advisor-card-badge">Sample profile</span>
+                      <div class="advisor-card-avatar">AB</div>
+                      <h3>A. Bergström, CFP&reg;</h3>
+                      <p class="advisor-card-specialty">Debt payoff &amp; cash flow</p>
+                      <div class="advisor-card-rating"><span>★★★★★</span> 4.7</div>
+                      <p class="advisor-card-note">Fee-only &middot; Fiduciary &middot; 9 years</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -317,6 +360,7 @@
         <script src="scripts/signature-motif.js"></script>
         <script src="scripts/onboarding-gate.js"></script>
         <script src="scripts/sign-in.js"></script>
+        <script src="scripts/advisor-marquee.js"></script>
     </body>
 
 </html>

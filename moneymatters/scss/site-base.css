@@ -260,8 +260,8 @@ body header .nav-dropdown-toggle {
     background: none !important;
     border: none !important;
     color: var(--mm-cream) !important;
-    padding: 4px !important;
-    font-size: 16px !important;
+    padding: 6px !important;
+    font-size: 22px !important;
     cursor: pointer !important;
     line-height: 1 !important;
 }
@@ -1336,8 +1336,24 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .advisor-preview .kicker { display: inline-block; }
 .advisor-preview h2 { font-family: var(--mm-serif); font-size: clamp(30px, 3.6vw, 44px); margin: 0 0 14px; color: var(--mm-charcoal); font-weight: 500; }
 .advisor-preview-sub { font-family: var(--mm-sans); font-size: 17px; color: var(--mm-text-muted); max-width: 560px; margin: 0 auto 44px; line-height: 1.6; }
-.advisor-preview-scroll { overflow-x: auto; padding: 0 6% 12px; -webkit-overflow-scrolling: touch; }
-.advisor-preview-track { display: flex; gap: 22px; margin: 0 auto; width: max-content; }
+/* §32.3: continuous ambient auto-scroll, matching the top marquee
+   ticker's px/s rate exactly (computed at runtime by
+   scripts/advisor-marquee.js) — no manual scrollbar. The row is a
+   flex-nowrap track of 10 cards (5 real + a decorative aria-hidden
+   duplicate set), translated by -50% to loop seamlessly, same technique
+   as .value-strip-track. */
+.advisor-preview-scroll { overflow: hidden; padding: 0 6% 12px; }
+.advisor-preview-track {
+    display: flex; gap: 22px; width: max-content;
+    animation: mm-marquee 40s linear infinite;
+    will-change: transform;
+}
+.advisor-preview-track-dupe { display: contents; }
+@media (prefers-reduced-motion: reduce) {
+    .advisor-preview-track { animation: none; }
+    .advisor-preview-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .advisor-preview-track-dupe { display: none; }
+}
 .advisor-card {
     flex-shrink: 0; width: 240px; background: white; border: 1px solid var(--mm-border); border-radius: 20px;
     padding: 26px 22px; text-align: left; position: relative; transition: transform 0.3s ease, border-color 0.3s ease;

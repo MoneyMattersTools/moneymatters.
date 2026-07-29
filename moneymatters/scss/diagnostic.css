@@ -207,9 +207,13 @@
    panel. Bigger card values, bigger heading, more breathing room. */
 #diagnostic-hero .mm-dashboard { padding-left: 44px; border-left: 1px solid var(--mm-border); }
 #diagnostic-hero .mm-dashboard-heading { font-family: var(--mm-serif); font-size: clamp(26px, 2.6vw, 34px); font-weight: 500; letter-spacing: -0.01em; margin: 0 0 22px; color: var(--mm-charcoal); }
-#diagnostic-hero .mm-dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+/* §32.2: flex-wrap instead of a fixed 2-col grid — each card sizes to
+   its own content (a $0 card and a $100,000 card no longer share an
+   equal-width track), wrapping naturally as needed. */
+#diagnostic-hero .mm-dashboard-grid { display: flex; flex-wrap: wrap; gap: 18px; }
 #diagnostic-hero .mm-dashboard-card {
-    display: flex; flex-direction: column; gap: 5px;
+    display: inline-flex; flex-direction: column; gap: 5px;
+    flex: 0 1 auto; min-width: 150px;
     padding: 24px 22px; border-radius: 14px; border: 1px solid var(--mm-border);
     text-decoration: none; background: white;
     transition: border-color 0.2s ease, transform 0.2s ease;
@@ -228,7 +232,7 @@
     #diagnostic-hero .results-layout { grid-template-columns: 1fr; gap: 32px; }
     #diagnostic-hero .mm-dashboard { padding-left: 0; border-left: none; padding-top: 28px; border-top: 1px solid var(--mm-border); }
 }
-@media (max-width: 640px) { #diagnostic-hero .mm-dashboard-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { #diagnostic-hero .mm-dashboard-card { width: 100%; } }
 
 /* --- Advisor review intake (§17.2) --- */
 #diagnostic-hero .advisor-review-cta {
