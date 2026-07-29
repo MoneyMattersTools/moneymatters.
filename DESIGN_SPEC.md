@@ -428,3 +428,34 @@ Existing content not covered above (vetting-standard cards, "Built on real princ
     - Advanced Budget: "Track the money you don't realize you're spending"
     - Advanced Investment: "Not investment advice. Non-Guru Guidance"
 13. MoneyMatters+ pricing card on this page will need an update once subscription offerings are finalized - not part of this round, noted for later.
+
+### About Us Page (full rebuild of the story content, mechanism from Section 31/32 stays)
+14. Replace the current 5-beat copy with a version of this founder narrative (expand as appropriate, keep this core language and meaning):
+"MoneyMatters' founder is a current Wall Street native who believes simple financial guidance shouldn't only be for those born into access to it. He has watched people with generational wealth throw it away, and new entrepreneurs build empires, neither getting advice from the right people at the right time. Fed up with the lack of free, quality information delivered in a way that is not just educational but actionable, MoneyMatters began taking shape. The MoneyMatters team wants to build the tools you need, with your feedback. Getting a hold of your own circumstances is the only place to start. Rather than walking into an advisor's office with a pile of paperwork and no clear starting point, MoneyMatters keeps you organized and gives you leverage as the client. After all, isn't the advisor supposed to work for you, not the other way around?"
+15. The reveal mechanism itself (scroll-gated pinning, word-by-word blur-to-focus) is correct and stays - map this new story text into that existing beat structure.
+16. Imagery should move WITH the scroll/text as one integrated motion, not as a separate element animating independently to the side - the visual and the text should feel like one continuous scene, not two things happening near each other.
+17. Content below "The Proof" and "The Invitation" beats (vetting cards, principles grid, FAQ, etc.) stays, but simplify significantly - current block styling reads as too busy/dense. Trim to only what earns its place.
+
+### Contact Page
+18. Hero forest background image should stretch full-width across the page (currently appears contained/boxed).
+19. Delete the gold "Real advisors, actually vetted" line.
+20. Change the "When you're ready for more than a tool..." heading to: "YOU have the leverage. Advisors are paying to talk with YOU."
+
+### Blog Page
+21. Change hero header from "Financial tips, tools, and real-world advice, for everyone" to "MoneyMatters Blogs."
+22. Delete the text below "Start here."
+23. Delete the text below the "useful email" newsletter header - apply this sitewide, everywhere this newsletter block appears, not just on the Blog page.
+
+### Advisor Connect Page
+24. Delete the green box text/section below the header area.
+25. Update the text below the "Advisor Connect" header to: "Vetted, fee-only, fiduciary advisors who pay to talk to YOU, before they even see your name. Matching is free for you and begins by clicking below."
+26. "Connect with an Advisor" button destination - see open question in chat (keep-diagnostic-requirement vs. drop-it), pending Ethan's confirmation.
+27. Delete the text below the "What a match looks like" header.
+28. "Business owners & equity events" specialty label changes to "Business Owners & Liquidity Events."
+29. Delete the text at the bottom, under the "Ready to get matched?" section.
+
+### MoneyMatters+ Page
+30. Update the text under the "MoneyMatters+" header to: "Providing the tools to inspire a community of individuals like you to take control. MoneyMatters+ is a commitment to you that costs less than a cup of coffee to get your family on track to financial flourishing."
+31. Replace the current persuasion content (fee-comparison slider and tiles) - the advisor-fee comparison is the wrong angle, MoneyMatters does not compete with or replace advisors, it connects users to them. Rebuild this section around emotional + logical appeal: stability, debt payoff, planning for children, psychological/behavioral spending control, and similar real angles. Real creative latitude here.
+32. "What you get" and "Free vs. Plus" comparison sections stay as-is in substance, just trim excess wording - less is more.
+33. Begin work on the logged-in + subscribed member view of this page (a live dashboard/repository of MoneyMatters+ perks) - this was flagged as started in Section 30 item 5, confirm current state and continue building it out.
