@@ -132,6 +132,7 @@
     var wordTween = { opacity: 1, filter: 'blur(0px)', y: 0, stagger: 0.035, duration: 1, ease: 'power2.out' };
     var wordFrom = { opacity: 0, filter: 'blur(8px)', y: 10 };
 
+    var lastBeatEnd = null;
     var wideBeats = [];
     var shortBeats = [];
     gsap.utils.toArray('.story-beat').forEach(function (beat) {
@@ -165,7 +166,7 @@
       // ranges overlapped and multiple beats ended up pinned—and
       // stacked on top of each other—at once (confirmed live).
       '(min-width: 900px)': function () {
-        shortBeats.forEach(function (beat) {
+        shortBeats.forEach(function (beat, beatIndex) {
           var words = beat.__storyWords;
           var tl = gsap.timeline({
             scrollTrigger: {
@@ -202,6 +203,20 @@
           // pin-spacer already inserted, before the next beat's ScrollTrigger
           // is created and reads its own (now correctly shifted) position.
           ScrollTrigger.refresh();
+
+          if (beatIndex === shortBeats.length - 1) {
+            // This is the last pinned beat (5) — its own trigger's
+            // resolved .end (a real, freshly-refreshed absolute scroll
+            // position) is the one number in this whole setup that's
+            // guaranteed correct, since it was measured immediately
+            // after its own pin-spacer was inserted, right above. Using
+            // it directly sidesteps #scroll-story's own 'bottom bottom'
+            // measurement entirely, which kept landing short of the
+            // narrative's real end even when this trigger was created
+            // last (still ~1350px short in testing) — some batched/
+            // deferred remeasurement step, never fully tracked down.
+            lastBeatEnd = tl.scrollTrigger.end;
+          }
         });
       },
       // Mobile: pinning a full section is unreliable against mobile
@@ -219,18 +234,15 @@
     });
 
     // Created LAST, after every beat pin above has inserted its
-    // pin-spacer: this trigger's end:'bottom bottom' measures #scroll-
-    // story's bottom edge at creation time, and creating it before those
-    // spacers existed (the original ordering) baked in a bottom position
-    // from well before the page's real final height — its own progress
-    // hit 1.0 partway down the page, freezing the dial there and firing
-    // the "safety net" below mid-scroll, stripping is-pinned off whatever
-    // beat happened to be pinned at that moment. Same root cause as the
-    // beat-overlap bug, different trigger.
+    // pin-spacer — but even so, #scroll-story's own 'bottom bottom' kept
+    // landing short of the narrative's real end in testing (mobile has no
+    // pinned beats, so lastBeatEnd stays null there and 'bottom bottom'
+    // — which works fine without any pin-spacer involved — is the
+    // correct fallback).
     ScrollTrigger.create({
       trigger: story,
       start: 'top top',
-      end: 'bottom bottom',
+      end: lastBeatEnd || 'bottom bottom',
       scrub: 0.4,
       onUpdate: function (self) {
         render(self.progress);
