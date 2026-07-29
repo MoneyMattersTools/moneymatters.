@@ -1010,6 +1010,20 @@ footer nav {
 }
 .story-beat > p { font-family: var(--mm-sans); font-size: 17px; line-height: 1.65; margin: 0; }
 .story-beat--wide { max-width: none; }
+/* §32.4 fix: while a beat is genuinely pinned (desktop only — JS toggles
+   this class only for that duration), give it an opaque full-height,
+   full-width surface so the next beat, already laid out below it in
+   normal flow, can't visually bleed through around its actual (much
+   shorter) content box. Background color lives in dark-system.css. */
+.story-beat.is-pinned {
+  min-height: 100vh;
+  width: 100%;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
 .story-cta-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
 
 .story-sub { margin-top: 56px; }

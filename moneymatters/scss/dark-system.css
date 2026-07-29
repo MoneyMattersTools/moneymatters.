@@ -226,6 +226,7 @@ body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { 
 @media (prefers-reduced-motion: reduce) {
     .story-sig-ticks { transform: none !important; }
 }
+.story-beat.is-pinned { background: var(--mm-bg) !important; }
 
 /* Eyebrow label (§27.1) — site-base.css's --mm-gold-ink is tuned for
    legibility on the light cream background; on this site's actual dark

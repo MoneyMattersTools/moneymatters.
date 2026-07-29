@@ -209,18 +209,24 @@
 #diagnostic-hero .mm-dashboard-heading { font-family: var(--mm-serif); font-size: clamp(26px, 2.6vw, 34px); font-weight: 500; letter-spacing: -0.01em; margin: 0 0 22px; color: var(--mm-charcoal); }
 /* §32.2: flex-wrap instead of a fixed 2-col grid — each card sizes to
    its own content (a $0 card and a $100,000 card no longer share an
-   equal-width track), wrapping naturally as needed. */
+   equal-width track), wrapping naturally as needed. flex-shrink:0 is
+   load-bearing here: with shrink allowed, a narrow dashboard column
+   squeezed every card back down toward min-width regardless of content
+   (longer values just wrapped their text onto extra lines instead of
+   growing wider) — verified live, cards converged to the same ~196px
+   either way. No-shrink lets each card claim its true content width and
+   the flex-wrap container breaks the row instead. */
 #diagnostic-hero .mm-dashboard-grid { display: flex; flex-wrap: wrap; gap: 18px; }
 #diagnostic-hero .mm-dashboard-card {
     display: inline-flex; flex-direction: column; gap: 5px;
-    flex: 0 1 auto; min-width: 150px;
+    flex: 0 0 auto; min-width: 130px; width: fit-content;
     padding: 24px 22px; border-radius: 14px; border: 1px solid var(--mm-border);
     text-decoration: none; background: white;
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
 #diagnostic-hero .mm-dashboard-card:hover { border-color: var(--mm-green); transform: translateY(-2px); }
 #diagnostic-hero .mm-dashboard-card-label { font-family: var(--mm-sans); font-size: 13.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--mm-text-soft); }
-#diagnostic-hero .mm-dashboard-card-value { font-family: var(--mm-serif); font-size: clamp(28px, 2.6vw, 36px); font-weight: 500; letter-spacing: -0.02em; color: var(--mm-charcoal); }
+#diagnostic-hero .mm-dashboard-card-value { font-family: var(--mm-serif); font-size: clamp(28px, 2.6vw, 36px); font-weight: 500; letter-spacing: -0.02em; color: var(--mm-charcoal); white-space: nowrap; }
 #diagnostic-hero .mm-dashboard-card-sub { font-family: var(--mm-sans); font-size: 14px; color: var(--mm-text-muted); }
 #diagnostic-hero .mm-dashboard-card--empty { justify-content: center; }
 #diagnostic-hero .mm-dashboard-card-cta { font-family: var(--mm-sans); font-size: 14.5px; font-weight: 600; color: var(--mm-green-deep); margin-top: 4px; }

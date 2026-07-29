@@ -154,6 +154,17 @@
               end: '+=' + Math.round(window.innerHeight * 1.15),
               pin: true,
               scrub: 0.3,
+              // A pinned beat is only as tall as its own short content,
+              // not the viewport — without an opaque background sized to
+              // fill that space, the next beat (already laid out below in
+              // normal flow) visibly bleeds through around/behind it.
+              // is-pinned only applies while actually pinned so beats
+              // don't otherwise claim a full viewport height of empty
+              // space in normal flow.
+              onEnter: function () { beat.classList.add('is-pinned'); },
+              onEnterBack: function () { beat.classList.add('is-pinned'); },
+              onLeave: function () { beat.classList.remove('is-pinned'); },
+              onLeaveBack: function () { beat.classList.remove('is-pinned'); },
             },
           });
           // Words finish revealing well before the pin releases, leaving
