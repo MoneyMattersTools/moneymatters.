@@ -997,8 +997,20 @@ footer nav {
 .story-visual-wrap { position: sticky; top: 110px; }
 .story-visual { width: 100%; max-width: 380px; margin: 0 auto; transition: filter 0.3s ease; }
 .story-visual svg { width: 100%; height: auto; display: block; }
-.story-beats { display: flex; flex-direction: column; gap: 80px; padding: 20px 0 60px; }
-.story-beat { max-width: 520px; }
+/* §32.4 fix (take 4): .story-beats was `display:flex` — GSAP's pin
+   inserts a spacer element to hold open the scroll distance while a
+   beat is pinned, and that spacer becomes just another flex item here.
+   Measured live: every pinned beat's actual scroll span came up ~75-80px
+   SHORT of its requested distance — matching this container's gap value
+   almost exactly — and each subsequent beat's pin then started that much
+   too early relative to the previous one's real end, compounding into
+   large overlaps three beats deep. Plain block flow (no flex) plus
+   margin-bottom instead of gap is the layout GSAP's own pin examples
+   always use — spacers behave as ordinary block siblings, no flex
+   sizing/gap interaction to fight. */
+.story-beats { padding: 20px 0 60px; }
+.story-beat { max-width: 520px; margin-bottom: 80px; }
+.story-beat:last-child { margin-bottom: 0; }
 .story-beat .kicker { display: inline-block; }
 .story-beat h1, .story-beat h2 {
   font-family: var(--mm-serif);
@@ -1063,7 +1075,7 @@ footer nav {
   .scroll-story { grid-template-columns: 1fr; gap: 40px; padding: 60px 6% 20px; }
   .story-visual-wrap { position: static; }
   .story-visual { max-width: 220px; }
-  .story-beats { gap: 80px; padding: 0 0 40px; }
+  .story-beats { padding: 0 0 40px; }
   .story-beat, .story-beat--wide { max-width: none; }
 }
 
