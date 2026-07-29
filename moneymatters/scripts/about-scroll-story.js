@@ -115,14 +115,6 @@
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
-    ScrollTrigger.create({
-      trigger: story,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.4,
-      onUpdate: function (self) { render(self.progress); },
-    });
-
     // Counter rather than a plain toggle: onEnter/onLeave across adjacent
     // beats' pins can fire in either order on fast scroll or direction
     // reversal (onEnterBack/onLeaveBack), and a plain add/remove race
@@ -137,6 +129,32 @@
       if (pinBackdrop && pinnedCount === 0) pinBackdrop.classList.remove('is-active');
     }
 
+    ScrollTrigger.create({
+      trigger: story,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.4,
+      onUpdate: function (self) {
+        render(self.progress);
+        // Safety net: the last beat's pin distance is a fixed viewport
+        // multiple that may not land exactly on the page's real max
+        // scroll once every beat's pin-spacer is accounted for. If that
+        // ever leaves a pin's onLeave un-fired at the very bottom, the
+        // backdrop would stay stuck active and permanently hide the
+        // footer — force-clear it once scroll has nowhere further to go.
+        if (self.progress >= 0.999 && pinBackdrop && pinBackdrop.classList.contains('is-active')) {
+          pinnedCount = 0;
+          pinBackdrop.classList.remove('is-active');
+          document.querySelectorAll('.story-beat.is-pinned').forEach(function (b) { b.classList.remove('is-pinned'); });
+        }
+      },
+    });
+
+    var wordTween = { opacity: 1, filter: 'blur(0px)', y: 0, stagger: 0.035, duration: 1, ease: 'power2.out' };
+    var wordFrom = { opacity: 0, filter: 'blur(8px)', y: 10 };
+
+    var wideBeats = [];
+    var shortBeats = [];
     gsap.utils.toArray('.story-beat').forEach(function (beat) {
       var heading = beat.querySelector('h1, h2');
       var lead = beat.querySelector(':scope > p');
@@ -144,24 +162,32 @@
       if (heading) words = words.concat(splitWords(heading));
       if (lead) words = words.concat(splitWords(lead));
       if (!words.length) return;
+      beat.__storyWords = words;
+      (beat.classList.contains('story-beat--wide') ? wideBeats : shortBeats).push(beat);
+    });
 
-      var wordTween = { opacity: 1, filter: 'blur(0px)', y: 0, stagger: 0.035, duration: 1, ease: 'power2.out' };
-      var wordFrom = { opacity: 0, filter: 'blur(8px)', y: 10 };
+    // Beat 4: not pinned (see file header) — just reveal its heading as it
+    // naturally scrolls into view.
+    wideBeats.forEach(function (beat) {
+      gsap.fromTo(beat.__storyWords, wordFrom, Object.assign({}, wordTween, {
+        scrollTrigger: { trigger: beat, start: 'top 75%', end: 'top 35%', scrub: 0.3 },
+      }));
+    });
 
-      if (beat.classList.contains('story-beat--wide')) {
-        // Beat 4: not pinned (see file header) — just reveal its heading
-        // as it naturally scrolls into view.
-        gsap.fromTo(words, wordFrom, Object.assign({}, wordTween, {
-          scrollTrigger: { trigger: beat, start: 'top 75%', end: 'top 35%', scrub: 0.3 },
-        }));
-        return;
-      }
-
-      ScrollTrigger.matchMedia({
-        // Full scroll-jacked treatment: pin the beat so it's the only
-        // thing gaining scroll-worthy content, gated to a real scroll
-        // distance rather than flowing past in a fraction of a scroll.
-        '(min-width: 900px)': function () {
+    ScrollTrigger.matchMedia({
+      // Full scroll-jacked treatment: pin each short beat in turn so it's
+      // the only thing gaining scroll-worthy content, gated to a real
+      // scroll distance rather than flowing past in a fraction of a
+      // scroll. Beats are pinned SEQUENTIALLY with an explicit refresh
+      // after each one — 'top top' measures a beat's position in the
+      // *current* layout, and without forcing a remeasure right after
+      // each pin-spacer is inserted, every later beat's start position
+      // was computed against the pre-pin (unspaced) layout, so their
+      // ranges overlapped and multiple beats ended up pinned—and
+      // stacked on top of each other—at once (confirmed live).
+      '(min-width: 900px)': function () {
+        shortBeats.forEach(function (beat) {
+          var words = beat.__storyWords;
           var tl = gsap.timeline({
             scrollTrigger: {
               trigger: beat,
@@ -174,12 +200,13 @@
               // specificity than any class rule), and a sibling beat
               // revealed via .fade-up.is-visible gets its own
               // transform-based stacking context that paints in DOM
-              // order regardless — it bled through around/behind the
-              // pinned box in testing. #story-pin-backdrop is a plain
-              // fixed, high-z-index element outside GSAP's pin sizing
-              // entirely; is-pinned still marks the active beat (for its
-              // own z-index + vertical centering), and the shared
-              // backdrop tracks whether *any* beat is currently pinned.
+              // order regardless. #story-pin-backdrop is a plain fixed,
+              // high-z-index element outside GSAP's pin sizing entirely;
+              // is-pinned still marks the active beat (its own z-index +
+              // vertical centering), and the shared backdrop tracks
+              // whether *any* beat is currently pinned via a count, not
+              // a plain toggle (adjacent beats' callbacks can fire in
+              // either order on fast scroll).
               onEnter: function () { beat.classList.add('is-pinned'); pinEngaged(); },
               onEnterBack: function () { beat.classList.add('is-pinned'); pinEngaged(); },
               onLeave: function () { beat.classList.remove('is-pinned'); pinReleased(); },
@@ -191,17 +218,25 @@
           // whole pinned scroll distance.
           tl.fromTo(words, wordFrom, wordTween, 0);
           tl.to({}, { duration: 1.4 });
-        },
-        // Mobile: pinning a full section is unreliable against mobile
-        // browser chrome resize behavior, and the layout is already a
-        // single stacked column there — scrub the same word reveal
-        // against natural scroll-into-view instead, no pin.
-        '(max-width: 899px)': function () {
-          gsap.fromTo(words, wordFrom, Object.assign({}, wordTween, {
+
+          // Force GSAP to remeasure the DOM now, with this beat's
+          // pin-spacer already inserted, before the next beat's ScrollTrigger
+          // is created and reads its own (now correctly shifted) position.
+          ScrollTrigger.refresh();
+        });
+      },
+      // Mobile: pinning a full section is unreliable against mobile
+      // browser chrome resize behavior, and the layout is already a
+      // single stacked column there — scrub the same word reveal against
+      // natural scroll-into-view instead, no pin, so there's no
+      // pin-spacer sequencing concern to begin with.
+      '(max-width: 899px)': function () {
+        shortBeats.forEach(function (beat) {
+          gsap.fromTo(beat.__storyWords, wordFrom, Object.assign({}, wordTween, {
             scrollTrigger: { trigger: beat, start: 'top 75%', end: 'top 40%', scrub: 0.3 },
           }));
-        },
-      });
+        });
+      },
     });
 
     ScrollTrigger.refresh();
