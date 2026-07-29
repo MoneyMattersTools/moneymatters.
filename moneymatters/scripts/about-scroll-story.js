@@ -129,27 +129,6 @@
       if (pinBackdrop && pinnedCount === 0) pinBackdrop.classList.remove('is-active');
     }
 
-    ScrollTrigger.create({
-      trigger: story,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.4,
-      onUpdate: function (self) {
-        render(self.progress);
-        // Safety net: the last beat's pin distance is a fixed viewport
-        // multiple that may not land exactly on the page's real max
-        // scroll once every beat's pin-spacer is accounted for. If that
-        // ever leaves a pin's onLeave un-fired at the very bottom, the
-        // backdrop would stay stuck active and permanently hide the
-        // footer — force-clear it once scroll has nowhere further to go.
-        if (self.progress >= 0.999 && pinBackdrop && pinBackdrop.classList.contains('is-active')) {
-          pinnedCount = 0;
-          pinBackdrop.classList.remove('is-active');
-          document.querySelectorAll('.story-beat.is-pinned').forEach(function (b) { b.classList.remove('is-pinned'); });
-        }
-      },
-    });
-
     var wordTween = { opacity: 1, filter: 'blur(0px)', y: 0, stagger: 0.035, duration: 1, ease: 'power2.out' };
     var wordFrom = { opacity: 0, filter: 'blur(8px)', y: 10 };
 
@@ -236,6 +215,36 @@
             scrollTrigger: { trigger: beat, start: 'top 75%', end: 'top 40%', scrub: 0.3 },
           }));
         });
+      },
+    });
+
+    // Created LAST, after every beat pin above has inserted its
+    // pin-spacer: this trigger's end:'bottom bottom' measures #scroll-
+    // story's bottom edge at creation time, and creating it before those
+    // spacers existed (the original ordering) baked in a bottom position
+    // from well before the page's real final height — its own progress
+    // hit 1.0 partway down the page, freezing the dial there and firing
+    // the "safety net" below mid-scroll, stripping is-pinned off whatever
+    // beat happened to be pinned at that moment. Same root cause as the
+    // beat-overlap bug, different trigger.
+    ScrollTrigger.create({
+      trigger: story,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.4,
+      onUpdate: function (self) {
+        render(self.progress);
+        // Safety net: the last beat's pin distance is a fixed viewport
+        // multiple that may not land exactly on the page's real max
+        // scroll once every beat's pin-spacer is accounted for. If that
+        // ever leaves a pin's onLeave un-fired at the very bottom, the
+        // backdrop would stay stuck active and permanently hide the
+        // footer — force-clear it once scroll has nowhere further to go.
+        if (self.progress >= 0.999 && pinBackdrop && pinBackdrop.classList.contains('is-active')) {
+          pinnedCount = 0;
+          pinBackdrop.classList.remove('is-active');
+          document.querySelectorAll('.story-beat.is-pinned').forEach(function (b) { b.classList.remove('is-pinned'); });
+        }
       },
     });
 
