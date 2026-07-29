@@ -480,6 +480,22 @@
       window.history.replaceState({}, '', url.toString());
     }
 
+    // §33.26: the Advisor Connect page's CTA skips straight past the
+    // choice step into email capture, same as ?start=health-score — but
+    // it should read as its own entry point ("connect me with an
+    // advisor"), not the generic Financial Health Score framing, since
+    // that's what actually earns the click from that page.
+    function applyAdvisorFraming() {
+      var emailStep = heroRoot.querySelector('[data-step="email"]');
+      if (!emailStep) return;
+      var kicker = emailStep.querySelector('.kicker');
+      var heading = emailStep.querySelector('h2');
+      var sub = emailStep.querySelector('.hero-sub');
+      if (kicker) kicker.textContent = 'Advisor Connect';
+      if (heading) heading.textContent = '3 minutes here to connect you with the right advisor.';
+      if (sub) sub.textContent = 'Enter your email so we can send your results and match you with a vetted advisor. No password needed.';
+    }
+
     if (token) {
       // Strip the token from the URL immediately — it now lives only in this
       // closure. The verify call itself only fires on an explicit user click
@@ -539,7 +555,8 @@
         if (data && data.loggedIn && typeof data.healthScore === 'number') {
           renderResults(data.healthScore, data.healthBand);
           renderDashboard(data);
-        } else if (startParam === 'health-score') {
+        } else if (startParam === 'health-score' || startParam === 'advisor-connect') {
+          if (startParam === 'advisor-connect') applyAdvisorFraming();
           stripStartParam();
           setStep('email');
           var input = el('diagnostic-email');
@@ -549,7 +566,8 @@
         }
       })
       .catch(function () {
-        if (startParam === 'health-score') {
+        if (startParam === 'health-score' || startParam === 'advisor-connect') {
+          if (startParam === 'advisor-connect') applyAdvisorFraming();
           stripStartParam();
           setStep('email');
         } else {

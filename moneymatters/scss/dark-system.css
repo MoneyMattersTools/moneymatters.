@@ -1023,19 +1023,6 @@ body main .hero {
 /* =====================================================
    About Us page components
    ===================================================== */
-.about-diagnostic-cta { background: var(--mm-green-soft); border: 1px solid rgba(52, 211, 153, 0.25); }
-.about-diagnostic-cta p { color: var(--mm-text-light); }
-.about-diagnostic-cta a { background: var(--mm-green); color: var(--mm-bg-deep); }
-.about-diagnostic-cta a:hover { background: var(--mm-text-light); }
-
-.cost-compare { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
-.cost-compare-label { color: var(--mm-text-light-soft); }
-.cost-compare-track { background: var(--mm-bg-deep); border: 1px solid var(--mm-surface-border); }
-.cost-compare-value { color: var(--mm-text-light); }
-.cost-compare-note { color: var(--mm-text-light-muted); }
-.fee-slider-label { color: var(--mm-text-light-muted); }
-.fee-slider-label span { color: var(--mm-text-light); }
-
 .bento-tile { background: var(--mm-surface); border: 1px solid var(--mm-surface-border); }
 .bento-tile:hover { border-color: var(--mm-green); }
 .bento-tile h3, .bento-tile h4 { color: var(--mm-text-light); }
@@ -1052,9 +1039,6 @@ body main .hero {
 .persuasion-tile--dark h3 { color: var(--mm-text-light); }
 .persuasion-tile--dark p { color: var(--mm-text-light-muted); }
 .persuasion-reinforcement { background: var(--mm-green-soft); color: var(--mm-text-light); }
-.persuasion-tile sup a { color: var(--mm-green); }
-.persuasion-citation { color: var(--mm-text-light-soft); }
-.persuasion-citation a { color: var(--mm-text-light-soft); }
 .bento-tile--dark { background: var(--mm-bg-deep); border-color: var(--mm-surface-border); }
 .bento-tile--dark h3, .bento-tile--dark h4 { color: var(--mm-text-light); }
 .bento-tile--dark p { color: var(--mm-text-light-muted); }

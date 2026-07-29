@@ -132,6 +132,21 @@
     var wordTween = { opacity: 1, filter: 'blur(0px)', y: 0, stagger: 0.035, duration: 1, ease: 'power2.out' };
     var wordFrom = { opacity: 0, filter: 'blur(8px)', y: 10 };
 
+    // §33.16: the dial previously only reacted to the whole-story scrub
+    // (render(), below) — a separate, continuous background function with
+    // no per-beat relationship to the words. That reads as two things
+    // animating near each other rather than one scene. Each short beat's
+    // per-beat timeline (tl, below) now also carries the dial's own
+    // position/scale, at the same timeline position (0) as its word
+    // reveal — so the identical scrubbed value that blurs-in that beat's
+    // text is the value physically moving the image, beat by beat.
+    var visualBeatTargets = [
+      { y: 6, scale: 0.92 },   // Beat 1 — recedes, matches "faint, unfilled, static"
+      { y: -10, scale: 0.98 }, // Beat 2 — leans in as the insight lands
+      { y: -22, scale: 1.05 }, // Beat 3 — becomes the solution, more present
+      { y: -4, scale: 1.1 },   // Beat 5 — settles, glowing, confident
+    ];
+
     var lastBeatEnd = null;
     var wideBeats = [];
     var shortBeats = [];
@@ -198,6 +213,15 @@
           // whole pinned scroll distance.
           tl.fromTo(words, wordFrom, wordTween, 0);
           tl.to({}, { duration: 1.4 });
+
+          // Dial drifts across this same beat's timeline, from wherever
+          // the previous beat left it — continuous motion across beats,
+          // not a per-beat reset, so it reads as one drift through the
+          // whole story rather than a snap at each pin.
+          var visualTarget = visualBeatTargets[beatIndex];
+          if (visualTarget) {
+            tl.to(visual, Object.assign({ ease: 'power1.inOut', duration: 2.2 }, visualTarget), 0);
+          }
 
           // Force GSAP to remeasure the DOM now, with this beat's
           // pin-spacer already inserted, before the next beat's ScrollTrigger

@@ -131,9 +131,9 @@
                   <p>The private space to trade notes with other members working through the same questions.</p>
                   <span class="member-benefit-cta">Join on Discord <span aria-hidden="true">→</span></span>
                 </a>
-                <a class="member-benefit-card" href="contact.html">
-                  <h3>Priority advisor call</h3>
-                  <p>Request time directly with our team to get matched and book a call, ahead of the general queue.</p>
+                <a class="member-benefit-card" href="contact.html" id="member-advisor-card">
+                  <h3 id="member-advisor-card-title">Priority advisor call</h3>
+                  <p id="member-advisor-card-body">Request time directly with our team to get matched and book a call, ahead of the general queue.</p>
                   <span class="member-benefit-cta">Request a call <span aria-hidden="true">→</span></span>
                 </a>
                 <div class="member-benefit-card member-benefit-card--soon">
@@ -160,50 +160,38 @@
               </div>
               <span class="kicker">You have the leverage</span>
               <h1>MoneyMatters+</h1>
-              <p class="tools-hero-sub">Most advisors cost you a percentage of your money for as long as you're a client, a quiet drag on your future regardless of how well things go. Here, $5/month gets you every tool we build, real control over your own numbers, and a vetted, fee-only advisor connection that's always free.</p>
+              <p class="tools-hero-sub">Providing the tools to inspire a community of individuals like you to take control. MoneyMatters+ is a commitment to you that costs less than a cup of coffee to get your family on track to financial flourishing.</p>
             </section>
 
             <section class="about-section fade-up">
               <span class="kicker">The value case</span>
               <h2>Why the model is different</h2>
-              <p class="feature-tools-sub">Elsewhere, advisors gatekeep by asset minimums, and firms profit whether or not their advice actually helps you. Here, you already know your numbers before you ever talk to anyone: the diagnostic is free, with just a quick email verification (no password, ever), and every basic tool is free to use with no account needed at all.</p>
+              <p class="feature-tools-sub">You don't need to wait until you can afford advice to start making progress. The diagnostic is free, with just a quick email verification (no password, ever), and every basic tool is free to use with no account needed at all. MoneyMatters+ is for going deeper once you're ready, not a gate you have to get through first.</p>
 
               <div class="persuasion-grid">
                 <div class="persuasion-tile persuasion-tile--wide persuasion-tile--dark">
                   <h3>This is what having it handled feels like.</h3>
-                  <p>Confidence isn't knowing everything. It's knowing where you stand, and having a plan you actually trust instead of a vague sense you should "get around to it." That's what the tools and the advisor connection are really for.</p>
+                  <p>Confidence isn't knowing everything. It's knowing where you stand, and having a plan you actually trust instead of a vague sense you should get around to it eventually.</p>
                 </div>
                 <div class="persuasion-tile">
-                  <h3>What waiting actually costs.</h3>
-                  <p>The real cost of putting this off usually isn't a fee. It's the employer match you didn't claim, the emergency fund that never got built, the plan you meant to make last year. U.S. adults estimate that not understanding their own finances well enough costs them over $1,000 a year on average<sup><a href="#nfec-source" id="nfec-source-ref">1</a></sup>. Confusion has a price too, it's just harder to see coming.</p>
-                </div>
-                <div class="persuasion-tile persuasion-tile--stat">
-                  <h3>The math, briefly.</h3>
-                  <div class="fee-slider">
-                    <label for="fee-slider-input" class="fee-slider-label">Try your own portfolio size: <span id="fee-slider-value">$150,000</span></label>
-                    <input type="range" id="fee-slider-input" min="10000" max="500000" step="10000" value="150000" aria-describedby="fee-slider-advisor-value">
-                    <div class="cost-compare cost-compare--mini">
-                      <div class="cost-compare-row">
-                        <span class="cost-compare-label">Typical 1% advisor fee</span>
-                        <div class="cost-compare-track"><div class="cost-compare-fill cost-compare-fill--full" id="fee-slider-fill"></div></div>
-                        <span class="cost-compare-value" id="fee-slider-advisor-value">$1,500 every year</span>
-                      </div>
-                      <div class="cost-compare-row">
-                        <span class="cost-compare-label">MoneyMatters+ &middot; any portfolio size</span>
-                        <div class="cost-compare-track"><div class="cost-compare-fill cost-compare-fill--min"></div></div>
-                        <span class="cost-compare-value">$60 a year</span>
-                      </div>
-                    </div>
-                  </div>
+                  <h3>Stop bracing for the next surprise.</h3>
+                  <p>A real emergency fund and a budget that reflects your actual life turn "what if something breaks" from a spiral into a line item you've already planned for.</p>
                 </div>
                 <div class="persuasion-tile">
-                  <h3>No lock-in, ever.</h3>
-                  <p>Cancel anytime and keep access through the end of your billing period. No contract, no retention calls, no fine print designed to make leaving harder than joining.</p>
+                  <h3>Watch the number actually move.</h3>
+                  <p>Seeing your balance and payoff date update as you pay it down keeps debt from feeling like a fog you're stuck in. Progress you can see is progress you stick with.</p>
+                </div>
+                <div class="persuasion-tile">
+                  <h3>Build the plan before they need it.</h3>
+                  <p>College costs, childcare, the first house down payment: the earlier you can see the shape of it, the less any single year has to carry.</p>
+                </div>
+                <div class="persuasion-tile">
+                  <h3>Know why you spend, not just what you spent.</h3>
+                  <p>Seeing your patterns laid out plainly, not judged, just visible, is usually what breaks the cycle of guilt-spend-repeat that willpower alone never fixes.</p>
                 </div>
               </div>
 
               <p class="persuasion-reinforcement">Worth repeating: advisor matching is free either way, with or without MoneyMatters+. The $5/month is only ever for the toolset, never the price of talking to someone.</p>
-              <p class="persuasion-citation" id="nfec-source">1. National Financial Educators Council, <a href="https://www.financialeducatorscouncil.org/financial-illiteracy-costs/" target="_blank" rel="noopener">annual Financial Illiteracy Cost survey</a>, cross-year average.</p>
             </section>
 
             <section class="plus-section fade-up">
@@ -241,7 +229,7 @@
                 <div class="plus-visual-card">
                   <img src="images/advanced-budget-laptop.png" alt="Advanced Budget Tool spreadsheet showing summary, recommended monthly budget, and savings scenarios" loading="lazy">
                   <h3>Advanced Budget Tool</h3>
-                  <p>Fixed vs. variable breakdowns and personalized savings recommendations based on your income.</p>
+                  <p>Fixed vs. variable breakdowns, personalized to your income.</p>
                 </div>
                 <div class="plus-visual-card">
                   <img src="images/advanced-investment-laptop.png" alt="Advanced Investment Tool spreadsheet showing portfolio allocation and projections" loading="lazy">
@@ -258,7 +246,7 @@
                     </svg>
                   </div>
                   <h3>Community access</h3>
-                  <p>A private space to trade notes with other people working through the same budgeting, investing, and debt questions.</p>
+                  <p>A private space to trade notes with people working through the same money questions.</p>
                 </div>
                 <div class="plus-visual-card plus-visual-card--concept">
                   <div class="plus-visual-icon" aria-hidden="true">
@@ -273,7 +261,7 @@
                   <p>Live sessions with vetted advisors to ask questions in the room, not just one-on-one.</p>
                 </div>
               </div>
-              <p class="plus-visuals-note">Community and advisor Q&amp;A sessions are new and building out. The icons above are illustrative, not screenshots of a finished product.</p>
+              <p class="plus-visuals-note">Community and advisor Q&amp;A are still being built. Icons above are illustrative, not finished screenshots.</p>
             </section>
 
             <section class="about-section fade-up">
@@ -336,7 +324,6 @@
               <div class="newsletter-cta__inner">
                 <span class="kicker">Stay in the loop</span>
               <h2>Get the occasional useful email.</h2>
-              <p>No spam, no daily noise, just real updates when we ship something worth knowing about.</p>
               <div class="newsletter-cta__embed">
                 <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="4405be90-24ce-4ad8-9f1b-8fcd2e692491"></script>
               </div>
@@ -384,7 +371,6 @@
         <script src="scripts/signature-motif.js"></script>
         <script src="scripts/onboarding-gate.js"></script>
         <script src="scripts/sign-in.js"></script>
-        <script src="scripts/fee-slider.js"></script>
         <script src="scripts/moneymatters-plus-gate.js"></script>
     </body>
 

@@ -992,19 +992,11 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     .about-diagnostic-cta { flex-direction: column; text-align: center; }
 }
 
-/* --- About/MoneyMatters+: cost comparison viz (reused by the fee-slider) --- */
-.cost-compare { display: flex; flex-direction: column; gap: 22px; background: var(--mm-cream-warm); border: 1px solid var(--mm-border); border-radius: 20px; padding: 32px; }
-.cost-compare-row { display: flex; flex-direction: column; gap: 8px; }
-.cost-compare-label { font-family: var(--mm-sans-display); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mm-text-soft); }
-.cost-compare-track { height: 14px; background: white; border: 1px solid var(--mm-border); border-radius: 8px; overflow: hidden; }
-.cost-compare-fill { height: 100%; border-radius: 8px; }
-.cost-compare-fill--full { width: 100%; background: linear-gradient(90deg, var(--mm-gold), #B3432B); }
-.cost-compare-fill--min { width: 8%; background: var(--mm-green); }
-.cost-compare-value { font-family: var(--mm-sans); font-size: 14px; color: var(--mm-text); font-weight: 600; }
-.cost-compare-note { font-family: var(--mm-sans); font-style: italic; font-size: 15px; color: var(--mm-text-muted); margin: 18px 0 0; }
-
-/* --- MoneyMatters+: persuasion cluster (DESIGN_SPEC.md §23.2) — several
-   small distinct angles instead of one dominant dollar chart. --- */
+/* --- MoneyMatters+: persuasion cluster (DESIGN_SPEC.md §23.2, rebuilt
+   §33.31 around emotional/logical appeal — stability, debt payoff, family
+   planning, behavioral spending control — instead of an advisor-fee
+   comparison, since MoneyMatters connects users to advisors rather than
+   competing with them). --- */
 .persuasion-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1023,20 +1015,6 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .persuasion-tile--dark { background: var(--mm-charcoal); border-color: var(--mm-charcoal); }
 .persuasion-tile--dark h3 { color: var(--mm-cream); }
 .persuasion-tile--dark p { color: rgba(250, 250, 247, 0.75); }
-.persuasion-tile--stat .cost-compare {
-    background: transparent; border: none; padding: 0; gap: 14px; margin-top: 4px;
-}
-.persuasion-tile--stat .cost-compare-track { height: 10px; }
-
-/* --- MoneyMatters+: interactive fee-comparison slider (§27.3) --- */
-.fee-slider-label { display: block; font-family: var(--mm-sans); font-size: 13px; font-weight: 700; color: var(--mm-text-muted); margin-bottom: 10px; }
-.fee-slider-label span { color: var(--mm-charcoal); font-weight: 800; }
-.fee-slider input[type="range"] {
-    width: 100%;
-    margin: 0 0 20px;
-    accent-color: var(--mm-green-deep);
-    cursor: pointer;
-}
 .persuasion-reinforcement {
     font-family: var(--mm-sans);
     font-weight: 600;
@@ -1048,9 +1026,6 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
     padding: 16px 22px;
     margin: 24px 0 0;
 }
-.persuasion-tile sup a { color: var(--mm-green-deep); font-weight: 700; text-decoration: none; }
-.persuasion-citation { font-family: var(--mm-sans); font-size: 12.5px; color: var(--mm-text-soft); text-align: center; margin: 14px 0 0; }
-.persuasion-citation a { color: var(--mm-text-soft); text-decoration: underline; }
 @media (max-width: 700px) {
     .persuasion-grid { grid-template-columns: 1fr; }
     .persuasion-tile--wide { grid-column: 1; }
