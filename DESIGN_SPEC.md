@@ -401,3 +401,30 @@ Existing content not covered above (vetting-standard cards, "Built on real princ
 4. **About Us scroll story - two real refinements needed**:
    - Content should not all be visible/displayed at once - it should progressively reveal as the user scrolls, gated to actual scroll distance (more scroll required per beat, likely via pinning each beat briefly), not all rendered and just sitting there while the dial animates.
    - The text itself should have more of a "living" quality as it reveals (e.g. a soft blur-to-focus or staggered per-line/word fade-in), not just appearing as static text next to the moving visual - the dial's motion currently feels more alive than the words do.
+
+## 33. Round 20 Feedback — Full Page-by-Page Copy Pass (locked 2026-07-27)
+
+### Housekeeping
+0. Clean up old scratchpad screenshots at the end of every verification round going forward (see chat instruction). Check current scratchpad size and clean the backlog now.
+
+### Home Page
+1. Rename dashboard section label from "Your dashboard" to "Your Financial Snapshot."
+2. Dashboard card sizing already fixed in Section 32 - confirm still correct after this round's other Home page changes.
+3. Slow the background video/imagery loop further - target ~20 seconds before it noticeably loops, not the current speed.
+4. "From unclear to understanding, in three steps" section: increase font size to fill more space and improve legibility.
+5. Tool card description copy changes (for emotional connection, less clinical):
+   - Investment tool: "Does your strategy match your goals?" (drop the word "investment" from the question)
+   - Budget tool: "Where is your money going?"
+   - Retirement tool: "Is retirement possible?"
+6. Newsletter/email signup box: still appears slightly off-center - fix precisely, verify visually not just via CSS read.
+7. Footer: align the social media icons in line with the other footer text/nav row, not offset below it.
+
+### Tools Page
+8. Delete all text between the "Financial Tools" header and the "Start here" label (keep "Start here").
+9. Delete all text between the "2-minute diagnostic" header and the two tool choice links.
+10. Change the gold eyebrow text above the tools grid to "Interactive and Informative," and the header below it to "Go Deeper, Invest in You." Delete the paragraph text between that header and the tool cards themselves.
+11. Update the three basic tool card descriptions to match the Home Page wording from item 5 above (Budget/Retirement/Investment).
+12. Delete the text under the "Advanced Tools" header. Update descriptions:
+    - Advanced Budget: "Track the money you don't realize you're spending"
+    - Advanced Investment: "Not investment advice. Non-Guru Guidance"
+13. MoneyMatters+ pricing card on this page will need an update once subscription offerings are finalized - not part of this round, noted for later.
