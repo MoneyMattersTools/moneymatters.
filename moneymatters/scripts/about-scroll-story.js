@@ -19,6 +19,7 @@
 (function () {
   var story = document.getElementById('scroll-story');
   var visual = document.getElementById('story-visual');
+  var pinBackdrop = document.getElementById('story-pin-backdrop');
   if (!story || !visual) return;
 
   var ticksGroup = document.getElementById('story-sig-ticks');
@@ -122,6 +123,20 @@
       onUpdate: function (self) { render(self.progress); },
     });
 
+    // Counter rather than a plain toggle: onEnter/onLeave across adjacent
+    // beats' pins can fire in either order on fast scroll or direction
+    // reversal (onEnterBack/onLeaveBack), and a plain add/remove race
+    // could leave the backdrop hidden while a beat is still pinned.
+    var pinnedCount = 0;
+    function pinEngaged() {
+      pinnedCount++;
+      if (pinBackdrop) pinBackdrop.classList.add('is-active');
+    }
+    function pinReleased() {
+      pinnedCount = Math.max(0, pinnedCount - 1);
+      if (pinBackdrop && pinnedCount === 0) pinBackdrop.classList.remove('is-active');
+    }
+
     gsap.utils.toArray('.story-beat').forEach(function (beat) {
       var heading = beat.querySelector('h1, h2');
       var lead = beat.querySelector(':scope > p');
@@ -154,17 +169,21 @@
               end: '+=' + Math.round(window.innerHeight * 1.15),
               pin: true,
               scrub: 0.3,
-              // A pinned beat is only as tall as its own short content,
-              // not the viewport — without an opaque background sized to
-              // fill that space, the next beat (already laid out below in
-              // normal flow) visibly bleeds through around/behind it.
-              // is-pinned only applies while actually pinned so beats
-              // don't otherwise claim a full viewport height of empty
-              // space in normal flow.
-              onEnter: function () { beat.classList.add('is-pinned'); },
-              onEnterBack: function () { beat.classList.add('is-pinned'); },
-              onLeave: function () { beat.classList.remove('is-pinned'); },
-              onLeaveBack: function () { beat.classList.remove('is-pinned'); },
+              // A pinned beat's own box can't reliably serve as the
+              // occluder: GSAP sets inline width/max-width on it (higher
+              // specificity than any class rule), and a sibling beat
+              // revealed via .fade-up.is-visible gets its own
+              // transform-based stacking context that paints in DOM
+              // order regardless — it bled through around/behind the
+              // pinned box in testing. #story-pin-backdrop is a plain
+              // fixed, high-z-index element outside GSAP's pin sizing
+              // entirely; is-pinned still marks the active beat (for its
+              // own z-index + vertical centering), and the shared
+              // backdrop tracks whether *any* beat is currently pinned.
+              onEnter: function () { beat.classList.add('is-pinned'); pinEngaged(); },
+              onEnterBack: function () { beat.classList.add('is-pinned'); pinEngaged(); },
+              onLeave: function () { beat.classList.remove('is-pinned'); pinReleased(); },
+              onLeaveBack: function () { beat.classList.remove('is-pinned'); pinReleased(); },
             },
           });
           // Words finish revealing well before the pin releases, leaving

@@ -1010,20 +1010,36 @@ footer nav {
 }
 .story-beat > p { font-family: var(--mm-sans); font-size: 17px; line-height: 1.65; margin: 0; }
 .story-beat--wide { max-width: none; }
-/* §32.4 fix: while a beat is genuinely pinned (desktop only — JS toggles
-   this class only for that duration), give it an opaque full-height,
-   full-width surface so the next beat, already laid out below it in
-   normal flow, can't visually bleed through around its actual (much
-   shorter) content box. Background color lives in dark-system.css. */
+/* §32.4 fix (v2): the first attempt gave the pinned beat itself a
+   full-width/full-height background, but GSAP's pin sets inline
+   width/max-width/position styles that out-specificity a plain class
+   rule, so the box never actually widened — and separately, sibling
+   beats revealed via .fade-up.is-visible get their own transform-based
+   stacking context and paint in DOM order regardless of that box's
+   background anyway. Fixed properly with a dedicated, JS-toggled
+   backdrop element (#story-pin-backdrop) that isn't constrained by
+   GSAP's pin sizing at all, plus an explicit z-index here so the pinned
+   beat's own text still renders above that backdrop. min-height/flex
+   centering stays — that part worked fine, it's just not what was
+   causing the bleed-through. */
 .story-beat.is-pinned {
   min-height: 100vh;
-  width: 100%;
-  max-width: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
+  position: relative;
+  z-index: 501;
 }
+.story-pin-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.story-pin-backdrop.is-active { opacity: 1; }
 .story-cta-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
 
 .story-sub { margin-top: 56px; }
