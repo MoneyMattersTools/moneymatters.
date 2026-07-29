@@ -449,7 +449,7 @@ Existing content not covered above (vetting-standard cards, "Built on real princ
 ### Advisor Connect Page
 24. Delete the green box text/section below the header area.
 25. Update the text below the "Advisor Connect" header to: "Vetted, fee-only, fiduciary advisors who pay to talk to YOU, before they even see your name. Matching is free for you and begins by clicking below."
-26. "Connect with an Advisor" button destination - see open question in chat (keep-diagnostic-requirement vs. drop-it), pending Ethan's confirmation.
+26. "Connect with an Advisor" button (both the top CTA and any other instance on this page) links directly into the Financial Health Score quiz question flow - skip the homepage/choice-step screen entirely, land straight on the first quiz question. Frame this specific entry point with its own copy: "3 minutes here to connect you with the right advisor" (or a close variant), distinct from the generic diagnostic framing used elsewhere on the site.
 27. Delete the text below the "What a match looks like" header.
 28. "Business owners & equity events" specialty label changes to "Business Owners & Liquidity Events."
 29. Delete the text at the bottom, under the "Ready to get matched?" section.
@@ -459,3 +459,4 @@ Existing content not covered above (vetting-standard cards, "Built on real princ
 31. Replace the current persuasion content (fee-comparison slider and tiles) - the advisor-fee comparison is the wrong angle, MoneyMatters does not compete with or replace advisors, it connects users to them. Rebuild this section around emotional + logical appeal: stability, debt payoff, planning for children, psychological/behavioral spending control, and similar real angles. Real creative latitude here.
 32. "What you get" and "Free vs. Plus" comparison sections stay as-is in substance, just trim excess wording - less is more.
 33. Begin work on the logged-in + subscribed member view of this page (a live dashboard/repository of MoneyMatters+ perks) - this was flagged as started in Section 30 item 5, confirm current state and continue building it out.
+
