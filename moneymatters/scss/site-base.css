@@ -31,6 +31,22 @@
     --mm-sans-display: 'Inter Tight', 'Inter', sans-serif;
 }
 
+/* §33.6: a vertical scrollbar only reserves space on the right edge, so
+   every margin:0 auto centered element sitewide sits centered against
+   the content area (viewport minus scrollbar), not the true window —
+   confirmed via live pixel measurement, not just a CSS read: a 640px
+   centered box measured 393px from the left edge and 407px from the
+   right in a 1440px window (real, visible, ~14px left bias), which is
+   why the newsletter box specifically (an obvious, hard-edged card
+   against a full-bleed background) kept reading as "still slightly
+   off-center" even after prior fix attempts that only adjusted its own
+   CSS. scrollbar-gutter:stable reserves the browser's real scrollbar
+   space up front so it doesn't cause layout shift; both-edges mirrors
+   that same reservation on the left too, so every centered element's
+   containing block is symmetric again — fixes this sitewide in one
+   place rather than compensating per-component. */
+html { scrollbar-gutter: stable both-edges; }
+
 body { background: var(--mm-cream); color: var(--mm-text); line-height: 1.65; }
 
 body h1, body h2, body h3 {
@@ -705,19 +721,24 @@ body .form-container, .connect-section .form-container { position: static !impor
 .form-side .submit-btn, #signup-form .submit-btn, #signup-form button[type="submit"] { width: 100% !important; margin-top: 20px !important; padding: 14px 22px !important; font-size: 16px !important; }
 @media (max-width: 768px) { .connect-grid { grid-template-columns: 1fr !important; } .form-side .form-row, #signup-form .row { grid-template-columns: 1fr !important; } }
 
-body > footer, body footer { background: var(--mm-charcoal-deep) !important; color: var(--mm-cream) !important; padding: 64px 6% 30px !important; margin: 0 !important; position: relative; }
-body footer > p, body footer > .logo { color: var(--mm-cream) !important; font-family: var(--mm-sans-display) !important; font-size: 28px !important; font-weight: 800 !important; margin-bottom: 20px !important; letter-spacing: -0.025em !important; }
-body footer nav { display: flex !important; gap: 24px !important; flex-wrap: wrap !important; margin-bottom: 26px !important; padding-bottom: 26px !important; border-bottom: 1px solid rgba(250, 250, 247, 0.15) !important; position: static !important; }
+/* §33.7: footer is now a wrapping flex row so the social icons can sit
+   in line with the nav row instead of stacking below it as their own
+   block. The wordmark, disclaimer, credits, and signoff each force a
+   flex-basis:100% break so they still stack full-width as before —
+   only nav + .social-media share a row now. */
+body > footer, body footer { background: var(--mm-charcoal-deep) !important; color: var(--mm-cream) !important; padding: 64px 6% 30px !important; margin: 0 !important; position: relative; display: flex !important; flex-wrap: wrap !important; align-items: center !important; column-gap: 28px !important; }
+body footer > p, body footer > .logo { color: var(--mm-cream) !important; font-family: var(--mm-sans-display) !important; font-size: 28px !important; font-weight: 800 !important; margin-bottom: 20px !important; letter-spacing: -0.025em !important; flex-basis: 100% !important; width: 100% !important; }
+body footer nav { display: flex !important; gap: 24px !important; flex-wrap: wrap !important; margin-bottom: 26px !important; position: static !important; }
 body footer nav a { color: var(--mm-cream) !important; font-family: var(--mm-sans) !important; text-decoration: none !important; font-size: 15px !important; background: transparent !important; padding: 0 !important; transition: color 0.2s ease; }
 body footer nav a:hover { color: var(--mm-green) !important; }
-body footer .social-media h3 { color: var(--mm-cream) !important; font-family: var(--mm-sans-display) !important; font-size: 16px !important; font-weight: 700 !important; margin-bottom: 12px !important; }
-body footer .social-links { display: flex !important; gap: 14px !important; margin-bottom: 26px !important; }
+body footer .social-media h3 { color: var(--mm-cream) !important; font-family: var(--mm-sans-display) !important; font-size: 16px !important; font-weight: 700 !important; margin-bottom: 0 !important; }
+body footer .social-links { display: flex !important; gap: 14px !important; margin-bottom: 0 !important; }
 body footer .social-links a { display: inline-block; transition: transform 0.2s ease; }
 body footer .social-links a:hover { transform: translateY(-2px); }
 body footer .social-links img { width: 30px !important; height: 30px !important; border-radius: 6px; }
 /* Neutralize legacy per-page .social-media { position: relative; left: 80%/70% } hack — caused horizontal overflow on mobile. */
-body footer .social-media { position: static !important; left: auto !important; bottom: auto !important; margin-bottom: 48px !important; }
-body footer .disclaimer { font-size: 13px !important; color: rgba(250, 250, 247, 0.55) !important; line-height: 1.7 !important; margin-bottom: 18px !important; max-width: 900px !important; }
+body footer .social-media { position: static !important; left: auto !important; bottom: auto !important; margin-bottom: 26px !important; display: flex !important; align-items: center !important; gap: 12px !important; }
+body footer .disclaimer { font-size: 13px !important; color: rgba(250, 250, 247, 0.55) !important; line-height: 1.7 !important; margin-bottom: 18px !important; max-width: 900px !important; flex-basis: 100% !important; width: 100% !important; border-top: 1px solid rgba(250, 250, 247, 0.15) !important; padding-top: 26px !important; }
 body footer .disclaimer h3 { font-family: var(--mm-sans-display) !important; font-size: 13px !important; color: rgba(250, 250, 247, 0.75) !important; margin-bottom: 8px !important; font-weight: 700 !important; }
 /* A generic `footer p` rule (homestyling.css, meant only for the
    "MoneyMatters." wordmark paragraph) also matches this paragraph and
@@ -726,7 +747,8 @@ body footer .disclaimer h3 { font-family: var(--mm-sans-display) !important; fon
    paragraph into a garbled two-column-looking wrap (DESIGN_SPEC.md §24.1). */
 body footer .disclaimer p { display: block !important; text-align: left !important; color: rgba(250, 250, 247, 0.55) !important; font-size: 13px !important; }
 body footer .credits, body footer .credits p { font-size: 13px !important; color: rgba(250, 250, 247, 0.45) !important; }
-body footer .footer-signoff { font-family: var(--mm-serif) !important; font-style: italic !important; font-size: 15px !important; color: rgba(250, 250, 247, 0.5) !important; margin-top: 24px !important; padding-top: 24px !important; border-top: 1px solid rgba(250, 250, 247, 0.1) !important; }
+body footer .credits { flex-basis: 100% !important; width: 100% !important; }
+body footer .footer-signoff { font-family: var(--mm-serif) !important; font-style: italic !important; font-size: 15px !important; color: rgba(250, 250, 247, 0.5) !important; margin-top: 24px !important; padding-top: 24px !important; border-top: 1px solid rgba(250, 250, 247, 0.1) !important; flex-basis: 100% !important; width: 100% !important; }
 
 .page-hero, .about-hero, .tools-hero, .blog-landing-hero, .plus-member-view {
     position: relative !important;

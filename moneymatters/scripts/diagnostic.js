@@ -450,7 +450,7 @@
     }
 
     dashEl.innerHTML =
-      '<h3 class="mm-dashboard-heading">Your dashboard</h3>' +
+      '<h3 class="mm-dashboard-heading">Your Financial Snapshot</h3>' +
       '<div class="mm-dashboard-grid">' + cardsHtml + '</div>' +
       advisorHtml +
       plusHtml;
