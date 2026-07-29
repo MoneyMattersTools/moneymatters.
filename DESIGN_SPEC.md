@@ -392,3 +392,12 @@ CTA: "Start your Financial Health Score ->"
 Visual state: dial glowing/settled, steady state.
 
 Existing content not covered above (vetting-standard cards, "Built on real principles" grid, FAQ) folds into Beat 4 as additional scroll sub-sections rather than being cut - reduce/tighten wording per the ongoing "less is more" standard, do not delete substance.
+
+## 32. Round 19 Feedback (locked 2026-07-27)
+
+1. **About Us dropdown**: enlarge the dropdown arrow/indicator (currently too small). Add social media icons near the top of the page too, not just in the footer.
+2. **Dashboard boxes should size to their content**: $100,000 and $0 currently occupy the same fixed box size, leaving large numbers cramped and small numbers wasting space - let box height/width adapt to the actual number length rather than a fixed size.
+3. **Advisor Connect sample profile row**: remove the manual scrollbar entirely. Replace with continuous slow auto-rotation, matching the exact speed of the top marquee ticker, so it reads as ambient motion rather than something the user has to scroll.
+4. **About Us scroll story - two real refinements needed**:
+   - Content should not all be visible/displayed at once - it should progressively reveal as the user scrolls, gated to actual scroll distance (more scroll required per beat, likely via pinning each beat briefly), not all rendered and just sitting there while the dial animates.
+   - The text itself should have more of a "living" quality as it reveals (e.g. a soft blur-to-focus or staggered per-line/word fade-in), not just appearing as static text next to the moving visual - the dial's motion currently feels more alive than the words do.
