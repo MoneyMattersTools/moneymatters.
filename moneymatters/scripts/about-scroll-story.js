@@ -1,10 +1,14 @@
-// About Us cinematic scroll story (DESIGN_SPEC.md §31, refined §32.4).
+// About Us cinematic scroll story (DESIGN_SPEC.md §31, refined §32.4,
+// dial replaced with a path/journey visual §34.1).
 // Two independent GSAP ScrollTrigger systems share this page:
-//   1. A whole-story scrub (unchanged from §31) driving the signature
-//      dial as a continuous function of scroll progress through
-//      #scroll-story — never a per-beat snap.
-//   2. Per-beat pinning + word-level reveal (new, §32.4): each short beat
-//      (1/2/3/5) is pinned for a fixed scroll distance so its content is
+//   1. A whole-story scrub (unchanged from §31) driving the path visual
+//      as a continuous function of scroll progress through #scroll-story
+//      — never a per-beat snap. The traveler dot walks the path's exact
+//      curve via SVGPathElement.getPointAtLength(), and the path itself
+//      draws in via stroke-dashoffset, same technique the old dial's
+//      ring used.
+//   2. Per-beat pinning + word-level reveal (§32.4): each short beat
+//      (1/2/3) is pinned for a fixed scroll distance so its content is
 //      gated to actual scroll — not all visible/sitting there at once —
 //      and its headline + lead paragraph reveal word-by-word with a
 //      blur-to-focus tween, scrubbed to the first portion of that pin's
@@ -15,65 +19,54 @@
 //      the *entire* trigger element fixed rather than scrolling within
 //      it. It's intentionally left unpinned, keeping its own established
 //      .reveal-stagger pacing for the folded-in sub-sections, with just
-//      the word-reveal treatment on its heading for consistency.
+//      the word-reveal treatment on its heading for consistency. Beat 5
+//      ("The Invitation", §34.2) is excluded from this system entirely —
+//      it renders fully statically via the plain sitewide .fade-up
+//      reveal, no pin, no word scrub — since gating the final CTA behind
+//      a scroll-lock adds friction right at the conversion moment.
 (function () {
   var story = document.getElementById('scroll-story');
   var visual = document.getElementById('story-visual');
   var pinBackdrop = document.getElementById('story-pin-backdrop');
   if (!story || !visual) return;
 
-  var ticksGroup = document.getElementById('story-sig-ticks');
-  var ringFill = document.getElementById('story-sig-ring-fill');
-  var linePath = document.getElementById('story-sig-line-path');
-  var goldAccent = document.getElementById('story-sig-gold-accent');
-  var dots = visual.querySelectorAll('.story-sig-dot');
+  var pathFill = document.getElementById('story-path-fill');
+  var traveler = document.getElementById('story-traveler');
+  var waypoints = [0, 1, 2, 3, 4].map(function (i) {
+    return document.getElementById('story-waypoint-' + i);
+  });
+  // Roughly evenly spaced along the path, one per beat, slightly inset
+  // from the very ends so they sit clearly on the visible curve rather
+  // than right at its cropped edges.
+  var WAYPOINT_FRACTIONS = [0.02, 0.26, 0.50, 0.74, 0.98];
 
-  for (var i = 0; i < 24; i++) {
-    var angle = (i / 24) * 360;
-    var tick = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    tick.setAttribute('class', 'story-sig-tick');
-    tick.setAttribute('transform', 'rotate(' + angle + ' 300 300)');
-    tick.setAttribute('x1', '300');
-    tick.setAttribute('y1', '42');
-    tick.setAttribute('x2', '300');
-    tick.setAttribute('y2', i % 3 === 0 ? '62' : '54');
-    ticksGroup.appendChild(tick);
-  }
+  var pathLength = pathFill.getTotalLength();
+  pathFill.style.strokeDasharray = pathLength.toFixed(1);
 
-  var RING_R = 230;
-  var RING_CIRC = 2 * Math.PI * RING_R;
-  ringFill.style.strokeDasharray = RING_CIRC.toFixed(1);
-
-  var lineLength = linePath.getTotalLength();
-  linePath.style.strokeDasharray = lineLength.toFixed(1);
+  waypoints.forEach(function (circle, i) {
+    var pt = pathFill.getPointAtLength(WAYPOINT_FRACTIONS[i] * pathLength);
+    circle.setAttribute('cx', pt.x.toFixed(1));
+    circle.setAttribute('cy', pt.y.toFixed(1));
+  });
 
   function clamp01(v) {
     return Math.max(0, Math.min(1, v));
   }
 
-  // progress: 0 (top of the story, Beat 1 — "faint, unfilled, static") to
-  // 1 (bottom, Beat 5 — "glowing/settled"). Every visual property below is
-  // its own continuous function of that single value.
+  // progress: 0 (top of the story, Beat 1 — journey just starting) to 1
+  // (bottom, Beat 5 — arrived). Every visual property below is its own
+  // continuous function of that single value.
   function render(progress) {
-    ringFill.style.strokeDashoffset = (RING_CIRC * (1 - progress)).toFixed(1);
-    ringFill.style.opacity = (0.35 + progress * 0.65).toFixed(2);
+    pathFill.style.strokeDashoffset = (pathLength * (1 - progress)).toFixed(1);
+    pathFill.style.opacity = (0.55 + progress * 0.45).toFixed(2);
 
-    var lineProgress = clamp01((progress - 0.2) / 0.65);
-    linePath.style.strokeDashoffset = (lineLength * (1 - lineProgress)).toFixed(1);
-    dots.forEach(function (dot, idx) {
-      var threshold = 0.3 + idx * 0.18;
-      dot.style.opacity = progress > threshold ? '1' : '0';
+    var travelerPt = pathFill.getPointAtLength(clamp01(progress) * pathLength);
+    traveler.setAttribute('cx', travelerPt.x.toFixed(1));
+    traveler.setAttribute('cy', travelerPt.y.toFixed(1));
+
+    waypoints.forEach(function (circle, i) {
+      circle.classList.toggle('is-reached', progress >= WAYPOINT_FRACTIONS[i] - 0.03);
     });
-
-    var goldProgress = clamp01((progress - 0.55) / 0.25);
-    goldAccent.style.opacity = goldProgress.toFixed(2);
-
-    var glowProgress = clamp01((progress - 0.8) / 0.2);
-    visual.style.filter = glowProgress > 0
-      ? 'drop-shadow(0 0 ' + (glowProgress * 22).toFixed(0) + 'px rgba(52, 211, 153, 0.55))'
-      : 'none';
-
-    ticksGroup.setAttribute('transform', 'rotate(' + (progress * 50).toFixed(1) + ' 300 300)');
   }
 
   // Wraps each word of an element's real text in a <span> for animation
@@ -102,7 +95,7 @@
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion) {
-    // Calm, non-animated resolved-ish dial frame; no pinning, no word
+    // Calm, non-animated mid-journey frame; no pinning, no word
     // splitting — beats keep their real text and fall back to the
     // sitewide .fade-up reveal already on each <section>.
     render(0.5);
@@ -132,25 +125,30 @@
     var wordTween = { opacity: 1, filter: 'blur(0px)', y: 0, stagger: 0.035, duration: 1, ease: 'power2.out' };
     var wordFrom = { opacity: 0, filter: 'blur(8px)', y: 10 };
 
-    // §33.16: the dial previously only reacted to the whole-story scrub
-    // (render(), below) — a separate, continuous background function with
-    // no per-beat relationship to the words. That reads as two things
-    // animating near each other rather than one scene. Each short beat's
-    // per-beat timeline (tl, below) now also carries the dial's own
-    // position/scale, at the same timeline position (0) as its word
-    // reveal — so the identical scrubbed value that blurs-in that beat's
-    // text is the value physically moving the image, beat by beat.
-    var visualBeatTargets = [
-      { y: 6, scale: 0.92 },   // Beat 1 — recedes, matches "faint, unfilled, static"
-      { y: -10, scale: 0.98 }, // Beat 2 — leans in as the insight lands
-      { y: -22, scale: 1.05 }, // Beat 3 — becomes the solution, more present
-      { y: -4, scale: 1.1 },   // Beat 5 — settles, glowing, confident
-    ];
+    // §33.16 (still in force, per §34.1): the path shouldn't just react to
+    // the whole-story scrub in the background — each beat's own pinned
+    // timeline also pulses that beat's waypoint marker at the same
+    // timeline position as its word reveal, so the identical scrubbed
+    // value that blurs a beat's text into focus is the value animating
+    // the path right at that beat's own point on it. Animates the
+    // circle's r attribute directly rather than a transform scale, so it
+    // doesn't need an SVG transform-origin workaround.
+    var WAYPOINT_BASE_R = [7, 7, 7, 7, 9];
+    var WAYPOINT_PULSE_R = [12, 12, 12, 12, 14];
 
     var lastBeatEnd = null;
     var wideBeats = [];
     var shortBeats = [];
     gsap.utils.toArray('.story-beat').forEach(function (beat) {
+      // §34.2: the final Invitation beat now renders fully statically —
+      // no pin, no word-by-word scrub, just the plain sitewide .fade-up
+      // reveal every other non-story section already uses. Excluded from
+      // this whole word-splitting/GSAP system entirely rather than just
+      // left out of the pinned list — leaving its words wrapped in
+      // .story-word spans (which start blurred/invisible) with nothing to
+      // ever tween them to visible would leave the beat permanently
+      // unreadable.
+      if (beat.dataset.beat === '5') return;
       var heading = beat.querySelector('h1, h2');
       var lead = beat.querySelector(':scope > p');
       var words = [];
@@ -161,12 +159,19 @@
       (beat.classList.contains('story-beat--wide') ? wideBeats : shortBeats).push(beat);
     });
 
-    // Beat 4: not pinned (see file header) — just reveal its heading as it
-    // naturally scrolls into view.
+    // Beat 4: not pinned (see file header) — just reveal its heading (and
+    // pulse its waypoint, index 3) as it naturally scrolls into view.
     wideBeats.forEach(function (beat) {
-      gsap.fromTo(beat.__storyWords, wordFrom, Object.assign({}, wordTween, {
-        scrollTrigger: { trigger: beat, start: 'top 75%', end: 'top 35%', scrub: 0.3 },
-      }));
+      var scrollTriggerConfig = { trigger: beat, start: 'top 75%', end: 'top 35%', scrub: 0.3 };
+      gsap.fromTo(beat.__storyWords, wordFrom, Object.assign({}, wordTween, { scrollTrigger: scrollTriggerConfig }));
+      var wp4 = waypoints[3];
+      if (wp4) {
+        gsap.fromTo(
+          wp4,
+          { attr: { r: WAYPOINT_BASE_R[3] } },
+          { attr: { r: WAYPOINT_PULSE_R[3] }, scrollTrigger: scrollTriggerConfig }
+        );
+      }
     });
 
     ScrollTrigger.matchMedia({
@@ -214,13 +219,13 @@
           tl.fromTo(words, wordFrom, wordTween, 0);
           tl.to({}, { duration: 1.4 });
 
-          // Dial drifts across this same beat's timeline, from wherever
-          // the previous beat left it — continuous motion across beats,
-          // not a per-beat reset, so it reads as one drift through the
-          // whole story rather than a snap at each pin.
-          var visualTarget = visualBeatTargets[beatIndex];
-          if (visualTarget) {
-            tl.to(visual, Object.assign({ ease: 'power1.inOut', duration: 2.2 }, visualTarget), 0);
+          // This beat's own waypoint (same index — shortBeats is
+          // [beat1, beat2, beat3] in order) pulses across this same
+          // timeline, from wherever it was left — continuous motion
+          // across beats, not a per-beat reset.
+          var wp = waypoints[beatIndex];
+          if (wp) {
+            tl.to(wp, { attr: { r: WAYPOINT_PULSE_R[beatIndex] }, ease: 'power1.inOut', duration: 2.2 }, 0);
           }
 
           // Force GSAP to remeasure the DOM now, with this beat's
@@ -229,16 +234,16 @@
           ScrollTrigger.refresh();
 
           if (beatIndex === shortBeats.length - 1) {
-            // This is the last pinned beat (5) — its own trigger's
+            // This is the last pinned beat (3) — its own trigger's
             // resolved .end (a real, freshly-refreshed absolute scroll
             // position) is the one number in this whole setup that's
             // guaranteed correct, since it was measured immediately
-            // after its own pin-spacer was inserted, right above. Using
-            // it directly sidesteps #scroll-story's own 'bottom bottom'
-            // measurement entirely, which kept landing short of the
-            // narrative's real end even when this trigger was created
-            // last (still ~1350px short in testing) — some batched/
-            // deferred remeasurement step, never fully tracked down.
+            // after its own pin-spacer was inserted, right above. The
+            // whole-story progress (driving the path/traveler) reaches
+            // 1.0 by here and holds "arrived" through beats 4-5, which
+            // matches those beats' own described visual state (dial/
+            // path fully resolved, settled) rather than needing the
+            // journey to resolve exactly at the page's true bottom.
             lastBeatEnd = tl.scrollTrigger.end;
           }
         });

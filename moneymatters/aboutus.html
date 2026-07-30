@@ -92,17 +92,24 @@
 
             <div class="scroll-story" id="scroll-story">
               <div class="story-visual-wrap">
+                <!-- §34.1: a winding path/trail replaces the dial — reads as a
+                     journey being walked, not an abstract filling gauge. The
+                     track is drawn once; story-path-fill draws itself in via
+                     stroke-dashoffset as the whole story is scrolled (same
+                     technique the dial's ring used). Five waypoint markers
+                     (one per beat) and a traveler dot are positioned via
+                     SVGPathElement.getPointAtLength() in JS, not hand-picked
+                     coordinates, so they always sit exactly on the curve. -->
                 <div class="story-visual" id="story-visual" aria-hidden="true">
-                  <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-                    <g class="story-sig-ticks" id="story-sig-ticks"></g>
-                    <circle class="story-sig-ring-track" cx="300" cy="300" r="230"/>
-                    <circle class="story-sig-ring-fill" id="story-sig-ring-fill" cx="300" cy="300" r="230"/>
-                    <circle class="story-sig-ring-outer" cx="300" cy="300" r="270"/>
-                    <circle class="story-sig-gold-accent" id="story-sig-gold-accent" cx="300" cy="300" r="250"/>
-                    <path class="story-sig-line-path" id="story-sig-line-path" d="M 130 380 Q 190 330 240 300 T 360 220 Q 410 190 460 130"/>
-                    <circle class="story-sig-dot" cx="240" cy="300" r="5"/>
-                    <circle class="story-sig-dot" cx="360" cy="220" r="5"/>
-                    <circle class="story-sig-dot" cx="460" cy="130" r="7"/>
+                  <svg viewBox="0 0 340 640" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                    <path class="story-path-track" d="M 170 20 C 60 90 260 160 150 230 C 40 300 280 370 170 440 C 90 490 230 530 170 620"/>
+                    <path class="story-path-fill" id="story-path-fill" d="M 170 20 C 60 90 260 160 150 230 C 40 300 280 370 170 440 C 90 490 230 530 170 620"/>
+                    <circle class="story-waypoint" id="story-waypoint-0" r="7"/>
+                    <circle class="story-waypoint" id="story-waypoint-1" r="7"/>
+                    <circle class="story-waypoint" id="story-waypoint-2" r="7"/>
+                    <circle class="story-waypoint" id="story-waypoint-3" r="7"/>
+                    <circle class="story-waypoint story-waypoint--final" id="story-waypoint-4" r="9"/>
+                    <circle class="story-traveler" id="story-traveler" r="6"/>
                   </svg>
                 </div>
               </div>

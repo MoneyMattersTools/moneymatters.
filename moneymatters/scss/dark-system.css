@@ -63,6 +63,16 @@
 /* =====================================================
    Global: body, typography, base surfaces
    ===================================================== */
+/* §34.3: html itself was never given the dark background — only body was.
+   site-base.css's `html { scrollbar-gutter: stable both-edges; }` (added
+   §33.6 for newsletter-box centering) reserves a gutter strip on the left
+   edge that sits outside body's own box (confirmed live: body measured
+   15px inset from the left edge, exactly the gutter width), so that strip
+   rendered html's un-themed light background instead of the site's actual
+   dark theme — the reported white line on the left edge. */
+html {
+    background: var(--mm-bg) !important;
+}
 body {
     background: var(--mm-bg) !important;
     color: var(--mm-text-light) !important;
@@ -190,42 +200,34 @@ body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { 
 }
 
 /* =====================================================
-   About Us scroll-story dial (§31) — the narrative's visual
-   through-line, driven continuously by scroll progress via
-   scripts/about-scroll-story.js. Distinct classes from the
-   sitewide fixed .mm-signature-motif watermark above (this one
-   is a real embedded, sticky-positioned primary visual, not an
-   ambient corner decoration), same visual language.
+   About Us scroll-story path visual (§31, replaced dial → path §34.1)
+   — the narrative's visual through-line, driven continuously by
+   scroll progress via scripts/about-scroll-story.js. A winding trail
+   the reader "walks" as they scroll, not an abstract filling gauge:
+   a faint always-visible track, a bolder fill that draws itself in
+   with scroll progress, a traveler dot that walks the exact curve via
+   getPointAtLength(), and 5 waypoint markers (one per beat) that light
+   up gold as the traveler passes them.
    ===================================================== */
-.story-sig-ring-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 3; }
-.story-sig-ring-fill {
+.story-path-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 3; stroke-linecap: round; }
+.story-path-fill {
     fill: none;
     stroke: var(--mm-green);
     stroke-width: 4;
     stroke-linecap: round;
-    transform: rotate(-90deg);
-    transform-origin: 300px 300px;
-    opacity: 0.35;
+    opacity: 0.55;
     transition: opacity 0.4s ease;
 }
-.story-sig-ring-outer { fill: none; stroke: var(--mm-surface-border); stroke-width: 1; opacity: 0.5; }
-.story-sig-gold-accent {
-    fill: none;
-    stroke: var(--mm-gold);
-    stroke-width: 1.5;
-    stroke-dasharray: 3 9;
-    opacity: 0;
-    transform: rotate(-90deg);
-    transform-origin: 300px 300px;
+.story-waypoint {
+    fill: var(--mm-bg);
+    stroke: var(--mm-surface-border);
+    stroke-width: 2;
+    transition: fill 0.4s ease, stroke 0.4s ease;
 }
-.story-sig-ticks { transform-origin: 300px 300px; }
-.story-sig-tick { stroke: var(--mm-text-light-soft); stroke-width: 1.5; opacity: 0.35; }
-.story-sig-line-path { fill: none; stroke: var(--mm-green); stroke-width: 3; stroke-linecap: round; }
-.story-sig-dot { fill: var(--mm-gold); opacity: 0; transition: opacity 0.4s ease; }
+.story-waypoint.is-reached { fill: var(--mm-gold); stroke: var(--mm-gold); }
+.story-waypoint--final.is-reached { filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.65)); }
+.story-traveler { fill: var(--mm-gold); filter: drop-shadow(0 0 5px rgba(227, 176, 75, 0.6)); }
 
-@media (prefers-reduced-motion: reduce) {
-    .story-sig-ticks { transform: none !important; }
-}
 .story-pin-backdrop { background: var(--mm-bg) !important; }
 
 /* Eyebrow label (§27.1) — site-base.css's --mm-gold-ink is tuned for
