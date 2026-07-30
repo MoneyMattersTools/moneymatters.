@@ -211,3 +211,29 @@ Geographic granularity should scale with local population density - county/regio
 
 ## Traffic/Marketing (flagged 2026-07-26, not yet actioned)
 Site design work has consumed most of this project's recent sessions. Once the current build round (DESIGN_SPEC.md Section 28) ships, traffic generation becomes the real priority - the site is close to nothing without visitors. Scope to brainstorm: SEO (technical SEO pass already done, content pipeline via marketing agent started), organic social, paid social ads, and other acquisition channels. Not started yet.
+
+## Master Task List (rebuilt 2026-07-28, supersedes prior scattered Next Steps entries)
+
+### Priority 1 — In progress, finish before anything else
+1. Supabase migration: bulk-copy existing Airtable data (real users, scores, tokens) into Supabase, verify, then decommission the Airtable code path/env vars. Currently the site is in a split state - new data goes to Supabase, historical data is still Airtable-only.
+
+### Priority 2 — Real blockers to going fully live
+2. Stripe payment integration - MoneyMatters+ is fully built and described but cannot actually charge anyone yet. Real scoping work needed (subscription billing, webhook handling to grant/revoke Plan=plus access, whether this routes through the Delaware LLC's own Stripe account).
+3. Compliance attorney consult - status unknown to me, last update was "in progress with a friend." Needs a check-in, especially given the lead-marketplace consent model and referral-fee structure both need sign-off before real money moves.
+4. Advisor recruitment (supply side) - 46 firms researched and loaded, outreach email drafted, still not sent. No real advisors exist in the network yet, which is the actual reason the advisor-matching feature has no one to match to.
+
+### Priority 3 — Design/content, active queue
+5. About Us scroll story - further refinement requested: replace the circle/dial visual with a "walking a path" visual metaphor, larger centered text along the path, remove the scroll mechanism from the final "Invitation" section specifically.
+6. Unexplained white line artifact on the left edge of the homepage - reported, not yet investigated.
+7. Screenshot/clipboard/scratchpad accumulation - addressed once already (7GB cleared), confirm the standing cleanup practice is actually holding round over round.
+8. Full site access-level/page-logic review - go through every page and confirm the logic is correct for each visitor state (anonymous, verified-free, verified-Plus) - things like the first-account welcome popup, the Plus-only MoneyMatters+ dashboard view, and the early-user free-Plus incentive plan should all be checked together for consistency, not as isolated features.
+9. MoneyMatters+ member dashboard (Plus-only view) - confirmed started, needs continued build-out as real Plus accounts become testable.
+10. Private Discord space for MoneyMatters+ members - not started, depends on real Stripe tiering existing first.
+
+### Priority 4 — Not started, tracked for later
+11. Traffic/marketing plan - SEO technical pass done, blog content pipeline started (3 posts live, more planned via the marketing agent, separate system). Organic social, paid social, and other acquisition channels not yet planned. This becomes the real priority once the above are resolved - a polished site with no visitors is the current risk.
+12. Advisor engagement/meeting tracking - Status field added to Advisor Review Requests, not yet surfaced anywhere user-facing beyond the basic dashboard.
+13. Goal-based onboarding (asking users their specific goals per category, showing snapshot relative to those goals) - good idea, explicitly deferred, its own future round.
+
+### Done, for reference (not exhaustive - see DESIGN_SPEC.md Sections 1-33 for full build history)
+- Core diagnostic funnel, native tools (basic + advanced), onboarding gate, sign-in, dashboard, advisor intake, full visual redesign, CCPA/deletion workflow, GA4 analytics, full copy pass across every major page.
