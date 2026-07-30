@@ -1,8 +1,8 @@
-import airtableLib from './lib/airtable.js';
+import supabaseLib from './lib/supabase.js';
 import sessionLib from './lib/session.js';
 import resendLib from './lib/resend.js';
 
-const { createRecord, countRecentByIpSince, findOneByFormula, findByEmail, escapeFormulaValue } = airtableLib;
+const { createRecord, countRecentByIpSince, findOneByFilters, findByEmail, encodeEq } = supabaseLib;
 const { readSessionFromRequest } = sessionLib;
 const { sendEmail } = resendLib;
 
@@ -110,10 +110,10 @@ export default async (request, context) => {
   try {
     if (clientIp !== 'unknown') {
       const recentCount = await countRecentByIpSince(
-        'Advisor Review Requests',
+        'advisor_review_requests',
         clientIp,
         IP_RATE_LIMIT_WINDOW_SECONDS,
-        'Requested At'
+        'requested_at'
       );
       if (recentCount >= IP_RATE_LIMIT_MAX_REQUESTS) {
         return json(429, { ok: false, error: 'rate_limited' });
@@ -124,55 +124,39 @@ export default async (request, context) => {
     // is a long-lived session cookie rather than a fresh email confirmation
     // (mirrors the per-email cooldown pattern already used in
     // submit-diagnostic.mjs / resend-login.mjs for the same reason).
-    const recentByEmail = await findOneByFormula(
-      'Advisor Review Requests',
-      `AND(LOWER({Email}) = '${escapeFormulaValue(session.email.toLowerCase())}', IS_AFTER({Requested At}, DATEADD(NOW(), -${EMAIL_COOLDOWN_SECONDS}, 'seconds')))`
-    );
+    const cooldownSinceIso = new Date(Date.now() - EMAIL_COOLDOWN_SECONDS * 1000).toISOString();
+    const recentByEmail = await findOneByFilters('advisor_review_requests', [
+      `email=${encodeEq(session.email.toLowerCase())}`,
+      `requested_at=gt.${encodeURIComponent(cooldownSinceIso)}`,
+    ]);
     if (recentByEmail) {
       return json(429, { ok: false, error: 'cooldown_active' });
     }
 
     const fields = {
-      Email: session.email,
-      'Situational Details': JSON.stringify(situational),
-      Details: details,
-      Location: location,
-      'Requested At': new Date().toISOString(),
-      'Request IP': clientIp,
+      email: session.email,
+      situational_details: JSON.stringify(situational),
+      details: details,
+      location: location,
+      requested_at: new Date().toISOString(),
+      request_ip: clientIp,
       // §22.4: manual data-tracking only, no site-facing UI. The team
-      // advances this by hand in Airtable as a request moves through
-      // Matched / Meeting Taken — this just seeds the starting state.
-      Status: 'Requested',
+      // advances this by hand as a request moves through Matched /
+      // Meeting Taken — this just seeds the starting state.
+      status: 'Requested',
     };
 
     if (shareScores) {
-      const user = await findByEmail('Users', session.email);
-      fields['Shared Scores'] = JSON.stringify({
+      const user = await findByEmail('users', session.email);
+      fields.shared_scores = JSON.stringify({
         consent: true,
-        healthScore: user && user.fields ? user.fields['Health Score'] : null,
-        healthScoreBand: user && user.fields ? user.fields['Health Score Band'] : null,
+        healthScore: user ? user.health_score : null,
+        healthScoreBand: user ? user.health_score_band : null,
         netWorthRange: netWorthRange,
       });
     }
 
-    // 'Status' and 'Shared Scores' are newer, optional fields — if either
-    // hasn't been added to the Airtable table yet, Airtable rejects the
-    // whole create with an unknown-field error. Drop them one at a time on
-    // failure rather than losing the entire request over an optional field.
-    const optionalFieldOrder = ['Status', 'Shared Scores'];
-    let attempt = { ...fields };
-    for (let i = 0; i <= optionalFieldOrder.length; i += 1) {
-      try {
-        await createRecord('Advisor Review Requests', attempt);
-        break;
-      } catch (fieldErr) {
-        const fieldToDrop = optionalFieldOrder[i];
-        if (!fieldToDrop || !(fieldToDrop in attempt)) throw fieldErr;
-        console.error(`request-advisor-review '${fieldToDrop}' field write failed, retrying without it:`, fieldErr);
-        const { [fieldToDrop]: _dropped, ...rest } = attempt;
-        attempt = rest;
-      }
-    }
+    await createRecord('advisor_review_requests', fields);
 
     // §21 addendum: confirm receipt by email — this previously only wrote
     // to Airtable with no user-facing confirmation beyond the on-page
