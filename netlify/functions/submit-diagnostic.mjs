@@ -103,7 +103,7 @@ export default async (request, context) => {
       email: email,
       purpose: 'signup_verification',
       pending_health_score: score,
-      pending_answers: JSON.stringify(cleanAnswers),
+      pending_answers: cleanAnswers,
       expires_at: expiresAt,
       request_ip: clientIp,
     });

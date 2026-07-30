@@ -135,7 +135,7 @@ export default async (request, context) => {
 
     const fields = {
       email: session.email,
-      situational_details: JSON.stringify(situational),
+      situational_details: situational,
       details: details,
       location: location,
       requested_at: new Date().toISOString(),
@@ -148,12 +148,12 @@ export default async (request, context) => {
 
     if (shareScores) {
       const user = await findByEmail('users', session.email);
-      fields.shared_scores = JSON.stringify({
+      fields.shared_scores = {
         consent: true,
         healthScore: user ? user.health_score : null,
         healthScoreBand: user ? user.health_score_band : null,
         netWorthRange: netWorthRange,
-      });
+      };
     }
 
     await createRecord('advisor_review_requests', fields);
