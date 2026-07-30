@@ -1,8 +1,8 @@
 import crypto from 'node:crypto';
-import airtableLib from './lib/airtable.js';
+import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
 
-const { findByEmail, findActiveTokenByEmail, createRecord, countRecentRequestsByIp } = airtableLib;
+const { findByEmail, findActiveTokenByEmail, createRecord, countRecentByIpSince } = supabaseLib;
 const { sendEmail } = resendLib;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -50,18 +50,18 @@ export default async (request, context) => {
 
   try {
     if (clientIp !== 'unknown') {
-      const recentCount = await countRecentRequestsByIp(
-        'Verification Tokens',
+      const recentCount = await countRecentByIpSince(
+        'verification_tokens',
         clientIp,
         IP_RATE_LIMIT_WINDOW_SECONDS,
-        TOKEN_TTL_SECONDS
+        'created_at'
       );
       if (recentCount >= IP_RATE_LIMIT_MAX_REQUESTS) {
         return json(429, { ok: false, error: 'rate_limited' });
       }
     }
 
-    const existingActive = await findActiveTokenByEmail('Verification Tokens', email);
+    const existingActive = await findActiveTokenByEmail('verification_tokens', email);
     if (existingActive) {
       // Same generic response as the "no account" case below — an active
       // cooldown shouldn't leak whether the address has an account either.
@@ -72,17 +72,17 @@ export default async (request, context) => {
     // email has a verified account — this endpoint must not be usable to
     // enumerate registered addresses. The email only actually sends when
     // a matching, verified Users record exists.
-    const user = await findByEmail('Users', email);
-    if (user && user.fields && user.fields.Verified) {
+    const user = await findByEmail('users', email);
+    if (user && user.verified) {
       const token = crypto.randomBytes(32).toString('base64url');
       const expiresAt = new Date(Date.now() + TOKEN_TTL_MS).toISOString();
 
-      await createRecord('Verification Tokens', {
-        Token: token,
-        Email: email,
-        Purpose: 'returning_login',
-        'Expires At': expiresAt,
-        'Request IP': clientIp,
+      await createRecord('verification_tokens', {
+        token: token,
+        email: email,
+        purpose: 'returning_login',
+        expires_at: expiresAt,
+        request_ip: clientIp,
       });
 
       const siteUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
