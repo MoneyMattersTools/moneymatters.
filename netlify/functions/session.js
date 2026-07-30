@@ -1,16 +1,17 @@
 const { readSessionFromEvent } = require('./lib/session');
-const { findByEmail, findLatestByFormula, escapeFormulaValue } = require('./lib/airtable');
+const { findByEmail, findLatestByFilters, encodeEq } = require('./lib/supabase');
 
-const TOOL_FIELD_PREFIXES = ['Net Worth', 'Budget', 'Retirement', 'Investment'];
+const TOOL_COLUMNS = [
+  { key: 'networth', resultColumn: 'net_worth_result', submittedColumn: 'net_worth_submitted_at' },
+  { key: 'budget', resultColumn: 'budget_result', submittedColumn: 'budget_submitted_at' },
+  { key: 'retirement', resultColumn: 'retirement_result', submittedColumn: 'retirement_submitted_at' },
+  { key: 'investment', resultColumn: 'investment_result', submittedColumn: 'investment_submitted_at' },
+];
 
-function safeParseResult(raw) {
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw);
-    return parsed && parsed.headline ? parsed : null;
-  } catch {
-    return null;
-  }
+// Tool result columns are jsonb — PostgREST already returns them parsed
+// (or null if never set), so this just validates shape, no JSON.parse.
+function safeResult(value) {
+  return value && value.headline ? value : null;
 }
 
 // §28.1/28.3: the homepage dashboard needs fresh data (results submitted
@@ -22,10 +23,9 @@ function safeParseResult(raw) {
 // state, the onboarding gate, tool/advanced-tool gates) but almost none of
 // those callers ever read advisorStatus — only the homepage dashboard and
 // the MoneyMatters+ member view do. The advisor lookup is a second,
-// separate Airtable call, so it only runs when a caller explicitly asks for
-// it via ?advisor=1 (see scripts/session-client.js's includeAdvisorStatus
-// flag) — every other caller gets advisorStatus: null for free, at half
-// the Airtable cost.
+// separate call, so it only runs when a caller explicitly asks for it via
+// ?advisor=1 (see scripts/session-client.js's includeAdvisorStatus flag) —
+// every other caller gets advisorStatus: null for free, at half the cost.
 exports.handler = async (event) => {
   if (event.httpMethod !== 'GET') {
     return {
@@ -45,29 +45,26 @@ exports.handler = async (event) => {
   }
 
   try {
-    const user = await findByEmail('Users', session.email);
-    const fields = (user && user.fields) || {};
+    const user = await findByEmail('users', session.email);
 
     const tools = {};
-    TOOL_FIELD_PREFIXES.forEach((prefix) => {
-      const key = prefix.toLowerCase().replace(/\s+/g, '');
-      const result = safeParseResult(fields[`${prefix} Result`]);
-      tools[key] = result ? { ...result, submittedAt: fields[`${prefix} Submitted At`] || null } : null;
+    TOOL_COLUMNS.forEach(({ key, resultColumn, submittedColumn }) => {
+      const result = user ? safeResult(user[resultColumn]) : null;
+      tools[key] = result ? { ...result, submittedAt: (user && user[submittedColumn]) || null } : null;
     });
 
     let advisorStatus = null;
     const wantsAdvisorStatus = !!(event.queryStringParameters && event.queryStringParameters.advisor);
     if (wantsAdvisorStatus) {
       try {
-        const latestRequest = await findLatestByFormula(
-          'Advisor Review Requests',
-          `LOWER({Email}) = '${escapeFormulaValue(session.email.toLowerCase())}'`,
-          'Requested At'
+        const latestRequest = await findLatestByFilters(
+          'advisor_review_requests',
+          [`email=${encodeEq(session.email.toLowerCase())}`],
+          'requested_at'
         );
-        advisorStatus = latestRequest && latestRequest.fields ? latestRequest.fields.Status || 'Requested' : null;
+        advisorStatus = latestRequest ? latestRequest.status || 'Requested' : null;
       } catch (advisorErr) {
-        // Best-effort — a missing/renamed Status field shouldn't break the
-        // whole session response.
+        // Best-effort — a lookup error shouldn't break the whole session response.
         console.error('session advisor status lookup error:', advisorErr);
       }
     }
@@ -78,9 +75,12 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         loggedIn: true,
         email: session.email,
-        healthScore: typeof fields['Health Score'] === 'number' ? fields['Health Score'] : session.healthScore,
-        healthBand: fields['Health Score Band'] || session.healthBand,
-        plan: fields.Plan === 'Plus' ? 'plus' : 'free',
+        healthScore: user && typeof user.health_score === 'number' ? user.health_score : session.healthScore,
+        healthBand: (user && user.health_score_band) || session.healthBand,
+        // Plan is a manual, team-set flag (Section 28) — set it as lowercase
+        // 'plus' directly on the users row in Supabase's Table Editor, not
+        // the old Airtable-era capitalized 'Plus'.
+        plan: user && user.plan === 'plus' ? 'plus' : 'free',
         tools: tools,
         advisorStatus: advisorStatus,
       }),
