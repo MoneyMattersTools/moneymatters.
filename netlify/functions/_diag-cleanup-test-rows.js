@@ -1,4 +1,4 @@
-// Temporary — inspects + removes verification_tokens test rows.
+// Temporary — inspects + removes advisor_review_requests test rows.
 // Not part of the permanent function set; delete after use.
 exports.handler = async (event) => {
   const url = process.env.SUPABASE_URL.replace(/\/$/, '').replace(/\/rest\/v1$/, '');
@@ -6,11 +6,11 @@ exports.handler = async (event) => {
   const headers = { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' };
 
   if (event.queryStringParameters && event.queryStringParameters.list) {
-    const res = await fetch(`${url}/rest/v1/verification_tokens?select=id,email,pending_answers`, { headers });
+    const res = await fetch(`${url}/rest/v1/advisor_review_requests?select=id,email,situational_details,details`, { headers });
     return { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: await res.text() };
   }
 
-  const res = await fetch(`${url}/rest/v1/verification_tokens?email=like.*web-library.net`, {
+  const res = await fetch(`${url}/rest/v1/advisor_review_requests?email=eq.mm-qa-persistent%40web-library.net`, {
     method: 'DELETE',
     headers: { ...headers, Prefer: 'return=representation' },
   });
