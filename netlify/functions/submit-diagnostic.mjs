@@ -1,9 +1,9 @@
 import crypto from 'node:crypto';
-import airtableLib from './lib/airtable.js';
+import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
 import scoringLib from './lib/scoring.js';
 
-const { createRecord, findActiveTokenByEmail, countRecentRequestsByIp } = airtableLib;
+const { createRecord, findActiveTokenByEmail, countRecentByIpSince } = supabaseLib;
 const { sendEmail } = resendLib;
 const { validateAnswers, computeScore, QUESTIONS } = scoringLib;
 
@@ -16,7 +16,7 @@ const TOKEN_TTL_MS = TOKEN_TTL_SECONDS * 1000;
 // (see the `rateLimit` config below) isn't available on the current plan
 // tier — the account's Firewall/Traffic Rules pages render empty and
 // billing shows an Enterprise upsell for it. This check is the real,
-// functioning protection; it uses the same Airtable-backed pattern as the
+// functioning protection; it uses the same Supabase-backed pattern as the
 // per-email cooldown below, which is already proven to work in this
 // codebase regardless of plan tier.
 const IP_RATE_LIMIT_WINDOW_SECONDS = 60;
@@ -74,11 +74,11 @@ export default async (request, context) => {
   try {
     // IP rate limit — checked first since it's the cheaper, coarser gate.
     if (clientIp !== 'unknown') {
-      const recentCount = await countRecentRequestsByIp(
-        'Verification Tokens',
+      const recentCount = await countRecentByIpSince(
+        'verification_tokens',
         clientIp,
         IP_RATE_LIMIT_WINDOW_SECONDS,
-        TOKEN_TTL_SECONDS
+        'created_at'
       );
       if (recentCount >= IP_RATE_LIMIT_MAX_REQUESTS) {
         return json(429, { ok: false, error: 'rate_limited' });
@@ -88,7 +88,7 @@ export default async (request, context) => {
     // Per-email cooldown: if an unused, unexpired token already exists for this
     // address, don't create another or send another email. Caps abuse of this
     // endpoint as an email-spam relay at one outstanding link per address.
-    const existingActive = await findActiveTokenByEmail('Verification Tokens', email);
+    const existingActive = await findActiveTokenByEmail('verification_tokens', email);
     if (existingActive) {
       return json(429, { ok: false, error: 'cooldown_active' });
     }
@@ -98,14 +98,14 @@ export default async (request, context) => {
     const token = crypto.randomBytes(32).toString('base64url');
     const expiresAt = new Date(Date.now() + TOKEN_TTL_MS).toISOString();
 
-    await createRecord('Verification Tokens', {
-      Token: token,
-      Email: email,
-      Purpose: 'signup_verification',
-      'Pending Health Score': score,
-      'Pending Answers': JSON.stringify(cleanAnswers),
-      'Expires At': expiresAt,
-      'Request IP': clientIp,
+    await createRecord('verification_tokens', {
+      token: token,
+      email: email,
+      purpose: 'signup_verification',
+      pending_health_score: score,
+      pending_answers: JSON.stringify(cleanAnswers),
+      expires_at: expiresAt,
+      request_ip: clientIp,
     });
 
     const siteUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
