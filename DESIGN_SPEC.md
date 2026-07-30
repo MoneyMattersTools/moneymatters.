@@ -476,3 +476,24 @@ Existing content not covered above (vetting-standard cards, "Built on real princ
 3. **MoneyMatters+ (public/unsubscribed) page**: move the "Free vs. MoneyMatters+" comparison section up, directly under the main header - users should see the core differences immediately, with the rest of the page's detail below it.
 4. **Footer text overlap bug** (screenshot in chat: "Discord"/community text overlapping the "Privacy Policy" nav link). Fix this specific instance, and do a broader sitewide sweep for any other overlapping text/element collisions that a visual pass might catch but a code read would miss.
 5. **Comprehensive Supabase submission testing, sitewide**: using the persistent QA account, confirm every info-submission point on the site (diagnostic email verification, sign-in magic link, advisor-review intake + confirmation email, deletion request, tool-result saves, newsletter signup) is actually reading from and writing to Supabase correctly end to end - not just the functions spot-checked during the migration itself. Real evidence per submission type, not a general pass/fail.
+
+## 36. Round 23 Feedback — About Us Scroll Mechanic Redesign (locked 2026-07-28)
+
+### Root cause redirection (read this before touching code)
+The GSAP ScrollTrigger pin-and-swap approach has now failed three rounds running (missing first beat, incorrect vertical centering, disappear/reappear happening too fast, content not visible when scrolling back up). Stop attempting to fix this mechanic further - replace it entirely with a simpler, standard pattern:
+
+- **No pinning.** Beats live in normal document flow, one after another, like a regular long page - each beat's content stays exactly where it is once revealed and gets pushed up the page naturally by whatever scrolls in after it, exactly like ordinary page content.
+- **One-time reveal, not a toggle.** As each beat scrolls into view for the first time (scrolling down), it plays its reveal animation (text fades/sharpens in, its path segment animates in - "the forest path becomes alive and moving" as this specific beat enters). Once revealed, it stays fully visible - no re-triggering, no disappearing.
+- **Scrolling back up shows already-revealed content statically** - the reveal animation only ever plays once, going down. Scrolling up must never re-hide or re-play anything; everything already seen just sits there as normal static content.
+- **This applies to Beats 1-4** (Problem/Insight/Solution/Proof, matching the same "reveal once on the way down" rule). Beat 4 ("The Proof," including "How it actually works" and everything folded into it per Section 31) and everything below should be fully visible/scrollable normally, in both directions, once reached - no gating at all past that point.
+- **Beat 5 ("The Invitation") stays fully static already, per Section 34 item 2 - unaffected by this change.**
+
+### Visual direction (refined)
+- Forest path imagery on BOTH sides of the text (not a single backdrop) - dark, alive, deep-forest themed (trees, depth, dappled light), matching the site's established forest motif.
+- The path/scene should feel like movement is happening as the user scrolls down through it (parallax, drifting light, subtle depth motion) - but once revealed and static, it should not keep animating/looping - it settles, matching the one-time-reveal rule above.
+- Text should be large, legible, and clearly centered in the viewport - not crowded at the top.
+- Slow down the transition pacing noticeably - the current speed reads as abrupt, not cinematic.
+
+### Specific bugs to fix as part of this rebuild
+1. Beat 1 ("The Problem") does not render/appear at all currently - confirm it exists and displays correctly in the new implementation.
+2. Vertical centering - beat text has been rendering too high in the viewport; center it properly.
