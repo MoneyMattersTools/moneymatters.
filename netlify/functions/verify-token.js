@@ -1,4 +1,4 @@
-const { findByToken, findByEmail, createRecord, updateRecord, countAllCached } = require('./lib/airtable');
+const { findByToken, findByEmail, createRecord, updateRecord, countAllCached } = require('./lib/supabase');
 const { computeScore, determineBand } = require('./lib/scoring');
 const { signSession, buildSetCookie } = require('./lib/session');
 
@@ -33,83 +33,82 @@ exports.handler = async (event) => {
   }
 
   try {
-    const tokenRecord = await findByToken('Verification Tokens', token);
+    const tokenRecord = await findByToken('verification_tokens', token);
     if (!tokenRecord) {
       return json(404, { ok: false, error: 'invalid' });
     }
 
-    const fields = tokenRecord.fields || {};
-    if (fields['Used At']) {
+    if (tokenRecord.used_at) {
       return json(410, { ok: false, error: 'already_used' });
     }
-    if (!fields['Expires At'] || new Date(fields['Expires At']).getTime() < Date.now()) {
+    if (!tokenRecord.expires_at || new Date(tokenRecord.expires_at).getTime() < Date.now()) {
       return json(410, { ok: false, error: 'expired' });
     }
 
     // Mark the token used immediately after the validity checks pass, before
     // the (slower) Users upsert — shrinks the window in which two concurrent
     // requests for the same token could both pass the "not used" check above.
-    // Airtable's REST API has no compare-and-swap primitive, so this reduces
+    // PostgREST's REST API has no compare-and-swap primitive, so this reduces
     // rather than eliminates the race; a genuinely atomic guarantee would
-    // need a datastore that supports conditional writes.
-    await updateRecord('Verification Tokens', tokenRecord.id, { 'Used At': new Date().toISOString() });
+    // need a single UPDATE ... WHERE used_at IS NULL RETURNING *, which isn't
+    // expressible through the REST layer this file uses (plain fetch, no
+    // SDK — see lib/supabase.js).
+    await updateRecord('verification_tokens', tokenRecord.id, { used_at: new Date().toISOString() });
 
-    const email = fields.Email;
+    const email = tokenRecord.email;
     const nowIso = new Date().toISOString();
     let score, band, breakdown;
     let isNewAccount = false;
     let communityCount = null;
 
-    if (fields.Purpose === 'returning_login') {
+    if (tokenRecord.purpose === 'returning_login') {
       // A returning-user token never carries Pending Answers — there's
       // nothing new to score. Pull the visitor's existing result straight
       // from their Users record instead of recomputing anything.
-      const existingUser = await findByEmail('Users', email);
-      if (!existingUser || !existingUser.fields || !existingUser.fields.Verified) {
+      const existingUser = await findByEmail('users', email);
+      if (!existingUser || !existingUser.verified) {
         return json(404, { ok: false, error: 'invalid' });
       }
-      score = existingUser.fields['Health Score'];
-      band = existingUser.fields['Health Score Band'];
+      score = existingUser.health_score;
+      band = existingUser.health_score_band;
       breakdown = null;
-      await updateRecord('Users', existingUser.id, { 'Last Verified At': nowIso });
+      await updateRecord('users', existingUser.id, { last_verified_at: nowIso });
     } else {
-      let answers = {};
-      try {
-        answers = JSON.parse(fields['Pending Answers'] || '{}');
-      } catch {
-        answers = {};
-      }
+      // pending_answers is a real jsonb column (see lib/supabase.js /
+      // submit-diagnostic.mjs) — PostgREST already returns it parsed, no
+      // JSON.parse needed here.
+      const answers = tokenRecord.pending_answers || {};
       const computed = computeScore(answers);
       score = computed.score;
       breakdown = computed.breakdown;
       band = determineBand(score);
 
-      const existingUser = await findByEmail('Users', email);
+      const existingUser = await findByEmail('users', email);
       if (existingUser) {
-        await updateRecord('Users', existingUser.id, {
-          Verified: true,
-          'Health Score': score,
-          'Health Score Band': band,
-          'Health Score Answers': JSON.stringify(answers),
-          'Health Score Completed At': nowIso,
-          'Last Verified At': nowIso,
+        await updateRecord('users', existingUser.id, {
+          verified: true,
+          health_score: score,
+          health_score_band: band,
+          health_score_answers: answers,
+          health_score_completed_at: nowIso,
+          last_verified_at: nowIso,
         });
       } else {
-        await createRecord('Users', {
-          Email: email,
-          Verified: true,
-          'Health Score': score,
-          'Health Score Band': band,
-          'Health Score Answers': JSON.stringify(answers),
-          'Health Score Completed At': nowIso,
-          Source: 'Health Score Diagnostic',
-          'Last Verified At': nowIso,
+        await createRecord('users', {
+          email: email,
+          verified: true,
+          health_score: score,
+          health_score_band: band,
+          health_score_answers: answers,
+          health_score_completed_at: nowIso,
+          source: 'Health Score Diagnostic',
+          last_verified_at: nowIso,
         });
         isNewAccount = true;
         // Best-effort — the community counter is a nice-to-have popup, not
         // something that should fail the whole verification if it errors.
         try {
-          communityCount = await countAllCached('Users');
+          communityCount = await countAllCached('users');
         } catch (countErr) {
           console.error('verify-token community count error:', countErr);
         }
