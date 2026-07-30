@@ -137,8 +137,7 @@
     setTimeout(function () { document.addEventListener('click', onDocClick); }, 0);
   }
 
-  fetch('/api/session')
-    .then(function (res) { return res.json(); })
+  window.mmGetSession()
     .then(function (data) {
       if (data && data.loggedIn && data.email) {
         trigger.textContent = shortEmail(data.email);

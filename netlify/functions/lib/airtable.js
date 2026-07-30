@@ -147,11 +147,38 @@ async function countAll(table) {
   return total;
 }
 
+// §34: countAll() pages through the *entire* table — verify-token.js was
+// calling it on every single new signup just to show a "join N other
+// members" popup number, so the cost of that full-table scan grew with
+// both the user base AND the signup rate at once (the exact two things
+// you want to be cheap, not expensive, as the site grows). A module-level
+// cache with a TTL means at most one full scan per interval, shared across
+// however many signups land in that window, rather than one scan per
+// signup. Node keeps module state across warm invocations of the same
+// Lambda container, so this works "for free" with zero new infrastructure —
+// it just isn't guaranteed consistent across cold starts or concurrent
+// container instances, which is fine for a display-only vanity count, not
+// data that needs to be exact.
+const countAllCache = new Map();
+const COUNT_ALL_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
+
+async function countAllCached(table, ttlMs = COUNT_ALL_CACHE_TTL_MS) {
+  const cached = countAllCache.get(table);
+  const now = Date.now();
+  if (cached && now - cached.at < ttlMs) {
+    return cached.count;
+  }
+  const count = await countAll(table);
+  countAllCache.set(table, { count, at: now });
+  return count;
+}
+
 module.exports = {
   findOneByFormula,
   findLatestByFormula,
   findAllByFormula,
   countAll,
+  countAllCached,
   findByEmail,
   findByToken,
   findActiveTokenByEmail,

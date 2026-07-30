@@ -7,8 +7,7 @@
   var app = document.getElementById('tool-app');
   if (!locked || !app) return;
 
-  fetch('/api/session')
-    .then(function (res) { return res.json(); })
+  window.mmGetSession()
     .then(function (data) {
       if (data && data.loggedIn && data.plan === 'plus') {
         locked.hidden = true;

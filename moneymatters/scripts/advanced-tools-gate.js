@@ -5,8 +5,7 @@
   var cards = document.querySelectorAll('.advanced-tool-card');
   if (!cards.length) return;
 
-  fetch('/api/session')
-    .then(function (res) { return res.json(); })
+  window.mmGetSession()
     .then(function (data) {
       var isPlus = !!(data && data.loggedIn && data.plan === 'plus');
       if (!isPlus) return;

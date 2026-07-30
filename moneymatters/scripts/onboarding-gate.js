@@ -9,8 +9,7 @@
     try { window.localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
   }
 
-  fetch('/api/session')
-    .then(function (res) { return res.json(); })
+  window.mmGetSession()
     .then(function (data) {
       if (data && data.loggedIn) {
         markSeen();

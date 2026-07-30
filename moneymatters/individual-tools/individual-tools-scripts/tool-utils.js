@@ -83,8 +83,7 @@ function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResu
     submitBtn.hidden = !isLoggedIn;
   }
 
-  fetch('/api/session')
-    .then(function (res) { return res.json(); })
+  window.mmGetSession()
     .then(function (data) {
       isLoggedIn = !!(data && data.loggedIn);
       updateVisibility();

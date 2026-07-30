@@ -8,8 +8,8 @@
   var salesView = document.getElementById('plus-sales-view');
   if (!memberView || !salesView) return;
 
-  fetch('/api/session')
-    .then(function (res) { return res.json(); })
+  // true: needs data.advisorStatus for the member-dashboard advisor card.
+  window.mmGetSession(true)
     .then(function (data) {
       if (data && data.loggedIn && data.plan === 'plus') {
         salesView.hidden = true;

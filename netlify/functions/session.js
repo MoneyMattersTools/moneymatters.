@@ -17,6 +17,15 @@ function safeParseResult(raw) {
 // after the session cookie was issued, current Plan, current advisor
 // status) — the cookie itself only carries what was true at sign-in, so
 // this does a live Users lookup rather than only decoding the cookie.
+//
+// §34: this endpoint is called on nearly every page load (nav sign-in
+// state, the onboarding gate, tool/advanced-tool gates) but almost none of
+// those callers ever read advisorStatus — only the homepage dashboard and
+// the MoneyMatters+ member view do. The advisor lookup is a second,
+// separate Airtable call, so it only runs when a caller explicitly asks for
+// it via ?advisor=1 (see scripts/session-client.js's includeAdvisorStatus
+// flag) — every other caller gets advisorStatus: null for free, at half
+// the Airtable cost.
 exports.handler = async (event) => {
   if (event.httpMethod !== 'GET') {
     return {
@@ -47,17 +56,20 @@ exports.handler = async (event) => {
     });
 
     let advisorStatus = null;
-    try {
-      const latestRequest = await findLatestByFormula(
-        'Advisor Review Requests',
-        `LOWER({Email}) = '${escapeFormulaValue(session.email.toLowerCase())}'`,
-        'Requested At'
-      );
-      advisorStatus = latestRequest && latestRequest.fields ? latestRequest.fields.Status || 'Requested' : null;
-    } catch (advisorErr) {
-      // Best-effort — a missing/renamed Status field shouldn't break the
-      // whole session response.
-      console.error('session advisor status lookup error:', advisorErr);
+    const wantsAdvisorStatus = !!(event.queryStringParameters && event.queryStringParameters.advisor);
+    if (wantsAdvisorStatus) {
+      try {
+        const latestRequest = await findLatestByFormula(
+          'Advisor Review Requests',
+          `LOWER({Email}) = '${escapeFormulaValue(session.email.toLowerCase())}'`,
+          'Requested At'
+        );
+        advisorStatus = latestRequest && latestRequest.fields ? latestRequest.fields.Status || 'Requested' : null;
+      } catch (advisorErr) {
+        // Best-effort — a missing/renamed Status field shouldn't break the
+        // whole session response.
+        console.error('session advisor status lookup error:', advisorErr);
+      }
     }
 
     return {

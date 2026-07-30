@@ -534,7 +534,7 @@
               // status) needs a live Users-table read that /api/verify-token
               // doesn't return — fetch it separately so the score reveal
               // itself isn't held up by the extra round trip.
-              fetch('/api/session')
+              fetch('/api/session?advisor=1')
                 .then(function (res) { return res.json(); })
                 .then(function (sessionData) {
                   if (sessionData && sessionData.loggedIn) renderDashboard(sessionData);
@@ -549,8 +549,14 @@
       return;
     }
 
-    fetch('/api/session')
-      .then(function (res) { return res.json(); })
+    // window.mmGetSession() already resolves to { loggedIn: false } on any
+    // fetch/parse failure rather than rejecting (see scripts/session-client.js),
+    // so the loggedIn-false branch below already covers what used to be a
+    // separate .catch() — a network failure and "not logged in" land in the
+    // exact same place, just without the input.focus() nicety.
+    // true: this path calls renderDashboard() below, which shows advisor
+    // status when present — needs the includeAdvisorStatus variant.
+    window.mmGetSession(true)
       .then(function (data) {
         if (data && data.loggedIn && typeof data.healthScore === 'number') {
           renderResults(data.healthScore, data.healthBand);
@@ -561,15 +567,6 @@
           setStep('email');
           var input = el('diagnostic-email');
           if (input) input.focus();
-        } else {
-          setStep('choice');
-        }
-      })
-      .catch(function () {
-        if (startParam === 'health-score' || startParam === 'advisor-connect') {
-          if (startParam === 'advisor-connect') applyAdvisorFraming();
-          stripStartParam();
-          setStep('email');
         } else {
           setStep('choice');
         }

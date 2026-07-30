@@ -1,4 +1,4 @@
-const { findByToken, findByEmail, createRecord, updateRecord, countAll } = require('./lib/airtable');
+const { findByToken, findByEmail, createRecord, updateRecord, countAllCached } = require('./lib/airtable');
 const { computeScore, determineBand } = require('./lib/scoring');
 const { signSession, buildSetCookie } = require('./lib/session');
 
@@ -109,7 +109,7 @@ exports.handler = async (event) => {
         // Best-effort — the community counter is a nice-to-have popup, not
         // something that should fail the whole verification if it errors.
         try {
-          communityCount = await countAll('Users');
+          communityCount = await countAllCached('Users');
         } catch (countErr) {
           console.error('verify-token community count error:', countErr);
         }
