@@ -22,7 +22,16 @@ function supabaseConfig() {
   if (!url || !serviceRoleKey) {
     throw new Error('Supabase is not configured (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY missing)');
   }
-  return { url: url.replace(/\/$/, ''), serviceRoleKey };
+  // SUPABASE_URL is meant to be the bare project origin
+  // (https://<ref>.supabase.co), but Supabase's own dashboard shows REST
+  // code snippets with /rest/v1 already appended to the URL — easy to
+  // copy by mistake. Strip it if present so a URL set either way doesn't
+  // silently double up into /rest/v1/rest/v1/... (confirmed live: this
+  // produces a real PostgREST PGRST125 "Invalid path" error, not a
+  // config problem — every table looked unreachable for exactly this
+  // reason before this fix).
+  const normalizedUrl = url.replace(/\/$/, '').replace(/\/rest\/v1$/, '');
+  return { url: normalizedUrl, serviceRoleKey };
 }
 
 async function supabaseFetch(table, queryString, options = {}) {
