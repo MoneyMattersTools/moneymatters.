@@ -1,7 +1,7 @@
-import airtableLib from './lib/airtable.js';
+import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
 
-const { createRecord, findOneByFormula, countRecentByIpSince, escapeFormulaValue } = airtableLib;
+const { createRecord, findOneByFilters, countRecentByIpSince, encodeEq } = supabaseLib;
 const { sendEmail } = resendLib;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -50,10 +50,10 @@ export default async (request, context) => {
   try {
     if (clientIp !== 'unknown') {
       const recentCount = await countRecentByIpSince(
-        'Deletion Requests',
+        'deletion_requests',
         clientIp,
         IP_RATE_LIMIT_WINDOW_SECONDS,
-        'Requested At'
+        'requested_at'
       );
       if (recentCount >= IP_RATE_LIMIT_MAX_REQUESTS) {
         return json(429, { ok: false, error: 'rate_limited' });
@@ -61,19 +61,19 @@ export default async (request, context) => {
     }
 
     // Per-email cooldown: don't create a duplicate while a request is still pending.
-    const existingPending = await findOneByFormula(
-      'Deletion Requests',
-      `AND(LOWER({Email}) = '${escapeFormulaValue(email)}', {Status} = 'Pending')`
-    );
+    const existingPending = await findOneByFilters('deletion_requests', [
+      `email=${encodeEq(email)}`,
+      `status=${encodeEq('Pending')}`,
+    ]);
     if (existingPending) {
       return json(200, { ok: true, alreadyPending: true });
     }
 
-    await createRecord('Deletion Requests', {
-      Email: email,
-      'Requested At': new Date().toISOString(),
-      Status: 'Pending',
-      'Request IP': clientIp,
+    await createRecord('deletion_requests', {
+      email: email,
+      requested_at: new Date().toISOString(),
+      status: 'Pending',
+      request_ip: clientIp,
     });
 
     await sendEmail({
