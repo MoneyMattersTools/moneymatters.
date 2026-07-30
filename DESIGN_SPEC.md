@@ -460,3 +460,11 @@ Existing content not covered above (vetting-standard cards, "Built on real princ
 32. "What you get" and "Free vs. Plus" comparison sections stay as-is in substance, just trim excess wording - less is more.
 33. Begin work on the logged-in + subscribed member view of this page (a live dashboard/repository of MoneyMatters+ perks) - this was flagged as started in Section 30 item 5, confirm current state and continue building it out.
 
+
+## 34. Round 21 Feedback (locked 2026-07-28)
+
+1. **About Us scroll visual — replace the circle/dial metaphor with a "walking a path" visual.** As the user scrolls through the founder-narrative beats, the visual should read as a path/journey being walked (e.g. a winding trail or road receding into the distance, progress markers along it), not an abstract filling circle. Text per beat should be larger and centered along/over that path, not positioned separately beside it - text and path should read as one continuous scene per Section 33 item 16's "integrated motion" principle, which stays in force.
+2. **Remove the scroll-pin/reveal mechanism specifically from the final "Invitation" beat** - that section should render normally (static, no pinning/gating), while beats 1-4 keep the scroll-scrubbed treatment.
+3. **Investigate and fix the unexplained white line artifact on the left edge of the homepage** - report the root cause, not just a visual patch.
+4. **Confirm the scratchpad/screenshot cleanup practice from a prior round is still holding** - check current scratchpad size and clean up if it has grown again.
+5. **Full site access-level/page-logic review**: go through every page and every visitor state (anonymous, verified-free, verified-Plus) together as one system, not as isolated features layered in separately over many rounds. Confirm: the first-account welcome popup fires only once, correctly, for genuinely new accounts; the Plus-only MoneyMatters+ dashboard view is gated correctly and does not leak to free accounts; the early-user free-Plus incentive (manual Plan flag) is applied consistently wherever Plus status is checked sitewide, not just on the pages built most recently. Report any inconsistency found, not just a pass/fail per page.
