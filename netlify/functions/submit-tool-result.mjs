@@ -1,8 +1,8 @@
-import airtableLib from './lib/airtable.js';
+import supabaseLib from './lib/supabase.js';
 import sessionLib from './lib/session.js';
 import resendLib from './lib/resend.js';
 
-const { findByEmail, updateRecord } = airtableLib;
+const { findByEmail, updateRecord } = supabaseLib;
 const { readSessionFromRequest } = sessionLib;
 const { sendEmail } = resendLib;
 
@@ -19,10 +19,10 @@ const VALUE_MAX_LENGTH = 120;
 // the site's access model (SITE_STRATEGY.md §3 — saved results require a
 // verified email).
 const TOOLS = {
-  networth: { fieldPrefix: 'Net Worth', label: 'Net Worth Calculator' },
-  budget: { fieldPrefix: 'Budget', label: 'Budget Tool' },
-  retirement: { fieldPrefix: 'Retirement', label: 'Retirement Tool' },
-  investment: { fieldPrefix: 'Investment', label: 'Investment Tool' },
+  networth: { resultColumn: 'net_worth_result', submittedColumn: 'net_worth_submitted_at', label: 'Net Worth Calculator' },
+  budget: { resultColumn: 'budget_result', submittedColumn: 'budget_submitted_at', label: 'Budget Tool' },
+  retirement: { resultColumn: 'retirement_result', submittedColumn: 'retirement_submitted_at', label: 'Retirement Tool' },
+  investment: { resultColumn: 'investment_result', submittedColumn: 'investment_submitted_at', label: 'Investment Tool' },
 };
 
 function escapeHtml(value) {
@@ -82,15 +82,15 @@ export default async (request) => {
   }
 
   try {
-    const user = await findByEmail('Users', session.email);
+    const user = await findByEmail('users', session.email);
     if (!user) {
       return json(404, { ok: false, error: 'no_account' });
     }
 
     const nowIso = new Date().toISOString();
-    await updateRecord('Users', user.id, {
-      [`${tool.fieldPrefix} Result`]: JSON.stringify({ headline, summary }),
-      [`${tool.fieldPrefix} Submitted At`]: nowIso,
+    await updateRecord('users', user.id, {
+      [tool.resultColumn]: { headline, summary },
+      [tool.submittedColumn]: nowIso,
     });
 
     const rowsText = summary.map((row) => `${row.label}: ${row.value}`).join('\n');
