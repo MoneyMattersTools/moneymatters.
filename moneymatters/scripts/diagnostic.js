@@ -255,17 +255,24 @@
   // --- advisor review intake (§17.2) ---
   var advisorCta = el('advisor-review-cta');
   var advisorConfirm = el('advisor-intake-confirm');
+
+  // §37.6: shared by the manual "Review with an advisor" click below and
+  // by init()'s ?start=advisor-connect handling, so a visitor who arrived
+  // specifically to connect with an advisor lands on this step directly
+  // instead of needing to notice and click the button themselves.
+  function openAdvisorIntake() {
+    // Reset in case this is a re-open after an earlier submit in the same
+    // session — otherwise the panel would show the confirmation message
+    // under a heading that still reads "What should your advisor know?".
+    advisorForm.reset();
+    advisorForm.hidden = false;
+    advisorConfirm.hidden = true;
+    if (netWorthWrap) netWorthWrap.hidden = true;
+    setStep('advisor-intake');
+  }
+
   if (advisorCta) {
-    advisorCta.addEventListener('click', function () {
-      // Reset in case this is a re-open after an earlier submit in the same
-      // session — otherwise the panel would show the confirmation message
-      // under a heading that still reads "What should your advisor know?".
-      advisorForm.reset();
-      advisorForm.hidden = false;
-      advisorConfirm.hidden = true;
-      if (netWorthWrap) netWorthWrap.hidden = true;
-      setStep('advisor-intake');
-    });
+    advisorCta.addEventListener('click', openAdvisorIntake);
   }
 
   // §21.2: separate, off-by-default opt-in for sharing the Financial
@@ -436,24 +443,25 @@
       advisorHtml = '<p class="mm-dashboard-advisor">Advisor status: <strong>' + data.advisorStatus + '</strong></p>';
     }
 
-    var submitted = DASHBOARD_TOOLS.filter(function (tool) { return tools[tool.key] && tools[tool.key].headline; });
+    // §37.5: placeholder only for now — advisor call booking, Plus call
+    // sign-ups, team messages, and new-tool links land in a later round.
+    // No snapshot numbers here; those already live in the cards above.
     var plusHtml = '';
     if (data.plan === 'plus') {
-      var overviewLine = submitted.length
-        ? submitted.map(function (tool) { return tool.label + ': ' + tools[tool.key].headline.value; }).join(' &middot; ')
-        : 'Submit results from the tools above to build your combined overview.';
       plusHtml =
         '<div class="mm-dashboard-plus">' +
           '<span class="mm-dashboard-plus-badge">MoneyMatters+ overview</span>' +
-          '<p>' + overviewLine + '</p>' +
+          '<p class="mm-dashboard-plus-soon">Coming Soon!</p>' +
         '</div>';
     }
 
     dashEl.innerHTML =
       '<h3 class="mm-dashboard-heading">Your Financial Snapshot</h3>' +
-      '<div class="mm-dashboard-grid">' + cardsHtml + '</div>' +
-      advisorHtml +
-      plusHtml;
+      '<div class="mm-dashboard-row">' +
+        '<div class="mm-dashboard-grid">' + cardsHtml + '</div>' +
+        plusHtml +
+      '</div>' +
+      advisorHtml;
     dashEl.hidden = false;
   }
 
@@ -496,6 +504,29 @@
       if (sub) sub.textContent = 'Enter your email so we can send your results and match you with a vetted advisor. No password needed.';
     }
 
+    // §37.6: a fresh (not-yet-logged-in) advisor-connect visitor still has
+    // to go email → quiz → verify-link before an account exists at all —
+    // that round trip through their inbox is a full page reload, so the
+    // "I came here for advisor matching" intent can't live in a JS
+    // variable. localStorage survives it (including the common case of
+    // opening the magic link in a new tab); a short TTL matching the
+    // token's own expiry keeps a stale flag from misfiring on a later,
+    // unrelated sign-in.
+    var ADVISOR_INTENT_KEY = 'mm_advisor_connect_intent';
+    var ADVISOR_INTENT_TTL_MS = 30 * 60 * 1000;
+    function rememberAdvisorIntent() {
+      try { window.localStorage.setItem(ADVISOR_INTENT_KEY, String(Date.now())); } catch (e) {}
+    }
+    function consumeAdvisorIntent() {
+      try {
+        var raw = window.localStorage.getItem(ADVISOR_INTENT_KEY);
+        window.localStorage.removeItem(ADVISOR_INTENT_KEY);
+        return !!raw && (Date.now() - parseInt(raw, 10)) < ADVISOR_INTENT_TTL_MS;
+      } catch (e) {
+        return false;
+      }
+    }
+
     if (token) {
       // Strip the token from the URL immediately — it now lives only in this
       // closure. The verify call itself only fires on an explicit user click
@@ -530,6 +561,11 @@
               if (result.data.isNewAccount) {
                 showFirstAccountPopup(result.data.communityCount);
               }
+              // §37.6: this visitor's original click came from the Advisor
+              // Connect page — after the score reveal, continue straight
+              // into the advisor checklist instead of stranding them on
+              // the results step waiting for a second, separate click.
+              var cameFromAdvisorConnect = consumeAdvisorIntent();
               // The dashboard (submitted tool results, plan, advisor
               // status) needs a live Users-table read that /api/verify-token
               // doesn't return — fetch it separately so the score reveal
@@ -538,8 +574,11 @@
                 .then(function (res) { return res.json(); })
                 .then(function (sessionData) {
                   if (sessionData && sessionData.loggedIn) renderDashboard(sessionData);
+                  if (cameFromAdvisorConnect) openAdvisorIntake();
                 })
-                .catch(function () {});
+                .catch(function () {
+                  if (cameFromAdvisorConnect) openAdvisorIntake();
+                });
             })
             .catch(function () {
               renderVerifyError('server_error');
@@ -559,10 +598,22 @@
     window.mmGetSession(true)
       .then(function (data) {
         if (data && data.loggedIn && typeof data.healthScore === 'number') {
+          // §37.6: a returning, already-scored visitor who clicked
+          // "Connect with an Advisor" has already seen their score before —
+          // send them straight to the checklist, full stop, no results
+          // detour.
+          if (startParam === 'advisor-connect') {
+            stripStartParam();
+            openAdvisorIntake();
+            return;
+          }
           renderResults(data.healthScore, data.healthBand);
           renderDashboard(data);
         } else if (startParam === 'health-score' || startParam === 'advisor-connect') {
-          if (startParam === 'advisor-connect') applyAdvisorFraming();
+          if (startParam === 'advisor-connect') {
+            applyAdvisorFraming();
+            rememberAdvisorIntent();
+          }
           stripStartParam();
           setStep('email');
           var input = el('diagnostic-email');

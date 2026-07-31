@@ -5,6 +5,16 @@
   // reverses the earlier homepage exclusion.
   if (window.localStorage.getItem(STORAGE_KEY)) return;
 
+  // §37.6: a `start` param means the visitor already chose a specific
+  // entry point (e.g. the Advisor Connect CTA) before this gate ever
+  // gets a chance to render — showing the generic "choose a place to
+  // start" modal on top of that would mask the destination they just
+  // clicked toward. Treat it the same as if the gate had been seen.
+  if (/[?&]start=/.test(window.location.search)) {
+    markSeen();
+    return;
+  }
+
   function markSeen() {
     try { window.localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
   }

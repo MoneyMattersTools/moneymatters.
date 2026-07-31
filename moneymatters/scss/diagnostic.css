@@ -216,7 +216,13 @@
    growing wider) — verified live, cards converged to the same ~196px
    either way. No-shrink lets each card claim its true content width and
    the flex-wrap container breaks the row instead. */
-#diagnostic-hero .mm-dashboard-grid { display: flex; flex-wrap: wrap; gap: 18px; }
+/* §37.5: cards + MoneyMatters+ Overview panel sit side by side, not
+   stacked — the panel used to render below the cards (and, for Plus
+   accounts, duplicated the same numbers already shown in them). Row
+   wraps to a stacked column once the panel can no longer fit beside a
+   full card row. */
+#diagnostic-hero .mm-dashboard-row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+#diagnostic-hero .mm-dashboard-grid { display: flex; flex-wrap: wrap; gap: 18px; flex: 1 1 auto; }
 #diagnostic-hero .mm-dashboard-card {
     display: inline-flex; flex-direction: column; gap: 5px;
     flex: 0 0 auto; min-width: 130px; width: fit-content;
@@ -231,9 +237,10 @@
 #diagnostic-hero .mm-dashboard-card--empty { justify-content: center; }
 #diagnostic-hero .mm-dashboard-card-cta { font-family: var(--mm-sans); font-size: 14.5px; font-weight: 600; color: var(--mm-green-deep); margin-top: 4px; }
 #diagnostic-hero .mm-dashboard-advisor { margin: 22px 0 0; font-family: var(--mm-sans); font-size: 16px; color: var(--mm-text-muted); }
-#diagnostic-hero .mm-dashboard-plus { margin-top: 22px; padding: 22px; border-radius: 14px; background: var(--mm-gold-soft); }
+#diagnostic-hero .mm-dashboard-plus { flex: 1 1 220px; min-width: 220px; padding: 22px; border-radius: 14px; background: var(--mm-gold-soft); }
 #diagnostic-hero .mm-dashboard-plus-badge { display: inline-block; font-family: var(--mm-sans-display); font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--mm-gold); margin-bottom: 8px; }
 #diagnostic-hero .mm-dashboard-plus p { font-family: var(--mm-sans); font-size: 16px; color: var(--mm-charcoal); margin: 0; line-height: 1.6; }
+#diagnostic-hero .mm-dashboard-plus-soon { font-family: var(--mm-serif); font-size: 22px; font-weight: 500; }
 @media (max-width: 900px) {
     #diagnostic-hero .results-layout { grid-template-columns: 1fr; gap: 32px; }
     #diagnostic-hero .mm-dashboard { padding-left: 0; border-left: none; padding-top: 28px; border-top: 1px solid var(--mm-border); }
@@ -248,7 +255,11 @@
     cursor: pointer;
     font: inherit;
 }
-#diagnostic-hero .advisor-intake-form { max-width: 480px; margin-top: 20px; }
+/* §37.7: checklist labels and surrounding copy read too small/cramped
+   relative to the rest of the page — sized up a step across the board,
+   plus a wider form column so the step actually fills the page instead
+   of sitting in a narrow 480px rail. */
+#diagnostic-hero .advisor-intake-form { max-width: 560px; margin-top: 20px; }
 #diagnostic-hero .advisor-intake-checklist {
     border: none;
     padding: 0;
@@ -260,8 +271,8 @@
 #diagnostic-hero .advisor-intake-checklist legend {
     font-family: var(--mm-sans);
     font-weight: 700;
-    font-size: 14px;
-    margin-bottom: 4px;
+    font-size: 17px;
+    margin-bottom: 6px;
     padding: 0;
 }
 #diagnostic-hero .advisor-intake-checklist label {
@@ -270,13 +281,13 @@
     gap: 10px;
     padding: 6px 0;
     font-family: var(--mm-sans);
-    font-size: 15px;
+    font-size: 17px;
     cursor: pointer;
 }
 #diagnostic-hero .advisor-intake-checklist input[type="checkbox"] {
     margin-top: 3px;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
     accent-color: var(--mm-green);
     cursor: pointer;
@@ -286,7 +297,7 @@
     display: block;
     font-family: var(--mm-sans);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 8px;
 }
 #diagnostic-hero .advisor-intake-freetext textarea {
@@ -305,13 +316,13 @@
     gap: 10px;
     font-family: var(--mm-sans);
     font-weight: 700;
-    font-size: 15px;
+    font-size: 17px;
     cursor: pointer;
 }
 #diagnostic-hero .advisor-intake-consent-label input[type="checkbox"] {
     margin-top: 3px;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
     accent-color: var(--mm-green);
     cursor: pointer;
@@ -321,7 +332,7 @@
     display: block;
     font-family: var(--mm-sans);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 8px;
 }
 #diagnostic-hero .advisor-intake-networth input,
@@ -343,7 +354,7 @@
     display: block;
     font-family: var(--mm-sans);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 8px;
 }
 #diagnostic-hero .advisor-intake-location input {
@@ -355,7 +366,7 @@
     font-size: 16px;
 }
 #diagnostic-hero .advisor-intake-hint {
-    font-size: 13px;
+    font-size: 14.5px;
     margin: 8px 0 0;
 }
 #diagnostic-hero .advisor-intake-form .step-back { display: block; margin-top: 14px; }

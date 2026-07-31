@@ -738,7 +738,12 @@ body footer .social-links a:hover { transform: translateY(-2px); }
 body footer .social-links img { width: 30px !important; height: 30px !important; border-radius: 6px; }
 /* Neutralize legacy per-page .social-media { position: relative; left: 80%/70% } hack — caused horizontal overflow on mobile. */
 body footer .social-media { position: static !important; left: auto !important; bottom: auto !important; margin-bottom: 26px !important; display: flex !important; align-items: center !important; gap: 12px !important; }
-body footer .disclaimer { font-size: 13px !important; color: rgba(250, 250, 247, 0.55) !important; line-height: 1.7 !important; margin-bottom: 18px !important; max-width: 900px !important; flex-basis: 100% !important; width: 100% !important; border-top: 1px solid rgba(250, 250, 247, 0.15) !important; padding-top: 26px !important; }
+/* homestyling.css sets `.disclaimer { margin-top: -5% }` (percentage margins
+   resolve against the containing block's WIDTH, not height) — on wide
+   viewports that pulled the block up ~60-70px, overlapping the footer nav
+   row above it (§37.2). Zero it out explicitly rather than relying on this
+   rule's own padding-top to create the visual gap. */
+body footer .disclaimer { font-size: 13px !important; color: rgba(250, 250, 247, 0.55) !important; line-height: 1.7 !important; margin-top: 0 !important; margin-bottom: 18px !important; max-width: 900px !important; flex-basis: 100% !important; width: 100% !important; border-top: 1px solid rgba(250, 250, 247, 0.15) !important; padding-top: 26px !important; }
 body footer .disclaimer h3 { font-family: var(--mm-sans-display) !important; font-size: 13px !important; color: rgba(250, 250, 247, 0.75) !important; margin-bottom: 8px !important; font-weight: 700 !important; }
 /* A generic `footer p` rule (homestyling.css, meant only for the
    "MoneyMatters." wordmark paragraph) also matches this paragraph and
