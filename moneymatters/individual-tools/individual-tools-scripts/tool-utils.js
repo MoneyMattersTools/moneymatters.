@@ -107,7 +107,7 @@ function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResu
       fetch('/api/submit-tool-result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tool: toolKey, headline: result.headline, summary: result.summary }),
+        body: JSON.stringify({ tool: toolKey, headline: result.headline, summary: result.summary, inputs: result.inputs }),
       })
         .then(function (res) { return res.json().catch(function () { return {}; }); })
         .then(function (res) {
@@ -121,6 +121,7 @@ function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResu
           submitBtn.hidden = true;
           statusEl.textContent = 'Saved to your dashboard. Check your inbox for a copy.';
           statusEl.hidden = false;
+          toolShowFeedbackWidget(resultsEl, toolKey);
         })
         .catch(function () {
           submitBtn.disabled = false;
@@ -160,6 +161,7 @@ function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResu
         form.hidden = true;
         statusEl.textContent = 'Sent. Check your inbox.';
         statusEl.hidden = false;
+        toolShowFeedbackWidget(resultsEl, toolKey);
       })
       .catch(function () {
         submitBtn.disabled = false;
@@ -181,6 +183,87 @@ function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResu
 // compose several numbers into one string) and not safe to parse a
 // single figure back out of in general. idToInput keys must match
 // whatever keys that tool chose when it built `inputs` at save time.
+// §38.9: post-completion review widget — 1-5 stars plus an optional
+// comment, specific to this tool. Deliberately NOT part of the results
+// panel's own innerHTML (that panel gets fully replaced on every
+// recalculation, per the file-level comment above toolResultsActionsHtml
+// — a star rating living inside it would visibly reset every time the
+// visitor tweaks an input after rating). Inserted once as a sibling
+// right after the results panel instead, and only shown after a real
+// "I'm done, I got value" signal (a successful save-to-dashboard or
+// email-results submission), not on page load. Shown at most once per
+// tool per browser session either way (sessionStorage, not localStorage
+// — a fresh return visit is a fair second chance to ask).
+function toolShowFeedbackWidget(resultsEl, toolKey) {
+  var storageKey = 'mm_feedback_shown_' + toolKey;
+  try {
+    if (window.sessionStorage.getItem(storageKey)) return;
+  } catch (e) {}
+  if (document.getElementById('mm-feedback-' + toolKey)) return;
+
+  var widget = document.createElement('div');
+  widget.className = 'tool-feedback-widget';
+  widget.id = 'mm-feedback-' + toolKey;
+  widget.innerHTML = '' +
+    '<p class="tool-feedback-prompt">How useful was this?</p>' +
+    '<div class="tool-feedback-stars" role="radiogroup" aria-label="Rating">' +
+      [1, 2, 3, 4, 5].map(function (n) {
+        return '<button type="button" class="tool-feedback-star" data-star="' + n + '" aria-label="' + n + ' star' + (n > 1 ? 's' : '') + '">&#9733;</button>';
+      }).join('') +
+    '</div>' +
+    '<div class="tool-feedback-detail" hidden>' +
+      '<label for="mm-feedback-comment-' + toolKey + '" class="sr-only">Optional comment</label>' +
+      '<textarea id="mm-feedback-comment-' + toolKey + '" placeholder="Optional: anything you\'d add? (optional)" maxlength="600"></textarea>' +
+      '<button type="button" class="tool-feedback-submit">Send feedback</button>' +
+    '</div>' +
+    '<p class="tool-feedback-thanks" hidden>Thanks for the feedback.</p>';
+
+  resultsEl.parentElement.insertBefore(widget, resultsEl.nextSibling);
+
+  var selectedRating = 0;
+  var stars = widget.querySelectorAll('.tool-feedback-star');
+  var detail = widget.querySelector('.tool-feedback-detail');
+  var thanks = widget.querySelector('.tool-feedback-thanks');
+  var submitBtn = widget.querySelector('.tool-feedback-submit');
+  var commentEl = widget.querySelector('textarea');
+
+  function paintStars() {
+    stars.forEach(function (star) {
+      star.classList.toggle('is-selected', Number(star.dataset.star) <= selectedRating);
+    });
+  }
+
+  stars.forEach(function (star) {
+    star.addEventListener('click', function () {
+      selectedRating = Number(star.dataset.star);
+      paintStars();
+      detail.hidden = false;
+    });
+  });
+
+  submitBtn.addEventListener('click', function () {
+    if (!selectedRating) return;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    fetch('/api/submit-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool: toolKey, rating: selectedRating, comment: commentEl.value.trim() }),
+    })
+      .then(function () {
+        widget.querySelector('.tool-feedback-prompt').hidden = true;
+        widget.querySelector('.tool-feedback-stars').hidden = true;
+        detail.hidden = true;
+        thanks.hidden = false;
+        try { window.sessionStorage.setItem(storageKey, '1'); } catch (e) {}
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send feedback';
+      });
+  });
+}
+
 function toolPrefillFromSaved(savedResult, idToInput) {
   if (!savedResult || !savedResult.inputs || typeof savedResult.inputs !== 'object') return false;
   var filled = false;

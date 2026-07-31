@@ -1414,3 +1414,62 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .data-request-status--success { color: var(--mm-green-deep); font-weight: 600; }
 .data-request-status--error { color: #B3432B; font-weight: 600; }
 @media (max-width: 560px) { .data-request-form { flex-direction: column; } }
+
+/* --- Post-completion review widget (§38.9, scripts/.../tool-utils.js's
+   toolShowFeedbackWidget) — shared here (not a tool-specific stylesheet)
+   because both the native tool pages and the homepage diagnostic quiz
+   use the exact same widget/markup. Inserted as a sibling right after
+   the results panel it follows, not inside it — that panel's own
+   innerHTML gets fully replaced on every recalculation on the tool
+   pages, which would reset a star rating living inside it. --- */
+.tool-feedback-widget {
+    border-top: 1px solid var(--mm-border);
+    padding-top: 16px;
+    margin-top: 16px;
+}
+.tool-feedback-prompt {
+    font-family: var(--mm-sans);
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--mm-text-soft);
+    margin: 0 0 8px;
+}
+.tool-feedback-stars { display: flex; gap: 4px; }
+.tool-feedback-star {
+    background: none;
+    border: none;
+    padding: 2px;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--mm-border);
+    cursor: pointer;
+}
+.tool-feedback-star.is-selected { color: var(--mm-gold); }
+.tool-feedback-detail { margin-top: 10px; max-width: 420px; }
+.tool-feedback-detail[hidden] { display: none; }
+.tool-feedback-detail textarea {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 64px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--mm-border);
+    font-family: var(--mm-sans);
+    font-size: 14px;
+    resize: vertical;
+}
+.tool-feedback-submit {
+    margin-top: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--mm-border);
+    background: var(--mm-charcoal);
+    color: var(--mm-cream);
+    font-family: var(--mm-sans-display);
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+.tool-feedback-submit:disabled { opacity: 0.6; cursor: default; }
+.tool-feedback-thanks[hidden] { display: none; }
+.tool-feedback-thanks { font-family: var(--mm-sans); font-size: 13.5px; color: var(--mm-green-deep); margin: 0; }

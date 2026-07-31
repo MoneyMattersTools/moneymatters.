@@ -5,9 +5,9 @@
   var QUESTIONS = [
     {
       id: 'q1',
-      text: 'If you lost your main source of income today, how many months of expenses could you cover with savings you could access quickly?',
+      text: 'If your income stopped today, how many months could your savings cover?',
       options: [
-        { value: 'a', label: "None, I don't have savings I could access quickly" },
+        { value: 'a', label: "None — I don't have savings I can get to quickly" },
         { value: 'b', label: 'About 1 month' },
         { value: 'c', label: '3–5 months' },
         { value: 'd', label: '6+ months' },
@@ -15,9 +15,9 @@
     },
     {
       id: 'q2',
-      text: 'Outside of a mortgage, how would you describe your debt (credit cards, loans, etc.)?',
+      text: 'Outside a mortgage, how does your debt feel right now?',
       options: [
-        { value: 'a', label: 'More than I could pay off in 5 years at my current pace' },
+        { value: 'a', label: 'More than I could pay off in 5 years at this pace' },
         { value: 'b', label: "A meaningful amount, but I'm paying it down steadily" },
         { value: 'c', label: 'A small, manageable amount' },
         { value: 'd', label: 'No non-mortgage debt' },
@@ -25,7 +25,7 @@
     },
     {
       id: 'q3',
-      text: 'Do you know, roughly, where your money goes each month?',
+      text: 'Do you know where your money actually goes each month?',
       options: [
         { value: 'a', label: 'Not really' },
         { value: 'b', label: 'I have a rough idea' },
@@ -35,7 +35,7 @@
     },
     {
       id: 'q4',
-      text: 'About what share of your income are you currently able to save or invest, after expenses?',
+      text: 'How much of what you earn actually stays yours?',
       options: [
         { value: 'a', label: "I'm not saving anything right now" },
         { value: 'b', label: 'Less than 5%' },
@@ -45,7 +45,7 @@
     },
     {
       id: 'q5',
-      text: 'Are you currently contributing to a retirement account (401(k), IRA, etc.)?',
+      text: 'Are you contributing to a retirement account (401(k), IRA, etc.)?',
       options: [
         { value: 'a', label: "No, I'm not contributing" },
         { value: 'b', label: 'A little, inconsistently' },
@@ -55,7 +55,7 @@
     },
     {
       id: 'q6',
-      text: 'If something went wrong tomorrow (job loss, illness, a big repair), how protected do you feel?',
+      text: 'If something went wrong tomorrow, how protected would you feel?',
       options: [
         { value: 'a', label: 'Not at all' },
         { value: 'b', label: 'Somewhat' },
@@ -65,7 +65,7 @@
     },
     {
       id: 'q7',
-      text: "How clear are you on your financial goals and whether you're on track?",
+      text: 'How clear are you on your financial goals?',
       options: [
         { value: 'a', label: 'Not clear at all' },
         { value: 'b', label: 'I have a vague sense' },
@@ -401,6 +401,15 @@
     }
 
     setStep('results');
+
+    // §38.9: post-quiz review widget, shared with the native tool pages
+    // (individual-tools-scripts/tool-utils.js). Anchored right after the
+    // "Explore all tools" links so it reads as part of the score panel,
+    // not the separate dashboard beside it.
+    if (typeof toolShowFeedbackWidget === 'function') {
+      var nextStepsEl = heroRoot.querySelector('[data-step="results"] .next-steps');
+      if (nextStepsEl) toolShowFeedbackWidget(nextStepsEl, 'diagnostic');
+    }
   }
 
   // --- dashboard (§28.1-4): purely additive to the score panel above,
