@@ -497,3 +497,17 @@ The GSAP ScrollTrigger pin-and-swap approach has now failed three rounds running
 ### Specific bugs to fix as part of this rebuild
 1. Beat 1 ("The Problem") does not render/appear at all currently - confirm it exists and displays correctly in the new implementation.
 2. Vertical centering - beat text has been rendering too high in the viewport; center it properly.
+
+## 37. Round 22 (resend) + Round 24 Feedback (locked 2026-07-29)
+
+### Round 22 items, not yet sent (see Section 35 for original detail) - still apply as written:
+1. Advisor Connect returning-user shortcut (situational-checklist form directly for already-diagnosed users) - superseded by item 6 below, see that item instead.
+2. Footer text overlap bug fix + sitewide overlap sweep.
+3. Comprehensive Supabase submission testing sitewide, per-submission-type evidence.
+
+### Round 24 - new items
+4. **Test account cleanup**: delete disposable mail.tm test accounts from the users table, keep mm-qa-persistent@web-library.net. Establish a clear test-data naming/tagging convention going forward.
+5. **Homepage dashboard - "MoneyMatters+ Overview" panel**: move it to the right of the financial snapshot cards (not below/overlapping them). Do not duplicate the snapshot numbers (Net Worth/Budget/Investment) already shown elsewhere on the dashboard - for now, this panel just shows "Coming Soon!" as a placeholder. Future content (not this round): advisor call booking info, Plus call sign-ups, direct messages from the Plus team, links to new tools as they ship - the real Plus member perks.
+6. **Advisor Connect page - "Connect with an Advisor" button routing, corrected/clarified**: this button should go directly to the "Free Advisor Review" situational-checklist page (the one with the "What should your advisor know?" checkboxes), not to the homepage - confirm and fix, this may be a real routing bug since it is currently landing on the homepage. This applies as the button's behavior generally, superseding the earlier returning-user-only framing from Section 35 item 2 - go straight to the checklist page from this button, full stop.
+7. **Free Advisor Review page - text sizing**: checkbox labels and the surrounding text are too small - increase size generally to better fill the page.
+8. **About Us scroll - one more refinement on an otherwise-approved rebuild**: have the trees/forest imagery itself show subtle movement/parallax as the user scrolls (not fully static photography) - reinforcing the "walking a path through a living forest" concept. Keep the one-time-reveal, no-replay-on-scroll-up behavior exactly as just verified - this is a visual enhancement only, not a mechanic change.
