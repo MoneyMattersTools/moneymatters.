@@ -480,7 +480,7 @@
     if (data.plan === 'plus') {
       plusHtml =
         '<div class="mm-dashboard-plus">' +
-          '<span class="mm-dashboard-plus-badge">MoneyMatters+ overview</span>' +
+          '<span class="mm-dashboard-plus-badge">MM+ overview</span>' +
           '<p class="mm-dashboard-plus-soon">Coming Soon!</p>' +
         '</div>';
     }
