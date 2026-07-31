@@ -622,26 +622,19 @@ body main .hero {
    is already managed by diagnostic.js, nothing here touches
    funnel logic.
    ===================================================== */
-/* diagnostic.css spans .hero-text across both grid columns at the choice
-   step, because #hero-visual is display:none there (nothing to share the
-   row with). Now that .hero-signature-viz occupies column 2 at that same
-   step, .hero-text must go back to a single column or the two overlap. */
-#diagnostic-hero[data-active-step="choice"] .hero-text {
-    max-width: none !important;
-    text-align: left !important;
-    grid-column: 1 !important;
-    margin: 0 !important;
-}
-#diagnostic-hero[data-active-step="choice"] .hero-text .hero-sub { margin-left: 0 !important; margin-right: 0 !important; }
-@media (max-width: 900px) {
-    #diagnostic-hero[data-active-step="choice"] .hero-text {
-        grid-column: 1 !important;
-        text-align: center !important;
-        max-width: 640px !important;
-        margin: 0 auto !important;
-    }
-    #diagnostic-hero[data-active-step="choice"] .hero-text .hero-sub { margin-left: auto !important; margin-right: auto !important; }
-}
+/* §38.3: the comment this rule used to carry ("signature-viz occupies
+   column 2 at the choice step, so .hero-text must go back to a single
+   column") stopped being true when §15.3 (right below) hid
+   .hero-signature-viz at the choice step specifically — but this rule
+   forcing .hero-text into grid-column 1 was never revisited, leaving
+   column 2 permanently empty (just background) at the exact step every
+   fresh visitor lands on first. That's the real cause of the "crowded
+   left edge, unused width on the right" feedback — confirmed live: this
+   rule (loading after diagnostic.css's correct grid-column:1/-1 for this
+   step, same selector + !important, so it was winning) was overriding
+   the wider layout diagnostic.css already intended. Removed; diagnostic.css's
+   own #diagnostic-hero[data-active-step="choice"] .hero-text rule now
+   governs this unopposed. See DESIGN_SPEC.md §38.3. */
 
 /* =====================================================
    Homepage hero: real photography/video backdrop per
