@@ -76,9 +76,16 @@
         return { label: cat.label, value: toolFormatCurrency(toolParseNumber(liabilityInputs[cat.key].value)) };
       })
     );
+    var inputs = {};
+    ASSET_CATEGORIES.concat(LIABILITY_CATEGORIES).forEach(function (cat) {
+      var input = assetInputs[cat.key] || liabilityInputs[cat.key];
+      var amount = toolParseNumber(input ? input.value : 0);
+      if (amount > 0) inputs[cat.key] = amount;
+    });
     lastResult = {
       headline: { label: 'Net Worth', value: toolFormatCurrency(netWorth) },
       summary: summaryRows,
+      inputs: inputs,
     };
 
     resultsEl.innerHTML = '' +
@@ -107,4 +114,15 @@
   });
 
   render();
+
+  // §38.5: pre-fill from a previously-saved result for returning,
+  // signed-in visitors.
+  window.mmGetSession().then(function (data) {
+    if (!data || !data.loggedIn || !data.tools || !data.tools.networth) return;
+    var idToInput = {};
+    ASSET_CATEGORIES.concat(LIABILITY_CATEGORIES).forEach(function (cat) {
+      idToInput[cat.key] = assetInputs[cat.key] || liabilityInputs[cat.key];
+    });
+    if (toolPrefillFromSaved(data.tools.networth, idToInput)) render();
+  }).catch(function () {});
 })();

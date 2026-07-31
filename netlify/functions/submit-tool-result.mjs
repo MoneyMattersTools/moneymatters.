@@ -9,6 +9,8 @@ const { sendEmail } = resendLib;
 const MAX_SUMMARY_ROWS = 15;
 const LABEL_MAX_LENGTH = 80;
 const VALUE_MAX_LENGTH = 120;
+const MAX_INPUT_KEYS = 30;
+const INPUT_KEY_MAX_LENGTH = 60;
 
 // §28.2: gives Budget/Retirement/Investment/Net Worth the same "Submit"
 // treatment the Financial Health Score already has via the diagnostic
@@ -46,6 +48,27 @@ function cleanSummary(value) {
   return value.map(cleanRow).filter(Boolean).slice(0, MAX_SUMMARY_ROWS);
 }
 
+// §38.5: raw input figures, separate from the display-oriented summary
+// above (some summary rows compose several numbers into one string, e.g.
+// Budget's "$1,400 actual (28.0%), recommended $1,400 (28%)" — not safe
+// to parse a single number back out of for pre-filling a form). Never
+// shown anywhere itself; the dashboard and email confirmation only ever
+// read headline/summary. Flat string-key -> finite-number map only.
+function cleanInputs(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
+  const keys = Object.keys(value).slice(0, MAX_INPUT_KEYS);
+  const cleaned = {};
+  let any = false;
+  keys.forEach((key) => {
+    if (typeof key !== 'string' || !key || key.length > INPUT_KEY_MAX_LENGTH) return;
+    const num = value[key];
+    if (typeof num !== 'number' || !Number.isFinite(num)) return;
+    cleaned[key] = num;
+    any = true;
+  });
+  return any ? cleaned : undefined;
+}
+
 function json(statusCode, body) {
   return new Response(JSON.stringify(body), {
     status: statusCode,
@@ -77,6 +100,7 @@ export default async (request) => {
 
   const headline = cleanRow(payload.headline);
   const summary = cleanSummary(payload.summary);
+  const inputs = cleanInputs(payload.inputs);
   if (!headline || !summary.length) {
     return json(400, { ok: false, error: 'invalid_result' });
   }
@@ -88,8 +112,9 @@ export default async (request) => {
     }
 
     const nowIso = new Date().toISOString();
+    const resultRecord = inputs ? { headline, summary, inputs } : { headline, summary };
     await updateRecord('users', user.id, {
-      [tool.resultColumn]: { headline, summary },
+      [tool.resultColumn]: resultRecord,
       [tool.submittedColumn]: nowIso,
     });
 

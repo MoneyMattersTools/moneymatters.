@@ -26,6 +26,22 @@
     return n > 0 ? n : fallback;
   }
 
+  // §38.5: raw figures for pre-fill on a return visit — separate from the
+  // summary above, which only carries computed OUTPUT metrics (target
+  // nest egg, projected savings), not the original inputs. `mode` is
+  // encoded numerically (0/1) since the backend only accepts numeric
+  // values here; the pre-fill call site below switches modes before
+  // filling other fields if it doesn't match the currently active one.
+  function collectInputs() {
+    var result = {};
+    ids.forEach(function (id) {
+      var n = toolParseNumber(el[id] ? el[id].value : 0);
+      if (n > 0) result[id] = n;
+    });
+    result.mode = mode === 'retired' ? 1 : 0;
+    return result;
+  }
+
   function renderWorking() {
     var currentAge = val('ret-current-age', 35);
     var retireAge = val('ret-retire-age', 65);
@@ -71,6 +87,7 @@
         { label: 'Projected savings at age ' + retireAge, value: toolFormatCurrency(projected) },
         { label: 'Years until retirement', value: String(t) },
       ],
+      inputs: collectInputs(),
     };
 
     resultsEl.innerHTML = gapHtml +
@@ -125,6 +142,7 @@
         { label: 'Current savings', value: toolFormatCurrency(currentSavings) },
         { label: 'Years of retirement remaining', value: String(n) },
       ],
+      inputs: collectInputs(),
     };
 
     resultsEl.innerHTML = gapHtml +
@@ -165,4 +183,23 @@
   });
 
   render();
+
+  // §38.5: pre-fill from a previously-saved result for returning,
+  // signed-in visitors. Switches to the saved mode first (if different
+  // from the current default) since that also shows/hides the right
+  // panel via the existing toggle handler, before filling field values.
+  window.mmGetSession().then(function (data) {
+    if (!data || !data.loggedIn || !data.tools || !data.tools.retirement) return;
+    var saved = data.tools.retirement;
+    if (saved.inputs && typeof saved.inputs.mode === 'number') {
+      var wantMode = saved.inputs.mode === 1 ? 'retired' : 'working';
+      if (wantMode !== mode) {
+        var toggleBtn = document.querySelector('.tool-toggle button[data-mode="' + wantMode + '"]');
+        if (toggleBtn) toggleBtn.click();
+      }
+    }
+    var idToInput = {};
+    ids.forEach(function (id) { idToInput[id] = el[id]; });
+    if (toolPrefillFromSaved(saved, idToInput)) render();
+  }).catch(function () {});
 })();

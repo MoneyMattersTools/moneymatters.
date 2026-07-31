@@ -171,3 +171,25 @@ function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResu
 
   return { refresh: updateVisibility };
 }
+
+// §38.5: pre-fills a tool's input fields from that tool's previously-
+// saved result, so a returning signed-in visitor can adjust specific
+// numbers and re-submit instead of re-entering everything. Reads
+// savedResult.inputs — a flat key->number map each tool saves alongside
+// its display headline/summary specifically for this, since summary
+// rows are display strings (some, like Budget's per-category line,
+// compose several numbers into one string) and not safe to parse a
+// single figure back out of in general. idToInput keys must match
+// whatever keys that tool chose when it built `inputs` at save time.
+function toolPrefillFromSaved(savedResult, idToInput) {
+  if (!savedResult || !savedResult.inputs || typeof savedResult.inputs !== 'object') return false;
+  var filled = false;
+  Object.keys(savedResult.inputs).forEach(function (key) {
+    var input = idToInput[key];
+    var value = savedResult.inputs[key];
+    if (!input || typeof value !== 'number' || isNaN(value)) return;
+    input.value = value;
+    filled = true;
+  });
+  return filled;
+}

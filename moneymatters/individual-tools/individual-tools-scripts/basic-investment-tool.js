@@ -93,6 +93,12 @@
           : 'Your equity exposure is ' + toolFormatPercent(Math.abs(equityGap), 0) + ' ' + (equityGap > 0 ? 'above' : 'below') + ' the ' + risk.label.toLowerCase() + ' target of ' + risk.equities + '%.')
       : 'Enter your portfolio holdings to see how your allocation compares.';
 
+    var toolInputs = { risk: Number(currentRisk()) };
+    if (equities > 0) toolInputs.equities = equities;
+    if (bonds > 0) toolInputs.bonds = bonds;
+    if (cash > 0) toolInputs.cash = cash;
+    if (other > 0) toolInputs.other = other;
+
     lastResult = {
       headline: { label: 'Portfolio Value', value: toolFormatCurrency(total) },
       summary: [
@@ -103,6 +109,7 @@
           return { label: LABELS[s.key], value: toolFormatPercent(s.pct, 0) };
         })
       ),
+      inputs: toolInputs,
     };
 
     resultsEl.innerHTML = '' +
@@ -135,4 +142,21 @@
   riskInputs.forEach(function (input) { input.addEventListener('change', render); });
 
   render();
+
+  // §38.5: pre-fill from a previously-saved result for returning,
+  // signed-in visitors. `risk` is a radio group, not a plain input —
+  // toolPrefillFromSaved only knows how to set .value, so that one field
+  // is handled separately (checking the matching radio) rather than
+  // passed through the shared helper.
+  window.mmGetSession().then(function (data) {
+    if (!data || !data.loggedIn || !data.tools || !data.tools.investment) return;
+    var saved = data.tools.investment;
+    if (saved.inputs && typeof saved.inputs.risk === 'number') {
+      var radio = document.querySelector('input[name="inv-risk"][value="' + saved.inputs.risk + '"]');
+      if (radio) radio.checked = true;
+    }
+    var idToInput = { equities: el['inv-equities'], bonds: el['inv-bonds'], cash: el['inv-cash'], other: el['inv-other'] };
+    var filled = toolPrefillFromSaved(saved, idToInput);
+    if (filled || (saved.inputs && typeof saved.inputs.risk === 'number')) render();
+  }).catch(function () {});
 })();

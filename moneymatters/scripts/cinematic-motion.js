@@ -6,9 +6,14 @@ document.addEventListener('DOMContentLoaded', function () {
   // pages. Scroll-reveal and magnetic hover below stay on everywhere;
   // only the cursor-glow and grain-overlay are cinematic-only.
   var isUtilityPage = document.body.classList.contains('utility-page');
+  // §38.4: the Tools hub page is a browsable landing/menu page, not a
+  // working input form the way the individual calculators are — it gets
+  // the glow back specifically via this class on its <body>, while the
+  // calculators (and privacy-policy.html) keep the exemption unchanged.
+  var glowExempt = isUtilityPage && !document.body.classList.contains('allow-cursor-glow');
 
   // --- Cursor-follow spotlight (desktop, precise-pointer only) ---
-  if (isFinePointer && !prefersReducedMotion && !isUtilityPage) {
+  if (isFinePointer && !prefersReducedMotion && !glowExempt) {
     var glow = document.createElement('div');
     glow.className = 'cursor-glow';
     document.body.appendChild(glow);

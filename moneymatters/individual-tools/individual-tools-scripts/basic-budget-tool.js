@@ -70,9 +70,15 @@
     var netIsNegative = net < 0;
 
     summary.unshift({ label: 'Monthly income entered', value: toolFormatCurrency(income) });
+    var toolInputs = { income: income };
+    CATEGORIES.forEach(function (cat) {
+      var amount = toolParseNumber(inputs[cat.key] ? inputs[cat.key].value : 0);
+      if (amount > 0) toolInputs[cat.key] = amount;
+    });
     lastResult = {
       headline: { label: netIsNegative ? 'Monthly Deficit' : 'Monthly Surplus', value: toolFormatCurrency(net) },
       summary: summary,
+      inputs: toolInputs,
     };
 
     resultsEl.innerHTML = '' +
@@ -97,4 +103,13 @@
   });
 
   render();
+
+  // §38.5: pre-fill from a previously-saved result for returning,
+  // signed-in visitors.
+  window.mmGetSession().then(function (data) {
+    if (!data || !data.loggedIn || !data.tools || !data.tools.budget) return;
+    var idToInput = { income: incomeInput };
+    CATEGORIES.forEach(function (cat) { idToInput[cat.key] = inputs[cat.key]; });
+    if (toolPrefillFromSaved(data.tools.budget, idToInput)) render();
+  }).catch(function () {});
 })();
