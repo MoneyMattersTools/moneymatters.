@@ -162,7 +162,7 @@
    score column (a number, a band label, a couple lines of copy, one
    button) doesn't need as much width as a multi-card grid plus a second
    panel. */
-#diagnostic-hero .results-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 48px; align-items: start; }
+#diagnostic-hero .results-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: 48px; align-items: start; }
 #diagnostic-hero .score-reveal { display: flex; align-items: baseline; gap: 8px; }
 #diagnostic-hero .score-number {
     font-family: var(--mm-serif);
@@ -243,7 +243,7 @@
 #diagnostic-hero .mm-dashboard-card--empty { justify-content: center; }
 #diagnostic-hero .mm-dashboard-card-cta { font-family: var(--mm-sans); font-size: 14.5px; font-weight: 600; color: var(--mm-green-deep); margin-top: 4px; }
 #diagnostic-hero .mm-dashboard-advisor { margin: 22px 0 0; font-family: var(--mm-sans); font-size: 16px; color: var(--mm-text-muted); }
-#diagnostic-hero .mm-dashboard-plus { flex: 1 1 130px; min-width: 130px; padding: 18px 20px; border-radius: 14px; background: var(--mm-gold-soft); }
+#diagnostic-hero .mm-dashboard-plus { flex: 1 1 120px; min-width: 120px; padding: 18px 20px; border-radius: 14px; background: var(--mm-gold-soft); }
 #diagnostic-hero .mm-dashboard-plus-badge { display: block; font-family: var(--mm-sans-display); font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--mm-gold); margin-bottom: 8px; line-height: 1.3; }
 #diagnostic-hero .mm-dashboard-plus p { font-family: var(--mm-sans); font-size: 16px; color: var(--mm-charcoal); margin: 0; line-height: 1.6; }
 #diagnostic-hero .mm-dashboard-plus-soon { font-family: var(--mm-serif); font-size: 22px; font-weight: 500; }
