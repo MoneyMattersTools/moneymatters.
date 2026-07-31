@@ -141,10 +141,40 @@
     return document.getElementById(id);
   }
 
+  // §37.6: a fresh (not-yet-logged-in) advisor-connect visitor still has to
+  // go email → quiz → verify-link before an account exists at all — that
+  // round trip through their inbox is a full page reload, so the "I came
+  // here for advisor matching" intent can't live in a JS variable.
+  // localStorage survives it (including opening the magic link in a new
+  // tab). Scoped at module level (not inside init()) because it also has
+  // to be cleared from the plain choice-screen button below, which isn't
+  // part of the advisor-connect path at all — without that, a visitor who
+  // starts the advisor-connect flow, abandons it, then runs an unrelated
+  // diagnostic or sign-in within the TTL window gets misrouted into the
+  // advisor checklist (caught live in §37 verification).
+  var ADVISOR_INTENT_KEY = 'mm_advisor_connect_intent';
+  var ADVISOR_INTENT_TTL_MS = 30 * 60 * 1000;
+  function rememberAdvisorIntent() {
+    try { window.localStorage.setItem(ADVISOR_INTENT_KEY, String(Date.now())); } catch (e) {}
+  }
+  function clearAdvisorIntent() {
+    try { window.localStorage.removeItem(ADVISOR_INTENT_KEY); } catch (e) {}
+  }
+  function consumeAdvisorIntent() {
+    try {
+      var raw = window.localStorage.getItem(ADVISOR_INTENT_KEY);
+      window.localStorage.removeItem(ADVISOR_INTENT_KEY);
+      return !!raw && (Date.now() - parseInt(raw, 10)) < ADVISOR_INTENT_TTL_MS;
+    } catch (e) {
+      return false;
+    }
+  }
+
   // --- choice step ---
   var startBtn = el('start-health-score');
   if (startBtn) {
     startBtn.addEventListener('click', function () {
+      clearAdvisorIntent();
       setStep('email');
       var input = el('diagnostic-email');
       if (input) input.focus();
@@ -504,29 +534,6 @@
       if (sub) sub.textContent = 'Enter your email so we can send your results and match you with a vetted advisor. No password needed.';
     }
 
-    // §37.6: a fresh (not-yet-logged-in) advisor-connect visitor still has
-    // to go email → quiz → verify-link before an account exists at all —
-    // that round trip through their inbox is a full page reload, so the
-    // "I came here for advisor matching" intent can't live in a JS
-    // variable. localStorage survives it (including the common case of
-    // opening the magic link in a new tab); a short TTL matching the
-    // token's own expiry keeps a stale flag from misfiring on a later,
-    // unrelated sign-in.
-    var ADVISOR_INTENT_KEY = 'mm_advisor_connect_intent';
-    var ADVISOR_INTENT_TTL_MS = 30 * 60 * 1000;
-    function rememberAdvisorIntent() {
-      try { window.localStorage.setItem(ADVISOR_INTENT_KEY, String(Date.now())); } catch (e) {}
-    }
-    function consumeAdvisorIntent() {
-      try {
-        var raw = window.localStorage.getItem(ADVISOR_INTENT_KEY);
-        window.localStorage.removeItem(ADVISOR_INTENT_KEY);
-        return !!raw && (Date.now() - parseInt(raw, 10)) < ADVISOR_INTENT_TTL_MS;
-      } catch (e) {
-        return false;
-      }
-    }
-
     if (token) {
       // Strip the token from the URL immediately — it now lives only in this
       // closure. The verify call itself only fires on an explicit user click
@@ -613,6 +620,8 @@
           if (startParam === 'advisor-connect') {
             applyAdvisorFraming();
             rememberAdvisorIntent();
+          } else {
+            clearAdvisorIntent();
           }
           stripStartParam();
           setStep('email');

@@ -75,6 +75,10 @@
       if (!email) return;
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
+      // §37.6: this is an unrelated sign-in path — clear any advisor-connect
+      // intent flag diagnostic.js may have set on an earlier, abandoned
+      // visit, so this login link doesn't get misrouted into that checklist.
+      try { window.localStorage.removeItem('mm_advisor_connect_intent'); } catch (err) {}
       fetch('/api/resend-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
