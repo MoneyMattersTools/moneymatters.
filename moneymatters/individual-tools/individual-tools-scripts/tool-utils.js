@@ -250,7 +250,13 @@ function toolShowFeedbackWidget(resultsEl, toolKey) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tool: toolKey, rating: selectedRating, comment: commentEl.value.trim() }),
     })
-      .then(function () {
+      .then(function (res) {
+        // fetch() only rejects on a network failure — an HTTP error status
+        // (e.g. a 500 while the tool_feedback migration is still pending,
+        // see supabase/migrations/0003_add_tool_feedback.sql) resolves
+        // just like a success does, so this has to check res.ok itself
+        // rather than relying on .catch() to catch it.
+        if (!res.ok) throw new Error('submit-feedback failed: ' + res.status);
         widget.querySelector('.tool-feedback-prompt').hidden = true;
         widget.querySelector('.tool-feedback-stars').hidden = true;
         detail.hidden = true;
