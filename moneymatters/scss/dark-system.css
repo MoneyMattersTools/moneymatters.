@@ -200,35 +200,28 @@ body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { 
 }
 
 /* =====================================================
-   About Us scroll-story path visual (§31, replaced dial → path §34.1)
-   — the narrative's visual through-line, driven continuously by
-   scroll progress via scripts/about-scroll-story.js. A winding trail
-   the reader "walks" as they scroll, not an abstract filling gauge:
-   a faint always-visible track, a bolder fill that draws itself in
-   with scroll progress, a traveler dot that walks the exact curve via
-   getPointAtLength(), and 5 waypoint markers (one per beat) that light
-   up gold as the traveler passes them.
+   About Us scroll-story forest visual (§31, path §34.1, forest §36) —
+   real forest photography flanking the narrative text on both sides
+   (images/hero-misty-forest.jpg, mirrored on the right panel). Scrim
+   is a dark vertical fade top/bottom (blends into the page background
+   above/below) plus a horizontal fade toward the text column (keeps
+   text legible against a darkened inner edge, while the outer edge
+   away from the text shows the photo more vividly).
    ===================================================== */
-.story-path-track { fill: none; stroke: var(--mm-surface-border); stroke-width: 3; stroke-linecap: round; }
-.story-path-fill {
-    fill: none;
-    stroke: var(--mm-green);
-    stroke-width: 4;
-    stroke-linecap: round;
-    opacity: 0.55;
-    transition: opacity 0.4s ease;
+.story-forest-scrim {
+    background:
+        linear-gradient(180deg, var(--mm-bg) 0%, rgba(18, 23, 21, 0.3) 14%, rgba(18, 23, 21, 0.3) 86%, var(--mm-bg) 100%);
 }
-.story-waypoint {
-    fill: var(--mm-bg);
-    stroke: var(--mm-surface-border);
-    stroke-width: 2;
-    transition: fill 0.4s ease, stroke 0.4s ease;
+.story-forest--left .story-forest-scrim {
+    background:
+        linear-gradient(180deg, var(--mm-bg) 0%, rgba(18, 23, 21, 0.3) 14%, rgba(18, 23, 21, 0.3) 86%, var(--mm-bg) 100%),
+        linear-gradient(90deg, transparent 45%, var(--mm-bg) 100%);
 }
-.story-waypoint.is-reached { fill: var(--mm-gold); stroke: var(--mm-gold); }
-.story-waypoint--final.is-reached { filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.65)); }
-.story-traveler { fill: var(--mm-gold); filter: drop-shadow(0 0 5px rgba(227, 176, 75, 0.6)); }
-
-.story-pin-backdrop { background: var(--mm-bg) !important; }
+.story-forest--right .story-forest-scrim {
+    background:
+        linear-gradient(180deg, var(--mm-bg) 0%, rgba(18, 23, 21, 0.3) 14%, rgba(18, 23, 21, 0.3) 86%, var(--mm-bg) 100%),
+        linear-gradient(270deg, transparent 45%, var(--mm-bg) 100%);
+}
 
 /* Eyebrow label (§27.1) — site-base.css's --mm-gold-ink is tuned for
    legibility on the light cream background; on this site's actual dark

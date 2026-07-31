@@ -88,52 +88,41 @@
               <a href="https://www.tiktok.com/@moneymatters.tools?_t=ZP-8w46bg1nK5G&_r=1" target="_blank" rel="noopener"><img src="images/TikTok_Icon_Black_Circle.png" alt="TikTok"></a>
             </div>
 
-            <div class="story-pin-backdrop" id="story-pin-backdrop" aria-hidden="true"></div>
-
+            <!-- §36: pin-and-swap GSAP mechanic removed entirely (failed 3
+                 rounds running) — replaced with normal document flow and a
+                 one-time reveal per beat (scripts/about-scroll-story.js, no
+                 GSAP dependency). Forest imagery now flanks the text on both
+                 sides instead of sitting behind it as a single backdrop. -->
             <div class="scroll-story" id="scroll-story">
-              <div class="story-visual-wrap">
-                <!-- §34.1: a winding path/trail replaces the dial — reads as a
-                     journey being walked, not an abstract filling gauge. The
-                     track is drawn once; story-path-fill draws itself in via
-                     stroke-dashoffset as the whole story is scrolled (same
-                     technique the dial's ring used). Five waypoint markers
-                     (one per beat) and a traveler dot are positioned via
-                     SVGPathElement.getPointAtLength() in JS, not hand-picked
-                     coordinates, so they always sit exactly on the curve. -->
-                <div class="story-visual" id="story-visual" aria-hidden="true">
-                  <svg viewBox="0 0 340 640" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-                    <path class="story-path-track" d="M 170 20 C 60 90 260 160 150 230 C 40 300 280 370 170 440 C 90 490 230 530 170 620"/>
-                    <path class="story-path-fill" id="story-path-fill" d="M 170 20 C 60 90 260 160 150 230 C 40 300 280 370 170 440 C 90 490 230 530 170 620"/>
-                    <circle class="story-waypoint" id="story-waypoint-0" r="7"/>
-                    <circle class="story-waypoint" id="story-waypoint-1" r="7"/>
-                    <circle class="story-waypoint" id="story-waypoint-2" r="7"/>
-                    <circle class="story-waypoint" id="story-waypoint-3" r="7"/>
-                    <circle class="story-waypoint story-waypoint--final" id="story-waypoint-4" r="9"/>
-                    <circle class="story-traveler" id="story-traveler" r="6"/>
-                  </svg>
-                </div>
+              <div class="story-forest story-forest--left" aria-hidden="true">
+                <img src="images/hero-misty-forest.jpg" alt="" loading="lazy">
+                <div class="story-forest-scrim"></div>
+              </div>
+              <div class="story-forest story-forest--right" aria-hidden="true">
+                <img src="images/hero-misty-forest.jpg" alt="" loading="lazy">
+                <div class="story-forest-scrim"></div>
               </div>
 
               <div class="story-beats">
-                <section class="story-beat fade-up" data-beat="1">
+                <section class="story-beat" data-beat="1">
                   <span class="kicker">The problem</span>
                   <h1>Simple financial guidance shouldn't only be for people born into access to it.</h1>
                   <p>Our founder, still working on Wall Street today, kept watching the same gap: people with generational wealth throwing it away, and new entrepreneurs building empires, neither ever getting advice from the right people at the right time.</p>
                 </section>
 
-                <section class="story-beat fade-up" data-beat="2">
+                <section class="story-beat" data-beat="2">
                   <span class="kicker">The insight</span>
                   <h2>Free financial content is everywhere. Free guidance that tells you what to actually do next is not.</h2>
                   <p>Fed up with information that stops at educational and never gets to actionable, the idea for MoneyMatters started taking shape: not another article, a real diagnostic you can act on.</p>
                 </section>
 
-                <section class="story-beat fade-up" data-beat="3">
+                <section class="story-beat" data-beat="3">
                   <span class="kicker">The solution</span>
                   <h2>So we built the opposite, and we're building it with you.</h2>
                   <p>A free diagnostic, every formula visible, advisors vetted before they ever see your name. The MoneyMatters team keeps building the tools you actually need, shaped by your feedback, not decided behind closed doors.</p>
                 </section>
 
-                <section class="story-beat story-beat--wide fade-up" data-beat="4">
+                <section class="story-beat story-beat--wide" data-beat="4">
                   <span class="kicker">The proof</span>
                   <h2>How it actually works.</h2>
 
@@ -303,9 +292,10 @@
         <script src="scripts/onboarding-gate.js"></script>
         <script src="scripts/sign-in.js"></script>
         <script src="scripts/timeline-fill.js"></script>
-        <!-- DESIGN_SPEC.md §31: scroll-scrubbed narrative visual. CDN only, no build step. -->
-        <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+        <!-- DESIGN_SPEC.md §36: one-time-reveal narrative beats, plain
+             IntersectionObserver + CSS transitions — GSAP/ScrollTrigger
+             dropped entirely, the pin-and-swap mechanic they were driving
+             here failed 3 rounds running. -->
         <script src="scripts/about-scroll-story.js"></script>
     </body>
 

@@ -980,68 +980,68 @@ footer nav {
 @media (max-width: 900px) { .top-social-links { justify-content: center; } }
 
 /* =====================================================
-   About Us — cinematic scroll story (DESIGN_SPEC.md §31, path visual
-   §34.1). Sticky path/journey visual as a full-bleed backdrop layer,
-   with the 5 narrative beats centered on top of it in a single column
-   — text and path share the same screen space throughout, read as one
-   scene rather than a visual-column-beside-a-text-column. Layout only
-   here; path/waypoint colors tuned for the dark theme live in
-   dark-system.css, same split as the rest of the site.
+   About Us — narrative beats (DESIGN_SPEC.md §31, forest-path visual
+   §34.1/§36). §36 replaced the GSAP pin-and-swap mechanic entirely
+   (failed 3 rounds running) with normal document flow: beats stack
+   like ordinary page content, no pinning, no scroll-jacking. Each
+   beat's reveal (scripts/about-scroll-story.js, plain
+   IntersectionObserver, no GSAP) plays once on the way down and never
+   reverses — scrolling back up just shows already-revealed content
+   statically, same as any other page. Forest photography flanks the
+   text on both sides via a 3-column grid instead of sitting behind it
+   as a single backdrop. Layout only here; forest scrim/tint colors
+   live in dark-system.css, same split as the rest of the site.
    ===================================================== */
 .scroll-story {
   display: grid;
-  grid-template-columns: 1fr;
-  max-width: 1300px;
+  grid-template-columns: minmax(60px, 1fr) minmax(0, 700px) minmax(60px, 1fr);
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 90px 6% 40px;
+  padding: 60px 0 40px;
 }
-/* Backdrop and beats share the same grid cell (both column 1 / row 1)
-   so they overlap in the same scroll-tracked space — the cell's own
-   height is set by .story-beats (the taller of the two), and the
-   backdrop's sticky positioning holds it centered in the viewport for
-   that whole span, same mechanism the dial used in its own column
-   before, just no longer needing a second column to do it. */
-.story-visual-wrap {
-  grid-column: 1;
+/* Sticky within the row's own height (set by .story-beats, the tallest
+   column) — same well-supported sticky-in-grid pattern as before, just
+   in flanking columns now instead of stacked in the text's own cell. */
+.story-forest {
   grid-row: 1;
   position: sticky;
   top: 0;
   height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 1.4s ease, transform 1.4s ease;
 }
-.story-visual { width: 100%; max-width: 460px; height: 80vh; max-height: 640px; margin: 0 auto; }
-.story-visual svg { width: 100%; height: 100%; display: block; }
-/* §32.4 fix (take 4): .story-beats was `display:flex` — GSAP's pin
-   inserts a spacer element to hold open the scroll distance while a
-   beat is pinned, and that spacer becomes just another flex item here.
-   Measured live: every pinned beat's actual scroll span came up ~75-80px
-   SHORT of its requested distance — matching this container's gap value
-   almost exactly — and each subsequent beat's pin then started that much
-   too early relative to the previous one's real end, compounding into
-   large overlaps three beats deep. Plain block flow (no flex) plus
-   margin-bottom instead of gap is the layout GSAP's own pin examples
-   always use — spacers behave as ordinary block siblings, no flex
-   sizing/gap interaction to fight. */
+/* One-time reveal on first scroll into the section — "movement as you
+   enter, then it settles" per §36, not a continuous loop. */
+.story-forest.is-active { opacity: 1; transform: scale(1); }
+.story-forest--left { grid-column: 1; }
+.story-forest--right { grid-column: 3; }
+.story-forest img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.story-forest--right img { transform: scaleX(-1); }
+.story-forest-scrim { position: absolute; inset: 0; }
+
 .story-beats {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
-  position: relative;
-  z-index: 1;
-  padding: 20px 0 60px;
-  max-width: 640px;
-  margin: 0 auto;
+  padding: 0 24px;
   text-align: center;
 }
-/* §34.1: "larger and centered along/over the path" — sized up from the
-   old side-column treatment (28-40px/17px) now that beats read as the
-   focal layer directly over the path rather than a narrower companion
-   column next to it. */
-.story-beat { max-width: 640px; margin: 0 auto 80px; }
-.story-beat:last-child { margin-bottom: 0; }
+/* §36 bug fix: text was rendering crowded at the top — each beat now
+   gets a full viewport's worth of min-height with its content centered
+   in it via flex, so it's always vertically centered regardless of
+   exact scroll position, and naturally paces slower (a full screen of
+   scroll per beat) without any JS-computed distance at all. Harmless
+   on beat 4 (--wide): its real content already exceeds 100vh, so the
+   min-height is a no-op there. */
+.story-beat {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 0;
+  box-sizing: border-box;
+}
 .story-beat .kicker { display: inline-block; }
 .story-beat h1, .story-beat h2 {
   font-family: var(--mm-serif);
@@ -1052,48 +1052,31 @@ footer nav {
   margin: 0 0 16px;
 }
 .story-beat > p { font-family: var(--mm-sans); font-size: 19px; line-height: 1.65; margin: 0 auto; max-width: 560px; }
-.story-beat--wide { max-width: none; text-align: left; }
+.story-beat--wide { text-align: left; }
 .story-beat--wide .story-sub { text-align: left; }
-/* §32.4 fix (v2): the first attempt gave the pinned beat itself a
-   full-width/full-height background, but GSAP's pin sets inline
-   width/max-width/position styles that out-specificity a plain class
-   rule, so the box never actually widened — and separately, sibling
-   beats revealed via .fade-up.is-visible get their own transform-based
-   stacking context and paint in DOM order regardless of that box's
-   background anyway. Fixed properly with a dedicated, JS-toggled
-   backdrop element (#story-pin-backdrop) that isn't constrained by
-   GSAP's pin sizing at all, plus an explicit z-index here so the pinned
-   beat's own text still renders above that backdrop. min-height/flex
-   centering stays — that part worked fine, it's just not what was
-   causing the bleed-through. */
-.story-beat.is-pinned {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-sizing: border-box;
-  position: relative;
-  z-index: 501;
-}
-.story-pin-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-}
-.story-pin-backdrop.is-active { opacity: 1; }
 .story-cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 28px; }
 
 .story-sub { margin-top: 56px; }
 .story-sub:first-of-type { margin-top: 36px; }
-/* §32.4: word-level "living" reveal for each beat's headline + lead
-   paragraph, driven by scripts/about-scroll-story.js. Real text stays in
-   the DOM at load (JS only wraps existing words in spans at runtime for
-   animation targeting — the SEO requirement from §31 is unaffected). */
-.story-word { display: inline-block; opacity: 0; filter: blur(8px); transform: translateY(10px); }
-@media (prefers-reduced-motion: reduce) { .story-word { opacity: 1; filter: none; transform: none; } }
+/* Word-level "living" reveal for each beat's headline + lead paragraph,
+   driven by scripts/about-scroll-story.js. Real text stays in the DOM
+   at load (JS only wraps existing words in spans at runtime for
+   animation targeting — the SEO requirement from §31 is unaffected).
+   Plain CSS transition + a JS-set per-word transition-delay creates the
+   stagger — no animation library involved. Plays once: JS adds
+   .is-revealed and never removes it, so this can never reverse on
+   scroll-up regardless of scroll position. */
+.story-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(10px);
+  transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
+}
+.story-beat.is-revealed .story-word { opacity: 1; filter: blur(0px); transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .story-word { opacity: 1; filter: none; transform: none; transition: none; }
+}
 
 .story-sub h3 {
   font-family: var(--mm-serif);
@@ -1104,15 +1087,13 @@ footer nav {
 }
 
 @media (max-width: 900px) {
-  /* A full-viewport sticky path backdrop behind scrolling text reads as
-     cluttered at phone width, and mobile already drops the beat pinning
-     itself (see about-scroll-story.js) — simplify to match: path shows
-     once, static, above the beats, rather than tracking scroll. */
-  .scroll-story { padding: 60px 6% 20px; }
-  .story-visual-wrap { position: static; height: auto; margin-bottom: 40px; }
-  .story-visual { max-width: 220px; height: auto; }
-  .story-beats { padding: 0 0 40px; max-width: none; }
-  .story-beat, .story-beat--wide { max-width: none; }
+  /* Side-by-side forest panels don't fit phone width — drop them
+     entirely rather than cramming a 3-column layout into a narrow
+     viewport; text-only reveal on mobile, same one-time mechanism. */
+  .scroll-story { grid-template-columns: 1fr; max-width: none; padding: 40px 0 20px; }
+  .story-forest { display: none; }
+  .story-beats { grid-column: 1; padding: 0 6%; }
+  .story-beat { min-height: 0; padding: 48px 0; }
 }
 
 /*# sourceMappingURL=about-us-styling.css.map */
