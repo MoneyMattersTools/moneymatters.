@@ -981,67 +981,87 @@ footer nav {
 
 /* =====================================================
    About Us — narrative beats (DESIGN_SPEC.md §31, forest-path visual
-   §34.1/§36). §36 replaced the GSAP pin-and-swap mechanic entirely
-   (failed 3 rounds running) with normal document flow: beats stack
-   like ordinary page content, no pinning, no scroll-jacking. Each
-   beat's reveal (scripts/about-scroll-story.js, plain
-   IntersectionObserver, no GSAP) plays once on the way down and never
-   reverses — scrolling back up just shows already-revealed content
-   statically, same as any other page. Forest photography flanks the
-   text on both sides via a 3-column grid instead of sitting behind it
-   as a single backdrop. Layout only here; forest scrim/tint colors
-   live in dark-system.css, same split as the rest of the site.
-   ===================================================== */
+   §34.1/§36, layered parallax rebuild §38.1). §36 replaced the GSAP
+   pin-and-swap mechanic entirely (failed 3 rounds running) with normal
+   document flow: beats stack like ordinary page content, no pinning,
+   no scroll-jacking — that part is untouched here. §38.1 replaces the
+   two-static-side-panel forest visual with a full-bleed, 3-layer scene
+   (background/midground/foreground, each drifting at a different rate
+   on scroll via scripts/about-forest-parallax.js) that the text sits
+   ON TOP of, referencing the Firewatch game website's parallax model.
+   Honest caveat, not glossed over: this site has 3 photographic forest
+   images, not separated illustrated depth layers the way Firewatch's
+   actual game art is — the "layers" here are one photo each with a
+   blur/darkness/saturation treatment per depth, not custom-cut artwork.
+   Real, working multi-rate parallax; a photo-based approximation of
+   Firewatch's visual fidelity, not a recreation of it.
+
+   Scoped to beats 1-3 only (Problem/Insight/Solution) — beat 4 ("The
+   Proof") is a dense info block (pricing timeline, money-flow diagram,
+   bento grid, FAQ accordion) that a moving forest scene behind it would
+   only hurt, not help; it sits in its own plain-background section
+   right after, structurally still a direct child of #scroll-story so
+   scripts/about-scroll-story.js's existing beat query still finds it. */
 .scroll-story {
-  display: grid;
-  grid-template-columns: minmax(60px, 1fr) minmax(0, 700px) minmax(60px, 1fr);
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 60px 0 40px;
+  padding: 0 0 40px;
 }
-/* Sticky within the row's own height (set by .story-beats, the tallest
-   column) — same well-supported sticky-in-grid pattern as before, just
-   in flanking columns now instead of stacked in the text's own cell. */
-.story-forest {
-  grid-row: 1;
+.story-parallax-wrap {
+  position: relative;
+}
+.story-parallax {
   position: sticky;
   top: 0;
   height: 100vh;
   overflow: hidden;
-  opacity: 0;
-  transform: scale(1.06);
-  transition: opacity 1.4s ease, transform 1.4s ease;
+  /* Full-bleed: break out of whatever max-width container this sits
+     in, regardless of nesting depth. */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
-/* One-time reveal on first scroll into the section — "movement as you
-   enter, then it settles" per §36, not a continuous loop. */
-.story-forest.is-active { opacity: 1; transform: scale(1); }
-.story-forest--left { grid-column: 1; }
-.story-forest--right { grid-column: 3; }
-.story-forest img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.story-forest--right img { transform: scaleX(-1); }
-.story-forest-scrim { position: absolute; inset: 0; }
+/* One-time entrance on first scroll into the scene — "movement as you
+   enter, then it settles," same intent as the previous two-panel
+   version — driven by scripts/about-forest-parallax.js adding
+   .is-active on first intersection, independent of the beat text
+   reveal in about-scroll-story.js. */
+.story-parallax { opacity: 0; transition: opacity 1.4s ease; }
+.story-parallax.is-active { opacity: 1; }
+.story-layer {
+  position: absolute;
+  inset: -12% -6%;
+}
+.story-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Depth cue: background barely sharp/bright, foreground closest to
+   "true" — matches how distance actually desaturates and haze-blurs a
+   real scene, reinforcing the parallax motion's own depth read. */
+.story-layer--bg { filter: blur(4px) brightness(0.5) saturate(0.6); }
+.story-layer--mid { filter: blur(1.5px) brightness(0.38) saturate(0.8); }
+.story-layer--fore { filter: brightness(0.32) saturate(0.95); }
+.story-parallax-scrim { position: absolute; inset: 0; }
 
 .story-beats {
-  grid-column: 2;
-  grid-row: 1;
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
   padding: 0 24px;
   text-align: center;
 }
-/* §36 bug fix: text was rendering crowded at the top — each beat now
-   gets a full viewport's worth of min-height with its content centered
-   in it via flex, so it's always vertically centered regardless of
-   exact scroll position, and naturally paces slower (a full screen of
-   scroll per beat) without any JS-computed distance at all. Harmless
-   on beat 4 (--wide): its real content already exceeds 100vh, so the
-   min-height is a no-op there. */
+/* §38.1: beats now start higher in the viewport on load instead of
+   vertically dead-center (which read as "low, with empty space above"
+   on first scroll into a beat) — flex-start with generous top padding
+   instead of justify-content:center. Harmless on beat 4 (--wide): its
+   real content already exceeds 100vh, so the min-height is a no-op
+   there, same as before. */
 .story-beat {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 60px 0;
+  justify-content: flex-start;
+  padding: 16vh 0 60px;
   box-sizing: border-box;
 }
+.story-beat--wide { justify-content: center; padding: 60px 0; text-align: left; }
+.story-beat--wide .story-sub { text-align: left; }
 .story-beat .kicker { display: inline-block; }
 .story-beat h1, .story-beat h2 {
   font-family: var(--mm-serif);
@@ -1052,8 +1072,6 @@ footer nav {
   margin: 0 0 16px;
 }
 .story-beat > p { font-family: var(--mm-sans); font-size: 19px; line-height: 1.65; margin: 0 auto; max-width: 560px; }
-.story-beat--wide { text-align: left; }
-.story-beat--wide .story-sub { text-align: left; }
 .story-cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 28px; }
 
 .story-sub { margin-top: 56px; }
@@ -1087,13 +1105,14 @@ footer nav {
 }
 
 @media (max-width: 900px) {
-  /* Side-by-side forest panels don't fit phone width — drop them
-     entirely rather than cramming a 3-column layout into a narrow
-     viewport; text-only reveal on mobile, same one-time mechanism. */
-  .scroll-story { grid-template-columns: 1fr; max-width: none; padding: 40px 0 20px; }
-  .story-forest { display: none; }
-  .story-beats { grid-column: 1; padding: 0 6%; }
-  .story-beat { min-height: 0; padding: 48px 0; }
+  /* Full-bleed parallax scene doesn't fit phone width/perf budget well
+     (3 filtered image layers + scroll listener) — drop it entirely
+     rather than degrading it; text-only reveal on mobile, same
+     one-time mechanism as desktop. */
+  .scroll-story { padding: 40px 0 20px; }
+  .story-parallax { display: none; }
+  .story-beats { padding: 0 6%; }
+  .story-beat { min-height: 0; padding: 48px 0; justify-content: flex-start; }
 }
 
 /*# sourceMappingURL=about-us-styling.css.map */
