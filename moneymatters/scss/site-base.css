@@ -726,7 +726,7 @@ body .form-container, .connect-section .form-container { position: static !impor
    block. The wordmark, disclaimer, credits, and signoff each force a
    flex-basis:100% break so they still stack full-width as before —
    only nav + .social-media share a row now. */
-body > footer, body footer { background: var(--mm-charcoal-deep) !important; color: var(--mm-cream) !important; padding: 64px 6% 30px !important; margin: 0 !important; position: relative; display: flex !important; flex-wrap: wrap !important; align-items: center !important; column-gap: 28px !important; overflow: hidden !important; }
+body > footer, body footer { background: var(--mm-charcoal-deep) !important; color: var(--mm-cream) !important; padding: 64px 6% 30px !important; margin: 0 !important; position: relative; isolation: isolate; display: flex !important; flex-wrap: wrap !important; align-items: center !important; column-gap: 28px !important; overflow: hidden !important; }
 /* §40.5: sitewide footer was plain/empty — a low-opacity tree graphic
    anchored to the bottom-right, clipped by the footer's own overflow:hidden,
    sits behind all footer content via negative z-index so it never
