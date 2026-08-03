@@ -540,3 +540,14 @@ The GSAP ScrollTrigger pin-and-swap approach has now failed three rounds running
 4. **About Us - everything below "The Proof" is too busy/jammed** (blocks and wording overlapping/crowded) - simplify significantly.
 5. **Footer - add tree/dark forest imagery** (consistent across every page) to add visual detail matching the site's theme - currently plain/empty.
 6. **Discord link is stale** - generate a fresh invite link and update it sitewide everywhere it appears.
+
+## 41. Recurring Bug — Dashboard Overlap/Crowding (locked 2026-07-30, HIGH PRIORITY)
+
+This exact issue (MM+ Overview box overlapping the Net Worth card, homepage content crowded left with excess empty space on the right) has now been reported fixed across multiple rounds (Sections 39, 40) and confirmed still present via fresh screenshot each time. Stop re-applying similar fixes and re-investigate from a different angle:
+
+1. Get a screenshot at the exact conditions Ethan is actually using - ask what browser/viewport width/zoom level he's on if not already known, and test at that exact width, not just your own default test width (Section 39's fix was previously found to only work at one specific viewport and break at others - check whether this is happening again).
+2. Confirm there is no caching layer (CDN, browser cache, service worker) that could be serving Ethan a stale version despite a real deploy - rule this out explicitly.
+3. Check git history for this specific CSS/layout - confirm the fix that was reported as shipped in Section 40 is actually the code currently live at the URL, not reverted or overwritten by something later.
+4. Once genuinely fixed, verify by matching a fresh screenshot pixel-for-pixel against what "correct" should look like, not just eyeballing "looks fine now."
+
+Do not report this done again without explaining specifically why the last two "fixes" did not hold - this needs a real root-cause explanation, not another attempt.
