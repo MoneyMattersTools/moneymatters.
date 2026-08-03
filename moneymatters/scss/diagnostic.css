@@ -17,10 +17,23 @@
    old state-scoped rules (deleted from here and from dark-system.css).
    #hero-signature-viz is the real signature visual in this space now. */
 #diagnostic-hero .hero-visual { display: none !important; }
-#diagnostic-hero[data-active-step="choice"] .hero-text {
+/* §39.1: the choice-step-only version of this rule (see git blame) left
+   every OTHER hero step — email, quiz, verify-confirm, verifying, verify,
+   verify-error, advisor-intake — still capped at the old 600px width,
+   because .hero-signature-viz (the thing column 2 was ever supposed to
+   hold) is unconditionally display:none for every step, not just choice
+   (confirmed live, see DESIGN_SPEC.md §39.1). Column 2 is empty on every
+   single step, so every step needs the same width fix, not just the one
+   whose bug report happened to name it first. Text-align stays per-step:
+   choice keeps its own center treatment below; the rest default to
+   site-base.css's left-align, which already reads correctly for a form/
+   quiz/verify step, just now with the extra width to use. */
+#diagnostic-hero .hero-text {
     max-width: 920px !important;
-    text-align: center !important;
     grid-column: 1 / -1 !important;
+}
+#diagnostic-hero[data-active-step="choice"] .hero-text {
+    text-align: center !important;
     margin: 0 auto !important;
 }
 #diagnostic-hero[data-active-step="choice"] .hero-text .hero-sub { margin-left: auto !important; margin-right: auto !important; }
@@ -162,7 +175,16 @@
    score column (a number, a band label, a couple lines of copy, one
    button) doesn't need as much width as a multi-card grid plus a second
    panel. */
-#diagnostic-hero .results-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: 48px; align-items: start; }
+/* §39.1: 2.2fr was only ever verified live at a single 1440px viewport —
+   confirmed live this round, it left the dashboard side just barely wide
+   enough to fit a card + the Plus panel side by side there, with zero
+   margin. Below ~1400px (1366, 1280 — extremely common laptop widths)
+   the dashboard column shrinks below that threshold and the panel wraps
+   below the cards again, reproducing the exact "not beside it cleanly"
+   bug this ratio was originally meant to fix. Pushed further (2.2→3) with
+   real margin this time, re-verified live across 1024-1920px, not just
+   one width. */
+#diagnostic-hero .results-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 48px; align-items: start; }
 #diagnostic-hero .score-reveal { display: flex; align-items: baseline; gap: 8px; }
 #diagnostic-hero .score-number {
     font-family: var(--mm-serif);
