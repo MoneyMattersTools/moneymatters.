@@ -107,49 +107,40 @@
             <!-- §36: pin-and-swap GSAP mechanic removed entirely (failed 3
                  rounds running) — replaced with normal document flow and a
                  one-time reveal per beat (scripts/about-scroll-story.js, no
-                 GSAP dependency), untouched here. §38.1: forest visual
-                 rebuilt as a full-bleed 3-layer parallax scene (background/
-                 midground/foreground, scripts/about-forest-parallax.js)
-                 that the text sits on top of, referencing the Firewatch
-                 game website's parallax model — honestly, a photo-based
-                 approximation of that model (3 treated photos, not
-                 separated illustrated art), not a recreation of its exact
-                 visual fidelity. Scoped to beats 1-3 only; beat 4 is a
-                 dense info block that a moving scene behind it would only
-                 hurt, so it sits below in its own plain section. -->
+                 GSAP dependency). Forest imagery now flanks the text on both
+                 sides instead of sitting behind it as a single backdrop. -->
             <div class="scroll-story" id="scroll-story">
-              <div class="story-parallax-wrap">
-                <div class="story-parallax" aria-hidden="true">
-                  <div class="story-layer story-layer--bg"><img src="images/hero-forest-spring.jpg" alt="" loading="lazy"></div>
-                  <div class="story-layer story-layer--mid"><img src="images/hero-misty-forest.jpg" alt="" loading="lazy"></div>
-                  <div class="story-layer story-layer--fore"><img src="images/hero-forest-poster.jpg" alt="" loading="lazy"></div>
-                  <div class="story-parallax-scrim"></div>
-                </div>
-
-                <div class="story-beats">
-                  <section class="story-beat" data-beat="1">
-                    <span class="kicker">The problem</span>
-                    <h1>Financial guidance shouldn't require the right connections.</h1>
-                    <p>Our founder, still working on Wall Street today, kept watching the same gap: people with generational wealth throwing it away, and new entrepreneurs building empires, neither ever getting advice from the right people at the right time.</p>
-                  </section>
-
-                  <section class="story-beat" data-beat="2">
-                    <span class="kicker">The insight</span>
-                    <h2>Free content is everywhere. Free guidance on what to do next, isn't.</h2>
-                    <p>Fed up with information that stops at educational and never gets to actionable, the idea for MoneyMatters started taking shape: not another article, a real diagnostic you can act on.</p>
-                  </section>
-
-                  <section class="story-beat" data-beat="3">
-                    <span class="kicker">The solution</span>
-                    <h2>So we built the opposite — with you.</h2>
-                    <p>A free diagnostic, every formula visible, advisors vetted before they ever see your name. The MoneyMatters team keeps building the tools you actually need, shaped by your feedback, not decided behind closed doors.</p>
-                  </section>
-                </div>
+              <div class="story-forest story-forest--left" aria-hidden="true">
+                <img src="images/hero-misty-forest.jpg" alt="" loading="lazy">
+                <div class="story-forest-scrim"></div>
+              </div>
+              <div class="story-forest story-forest--right" aria-hidden="true">
+                <img src="images/hero-misty-forest.jpg" alt="" loading="lazy">
+                <div class="story-forest-scrim"></div>
               </div>
 
-              <section class="story-beat story-beat--wide" data-beat="4">
-                <span class="kicker">The proof</span>
-                <h2>How it actually works.</h2>
+              <div class="story-beats">
+                <section class="story-beat" data-beat="1">
+                  <span class="kicker">The problem</span>
+                  <h1>Simple financial guidance shouldn't only be for people born into access to it.</h1>
+                  <p>Our founder, still working on Wall Street today, kept watching the same gap: people with generational wealth throwing it away, and new entrepreneurs building empires, neither ever getting advice from the right people at the right time.</p>
+                </section>
+
+                <section class="story-beat" data-beat="2">
+                  <span class="kicker">The insight</span>
+                  <h2>Free financial content is everywhere. Free guidance that tells you what to actually do next is not.</h2>
+                  <p>Fed up with information that stops at educational and never gets to actionable, the idea for MoneyMatters started taking shape: not another article, a real diagnostic you can act on.</p>
+                </section>
+
+                <section class="story-beat" data-beat="3">
+                  <span class="kicker">The solution</span>
+                  <h2>So we built the opposite, and we're building it with you.</h2>
+                  <p>A free diagnostic, every formula visible, advisors vetted before they ever see your name. The MoneyMatters team keeps building the tools you actually need, shaped by your feedback, not decided behind closed doors.</p>
+                </section>
+
+                <section class="story-beat story-beat--wide" data-beat="4">
+                  <span class="kicker">The proof</span>
+                  <h2>How it actually works.</h2>
 
                   <div class="story-sub">
                     <h3>The 3-step path</h3>
@@ -251,15 +242,16 @@
                   </div>
                 </section>
 
-              <section class="story-beat fade-up" data-beat="5">
-                <span class="kicker">The invitation</span>
-                <h2>Get a hold of your own circumstances first.</h2>
-                <p>Walk into an advisor's office already organized, instead of showing up with a pile of paperwork and no clear starting point. MoneyMatters gives you that leverage as the client, because the advisor is supposed to work for you. Not the other way around.</p>
-                <div class="story-cta-actions">
-                  <a href="index.html?start=health-score" class="cta-button">Start your Financial Health Score →</a>
-                  <a href="tools.html" class="cta-button cta-button--ghost">Browse all tools</a>
-                </div>
-              </section>
+                <section class="story-beat fade-up" data-beat="5">
+                  <span class="kicker">The invitation</span>
+                  <h2>Getting a hold of your own circumstances is the only place to start.</h2>
+                  <p>Walk into an advisor's office already organized, instead of showing up with a pile of paperwork and no clear starting point. MoneyMatters gives you that leverage as the client, because the advisor is supposed to work for you. Not the other way around.</p>
+                  <div class="story-cta-actions">
+                    <a href="index.html?start=health-score" class="cta-button">Start your Financial Health Score →</a>
+                    <a href="tools.html" class="cta-button cta-button--ghost">Browse all tools</a>
+                  </div>
+                </section>
+              </div>
             </div>
 
             <section class="newsletter-cta" aria-label="Newsletter signup">

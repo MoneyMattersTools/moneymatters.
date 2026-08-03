@@ -26,6 +26,8 @@
   var story = document.getElementById('scroll-story');
   if (!story) return;
 
+  var forests = document.querySelectorAll('.story-forest');
+
   // Wraps each word of an element's real text in a <span> for animation
   // targeting. The text itself never leaves the DOM — this only happens
   // after the browser (and any non-JS crawler) has already seen the full
@@ -77,10 +79,15 @@
     });
   });
 
+  function activateForests() {
+    forests.forEach(function (el) { el.classList.add('is-active'); });
+  }
+
   if (!('IntersectionObserver' in window)) {
     // No observer support: reveal everything immediately rather than
     // leaving beats permanently blurred/invisible.
     beats.forEach(function (beat) { beat.classList.add('is-revealed'); });
+    activateForests();
     return;
   }
 
@@ -89,6 +96,7 @@
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-revealed');
+        activateForests();
         // One-time: stop watching this beat entirely, so nothing in this
         // file can ever act on it again — the only way .is-revealed could
         // be removed is if something else in the codebase did it, and

@@ -200,19 +200,27 @@ body main img:not([class*="logo"]):not([class*="social"]):not(.nav-logo-icon) { 
 }
 
 /* =====================================================
-   About Us scroll-story parallax scene (§31, path §34.1, forest §36,
-   layered rebuild §38.1) — text now sits directly on top of the full-
-   bleed 3-layer forest scene instead of beside it in a clean column,
-   so the scrim has to work much harder for legibility: a strong dark
-   vertical fade top/bottom (blends into the page background above/
-   below, same approach as before) plus a radial darken centered where
-   the text column actually sits, regardless of which part of the
-   photo layers happens to be behind it at any given scroll position.
+   About Us scroll-story forest visual (§31, path §34.1, forest §36) —
+   real forest photography flanking the narrative text on both sides
+   (images/hero-misty-forest.jpg, mirrored on the right panel). Scrim
+   is a dark vertical fade top/bottom (blends into the page background
+   above/below) plus a horizontal fade toward the text column (keeps
+   text legible against a darkened inner edge, while the outer edge
+   away from the text shows the photo more vividly).
    ===================================================== */
-.story-parallax-scrim {
+.story-forest-scrim {
     background:
-        linear-gradient(180deg, var(--mm-bg) 0%, rgba(10, 14, 12, 0.6) 12%, rgba(10, 14, 12, 0.6) 88%, var(--mm-bg) 100%),
-        radial-gradient(ellipse 55% 60% at 50% 50%, rgba(8, 12, 10, 0.4), transparent 72%);
+        linear-gradient(180deg, var(--mm-bg) 0%, rgba(18, 23, 21, 0.3) 14%, rgba(18, 23, 21, 0.3) 86%, var(--mm-bg) 100%);
+}
+.story-forest--left .story-forest-scrim {
+    background:
+        linear-gradient(180deg, var(--mm-bg) 0%, rgba(18, 23, 21, 0.3) 14%, rgba(18, 23, 21, 0.3) 86%, var(--mm-bg) 100%),
+        linear-gradient(90deg, transparent 45%, var(--mm-bg) 100%);
+}
+.story-forest--right .story-forest-scrim {
+    background:
+        linear-gradient(180deg, var(--mm-bg) 0%, rgba(18, 23, 21, 0.3) 14%, rgba(18, 23, 21, 0.3) 86%, var(--mm-bg) 100%),
+        linear-gradient(270deg, transparent 45%, var(--mm-bg) 100%);
 }
 
 /* Eyebrow label (§27.1) — site-base.css's --mm-gold-ink is tuned for
