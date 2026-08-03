@@ -1423,10 +1423,29 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
    innerHTML gets fully replaced on every recalculation on the tool
    pages, which would reset a star rating living inside it. --- */
 .tool-feedback-widget {
+    position: relative;
     border-top: 1px solid var(--mm-border);
     padding-top: 16px;
+    padding-right: 32px;
     margin-top: 16px;
 }
+/* §39.3: clear, easy dismiss — closes the widget outright, no rating or
+   comment required first. */
+.tool-feedback-dismiss {
+    position: absolute;
+    top: 12px;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: none;
+    color: var(--mm-text-soft);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+.tool-feedback-dismiss:hover { color: var(--mm-text-light); }
 .tool-feedback-prompt {
     font-family: var(--mm-sans);
     font-weight: 700;

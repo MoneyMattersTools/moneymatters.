@@ -183,7 +183,7 @@ function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResu
 // compose several numbers into one string) and not safe to parse a
 // single figure back out of in general. idToInput keys must match
 // whatever keys that tool chose when it built `inputs` at save time.
-// §38.9: post-completion review widget — 1-5 stars plus an optional
+// §38.9/§39.3: post-completion review widget — 1-5 stars plus an optional
 // comment, specific to this tool. Deliberately NOT part of the results
 // panel's own innerHTML (that panel gets fully replaced on every
 // recalculation, per the file-level comment above toolResultsActionsHtml
@@ -191,20 +191,32 @@ function toolWireResultsActions(resultsEl, idPrefix, toolKey, toolLabel, getResu
 // visitor tweaks an input after rating). Inserted once as a sibling
 // right after the results panel instead, and only shown after a real
 // "I'm done, I got value" signal (a successful save-to-dashboard or
-// email-results submission), not on page load. Shown at most once per
-// tool per browser session either way (sessionStorage, not localStorage
-// — a fresh return visit is a fair second chance to ask).
+// email-results submission), not on page load.
+//
+// §39.3 frequency rule: show on the 1st completion of a given tool, then
+// every 5th one after that (not every single time) — tracked as a
+// persistent per-tool count in localStorage (not sessionStorage: the
+// count has to survive across visits/tab closes to mean anything, and
+// this doesn't require an account the same way saving a result does, so
+// there's no server-side place to keep it either). Dismissing the widget
+// never counts as, or blocks, a future qualifying submission — it just
+// closes this one instance; the same tool submitted a few more times
+// will legitimately show it again at the next 1st/5th-multiple count.
 function toolShowFeedbackWidget(resultsEl, toolKey) {
-  var storageKey = 'mm_feedback_shown_' + toolKey;
+  var countKey = 'mm_tool_submit_count_' + toolKey;
+  var count = 1;
   try {
-    if (window.sessionStorage.getItem(storageKey)) return;
+    count = (parseInt(window.localStorage.getItem(countKey), 10) || 0) + 1;
+    window.localStorage.setItem(countKey, String(count));
   } catch (e) {}
+  if (count !== 1 && count % 5 !== 0) return;
   if (document.getElementById('mm-feedback-' + toolKey)) return;
 
   var widget = document.createElement('div');
   widget.className = 'tool-feedback-widget';
   widget.id = 'mm-feedback-' + toolKey;
   widget.innerHTML = '' +
+    '<button type="button" class="tool-feedback-dismiss" aria-label="Dismiss">&times;</button>' +
     '<p class="tool-feedback-prompt">How useful was this?</p>' +
     '<div class="tool-feedback-stars" role="radiogroup" aria-label="Rating">' +
       [1, 2, 3, 4, 5].map(function (n) {
@@ -226,6 +238,13 @@ function toolShowFeedbackWidget(resultsEl, toolKey) {
   var thanks = widget.querySelector('.tool-feedback-thanks');
   var submitBtn = widget.querySelector('.tool-feedback-submit');
   var commentEl = widget.querySelector('textarea');
+
+  // Never forces a rating or comment — dismissing at any point (before or
+  // after picking a star) just removes the widget, no submission, no
+  // question asked.
+  widget.querySelector('.tool-feedback-dismiss').addEventListener('click', function () {
+    widget.remove();
+  });
 
   function paintStars() {
     stars.forEach(function (star) {
@@ -261,7 +280,6 @@ function toolShowFeedbackWidget(resultsEl, toolKey) {
         widget.querySelector('.tool-feedback-stars').hidden = true;
         detail.hidden = true;
         thanks.hidden = false;
-        try { window.sessionStorage.setItem(storageKey, '1'); } catch (e) {}
       })
       .catch(function () {
         submitBtn.disabled = false;
