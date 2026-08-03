@@ -556,3 +556,7 @@ Do not report this done again without explaining specifically why the last two "
 
 1. **Free-Plus incentive updated**: first 500 users (was 100) get MoneyMatters+ free for 6 months (was unlimited/indefinite) - granted via the existing manual Plan flag, same mechanism, just updated terms. Update any site copy referencing the old "first 100 users" framing if it exists publicly (check Contact/About Us/MoneyMatters+ pages).
 2. **Plus-member logo variant**: for users logged in with an active Plus subscription, show a distinct logo (provided asset, a refined magnifying-glass/dollar/growth-arrow mark) in the top-left nav in place of the standard MoneyMatters wordmark/icon - a visual signal of membership status for subscribers specifically.
+
+## 44. Section 41 Follow-up — Dynamic Figure Sizing (locked 2026-07-30)
+
+The Net Worth card wrapping fix should not be a fixed font-size/width tuned to one example figure - that is the same category of bug that caused the original overlap (a fix verified against one specific case, not the general case). Instead, the dollar-figure display should scale dynamically to its actual content length, correctly handling anything from $0 up to a 9-digit figure (e.g. $999,999,999 - 9 digits, not counting commas or the dollar sign) without wrapping or overflowing. Use a responsive approach (CSS clamp()/container queries, or JS-measured dynamic font-sizing) rather than a single static size. Test explicitly across the full range (single digit, mid-range like $100,000, and the 9-digit maximum) before reporting this fixed.
