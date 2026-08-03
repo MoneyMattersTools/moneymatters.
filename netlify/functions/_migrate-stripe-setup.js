@@ -49,31 +49,28 @@ exports.handler = async (event) => {
       });
     }
 
-    // 2. Webhook endpoint — reuse if one already points at our URL, since
-    // Stripe only returns the signing secret once, at creation time.
+    // 2. Webhook endpoint — a previous run already created one, but its
+    // signing secret was never actually captured (Stripe only returns it
+    // once, at creation). Delete-and-recreate is safe here: test mode,
+    // no real webhook traffic has ever been processed yet.
     const existingWebhooks = await stripeRequest('GET', '/webhook_endpoints', { limit: 100 });
     const existingWebhook = existingWebhooks.data.find((w) => w.url === WEBHOOK_URL);
-
-    let webhookSecret = null;
-    let webhookStatus;
     if (existingWebhook) {
-      webhookStatus = 'already_exists_secret_not_retrievable_again';
-    } else {
-      const webhook = await stripeRequest('POST', '/webhook_endpoints', {
-        url: WEBHOOK_URL,
-        enabled_events: ENABLED_EVENTS,
-      });
-      webhookSecret = webhook.secret;
-      webhookStatus = 'created';
+      await stripeRequest('DELETE', `/webhook_endpoints/${existingWebhook.id}`);
     }
+
+    const webhook = await stripeRequest('POST', '/webhook_endpoints', {
+      url: WEBHOOK_URL,
+      enabled_events: ENABLED_EVENTS,
+    });
 
     return json(200, {
       ok: true,
       productId: product.id,
       priceId: price.id,
-      webhookStatus,
-      webhookSecret, // null if a webhook endpoint already existed
-      existingWebhookId: existingWebhook ? existingWebhook.id : null,
+      webhookStatus: 'created',
+      webhookSecret: webhook.secret,
+      replacedWebhookId: existingWebhook ? existingWebhook.id : null,
     });
   } catch (err) {
     console.error('_migrate-stripe-setup error:', err);
