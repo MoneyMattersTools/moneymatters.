@@ -530,6 +530,12 @@
     // No snapshot numbers here; those already live in the cards above.
     var plusHtml = '';
     if (data.plan === 'plus') {
+      // §42.2: apply directly from data already in hand rather than
+      // relying on plus-nav-logo.js's own session check, which caches its
+      // result at page load — on a fresh magic-link arrival that resolves
+      // before this verify completes, so it would never see the plan
+      // change within the same page load otherwise.
+      if (typeof window.mmApplyPlusNavLogo === 'function') window.mmApplyPlusNavLogo();
       plusHtml =
         '<div class="mm-dashboard-plus">' +
           '<span class="mm-dashboard-plus-badge">MM+ overview</span>' +
