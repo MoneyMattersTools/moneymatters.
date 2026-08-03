@@ -115,6 +115,16 @@ async function findLatestByFilters(table, filters, orderColumn) {
   return rows[0] || null;
 }
 
+// orderBy: a PostgREST order expression, e.g. "requested_at.desc". No
+// filters/pagination — every current caller is a small internal ops
+// table (dozens/hundreds of rows, not the customer-facing users table),
+// so a full unfiltered read is the right tradeoff for staying simple.
+async function listAll(table, orderBy) {
+  const qs = orderBy ? `?order=${orderBy}` : '';
+  const res = await supabaseFetch(table, qs);
+  return res.json();
+}
+
 async function createRecord(table, fields) {
   const res = await supabaseFetch(table, '', {
     method: 'POST',
@@ -172,6 +182,7 @@ module.exports = {
   countRecentByIpSince,
   findOneByFilters,
   findLatestByFilters,
+  listAll,
   createRecord,
   updateRecord,
   deleteRecord,
