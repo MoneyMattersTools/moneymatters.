@@ -461,11 +461,21 @@
     var cardsHtml = DASHBOARD_TOOLS.map(function (tool) {
       var result = tools[tool.key];
       if (result && result.headline) {
+        // §40.1: the sub-label is only useful when it clarifies what the
+        // figure actually means (Budget's "Monthly Surplus", Retirement's
+        // "Projected Shortfall") — Net Worth's headline label is just
+        // "Net Worth" again, identical to the card's own "NET WORTH"
+        // header right above it, and was also the thing physically
+        // overlapping the MM+ Overview panel next to it. Redundant text
+        // doesn't need to exist just because it happens to also collide.
+        var subHtml = result.headline.label !== tool.label
+          ? '<span class="mm-dashboard-card-sub">' + result.headline.label + '</span>'
+          : '';
         return (
           '<a class="mm-dashboard-card" href="' + tool.href + '">' +
             '<span class="mm-dashboard-card-label">' + tool.label + '</span>' +
             '<span class="mm-dashboard-card-value">' + result.headline.value + '</span>' +
-            '<span class="mm-dashboard-card-sub">' + result.headline.label + '</span>' +
+            subHtml +
           '</a>'
         );
       }

@@ -726,7 +726,23 @@ body .form-container, .connect-section .form-container { position: static !impor
    block. The wordmark, disclaimer, credits, and signoff each force a
    flex-basis:100% break so they still stack full-width as before —
    only nav + .social-media share a row now. */
-body > footer, body footer { background: var(--mm-charcoal-deep) !important; color: var(--mm-cream) !important; padding: 64px 6% 30px !important; margin: 0 !important; position: relative; display: flex !important; flex-wrap: wrap !important; align-items: center !important; column-gap: 28px !important; }
+body > footer, body footer { background: var(--mm-charcoal-deep) !important; color: var(--mm-cream) !important; padding: 64px 6% 30px !important; margin: 0 !important; position: relative; display: flex !important; flex-wrap: wrap !important; align-items: center !important; column-gap: 28px !important; overflow: hidden !important; }
+/* §40.5: sitewide footer was plain/empty — a low-opacity tree graphic
+   anchored to the bottom-right, clipped by the footer's own overflow:hidden,
+   sits behind all footer content via negative z-index so it never
+   interferes with the nav/disclaimer/credits text on top of it. */
+body footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url('../images/money_matters-treedark.png') no-repeat right -60px bottom -140px / 420px auto;
+    opacity: 0.35;
+    z-index: -1;
+    pointer-events: none;
+}
+@media (max-width: 700px) {
+    body footer::before { background-size: 260px auto; opacity: 0.28; }
+}
 body footer > p, body footer > .logo { color: var(--mm-cream) !important; font-family: var(--mm-sans-display) !important; font-size: 28px !important; font-weight: 800 !important; margin-bottom: 20px !important; letter-spacing: -0.025em !important; flex-basis: 100% !important; width: 100% !important; }
 body footer nav { display: flex !important; gap: 24px !important; flex-wrap: wrap !important; margin-bottom: 26px !important; position: static !important; }
 body footer nav a { color: var(--mm-cream) !important; font-family: var(--mm-sans) !important; text-decoration: none !important; font-size: 15px !important; background: transparent !important; padding: 0 !important; transition: color 0.2s ease; }
@@ -1056,15 +1072,12 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .bento-tile:hover { transform: translateY(-5px); border-color: var(--mm-green); box-shadow: var(--mm-shadow-md); }
 .bento-tile h3, .bento-tile h4 { font-family: var(--mm-serif); font-size: 22px; font-weight: 600; margin: 0 0 8px; color: var(--mm-charcoal); }
 .bento-tile p { font-family: var(--mm-sans); font-size: 16px; color: var(--mm-text-muted); margin: 0; line-height: 1.6; }
-.bento-tile--wide { grid-column: 1 / 3; grid-row: 1; display: flex; flex-direction: column; justify-content: center; }
 .bento-tile--dark { background: var(--mm-charcoal); border-color: var(--mm-charcoal); }
 .bento-tile--dark h3, .bento-tile--dark h4 { color: var(--mm-cream); }
 .bento-tile--dark p { color: rgba(250, 250, 247, 0.75); }
-.bento-tile:nth-child(3) { grid-column: 1; grid-row: 2; } /* "Free to start" tile */
-.bento-tile--image { grid-column: 3; grid-row: 1 / 3; padding: 0; display: flex; flex-direction: column; }
+.bento-tile--image { padding: 0; display: flex; flex-direction: column; }
 .bento-tile--image img { width: 100%; flex: 1; min-height: 140px; object-fit: cover; object-position: center; display: block; background: var(--mm-cream-warm); }
 .bento-tile-caption { padding: 22px 24px 26px; }
-.bento-tile--tree { grid-column: 2; grid-row: 2; padding: 0; }
 .bento-tile--tree img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 0; }
 .bento-tile-caption--on-image {
     position: relative; z-index: 1;
@@ -1074,7 +1087,6 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .bento-tile-caption--on-image h3, .bento-tile-caption--on-image h4, .bento-tile-caption--on-image p { color: var(--mm-cream); }
 @media (max-width: 900px) {
     .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
-    .bento-tile--wide, .bento-tile:nth-child(3), .bento-tile--image, .bento-tile--tree { grid-column: 1; grid-row: auto; }
     .bento-tile--image img { height: 200px; flex: none; }
     .bento-tile--tree { height: 220px; }
 }
