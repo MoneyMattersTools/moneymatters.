@@ -551,3 +551,8 @@ This exact issue (MM+ Overview box overlapping the Net Worth card, homepage cont
 4. Once genuinely fixed, verify by matching a fresh screenshot pixel-for-pixel against what "correct" should look like, not just eyeballing "looks fine now."
 
 Do not report this done again without explaining specifically why the last two "fixes" did not hold - this needs a real root-cause explanation, not another attempt.
+
+## 42. Round 28 — Free-Plus Incentive Update + Plus Member Logo (locked 2026-07-30)
+
+1. **Free-Plus incentive updated**: first 500 users (was 100) get MoneyMatters+ free for 6 months (was unlimited/indefinite) - granted via the existing manual Plan flag, same mechanism, just updated terms. Update any site copy referencing the old "first 100 users" framing if it exists publicly (check Contact/About Us/MoneyMatters+ pages).
+2. **Plus-member logo variant**: for users logged in with an active Plus subscription, show a distinct logo (provided asset, a refined magnifying-glass/dollar/growth-arrow mark) in the top-left nav in place of the standard MoneyMatters wordmark/icon - a visual signal of membership status for subscribers specifically.
