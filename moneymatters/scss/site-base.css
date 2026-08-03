@@ -1212,6 +1212,7 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .plus-card .connect-btn.plus-card-cta { width: 100%; box-sizing: border-box; background: var(--mm-cream) !important; color: var(--mm-charcoal) !important; }
 .plus-card .connect-btn.plus-card-cta:hover { background: var(--mm-green) !important; color: var(--mm-cream) !important; }
 .plus-card-note { display: block; margin-top: 12px; font-family: var(--mm-sans); font-size: 12px; color: rgba(250, 250, 247, 0.5); }
+.plus-card-error { display: block; margin-top: 10px; font-family: var(--mm-sans); font-size: 13px; color: #E8927C; }
 .plus-preview-links { margin-top: 26px; display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
 
 /* --- Tools: Advanced Tools, visible-but-locked (§28.7) --- */
