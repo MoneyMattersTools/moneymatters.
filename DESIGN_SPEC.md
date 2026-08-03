@@ -523,3 +523,11 @@ The GSAP ScrollTrigger pin-and-swap approach has now failed three rounds running
 7. **Supabase RLS (Row Level Security) policy audit** - flagged by a friend, take seriously. Confirm RLS is enabled on all tables, confirm what policies (if any) exist, and confirm the security model is sound given all current app access goes through server-side functions using the service_role key (which bypasses RLS) - explain clearly whether RLS matters in the current architecture or is a moot point given service_role usage, and whether enabling proper RLS policies is still worth doing as defense-in-depth regardless. Report findings plainly, do not just say "reviewed, looks fine."
 8. **Financial Health Score quiz - tighten questions**: fewer words per question/answer, same meaning preserved. Where it fits naturally, frame questions/answers to evoke genuine emotional resonance rather than reading as clinical/neutral.
 9. **Post-quiz review pop-up**: after completing any quiz/tool, show a simple 1-5 star rating plus an optional comment field, specific to that quiz/tool (not a generic sitewide survey) - this is for gathering real feedback on what users like/want, and may be used later (not this round) to incentivize engagement with free Plus access or free advanced-tool access once the product is charging.
+
+## 39. Round 26 Feedback (locked 2026-07-29)
+
+1. **Homepage crowding and MM+/Net Worth overlap are still live, despite Round 25 reporting both fixed.** Re-investigate from scratch - do not assume prior fixes hold, verify against a fresh screenshot before reporting done again.
+2. **About Us - revert to the pre-Firewatch-parallax version** (the iteration from Section 37/before Section 38's parallax rebuild) - Ethan finds that version closer to what he wanted, with better spacing/formatting. Do not continue iterating on the visual concept further - revert and close this out. Design work on this page is deprioritized for now in favor of MVP-critical work (see below).
+3. **Post-tool/quiz feedback pop-up refinement**:
+   - Must have a clear, easy dismiss/X option - never force a rating or comment.
+   - Frequency: show only on a user's first submission of a given tool, then every 5th submission of that same tool after that (not every single submission).
