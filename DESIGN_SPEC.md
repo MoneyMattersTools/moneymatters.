@@ -531,3 +531,12 @@ The GSAP ScrollTrigger pin-and-swap approach has now failed three rounds running
 3. **Post-tool/quiz feedback pop-up refinement**:
    - Must have a clear, easy dismiss/X option - never force a rating or comment.
    - Frequency: show only on a user's first submission of a given tool, then every 5th submission of that same tool after that (not every single submission).
+
+## 40. Round 27 Feedback (locked 2026-07-30)
+
+1. **Dashboard - remaining small overlap**: the MM+ Overview box still overlaps the small "Net Worth" sub-label text under the Net Worth card's dollar figure. Remove that redundant sub-label entirely (the card already has "NET WORTH" as its header - the repeated label underneath is unnecessary, not just misplaced).
+2. **Advisor CTA button copy**: change "Review with an advisor, free" to "Connect with an Advisor" - match the wording used on the Advisor Connect page itself for consistency.
+3. **About Us headers - too many words, sitewide principle**: large section headlines should be shorter - apply this discipline across the whole site going forward, not just this page.
+4. **About Us - everything below "The Proof" is too busy/jammed** (blocks and wording overlapping/crowded) - simplify significantly.
+5. **Footer - add tree/dark forest imagery** (consistent across every page) to add visual detail matching the site's theme - currently plain/empty.
+6. **Discord link is stale** - generate a fresh invite link and update it sitewide everywhere it appears.
