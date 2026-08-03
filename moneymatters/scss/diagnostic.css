@@ -17,6 +17,25 @@
    old state-scoped rules (deleted from here and from dark-system.css).
    #hero-signature-viz is the real signature visual in this space now. */
 #diagnostic-hero .hero-visual { display: none !important; }
+/* §41 root cause (the one that actually explains "fixed twice, still
+   broken"): a legacy homestyling.css `.hero-text a` rule — a dark pill-
+   button style written for one specific old hero CTA, loaded before this
+   file with no scoping beyond ".hero-text a" — matches every <a> added to
+   .hero-text since, including the dashboard cards and the next-steps
+   links. None of the modern rules below (.hero-cta, .connect-card,
+   .mm-dashboard-card, .next-steps a) redeclare margin, so its
+   margin-left: 15% / margin-top: 3% (resolved against each link's own
+   containing block) slips through undisturbed. 15% of the dashboard
+   grid's 200px column is exactly 30px — confirmed live via
+   CSS.getMatchedStylesForNode that every .mm-dashboard-card was carrying
+   this margin, silently eating 30px out of the column every prior round's
+   width/ratio fix assumed was fully reserved for the cards. This is why
+   the bug survived three rounds of grid-ratio changes: none of them ever
+   looked at what was consuming space inside the column, only at the
+   column's own declared width. Reset once here for every link in this
+   funnel; each already gets its complete styling from a more specific
+   rule and none of them want this legacy margin. */
+#diagnostic-hero .hero-text a { margin: 0; }
 /* §39.1: the choice-step-only version of this rule (see git blame) left
    every OTHER hero step — email, quiz, verify-confirm, verifying, verify,
    verify-error, advisor-intake — still capped at the old 600px width,
@@ -28,8 +47,21 @@
    choice keeps its own center treatment below; the rest default to
    site-base.css's left-align, which already reads correctly for a form/
    quiz/verify step, just now with the extra width to use. */
+/* §41 root cause: 920px was still a hardcoded ceiling, just a bigger one —
+   at any viewport wider than roughly 1010-1100px (920px + the hero's own
+   padding) it leaves a real, growing dead zone of background on the right
+   instead of using the space .hero-text is already given via its own
+   grid-column: 1/-1. Confirmed live at 1280x800: a 270px empty gap on the
+   right, nothing to do with any individual card overlapping anything. Every
+   step's actual content already has its own readability cap where it
+   matters (.diagnostic-form 420px, .entry-grid 820px, .advisor-intake-form
+   560px, .results-layout's own column split) — .hero-text doesn't need to
+   double as that constraint. Raised the ceiling well past the realistic
+   1024-1920px range this site is verified against, so it stops engaging on
+   ordinary laptop widths and only ever caps on genuinely ultra-wide
+   monitors, where some margin is expected rather than a bug. */
 #diagnostic-hero .hero-text {
-    max-width: 920px !important;
+    max-width: 1400px !important;
     grid-column: 1 / -1 !important;
 }
 #diagnostic-hero[data-active-step="choice"] .hero-text {
@@ -253,16 +285,27 @@
    fixed column instead reserves real space for the panel deterministically. */
 #diagnostic-hero .mm-dashboard-row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
 #diagnostic-hero .mm-dashboard-grid { display: flex; flex-wrap: wrap; gap: 18px; flex: 0 0 200px; width: 200px; }
+/* §41 root cause: width: fit-content + flex-shrink:0 let a card grow past
+   .mm-dashboard-grid's declared 200px whenever its value text was wide
+   enough (a real net worth figure like $1,847,392, not the QA account's
+   short test values every prior round happened to verify with) — the
+   sibling .mm-dashboard-plus panel's position is computed from the grid's
+   DECLARED 200px, not the card's actual overflowed width, so the two
+   silently overlapped regardless of viewport. box-sizing: border-box +
+   max-width: 200px makes 200px a real ceiling instead of a number the
+   layout only nominally believed; see .mm-dashboard-card-value below for
+   the other half (letting long values wrap instead of forcing overflow). */
 #diagnostic-hero .mm-dashboard-card {
     display: inline-flex; flex-direction: column; gap: 5px;
-    flex: 0 0 auto; min-width: 130px; width: fit-content;
+    flex: 0 0 auto; min-width: 130px; max-width: 200px; width: fit-content;
+    box-sizing: border-box;
     padding: 24px 22px; border-radius: 14px; border: 1px solid var(--mm-border);
     text-decoration: none; background: white;
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
 #diagnostic-hero .mm-dashboard-card:hover { border-color: var(--mm-green); transform: translateY(-2px); }
 #diagnostic-hero .mm-dashboard-card-label { font-family: var(--mm-sans); font-size: 13.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--mm-text-soft); }
-#diagnostic-hero .mm-dashboard-card-value { font-family: var(--mm-serif); font-size: clamp(28px, 2.6vw, 36px); font-weight: 500; letter-spacing: -0.02em; color: var(--mm-charcoal); white-space: nowrap; }
+#diagnostic-hero .mm-dashboard-card-value { font-family: var(--mm-serif); font-size: clamp(28px, 2.6vw, 36px); font-weight: 500; letter-spacing: -0.02em; color: var(--mm-charcoal); overflow-wrap: break-word; }
 #diagnostic-hero .mm-dashboard-card-sub { font-family: var(--mm-sans); font-size: 14px; color: var(--mm-text-muted); }
 #diagnostic-hero .mm-dashboard-card--empty { justify-content: center; }
 #diagnostic-hero .mm-dashboard-card-cta { font-family: var(--mm-sans); font-size: 14.5px; font-weight: 600; color: var(--mm-green-deep); margin-top: 4px; }
