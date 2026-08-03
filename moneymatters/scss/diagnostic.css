@@ -305,7 +305,14 @@
 }
 #diagnostic-hero .mm-dashboard-card:hover { border-color: var(--mm-green); transform: translateY(-2px); }
 #diagnostic-hero .mm-dashboard-card-label { font-family: var(--mm-sans); font-size: 13.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--mm-text-soft); }
-#diagnostic-hero .mm-dashboard-card-value { font-family: var(--mm-serif); font-size: clamp(28px, 2.6vw, 36px); font-weight: 500; letter-spacing: -0.02em; color: var(--mm-charcoal); overflow-wrap: break-word; }
+/* §44: font-size is set inline per-card by fitDashboardCardValues() in
+   diagnostic.js, scaled to the value's actual character count (from $0 up
+   to a 9-digit figure) rather than a single clamp() tuned to one example —
+   the clamp() here is only the pre-JS/no-value-yet default. white-space:
+   nowrap is safe specifically because the JS guarantees the rendered size
+   fits before the card is ever shown (dashEl.hidden stays true until
+   after fitDashboardCardValues() runs), not despite it. */
+#diagnostic-hero .mm-dashboard-card-value { font-family: var(--mm-serif); font-size: clamp(28px, 2.6vw, 36px); font-weight: 500; letter-spacing: -0.02em; color: var(--mm-charcoal); white-space: nowrap; }
 #diagnostic-hero .mm-dashboard-card-sub { font-family: var(--mm-sans); font-size: 14px; color: var(--mm-text-muted); }
 #diagnostic-hero .mm-dashboard-card--empty { justify-content: center; }
 #diagnostic-hero .mm-dashboard-card-cta { font-family: var(--mm-sans); font-size: 14.5px; font-weight: 600; color: var(--mm-green-deep); margin-top: 4px; }

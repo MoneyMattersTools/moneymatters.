@@ -453,6 +453,39 @@
     });
   }
 
+  // §44: the card value's size must scale to its actual content, not use
+  // one static font-size tuned to a single example figure — that was the
+  // same category of bug as §41's fixed-width overlap (a fix verified
+  // against one case, not the general case). Shrinks from a max down to a
+  // min, in whole pixels, until the value's natural single-line width fits
+  // the space actually available inside the card — correct for $0 through
+  // a 9-digit figure ($999,999,999) and for whatever a Budget/Retirement/
+  // Investment headline value happens to be, not just Net Worth.
+  var CARD_VALUE_MAX_FONT = 36;
+  var CARD_VALUE_MIN_FONT = 15;
+
+  function fitDashboardCardValues() {
+    var dashEl = el('mm-dashboard');
+    if (!dashEl) return;
+    var values = dashEl.querySelectorAll('.mm-dashboard-card-value');
+    Array.prototype.forEach.call(values, function (valueEl) {
+      var available = valueEl.clientWidth;
+      if (!available) return;
+      var fontSize = CARD_VALUE_MAX_FONT;
+      valueEl.style.fontSize = fontSize + 'px';
+      while (valueEl.scrollWidth > available && fontSize > CARD_VALUE_MIN_FONT) {
+        fontSize -= 1;
+        valueEl.style.fontSize = fontSize + 'px';
+      }
+    });
+  }
+
+  var fitDashboardResizeTimer = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(fitDashboardResizeTimer);
+    fitDashboardResizeTimer = setTimeout(fitDashboardCardValues, 150);
+  });
+
   function renderDashboard(data) {
     var dashEl = el('mm-dashboard');
     if (!dashEl) return;
@@ -512,6 +545,7 @@
       '</div>' +
       advisorHtml;
     dashEl.hidden = false;
+    fitDashboardCardValues();
   }
 
   function renderVerifyError(reason) {
