@@ -9,12 +9,15 @@ exports.handler = async (event) => {
     return json(405, { ok: false, error: 'method_not_allowed' });
   }
   try {
+    const eventId = (event.queryStringParameters && event.queryStringParameters.id) || '';
+    if (eventId) {
+      const detail = await stripeRequest('GET', `/events/${eventId}`);
+      return json(200, { ok: true, event: detail });
+    }
     const events = await stripeRequest('GET', '/events', { limit: 10 });
-    const webhooks = await stripeRequest('GET', '/webhook_endpoints', { limit: 10 });
     return json(200, {
       ok: true,
-      events: events.data.map((e) => ({ id: e.id, type: e.type, created: e.created })),
-      webhookEndpoints: webhooks.data.map((w) => ({ id: w.id, url: w.url, status: w.status, enabled_events: w.enabled_events })),
+      events: events.data.map((e) => ({ id: e.id, type: e.type, created: e.created, pending_webhooks: e.pending_webhooks })),
     });
   } catch (err) {
     return json(500, { ok: false, error: err.message });
