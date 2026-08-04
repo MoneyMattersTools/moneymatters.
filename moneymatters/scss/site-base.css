@@ -727,21 +727,23 @@ body .form-container, .connect-section .form-container { position: static !impor
    flex-basis:100% break so they still stack full-width as before —
    only nav + .social-media share a row now. */
 body > footer, body footer { background: var(--mm-charcoal-deep) !important; color: var(--mm-cream) !important; padding: 64px 6% 30px !important; margin: 0 !important; position: relative; isolation: isolate; display: flex !important; flex-wrap: wrap !important; align-items: center !important; column-gap: 28px !important; overflow: hidden !important; }
-/* §40.5: sitewide footer was plain/empty — a low-opacity tree graphic
-   anchored to the bottom-right, clipped by the footer's own overflow:hidden,
-   sits behind all footer content via negative z-index so it never
-   interferes with the nav/disclaimer/credits text on top of it. */
+/* §45.2: the flat line-art tree icon (§40.5) read as a small decorative
+   sticker, not the vibrant, cinematic photography used in every page
+   header — swapped for the same forest photo used as the homepage hero
+   poster, full-bleed behind the whole footer rather than a corner accent.
+   A dark scrim (matching the tonal approach of .hero-media-scrim) keeps
+   the nav/disclaimer/credits text on top fully legible; the footer's own
+   overflow:hidden + this layer's negative z-index work the same way as
+   before. */
 body footer::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: url('../images/money_matters-treedark.png') no-repeat right -60px bottom -140px / 420px auto;
-    opacity: 0.35;
+    background:
+        linear-gradient(180deg, rgba(15, 27, 21, 0.78) 0%, rgba(15, 27, 21, 0.5) 40%, rgba(15, 27, 21, 0.94) 100%),
+        url('../images/hero-forest-poster.jpg') center 35% / cover no-repeat;
     z-index: -1;
     pointer-events: none;
-}
-@media (max-width: 700px) {
-    body footer::before { background-size: 260px auto; opacity: 0.28; }
 }
 body footer > p, body footer > .logo { color: var(--mm-cream) !important; font-family: var(--mm-sans-display) !important; font-size: 28px !important; font-weight: 800 !important; margin-bottom: 20px !important; letter-spacing: -0.025em !important; flex-basis: 100% !important; width: 100% !important; }
 body footer nav { display: flex !important; gap: 24px !important; flex-wrap: wrap !important; margin-bottom: 26px !important; position: static !important; }

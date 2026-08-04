@@ -387,7 +387,16 @@
     requestAnimationFrame(frame);
   }
 
-  function renderResults(score, band) {
+  // §45.3 root cause: renderResults() runs on every path that ever shows
+  // the results step, not just a genuine fresh submission — a returning,
+  // already-scored visitor whose session cookie is still valid hits it on
+  // a plain homepage load (see the window.mmGetSession() branch below),
+  // and a "log me in" magic link (verify-token purpose: 'returning_login')
+  // hits it too, neither of which involved answering anything just now.
+  // The feedback widget belongs only to the actual "just submitted"
+  // moment, so it now requires an explicit opt-in per call site instead
+  // of firing unconditionally.
+  function renderResults(score, band, options) {
     var copy = BAND_COPY[band] || BAND_COPY['Needs Work'];
     el('score-band').textContent = band;
     el('score-copy').textContent = copy.body;
@@ -406,7 +415,8 @@
     // (individual-tools-scripts/tool-utils.js). Anchored right after the
     // "Explore all tools" links so it reads as part of the score panel,
     // not the separate dashboard beside it.
-    if (typeof toolShowFeedbackWidget === 'function') {
+    var isFreshSubmission = !!(options && options.freshSubmission);
+    if (isFreshSubmission && typeof toolShowFeedbackWidget === 'function') {
       var nextStepsEl = heroRoot.querySelector('[data-step="results"] .next-steps');
       if (nextStepsEl) toolShowFeedbackWidget(nextStepsEl, 'diagnostic');
     }
@@ -623,7 +633,13 @@
                 renderVerifyError(result.data && result.data.error);
                 return;
               }
-              renderResults(result.data.score, result.data.band);
+              // breakdown is only ever populated for a genuine fresh
+              // scoring (verify-token.js sets it null for a returning-
+              // login token, which reuses an existing score/band without
+              // computing anything new) — the one reliable signal here
+              // that this render is the "just submitted" moment, not a
+              // returning visitor's sign-in link.
+              renderResults(result.data.score, result.data.band, { freshSubmission: !!result.data.breakdown });
               if (result.data.isNewAccount) {
                 showFirstAccountPopup(result.data.communityCount);
               }

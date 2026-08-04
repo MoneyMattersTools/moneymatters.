@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="MoneyMatters+ member mark">
-  <circle cx="27" cy="27" r="17" fill="none" stroke="#C49A47" stroke-width="4.5"/>
-  <line x1="39" y1="39" x2="53" y2="53" stroke="#C49A47" stroke-width="5" stroke-linecap="round"/>
-  <text x="27" y="34" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-weight="600" fill="#C49A47" text-anchor="middle">$</text>
-  <path d="M8 20 L16 12 L22 17 L30 6" fill="none" stroke="#4A8559" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M24 6 L30 6 L30 12" fill="none" stroke="#4A8559" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
