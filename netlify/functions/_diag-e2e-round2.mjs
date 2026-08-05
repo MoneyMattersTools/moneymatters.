@@ -103,6 +103,12 @@ export default async (request) => {
     });
   }
 
+  if (request.method === 'GET' && action === 'find-test-tokens') {
+    const all = await listAll('verification_tokens');
+    const matches = all.filter((t) => t.email && t.email.indexOf('mm-test-migration-check') !== -1);
+    return json(200, { ok: true, matches: matches.map((t) => ({ id: t.id, email: t.email })) });
+  }
+
   if (request.method === 'GET' && action === 'verify') {
     const reviewRequestId = url.searchParams.get('reviewRequestId');
     const reviewRequest = await findOneByFilters('advisor_review_requests', [`id=${encodeEq(reviewRequestId)}`]);
