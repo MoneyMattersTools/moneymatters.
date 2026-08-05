@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
 
-const { createRecord, findOneByFilters, encodeEq } = supabaseLib;
+const { createRecord } = supabaseLib;
 const { sendEmail } = resendLib;
 
 const DELIVERY_TTL_HOURS = 60;
@@ -52,9 +52,9 @@ export default async (request) => {
   }
 
   const advisorEmail = payload.advisorEmail;
-  const reviewRequestId = payload.reviewRequestId;
-  if (!advisorEmail || !reviewRequestId) {
-    return json(400, { ok: false, error: 'missing advisorEmail or reviewRequestId' });
+  const userEmail = payload.userEmail;
+  if (!advisorEmail || !userEmail) {
+    return json(400, { ok: false, error: 'missing advisorEmail or userEmail' });
   }
 
   try {
@@ -68,10 +68,20 @@ export default async (request) => {
       accepting: true,
     });
 
-    const reviewRequest = await findOneByFilters('advisor_review_requests', [`id=${encodeEq(reviewRequestId)}`]);
-    if (!reviewRequest) {
-      return json(404, { ok: false, error: 'review_request_not_found' });
-    }
+    // Mirrors request-advisor-review.mjs's own createRecord call — bypasses
+    // its session-cookie auth requirement (no real login flow driven here),
+    // but writes the exact same shape that endpoint would.
+    const reviewRequest = await createRecord('advisor_review_requests', {
+      email: userEmail,
+      situational_details: ['Saving for retirement'],
+      details: 'E2E test request — safe to ignore, will be deleted after verification.',
+      location: 'Bucks County, PA',
+      urgency: 'now',
+      requested_at: new Date().toISOString(),
+      request_ip: 'diag-e2e-test',
+      status: 'Requested',
+      shared_scores: { consent: true, healthScore: 72, healthScoreBand: 'Solid Ground', netWorthRange: '250k-500k' },
+    });
 
     const snapshot = buildSnapshot(reviewRequest);
     const acceptToken = crypto.randomBytes(32).toString('base64url');
@@ -108,6 +118,7 @@ export default async (request) => {
     return json(200, {
       ok: true,
       advisorId: advisor.id,
+      reviewRequestId: reviewRequest.id,
       deliveryId: delivery.id,
       acceptToken,
       snapshot,
