@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
 
-const { createRecord } = supabaseLib;
+const { createRecord, findOneByFilters, encodeEq, deleteRecord } = supabaseLib;
 const { sendEmail } = resendLib;
 
 const DELIVERY_TTL_HOURS = 60;
@@ -40,6 +40,44 @@ function buildSnapshot(reviewRequest) {
 // advisor backend can be exercised end to end without needing the real
 // ADMIN_PASSWORD in this session. Delete after use.
 export default async (request) => {
+  // GET ?verify=<reviewRequestId>,<advisorId>,<deliveryId> — read-only
+  // final-state check, no mutation.
+  if (request.method === 'GET') {
+    const url = new URL(request.url);
+    const ids = (url.searchParams.get('verify') || '').split(',');
+    const [reviewRequestId, advisorId, deliveryId] = ids;
+    if (!reviewRequestId || !advisorId || !deliveryId) {
+      return json(400, { ok: false, error: 'missing verify ids' });
+    }
+    const reviewRequest = await findOneByFilters('advisor_review_requests', [`id=${encodeEq(reviewRequestId)}`]);
+    const delivery = await findOneByFilters('advisor_lead_deliveries', [`id=${encodeEq(deliveryId)}`]);
+    const consentLog = await findOneByFilters('advisor_consent_log', [`advisor_review_request_id=${encodeEq(reviewRequestId)}`]);
+    return json(200, {
+      ok: true,
+      reviewRequestStatus: reviewRequest ? reviewRequest.status : null,
+      deliveryStatus: delivery ? delivery.status : null,
+      deliveryAcceptedAt: delivery ? delivery.accepted_at : null,
+      consentLogExists: !!consentLog,
+    });
+  }
+
+  // DELETE ?cleanup=<reviewRequestId>,<advisorId>,<deliveryId> — removes
+  // everything this diag created.
+  if (request.method === 'DELETE') {
+    const url = new URL(request.url);
+    const ids = (url.searchParams.get('cleanup') || '').split(',');
+    const [reviewRequestId, advisorId, deliveryId] = ids;
+    if (!reviewRequestId || !advisorId || !deliveryId) {
+      return json(400, { ok: false, error: 'missing cleanup ids' });
+    }
+    const consentLog = await findOneByFilters('advisor_consent_log', [`advisor_review_request_id=${encodeEq(reviewRequestId)}`]);
+    if (consentLog) await deleteRecord('advisor_consent_log', consentLog.id);
+    await deleteRecord('advisor_lead_deliveries', deliveryId);
+    await deleteRecord('advisor_review_requests', reviewRequestId);
+    await deleteRecord('advisors', advisorId);
+    return json(200, { ok: true, cleaned: true });
+  }
+
   if (request.method !== 'POST') {
     return json(405, { ok: false, error: 'method_not_allowed' });
   }
