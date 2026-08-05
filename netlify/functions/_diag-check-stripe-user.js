@@ -19,5 +19,16 @@ exports.handler = async (event) => {
     plan_source: user.plan_source,
     stripe_customer_id: user.stripe_customer_id,
     stripe_subscription_id: user.stripe_subscription_id,
+    health_score: user.health_score,
+    health_score_band: user.health_score_band,
+    health_score_completed_at: user.health_score_completed_at,
+    net_worth_result: user.net_worth_result,
+    net_worth_submitted_at: user.net_worth_submitted_at,
+    budget_result: user.budget_result,
+    budget_submitted_at: user.budget_submitted_at,
+    retirement_result: user.retirement_result,
+    retirement_submitted_at: user.retirement_submitted_at,
+    investment_result: user.investment_result,
+    investment_submitted_at: user.investment_submitted_at,
   });
 };
