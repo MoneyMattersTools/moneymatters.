@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
 
-const { createRecord, findOneByFilters, encodeEq, deleteRecord } = supabaseLib;
+const { createRecord, findOneByFilters, encodeEq, deleteRecord, listAll } = supabaseLib;
 const { sendEmail } = resendLib;
 
 const DELIVERY_TTL_HOURS = 60;
@@ -126,6 +126,11 @@ export default async (request) => {
     if (payload.deliveryId) await deleteRecord('advisor_lead_deliveries', payload.deliveryId);
     if (payload.reviewRequestId) await deleteRecord('advisor_review_requests', payload.reviewRequestId);
     if (payload.advisorId) await deleteRecord('advisors', payload.advisorId);
+    if (payload.advisorEmailToPurge) {
+      const allAdvisors = await listAll('advisors');
+      const matches = allAdvisors.filter((a) => a.contact_email === payload.advisorEmailToPurge);
+      for (const m of matches) await deleteRecord('advisors', m.id);
+    }
     if (payload.tokenEmail) {
       const tokenRow = await findOneByFilters('verification_tokens', [`email=${encodeEq(payload.tokenEmail)}`]);
       if (tokenRow) await deleteRecord('verification_tokens', tokenRow.id);
