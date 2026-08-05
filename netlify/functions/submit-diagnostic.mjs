@@ -103,7 +103,7 @@ export default async (request, context) => {
     const token = crypto.randomBytes(32).toString('base64url');
     const expiresAt = new Date(Date.now() + TOKEN_TTL_MS).toISOString();
 
-    await createRecord('verification_tokens', {
+    const tokenFields = {
       token: token,
       email: email,
       purpose: 'signup_verification',
@@ -112,7 +112,21 @@ export default async (request, context) => {
       pending_source: source,
       expires_at: expiresAt,
       request_ip: clientIp,
-    });
+    };
+    try {
+      await createRecord('verification_tokens', tokenFields);
+    } catch (insertErr) {
+      // Falls back to writing without pending_source if that column isn't
+      // live yet (migration 0006 not yet applied — PostgREST rejects an
+      // INSERT referencing an unknown column outright, unlike SELECT,
+      // which just omits it). Keeps signup itself working the moment this
+      // deploys, rather than depending on Ethan running the migration
+      // first — attribution capture activates automatically once he does,
+      // no second deploy needed.
+      if (!/pending_source/.test(insertErr.message)) throw insertErr;
+      const { pending_source, ...fieldsWithoutSource } = tokenFields;
+      await createRecord('verification_tokens', fieldsWithoutSource);
+    }
 
     const siteUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
     const link = `${siteUrl}/?verify=${token}`;
