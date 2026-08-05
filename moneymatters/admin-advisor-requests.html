@@ -79,6 +79,29 @@
   .delivery-timedout { color: #e0796a; }
   .delivery-none { color: #5c6468; font-style: italic; }
   .assign-row { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+
+  .dashboard-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px; margin-bottom: 28px;
+  }
+  .stat-card {
+    background: #1a1f21; border: 1px solid #262c2f; border-radius: 8px; padding: 14px 16px;
+  }
+  .stat-card h3 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; color: #8a9296;
+    margin: 0 0 10px; font-weight: 600;
+  }
+  .stat-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .stat-row:last-child { margin-bottom: 0; }
+  .stat-label { font-size: 12.5px; color: #b7bec1; }
+  .stat-value { font-size: 17px; font-weight: 700; color: #e6e9ea; }
+  .stat-value.big { font-size: 26px; }
+  .band-bar-row { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 6px; }
+  .band-bar-label { width: 84px; flex-shrink: 0; color: #b7bec1; }
+  .band-bar-track { flex: 1; height: 8px; background: #262c2f; border-radius: 4px; overflow: hidden; }
+  .band-bar-fill { height: 100%; background: #3ba676; }
+  .band-bar-count { width: 44px; flex-shrink: 0; text-align: right; color: #8a9296; }
+  .dashboard-note { font-size: 11.5px; color: #6b7378; margin-top: 10px; font-style: italic; line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -96,6 +119,9 @@
   <p class="subtitle">Internal only — not customer-facing.</p>
   <button type="button" class="btn" id="refresh-btn">Refresh</button>
   <p id="status-line"></p>
+
+  <h2>Dashboard</h2>
+  <div class="dashboard-grid" id="dashboard-grid"></div>
 
   <h2>Leads &amp; matching</h2>
   <table>
@@ -190,7 +216,7 @@
   var advisorRowsEl = document.getElementById('advisor-rows');
   var specialtyRowEl = document.getElementById('advisor-specialty-row');
 
-  var state = { requests: [], advisors: [], deliveries: [] };
+  var state = { requests: [], advisors: [], deliveries: [], dashboard: null };
 
   specialtyRowEl.innerHTML = SPECIALTIES.map(function (s) {
     return '<label><input type="checkbox" name="advisor-specialty" value="' + s + '">' + s + '</label>';
@@ -300,20 +326,81 @@
     return h;
   }
 
+  function fmtPct(fraction) {
+    if (fraction === null || fraction === undefined) return '—';
+    return Math.round(fraction * 100) + '%';
+  }
+
+  function renderDashboard(stats) {
+    var grid = document.getElementById('dashboard-grid');
+    if (!stats) {
+      grid.innerHTML = '<div class="stat-card"><h3>Dashboard</h3><div class="stat-label">Couldn\'t load stats.</div></div>';
+      return;
+    }
+    var funnel = stats.funnel, plus = stats.plus, freeIncentive = stats.freePlusIncentive, pipeline = stats.pipeline;
+    var maxBandCount = Math.max.apply(null, stats.scoreDistribution.map(function (b) { return b.count; }).concat([1]));
+
+    var funnelCard =
+      '<div class="stat-card"><h3>Signup &amp; verification funnel</h3>' +
+      '<div class="stat-row"><span class="stat-label">Diagnostic submitted</span><span class="stat-value">' + funnel.diagnosticSubmitted + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Verified &amp; completed</span><span class="stat-value">' + funnel.verifiedAndCompleted + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Conversion</span><span class="stat-value">' + fmtPct(funnel.conversionRate) + '</span></div>' +
+      '<div class="dashboard-note">"Started diagnostic" (before email) isn\'t written to Supabase in the current flow — nothing is saved until the quiz and email submit together. "Verified" and "completed" are also the same event today, not separate stages.</div>' +
+      '</div>';
+
+    var bandRows = stats.scoreDistribution.map(function (b) {
+      var widthPct = maxBandCount ? Math.round((b.count / maxBandCount) * 100) : 0;
+      return '<div class="band-bar-row"><span class="band-bar-label">' + escapeHtml(b.band) + '</span>' +
+        '<span class="band-bar-track"><span class="band-bar-fill" style="width:' + widthPct + '%"></span></span>' +
+        '<span class="band-bar-count">' + b.count + '</span></div>';
+    }).join('');
+    var scoreCard = '<div class="stat-card"><h3>Financial Health Score distribution</h3>' + bandRows + '</div>';
+
+    var plusCard =
+      '<div class="stat-card"><h3>MoneyMatters+ subscribers</h3>' +
+      '<div class="stat-row"><span class="stat-label">Paying subscribers</span><span class="stat-value big">' + plus.payingSubscribers + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">MRR</span><span class="stat-value">$' + plus.mrrUsd + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Churned (lifetime)</span><span class="stat-value">' + plus.churnedLifetime + '</span></div>' +
+      '<div class="dashboard-note">Churned counts anyone whose plan_source is \'stripe\' but plan is no longer \'plus\' — a lifetime total, not a monthly rate (no cancellation-date column exists yet to compute one).</div>' +
+      '</div>';
+
+    var freeCard =
+      '<div class="stat-card"><h3>Free-Plus incentive (first 500)</h3>' +
+      '<div class="stat-row"><span class="stat-label">Claimed</span><span class="stat-value big">' + freeIncentive.claimed + ' / ' + freeIncentive.total + '</span></div>' +
+      '<div class="band-bar-row"><span class="band-bar-track"><span class="band-bar-fill" style="width:' + Math.min(100, Math.round((freeIncentive.claimed / freeIncentive.total) * 100)) + '%"></span></span></div>' +
+      '<div class="dashboard-note">Counts users with plan=\'plus\' and no Stripe subscription on record. May include manually flagged internal/QA accounts, not only real incentive grants.</div>' +
+      '</div>';
+
+    var pipelineCard =
+      '<div class="stat-card"><h3>Advisor pipeline health</h3>' +
+      '<div class="stat-row"><span class="stat-label">Submitted</span><span class="stat-value">' + pipeline.submitted + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Matched</span><span class="stat-value">' + pipeline.matched + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Accepted</span><span class="stat-value">' + pipeline.accepted + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Pending (within window)</span><span class="stat-value">' + pipeline.pending + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Timed out</span><span class="stat-value">' + pipeline.timedOut + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Meeting taken</span><span class="stat-value">' + pipeline.meetingTaken + '</span></div>' +
+      '</div>';
+
+    grid.innerHTML = funnelCard + scoreCard + plusCard + freeCard + pipelineCard;
+  }
+
   function loadAll() {
     statusLine.textContent = 'Loading…';
     Promise.all([
       fetch('/api/admin-list-advisor-requests', { headers: authHeaders() }).then(function (r) { return r.json(); }),
       fetch('/api/admin-list-advisors', { headers: authHeaders() }).then(function (r) { return r.json(); }),
       fetch('/api/admin-list-lead-deliveries', { headers: authHeaders() }).then(function (r) { return r.json(); }),
+      fetch('/api/admin-dashboard-stats', { headers: authHeaders() }).then(function (r) { return r.json(); }),
     ])
       .then(function (results) {
         if (!results[0].ok || !results[1].ok || !results[2].ok) throw new Error('server_error');
         state.requests = results[0].requests;
         state.advisors = results[1].advisors;
         state.deliveries = results[2].deliveries;
+        state.dashboard = results[3].ok ? results[3] : null;
         renderRows();
         renderAdvisorRows();
+        renderDashboard(state.dashboard);
         statusLine.textContent = state.requests.length + ' request' + (state.requests.length === 1 ? '' : 's') + ', ' +
           state.advisors.length + ' advisor' + (state.advisors.length === 1 ? '' : 's') + ' on roster.';
       })
