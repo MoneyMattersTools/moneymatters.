@@ -59,10 +59,20 @@ export default async (request) => {
       status: 'accepted',
       accepted_at: new Date().toISOString(),
     });
-    await updateRecord('advisor_review_requests', reviewRequest.id, {
-      status: 'Matched',
-      status_changed_at: new Date().toISOString(),
-    });
+    // Falls back to a plain status update if status_changed_at isn't live
+    // yet (migration 0006 not yet applied) — same reasoning as
+    // submit-diagnostic.mjs's pending_source fallback: this is a
+    // pre-existing production path (an advisor accepting a lead), and
+    // PostgREST rejects an UPDATE referencing an unknown column outright.
+    try {
+      await updateRecord('advisor_review_requests', reviewRequest.id, {
+        status: 'Matched',
+        status_changed_at: new Date().toISOString(),
+      });
+    } catch (updateErr) {
+      if (!/status_changed_at/.test(updateErr.message)) throw updateErr;
+      await updateRecord('advisor_review_requests', reviewRequest.id, { status: 'Matched' });
+    }
 
     // This is the moment the site's own copy already promises ("the
     // advisor shares their background first, you decide") — nothing

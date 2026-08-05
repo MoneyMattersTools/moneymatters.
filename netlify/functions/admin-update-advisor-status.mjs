@@ -38,7 +38,18 @@ export default async (request) => {
   }
 
   try {
-    const updated = await updateRecord('advisor_review_requests', id, { status, status_changed_at: new Date().toISOString() });
+    // Falls back to a plain status update if status_changed_at isn't live
+    // yet (migration 0006 not yet applied) — same reasoning as
+    // submit-diagnostic.mjs's pending_source fallback: PostgREST rejects
+    // an UPDATE referencing an unknown column outright, and this path was
+    // already in production use before this round.
+    let updated;
+    try {
+      updated = await updateRecord('advisor_review_requests', id, { status, status_changed_at: new Date().toISOString() });
+    } catch (updateErr) {
+      if (!/status_changed_at/.test(updateErr.message)) throw updateErr;
+      updated = await updateRecord('advisor_review_requests', id, { status });
+    }
     if (!updated) {
       return json(404, { ok: false, error: 'not_found' });
     }
