@@ -165,11 +165,16 @@ body header > a > p, body header p {
     line-height: 1 !important;
 }
 body header > a:hover > p { transform: scale(1.03) !important; }
+/* §47.1: circular container, matching the mark's own circular motif
+   (the partial-ring shape drawn into the icon itself). Source images are
+   square with the mark comfortably centered and padded, so a straight
+   border-radius crop on the <img> itself (no wrapper needed - border-radius
+   clips an element's own painted content) is enough. */
 body header .nav-logo-icon {
     width: 28px !important;
     height: 28px !important;
-    object-fit: contain !important;
-    border-radius: 0 !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
     flex-shrink: 0 !important;
 }
 body header nav, body header nav.top, body header .top {
