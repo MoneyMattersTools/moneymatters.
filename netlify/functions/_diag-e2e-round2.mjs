@@ -36,6 +36,20 @@ export default async (request) => {
     return json(200, { ok: true, token, inviteId: invite.id });
   }
 
+  if (request.method === 'POST' && action === 'create-advisor') {
+    const payload = await request.json();
+    const advisor = await createRecord('advisors', {
+      name: 'MM Test Advisor Round2',
+      firm: 'Test Firm LLC',
+      contact_email: payload.advisorEmail,
+      scheduling_link: 'https://calendly.com/mm-test-advisor-round2',
+      licensed_states: ['PA'],
+      specialty_tags: ['Saving for retirement'],
+      accepting: true,
+    });
+    return json(200, { ok: true, advisorId: advisor.id });
+  }
+
   if (request.method === 'POST' && action === 'create-lead') {
     const payload = await request.json();
     const advisorRow = await findOneByFilters('advisors', [`contact_email=${encodeEq(payload.advisorEmail)}`]);
