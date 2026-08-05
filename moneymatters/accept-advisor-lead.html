@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<title>Lead Available | MoneyMatters</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #0F1B15;
+    color: #FAFAF7;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    max-width: 480px;
+    width: 100%;
+    margin: 24px;
+    padding: 32px;
+    background: #1A2B23;
+    border: 1px solid #2A3D33;
+    border-radius: 16px;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .subtitle { color: rgba(250, 250, 247, 0.6); margin: 0 0 24px; font-size: 14px; }
+  .snapshot {
+    background: #0F1B15;
+    border: 1px solid #2A3D33;
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: rgba(250, 250, 247, 0.9);
+    margin-bottom: 24px;
+    white-space: pre-wrap;
+  }
+  button {
+    width: 100%;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #62A974;
+    color: #0F1B15;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.6; cursor: default; }
+  #message { margin-top: 16px; font-size: 14px; color: rgba(250, 250, 247, 0.75); }
+  #message.err { color: #E8927C; }
+  #message.ok { color: #62A974; }
+  #loading, #error-state, #success-state { display: none; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div id="loading">
+    <h1>Loading…</h1>
+  </div>
+
+  <div id="error-state">
+    <h1>This link isn't available anymore</h1>
+    <p class="subtitle" id="error-detail">It may have already been accepted, or the offer window has passed.</p>
+  </div>
+
+  <div id="success-state">
+    <h1>You're on it.</h1>
+    <p class="subtitle">The client has been notified and will reach out using your scheduling link. No further action needed here.</p>
+  </div>
+
+  <div id="offer-state">
+    <h1>New lead available</h1>
+    <p class="subtitle">Take a look, then accept if it's a fit.</p>
+    <div class="snapshot" id="snapshot-text"></div>
+    <button type="button" id="accept-btn">I'll take this lead</button>
+    <p id="message"></p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var token = params.get('token') || '';
+
+  var loadingEl = document.getElementById('loading');
+  var errorEl = document.getElementById('error-state');
+  var errorDetailEl = document.getElementById('error-detail');
+  var successEl = document.getElementById('success-state');
+  var offerEl = document.getElementById('offer-state');
+  var messageEl = document.getElementById('message');
+
+  var ERROR_MESSAGES = {
+    already_accepted: 'This lead has already been accepted — likely by you, on another tab or device.',
+    expired: 'The offer window on this lead has passed.',
+    invalid: "This link isn't valid.",
+  };
+
+  function show(el) {
+    [loadingEl, errorEl, successEl, offerEl].forEach(function (e) { e.style.display = 'none'; });
+    el.style.display = 'block';
+  }
+
+  if (!token) {
+    errorDetailEl.textContent = ERROR_MESSAGES.invalid;
+    show(errorEl);
+    return;
+  }
+
+  show(loadingEl);
+  fetch('/api/get-lead-delivery?token=' + encodeURIComponent(token))
+    .then(function (res) { return res.json().then(function (data) { return { status: res.status, data: data }; }); })
+    .then(function (result) {
+      if (!result.data.ok) {
+        errorDetailEl.textContent = ERROR_MESSAGES[result.data.error] || ERROR_MESSAGES.invalid;
+        show(errorEl);
+        return;
+      }
+      document.getElementById('snapshot-text').textContent = result.data.snapshot;
+      show(offerEl);
+    })
+    .catch(function () {
+      errorDetailEl.textContent = 'Something went wrong loading this lead. Try refreshing.';
+      show(errorEl);
+    });
+
+  document.getElementById('accept-btn').addEventListener('click', function () {
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Accepting…';
+    messageEl.textContent = '';
+    messageEl.className = '';
+    fetch('/api/accept-advisor-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: token }),
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        if (!data.ok) {
+          btn.disabled = false;
+          btn.textContent = "I'll take this lead";
+          messageEl.textContent = ERROR_MESSAGES[data.error] || 'Something went wrong. Please try again.';
+          messageEl.className = 'err';
+          return;
+        }
+        show(successEl);
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = "I'll take this lead";
+        messageEl.textContent = 'Something went wrong. Please try again.';
+        messageEl.className = 'err';
+      });
+  });
+})();
+</script>
+
+</body>
+</html>

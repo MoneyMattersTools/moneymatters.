@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-        <link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="icon" type="image/png" href="images/favicon.png">
 <title>Advisor Review Requests — Internal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
@@ -17,6 +17,7 @@
     font-size: 14px;
   }
   h1 { font-size: 18px; margin: 0 0 4px; }
+  h2 { font-size: 15px; margin: 32px 0 4px; }
   .subtitle { color: #8a9296; margin: 0 0 20px; font-size: 13px; }
 
   #login-panel { max-width: 320px; margin-top: 60px; }
@@ -32,7 +33,7 @@
   #login-error { color: #e0796a; font-size: 13px; margin-top: 8px; min-height: 18px; }
 
   #app { display: none; }
-  table { width: 100%; border-collapse: collapse; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
   th, td {
     text-align: left; padding: 10px 12px; border-bottom: 1px solid #262c2f;
     vertical-align: top;
@@ -41,11 +42,11 @@
   td { font-size: 13.5px; }
   .col-date { white-space: nowrap; color: #a4acb0; }
   .col-email { white-space: nowrap; }
-  .col-notes { max-width: 420px; }
+  .col-notes { max-width: 380px; }
   .col-notes ul { margin: 0 0 6px; padding-left: 18px; }
   .col-notes .freetext { color: #b7bec1; white-space: pre-wrap; }
   .col-notes .empty { color: #5c6468; font-style: italic; }
-  select {
+  select, input[type="text"], input[type="email"], input[type="url"] {
     background: #1e2427; color: #e6e9ea; border: 1px solid #333c40;
     border-radius: 6px; padding: 6px 8px; font-size: 13px;
   }
@@ -53,10 +54,31 @@
   .save-flash.ok { color: #3ba676; }
   .save-flash.err { color: #e0796a; }
   #status-line { color: #8a9296; margin-bottom: 12px; font-size: 13px; }
-  #refresh-btn {
+  .btn {
     background: none; border: 1px solid #333c40; color: #e6e9ea;
-    padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-bottom: 16px;
+    padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;
   }
+  .btn-primary { background: #3ba676; color: #0e1210; border-color: #3ba676; font-weight: 600; }
+  #refresh-btn { margin-bottom: 16px; }
+
+  .roster-form {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    background: #1a1f21; border: 1px solid #262c2f; border-radius: 8px;
+    padding: 16px; margin-bottom: 20px; max-width: 720px;
+  }
+  .roster-form label { display: block; font-size: 12px; color: #8a9296; margin-bottom: 4px; }
+  .roster-form input { width: 100%; }
+  .roster-form .span-2 { grid-column: span 2; }
+  .roster-form .checkbox-row { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: #c3c9cc; }
+  .roster-form .checkbox-row label { display: flex; align-items: center; gap: 5px; margin: 0; font-size: 12.5px; color: #c3c9cc; }
+  .roster-form .checkbox-row input { width: auto; }
+  #advisor-form-status { grid-column: span 2; font-size: 12.5px; min-height: 16px; }
+
+  .delivery-pending { color: #e0b96a; }
+  .delivery-accepted { color: #3ba676; }
+  .delivery-timedout { color: #e0796a; }
+  .delivery-none { color: #5c6468; font-style: italic; }
+  .assign-row { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
 </style>
 </head>
 <body>
@@ -72,8 +94,10 @@
 <div id="app">
   <h1>Advisor Review Requests</h1>
   <p class="subtitle">Internal only — not customer-facing.</p>
-  <button type="button" id="refresh-btn">Refresh</button>
+  <button type="button" class="btn" id="refresh-btn">Refresh</button>
   <p id="status-line"></p>
+
+  <h2>Leads &amp; matching</h2>
   <table>
     <thead>
       <tr>
@@ -81,16 +105,80 @@
         <th class="col-email">Email</th>
         <th class="col-notes">What they need / notes</th>
         <th>Location</th>
+        <th>Urgency</th>
         <th>Status</th>
+        <th>Match</th>
       </tr>
     </thead>
     <tbody id="rows"></tbody>
+  </table>
+
+  <h2>Advisor roster</h2>
+  <p class="subtitle">Manually entered. Add every advisor here before assigning them a lead below.</p>
+  <form class="roster-form" id="advisor-form">
+    <div>
+      <label for="advisor-name">Name</label>
+      <input type="text" id="advisor-name" required>
+    </div>
+    <div>
+      <label for="advisor-firm">Firm</label>
+      <input type="text" id="advisor-firm">
+    </div>
+    <div>
+      <label for="advisor-email">Contact email</label>
+      <input type="email" id="advisor-email" required>
+    </div>
+    <div>
+      <label for="advisor-scheduling">Scheduling link (Calendly, etc.)</label>
+      <input type="url" id="advisor-scheduling">
+    </div>
+    <div class="span-2">
+      <label for="advisor-states">Licensed states (2-letter codes, comma-separated)</label>
+      <input type="text" id="advisor-states" placeholder="PA, NJ, NY">
+    </div>
+    <div class="span-2">
+      <label>Specialty tags</label>
+      <div class="checkbox-row" id="advisor-specialty-row"></div>
+    </div>
+    <div>
+      <label><input type="checkbox" id="advisor-accepting" checked style="width:auto"> Currently accepting leads</label>
+    </div>
+    <div></div>
+    <div class="span-2">
+      <button type="submit" class="btn btn-primary">Add advisor</button>
+      <span id="advisor-form-status"></span>
+    </div>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Firm</th>
+        <th>States</th>
+        <th>Specialties</th>
+        <th>Capacity</th>
+      </tr>
+    </thead>
+    <tbody id="advisor-rows"></tbody>
   </table>
 </div>
 
 <script>
 (function () {
   var STATUSES = ['Requested', 'Matched', 'Meeting Taken'];
+  // Must match netlify/functions/lib/specialties.js's SPECIALTIES exactly —
+  // this admin page is plain HTML/JS with no build step to share that
+  // server-side module with, same reason request-advisor-review.mjs's own
+  // comment gives for keeping its checklist values in sync by hand.
+  var SPECIALTIES = [
+    'Saving for retirement', 'Paying off debt', 'Buying a home', 'Growing my investments',
+    "Saving for a child's education", 'Inheritance or major windfall',
+    'Selling a business or equity compensation', 'New to investing', 'Not sure, just want general guidance',
+  ];
+  var URGENCY_LABELS = { now: 'Ready now', next_few_months: 'Next few months', just_exploring: 'Just exploring' };
+  var TIMEOUT_HOURS = 60;
+
   var pw = '';
   try { pw = sessionStorage.getItem('mm_admin_pw') || ''; } catch (e) {}
 
@@ -99,6 +187,14 @@
   var loginError = document.getElementById('login-error');
   var statusLine = document.getElementById('status-line');
   var rowsEl = document.getElementById('rows');
+  var advisorRowsEl = document.getElementById('advisor-rows');
+  var specialtyRowEl = document.getElementById('advisor-specialty-row');
+
+  var state = { requests: [], advisors: [], deliveries: [] };
+
+  specialtyRowEl.innerHTML = SPECIALTIES.map(function (s) {
+    return '<label><input type="checkbox" name="advisor-specialty" value="' + s + '">' + s + '</label>';
+  }).join('');
 
   function fmtDate(iso) {
     if (!iso) return '';
@@ -126,10 +222,39 @@
     return parts.length ? parts.join('') : '<span class="empty">Nothing submitted</span>';
   }
 
-  function renderRows(requests) {
-    rowsEl.innerHTML = requests.map(function (row) {
+  // The one place timeout state is computed — a delivery past its
+  // expires_at with status still 'pending' reads as timed out here; no
+  // background job ever mutates it, per the MVP "just functional" note.
+  function deliveryStateFor(requestId) {
+    var matches = state.deliveries.filter(function (d) { return d.advisor_review_request_id === requestId; });
+    if (!matches.length) return null;
+    matches.sort(function (a, b) { return new Date(b.assigned_at) - new Date(a.assigned_at); });
+    var latest = matches[0];
+    var advisor = state.advisors.filter(function (a) { return a.id === latest.advisor_id; })[0];
+    var advisorName = advisor ? advisor.name : 'Unknown advisor';
+    if (latest.status === 'accepted') {
+      return { label: 'Accepted — matched to ' + escapeHtml(advisorName), cls: 'delivery-accepted' };
+    }
+    var isExpired = new Date(latest.expires_at).getTime() < Date.now();
+    if (isExpired) {
+      return { label: 'Timed out (was ' + escapeHtml(advisorName) + ') — reassign below', cls: 'delivery-timedout' };
+    }
+    var hoursLeft = Math.max(0, Math.round((new Date(latest.expires_at) - Date.now()) / 3600000));
+    return { label: 'Pending — sent to ' + escapeHtml(advisorName) + ', expires in ' + hoursLeft + 'h', cls: 'delivery-pending' };
+  }
+
+  function renderRows() {
+    var acceptingAdvisors = state.advisors.filter(function (a) { return a.accepting; });
+    rowsEl.innerHTML = state.requests.map(function (row) {
       var options = STATUSES.map(function (s) {
         return '<option value="' + s + '"' + (row.status === s ? ' selected' : '') + '>' + s + '</option>';
+      }).join('');
+      var delivery = deliveryStateFor(row.id);
+      var deliveryHtml = delivery
+        ? '<div class="' + delivery.cls + '">' + delivery.label + '</div>'
+        : '<div class="delivery-none">Not assigned</div>';
+      var advisorOptions = '<option value="">Assign advisor…</option>' + acceptingAdvisors.map(function (a) {
+        return '<option value="' + a.id + '">' + escapeHtml(a.name) + '</option>';
       }).join('');
       return '' +
         '<tr data-id="' + row.id + '">' +
@@ -137,32 +262,63 @@
           '<td class="col-email">' + escapeHtml(row.email) + '</td>' +
           '<td class="col-notes">' + renderNotes(row) + '</td>' +
           '<td>' + escapeHtml(row.location) + '</td>' +
+          '<td>' + escapeHtml(URGENCY_LABELS[row.urgency] || '—') + '</td>' +
           '<td>' +
             '<select class="status-select">' + options + '</select>' +
             '<span class="save-flash"></span>' +
+          '</td>' +
+          '<td>' +
+            deliveryHtml +
+            '<div class="assign-row">' +
+              '<select class="assign-select">' + advisorOptions + '</select>' +
+              '<button type="button" class="btn assign-btn">Send</button>' +
+            '</div>' +
+            '<span class="save-flash assign-flash"></span>' +
           '</td>' +
         '</tr>';
     }).join('');
   }
 
-  function loadRequests() {
+  function renderAdvisorRows() {
+    advisorRowsEl.innerHTML = state.advisors.map(function (a) {
+      var states = Array.isArray(a.licensed_states) ? a.licensed_states.join(', ') : '';
+      var specialties = Array.isArray(a.specialty_tags) ? a.specialty_tags.join(', ') : '';
+      return '' +
+        '<tr>' +
+          '<td>' + escapeHtml(a.name) + '</td>' +
+          '<td>' + escapeHtml(a.firm || '—') + '</td>' +
+          '<td>' + escapeHtml(states || '—') + '</td>' +
+          '<td>' + escapeHtml(specialties || '—') + '</td>' +
+          '<td>' + (a.accepting ? 'Accepting' : 'Paused') + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  function authHeaders(extra) {
+    var h = { 'X-Admin-Password': pw };
+    if (extra) for (var k in extra) h[k] = extra[k];
+    return h;
+  }
+
+  function loadAll() {
     statusLine.textContent = 'Loading…';
-    fetch('/api/admin-list-advisor-requests', { headers: { 'X-Admin-Password': pw } })
-      .then(function (res) {
-        if (res.status === 401) throw new Error('unauthorized');
-        return res.json();
-      })
-      .then(function (data) {
-        if (!data.ok) throw new Error('server_error');
-        renderRows(data.requests);
-        statusLine.textContent = data.requests.length + ' request' + (data.requests.length === 1 ? '' : 's') + '.';
+    Promise.all([
+      fetch('/api/admin-list-advisor-requests', { headers: authHeaders() }).then(function (r) { return r.json(); }),
+      fetch('/api/admin-list-advisors', { headers: authHeaders() }).then(function (r) { return r.json(); }),
+      fetch('/api/admin-list-lead-deliveries', { headers: authHeaders() }).then(function (r) { return r.json(); }),
+    ])
+      .then(function (results) {
+        if (!results[0].ok || !results[1].ok || !results[2].ok) throw new Error('server_error');
+        state.requests = results[0].requests;
+        state.advisors = results[1].advisors;
+        state.deliveries = results[2].deliveries;
+        renderRows();
+        renderAdvisorRows();
+        statusLine.textContent = state.requests.length + ' request' + (state.requests.length === 1 ? '' : 's') + ', ' +
+          state.advisors.length + ' advisor' + (state.advisors.length === 1 ? '' : 's') + ' on roster.';
       })
       .catch(function (err) {
-        if (err.message === 'unauthorized') {
-          showLogin('That password isn\'t right anymore. Try again.');
-          return;
-        }
-        statusLine.textContent = 'Something went wrong loading requests. Try refresh.';
+        statusLine.textContent = 'Something went wrong loading data. Try refresh.';
       });
   }
 
@@ -177,15 +333,14 @@
   function showApp() {
     loginPanel.style.display = 'none';
     app.style.display = 'block';
-    loadRequests();
+    loadAll();
   }
 
   document.getElementById('login-btn').addEventListener('click', function () {
     var entered = document.getElementById('admin-password').value;
     if (!entered) return;
     pw = entered;
-    // Verify by attempting a real load — no separate login endpoint needed.
-    fetch('/api/admin-list-advisor-requests', { headers: { 'X-Admin-Password': pw } })
+    fetch('/api/admin-list-advisor-requests', { headers: authHeaders() })
       .then(function (res) {
         if (res.status === 401) {
           loginError.textContent = 'Wrong password.';
@@ -194,8 +349,6 @@
         return res.json().then(function (data) {
           if (!data.ok) { loginError.textContent = 'Something went wrong. Try again.'; return; }
           try { sessionStorage.setItem('mm_admin_pw', pw); } catch (e) {}
-          renderRows(data.requests);
-          statusLine.textContent = data.requests.length + ' request' + (data.requests.length === 1 ? '' : 's') + '.';
           showApp();
         });
       })
@@ -208,7 +361,7 @@
     if (e.key === 'Enter') document.getElementById('login-btn').click();
   });
 
-  document.getElementById('refresh-btn').addEventListener('click', loadRequests);
+  document.getElementById('refresh-btn').addEventListener('click', loadAll);
 
   rowsEl.addEventListener('change', function (e) {
     var select = e.target.closest('.status-select');
@@ -221,7 +374,7 @@
     flash.className = 'save-flash';
     fetch('/api/admin-update-advisor-status', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': pw },
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ id: id, status: select.value }),
     })
       .then(function (res) { return res.json().catch(function () { return {}; }); })
@@ -240,6 +393,95 @@
         select.disabled = false;
         flash.textContent = 'Failed to save';
         flash.className = 'save-flash err';
+      });
+  });
+
+  rowsEl.addEventListener('click', function (e) {
+    var btn = e.target.closest('.assign-btn');
+    if (!btn) return;
+    var tr = btn.closest('tr');
+    var requestId = tr.dataset.id;
+    var select = tr.querySelector('.assign-select');
+    var advisorId = select.value;
+    var flash = tr.querySelector('.assign-flash');
+    if (!advisorId) {
+      flash.textContent = 'Pick an advisor first';
+      flash.className = 'save-flash assign-flash err';
+      return;
+    }
+    btn.disabled = true;
+    select.disabled = true;
+    flash.textContent = 'Sending…';
+    flash.className = 'save-flash assign-flash';
+    fetch('/api/admin-assign-advisor', {
+      method: 'POST',
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ requestId: requestId, advisorId: advisorId }),
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        btn.disabled = false;
+        select.disabled = false;
+        if (!data.ok) {
+          flash.textContent = 'Failed to send';
+          flash.className = 'save-flash assign-flash err';
+          return;
+        }
+        flash.textContent = 'Sent';
+        flash.className = 'save-flash assign-flash ok';
+        loadAll();
+      })
+      .catch(function () {
+        btn.disabled = false;
+        select.disabled = false;
+        flash.textContent = 'Failed to send';
+        flash.className = 'save-flash assign-flash err';
+      });
+  });
+
+  document.getElementById('advisor-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var statusEl = document.getElementById('advisor-form-status');
+    var name = document.getElementById('advisor-name').value.trim();
+    var contactEmail = document.getElementById('advisor-email').value.trim();
+    if (!name || !contactEmail) return;
+    var specialtyTags = Array.prototype.map.call(
+      document.querySelectorAll('input[name="advisor-specialty"]:checked'),
+      function (i) { return i.value; }
+    );
+    var licensedStates = document.getElementById('advisor-states').value
+      .split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    var payload = {
+      name: name,
+      firm: document.getElementById('advisor-firm').value.trim(),
+      contactEmail: contactEmail,
+      schedulingLink: document.getElementById('advisor-scheduling').value.trim(),
+      licensedStates: licensedStates,
+      specialtyTags: specialtyTags,
+      accepting: document.getElementById('advisor-accepting').checked,
+    };
+    statusEl.textContent = 'Saving…';
+    statusEl.className = '';
+    fetch('/api/admin-create-advisor', {
+      method: 'POST',
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(payload),
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        if (!data.ok) {
+          statusEl.textContent = 'Something went wrong. Check the required fields.';
+          statusEl.className = 'err';
+          return;
+        }
+        statusEl.textContent = 'Advisor added.';
+        statusEl.className = 'ok';
+        document.getElementById('advisor-form').reset();
+        loadAll();
+      })
+      .catch(function () {
+        statusEl.textContent = 'Something went wrong. Try again.';
+        statusEl.className = 'err';
       });
   });
 

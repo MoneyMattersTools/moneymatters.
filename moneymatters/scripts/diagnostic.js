@@ -331,6 +331,8 @@
       var shareScores = !!(shareScoresCheckbox && shareScoresCheckbox.checked);
       var netWorthRangeRaw = el('advisor-intake-networth-input').value;
       var netWorthRange = shareScores && netWorthRangeRaw ? netWorthRangeRaw : null;
+      var urgencyChecked = advisorForm.querySelector('input[name="urgency"]:checked');
+      var urgency = urgencyChecked ? urgencyChecked.value : null;
       var submitBtn = el('advisor-intake-submit');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
@@ -343,6 +345,7 @@
           details: details,
           shareScores: shareScores,
           netWorthRange: netWorthRange,
+          urgency: urgency,
         }),
       })
         .then(function (res) { return res.json().catch(function () { return {}; }); })

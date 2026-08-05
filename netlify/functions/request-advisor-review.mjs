@@ -1,10 +1,12 @@
 import supabaseLib from './lib/supabase.js';
 import sessionLib from './lib/session.js';
 import resendLib from './lib/resend.js';
+import specialtiesLib from './lib/specialties.js';
 
 const { createRecord, countRecentByIpSince, findOneByFilters, findByEmail, encodeEq } = supabaseLib;
 const { readSessionFromRequest } = sessionLib;
 const { sendEmail } = resendLib;
+const { SPECIALTIES_SET, URGENCY_VALUES } = specialtiesLib;
 
 const LOCATION_MAX_LENGTH = 120;
 const DETAILS_MAX_LENGTH = 600;
@@ -19,19 +21,9 @@ const ALLOWED_NET_WORTH_RANGES = new Set(['0-250k', '250k-500k', '500k-1mm', '1m
 // Must match the checkbox values in index.html's advisor-intake-checklist
 // exactly — keeps "Situational Details" a controlled checklist rather than
 // unrestricted free text, per DESIGN_SPEC.md's advisor-snapshot format.
-// Broadened per §18.9 — the original 5 covered only niche windfall
-// scenarios, not the majority of real reasons people seek an advisor.
-const ALLOWED_SITUATIONAL = new Set([
-  'Saving for retirement',
-  'Paying off debt',
-  'Buying a home',
-  'Growing my investments',
-  "Saving for a child's education",
-  'Inheritance or major windfall',
-  'Selling a business or equity compensation',
-  'New to investing',
-  'Not sure, just want general guidance',
-]);
+// §47 (SITE_STRATEGY.md Advisor Connect Backend): now the same shared
+// taxonomy advisor specialty_tags map to — see lib/specialties.js.
+const ALLOWED_SITUATIONAL = SPECIALTIES_SET;
 
 const IP_RATE_LIMIT_WINDOW_SECONDS = 60;
 const IP_RATE_LIMIT_MAX_REQUESTS = 5;
@@ -105,6 +97,13 @@ export default async (request, context) => {
       ? payload.netWorthRange
       : null;
 
+  // SITE_STRATEGY.md's lead-value ranking, signal #2: timeline is the one
+  // opportunity/urgency signal intake didn't capture before. Optional —
+  // an old client or a slow rollout of this field shouldn't ever block a
+  // submission.
+  const urgency =
+    typeof payload.urgency === 'string' && URGENCY_VALUES.has(payload.urgency) ? payload.urgency : null;
+
   const clientIp = getClientIp(request, context);
 
   try {
@@ -138,6 +137,7 @@ export default async (request, context) => {
       situational_details: situational,
       details: details,
       location: location,
+      urgency: urgency,
       requested_at: new Date().toISOString(),
       request_ip: clientIp,
       // §22.4: manual data-tracking only, no site-facing UI. The team
