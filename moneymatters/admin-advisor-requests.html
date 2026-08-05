@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="images/favicon.png">
-<title>Advisor Review Requests — Internal</title>
+<title>MoneyMatters Admin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <style>
@@ -102,12 +102,29 @@
   .band-bar-fill { height: 100%; background: #3ba676; }
   .band-bar-count { width: 44px; flex-shrink: 0; text-align: right; color: #8a9296; }
   .dashboard-note { font-size: 11.5px; color: #6b7378; margin-top: 10px; font-style: italic; line-height: 1.4; }
+
+  .invite-box {
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    background: #1a1f21; border: 1px solid #262c2f; border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 20px; max-width: 720px;
+  }
+  .invite-box input[type="text"] { flex: 1; min-width: 220px; }
+  .invite-status { font-size: 12.5px; margin-left: 4px; }
+
+  .timeline-toggle { background: none; border: none; color: #7fb8a0; font-size: 12px; cursor: pointer; padding: 0; text-decoration: underline; }
+  .timeline-row td { padding-top: 0; }
+  .timeline-list { list-style: none; margin: 6px 0 0; padding: 0; font-size: 12.5px; }
+  .timeline-list li { display: flex; gap: 8px; padding: 4px 0; border-left: 2px solid #262c2f; padding-left: 10px; margin-left: 3px; }
+  .timeline-list .timeline-dot-time { color: #8a9296; white-space: nowrap; }
+  .timeline-list .timeline-dot-label { color: #d5dadc; }
+  .shortlist-option { font-weight: 600; }
+  .csv-btn { margin-left: 8px; }
 </style>
 </head>
 <body>
 
 <div id="login-panel">
-  <h1>Advisor Review Requests</h1>
+  <h1>MoneyMatters Admin</h1>
   <p class="subtitle">Internal only.</p>
   <input type="password" id="admin-password" placeholder="Admin password" autocomplete="off">
   <button type="button" id="login-btn">Unlock</button>
@@ -115,12 +132,13 @@
 </div>
 
 <div id="app">
-  <h1>Advisor Review Requests</h1>
+  <h1>MoneyMatters Admin</h1>
   <p class="subtitle">Internal only — not customer-facing.</p>
   <button type="button" class="btn" id="refresh-btn">Refresh</button>
   <p id="status-line"></p>
 
   <h2>Dashboard</h2>
+  <button type="button" class="btn csv-btn" id="csv-btn">Download CSV</button>
   <div class="dashboard-grid" id="dashboard-grid"></div>
 
   <h2>Leads &amp; matching</h2>
@@ -140,7 +158,13 @@
   </table>
 
   <h2>Advisor roster</h2>
-  <p class="subtitle">Manually entered. Add every advisor here before assigning them a lead below.</p>
+  <p class="subtitle">Generate an invite link and send it yourself through your own outreach — the advisor fills in their own info. Or add one manually below.</p>
+  <div class="invite-box">
+    <button type="button" class="btn btn-primary" id="generate-invite-btn">Generate invite link</button>
+    <input type="text" id="invite-link-output" readonly placeholder="Link appears here once generated">
+    <button type="button" class="btn" id="copy-invite-btn" style="display:none;">Copy</button>
+    <span class="invite-status" id="invite-status"></span>
+  </div>
   <form class="roster-form" id="advisor-form">
     <div>
       <label for="advisor-name">Name</label>
@@ -204,6 +228,71 @@
   ];
   var URGENCY_LABELS = { now: 'Ready now', next_few_months: 'Next few months', just_exploring: 'Just exploring' };
   var TIMEOUT_HOURS = 60;
+
+  // Best-effort state extraction from the free-text location field (never
+  // structured at intake — see request-advisor-review.mjs). Licensure is a
+  // hard compliance filter, so this can only ever produce a *shortlist*,
+  // never silently exclude advisors from being pickable — the full roster
+  // stays selectable below it for exactly this reason.
+  var US_STATE_NAMES = {
+    alabama: 'AL', alaska: 'AK', arizona: 'AZ', arkansas: 'AR', california: 'CA', colorado: 'CO',
+    connecticut: 'CT', delaware: 'DE', florida: 'FL', georgia: 'GA', hawaii: 'HI', idaho: 'ID',
+    illinois: 'IL', indiana: 'IN', iowa: 'IA', kansas: 'KS', kentucky: 'KY', louisiana: 'LA',
+    maine: 'ME', maryland: 'MD', massachusetts: 'MA', michigan: 'MI', minnesota: 'MN',
+    mississippi: 'MS', missouri: 'MO', montana: 'MT', nebraska: 'NE', nevada: 'NV',
+    'new hampshire': 'NH', 'new jersey': 'NJ', 'new mexico': 'NM', 'new york': 'NY',
+    'north carolina': 'NC', 'north dakota': 'ND', ohio: 'OH', oklahoma: 'OK', oregon: 'OR',
+    pennsylvania: 'PA', 'rhode island': 'RI', 'south carolina': 'SC', 'south dakota': 'SD',
+    tennessee: 'TN', texas: 'TX', utah: 'UT', vermont: 'VT', virginia: 'VA', washington: 'WA',
+    'west virginia': 'WV', wisconsin: 'WI', wyoming: 'WY', 'district of columbia': 'DC',
+  };
+  var US_STATE_CODES = {};
+  for (var stateName in US_STATE_NAMES) US_STATE_CODES[US_STATE_NAMES[stateName]] = true;
+
+  function extractStateCode(location) {
+    if (!location) return null;
+    var trimmed = location.trim();
+    var trailingMatch = trimmed.match(/,?\s*([A-Za-z]{2})\s*$/);
+    if (trailingMatch && US_STATE_CODES[trailingMatch[1].toUpperCase()]) {
+      return trailingMatch[1].toUpperCase();
+    }
+    var lower = trimmed.toLowerCase();
+    for (var name in US_STATE_NAMES) {
+      if (lower.indexOf(name) !== -1) return US_STATE_NAMES[name];
+    }
+    return null;
+  }
+
+  function specialtyOverlapCount(advisor, request) {
+    var advisorTags = Array.isArray(advisor.specialty_tags) ? advisor.specialty_tags : [];
+    var leadNeeds = Array.isArray(request.situational_details) ? request.situational_details : [];
+    var count = 0;
+    for (var i = 0; i < leadNeeds.length; i++) {
+      if (advisorTags.indexOf(leadNeeds[i]) !== -1) count++;
+    }
+    return count;
+  }
+
+  // Round 2 addition (SITE_STRATEGY.md, locked 2026-08-05): a ranked
+  // shortlist instead of the full blind roster. Returns
+  // {shortlist: [...], others: [...]}  — "shortlist" is licensed-in-state
+  // (when a state could be determined) sorted by specialty overlap
+  // descending; "others" is everyone else accepting leads, still pickable.
+  function rankAdvisorsForRequest(request, acceptingAdvisors) {
+    var stateCode = extractStateCode(request.location);
+    var licensed = [];
+    var rest = [];
+    acceptingAdvisors.forEach(function (a) {
+      var states = Array.isArray(a.licensed_states) ? a.licensed_states : [];
+      if (stateCode && states.indexOf(stateCode) !== -1) {
+        licensed.push(a);
+      } else {
+        rest.push(a);
+      }
+    });
+    licensed.sort(function (a, b) { return specialtyOverlapCount(b, request) - specialtyOverlapCount(a, request); });
+    return { shortlist: licensed, others: rest, stateCode: stateCode };
+  }
 
   var pw = '';
   try { pw = sessionStorage.getItem('mm_admin_pw') || ''; } catch (e) {}
@@ -269,6 +358,65 @@
     return { label: 'Pending — sent to ' + escapeHtml(advisorName) + ', expires in ' + hoursLeft + 'h', cls: 'delivery-pending' };
   }
 
+  // Round 2 addition: submitted -> assigned/emailed -> accepted/timed out
+  // -> meeting taken, each with a real timestamp where one exists. Shows
+  // every delivery a lead has had, not just the latest, so a
+  // timed-out-then-reassigned lead's full history is visible, not just
+  // its current state.
+  function buildTimeline(row) {
+    var events = [{ label: 'Submitted', time: row.requested_at }];
+    var deliveries = state.deliveries
+      .filter(function (d) { return d.advisor_review_request_id === row.id; })
+      .sort(function (a, b) { return new Date(a.assigned_at) - new Date(b.assigned_at); });
+    deliveries.forEach(function (d) {
+      var advisor = state.advisors.filter(function (a) { return a.id === d.advisor_id; })[0];
+      var advisorName = advisor ? advisor.name : 'Unknown advisor';
+      events.push({ label: 'Assigned &amp; emailed to ' + escapeHtml(advisorName), time: d.assigned_at });
+      if (d.status === 'accepted') {
+        events.push({ label: 'Accepted by ' + escapeHtml(advisorName), time: d.accepted_at });
+      } else if (new Date(d.expires_at).getTime() < Date.now()) {
+        events.push({ label: 'Timed out (was ' + escapeHtml(advisorName) + ')', time: d.expires_at });
+      }
+    });
+    if (row.status === 'Meeting Taken') {
+      events.push({ label: 'Meeting taken', time: row.status_changed_at });
+    }
+    return events;
+  }
+
+  function renderTimelineRow(row) {
+    var events = buildTimeline(row);
+    var items = events.map(function (e) {
+      return '<li><span class="timeline-dot-time">' + fmtDate(e.time) + '</span><span class="timeline-dot-label">' + e.label + '</span></li>';
+    }).join('');
+    return '<tr class="timeline-row" data-timeline-for="' + row.id + '" style="display:none;"><td colspan="7"><ul class="timeline-list">' + items + '</ul></td></tr>';
+  }
+
+  function renderAssignOptions(row, acceptingAdvisors) {
+    var ranked = rankAdvisorsForRequest(row, acceptingAdvisors);
+    var html = '<option value="">Assign advisor…</option>';
+    if (ranked.shortlist.length) {
+      html += '<optgroup label="' + (ranked.stateCode ? 'Licensed in ' + ranked.stateCode : 'Best matches') + '">';
+      html += ranked.shortlist.map(function (a) {
+        var overlap = specialtyOverlapCount(a, row);
+        var suffix = overlap ? ' — ' + overlap + ' specialty match' + (overlap > 1 ? 'es' : '') : '';
+        return '<option value="' + a.id + '" class="shortlist-option">' + escapeHtml(a.name) + suffix + '</option>';
+      }).join('');
+      html += '</optgroup>';
+    }
+    if (ranked.others.length) {
+      html += '<optgroup label="All other advisors">';
+      html += ranked.others.map(function (a) {
+        return '<option value="' + a.id + '">' + escapeHtml(a.name) + '</option>';
+      }).join('');
+      html += '</optgroup>';
+    }
+    if (!ranked.shortlist.length && !ranked.stateCode) {
+      html = html.replace('<option value="">Assign advisor…</option>', '<option value="">Assign advisor… (couldn\'t detect state from location)</option>');
+    }
+    return html;
+  }
+
   function renderRows() {
     var acceptingAdvisors = state.advisors.filter(function (a) { return a.accepting; });
     rowsEl.innerHTML = state.requests.map(function (row) {
@@ -279,12 +427,10 @@
       var deliveryHtml = delivery
         ? '<div class="' + delivery.cls + '">' + delivery.label + '</div>'
         : '<div class="delivery-none">Not assigned</div>';
-      var advisorOptions = '<option value="">Assign advisor…</option>' + acceptingAdvisors.map(function (a) {
-        return '<option value="' + a.id + '">' + escapeHtml(a.name) + '</option>';
-      }).join('');
+      var advisorOptions = renderAssignOptions(row, acceptingAdvisors);
       return '' +
         '<tr data-id="' + row.id + '">' +
-          '<td class="col-date">' + fmtDate(row.requested_at) + '</td>' +
+          '<td class="col-date">' + fmtDate(row.requested_at) + '<br><button type="button" class="timeline-toggle" data-timeline-toggle="' + row.id + '">Timeline</button></td>' +
           '<td class="col-email">' + escapeHtml(row.email) + '</td>' +
           '<td class="col-notes">' + renderNotes(row) + '</td>' +
           '<td>' + escapeHtml(row.location) + '</td>' +
@@ -301,7 +447,8 @@
             '</div>' +
             '<span class="save-flash assign-flash"></span>' +
           '</td>' +
-        '</tr>';
+        '</tr>' +
+        renderTimelineRow(row);
     }).join('');
   }
 
@@ -381,7 +528,50 @@
       '<div class="stat-row"><span class="stat-label">Meeting taken</span><span class="stat-value">' + pipeline.meetingTaken + '</span></div>' +
       '</div>';
 
-    grid.innerHTML = funnelCard + scoreCard + plusCard + freeCard + pipelineCard;
+    var maxWeekCount = Math.max.apply(null, (stats.weeklyVerifiedTrend || []).map(function (w) { return w.count; }).concat([1]));
+    var trendRows = (stats.weeklyVerifiedTrend || []).map(function (w) {
+      var widthPct = maxWeekCount ? Math.round((w.count / maxWeekCount) * 100) : 0;
+      var label = new Date(w.weekStart + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return '<div class="band-bar-row"><span class="band-bar-label">' + label + '</span>' +
+        '<span class="band-bar-track"><span class="band-bar-fill" style="width:' + widthPct + '%"></span></span>' +
+        '<span class="band-bar-count">' + w.count + '</span></div>';
+    }).join('');
+    var trendCard = '<div class="stat-card"><h3>Weekly new-verified-user trend</h3>' + trendRows + '</div>';
+
+    var retention = stats.retention || {};
+    var retentionCard =
+      '<div class="stat-card"><h3>Retention</h3>' +
+      '<div class="stat-row"><span class="stat-label">7-day (n=' + (retention.day7Eligible || 0) + ')</span><span class="stat-value">' + fmtPct(retention.day7Rate) + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">30-day (n=' + (retention.day30Eligible || 0) + ')</span><span class="stat-value">' + fmtPct(retention.day30Rate) + '</span></div>' +
+      '<div class="dashboard-note">"Returned" = a fresh magic-link visit or a saved tool result after the window. Understates real return visits — a still-logged-in user (30-day session cookie) can browse without either happening, and there\'s no page-view table to catch that.</div>' +
+      '</div>';
+
+    var completion = stats.completionRates || {};
+    var completionCard =
+      '<div class="stat-card"><h3>Completion rate by tool</h3>' +
+      '<div class="stat-row"><span class="stat-label">Health Score</span><span class="stat-value">' + fmtPct(completion.healthScore) + '</span></div>' +
+      '<div class="stat-row"><span class="stat-label">Net Worth</span><span class="stat-value">' + fmtPct(completion.netWorth) + '</span></div>' +
+      '<div class="dashboard-note">Not the same measurement: Health Score is real started-vs-finished (an email-entry event exists to compare against). Net Worth has no "started" signal since it\'s usable anonymously — this shows adoption among verified users instead.</div>' +
+      '</div>';
+
+    var attributionRows = (stats.attribution || []).map(function (a) {
+      return '<div class="stat-row"><span class="stat-label">' + escapeHtml(a.source) + '</span><span class="stat-value">' + a.count + '</span></div>';
+    }).join('');
+    var attributionCard = '<div class="stat-card"><h3>Traffic source &rarr; verified signup</h3>' + (attributionRows || '<div class="stat-label">No data yet.</div>') +
+      '<div class="dashboard-note">Only tracked going forward from this round — signups verified before Round 2 shipped show as the old placeholder value, not a real source.</div></div>';
+
+    var leadTimeCard =
+      '<div class="stat-card"><h3>Avg. lead-to-accept time</h3>' +
+      '<div class="stat-row"><span class="stat-label">Across all accepted leads</span><span class="stat-value big">' +
+      (stats.avgLeadToAcceptHours === null || stats.avgLeadToAcceptHours === undefined ? '—' : Math.round(stats.avgLeadToAcceptHours * 10) / 10 + 'h') +
+      '</span></div></div>';
+
+    var engagementCard =
+      '<div class="stat-card"><h3>Post-diagnostic tool engagement</h3>' +
+      '<div class="stat-row"><span class="stat-label">Used at least one tool</span><span class="stat-value big">' + fmtPct(stats.toolEngagementRate) + '</span></div></div>';
+
+    grid.innerHTML = funnelCard + scoreCard + plusCard + freeCard + pipelineCard +
+      trendCard + retentionCard + completionCard + attributionCard + leadTimeCard + engagementCard;
   }
 
   function loadAll() {
@@ -484,6 +674,17 @@
   });
 
   rowsEl.addEventListener('click', function (e) {
+    var toggleBtn = e.target.closest('.timeline-toggle');
+    if (toggleBtn) {
+      var requestIdForToggle = toggleBtn.dataset.timelineToggle;
+      var timelineRow = rowsEl.querySelector('tr[data-timeline-for="' + requestIdForToggle + '"]');
+      if (timelineRow) {
+        var isHidden = timelineRow.style.display === 'none';
+        timelineRow.style.display = isHidden ? 'table-row' : 'none';
+        toggleBtn.textContent = isHidden ? 'Hide timeline' : 'Timeline';
+      }
+      return;
+    }
     var btn = e.target.closest('.assign-btn');
     if (!btn) return;
     var tr = btn.closest('tr');
@@ -570,6 +771,125 @@
         statusEl.textContent = 'Something went wrong. Try again.';
         statusEl.className = 'err';
       });
+  });
+
+  document.getElementById('generate-invite-btn').addEventListener('click', function () {
+    var btn = this;
+    var output = document.getElementById('invite-link-output');
+    var copyBtn = document.getElementById('copy-invite-btn');
+    var statusEl = document.getElementById('invite-status');
+    btn.disabled = true;
+    statusEl.textContent = 'Generating…';
+    statusEl.className = 'invite-status';
+    fetch('/api/admin-create-advisor-invite', { method: 'POST', headers: authHeaders() })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        btn.disabled = false;
+        if (!data.ok) {
+          statusEl.textContent = 'Failed to generate link.';
+          statusEl.className = 'invite-status err';
+          return;
+        }
+        output.value = data.inviteLink;
+        copyBtn.style.display = 'inline-block';
+        statusEl.textContent = 'Valid 30 days, single use.';
+        statusEl.className = 'invite-status ok';
+      })
+      .catch(function () {
+        btn.disabled = false;
+        statusEl.textContent = 'Failed to generate link.';
+        statusEl.className = 'invite-status err';
+      });
+  });
+
+  document.getElementById('copy-invite-btn').addEventListener('click', function () {
+    var output = document.getElementById('invite-link-output');
+    var statusEl = document.getElementById('invite-status');
+    output.select();
+    try {
+      navigator.clipboard.writeText(output.value).then(function () {
+        statusEl.textContent = 'Copied.';
+        statusEl.className = 'invite-status ok';
+      });
+    } catch (e) {
+      document.execCommand('copy');
+    }
+  });
+
+  // Flat, labeled rows (metric name / category / value / snapshot date) —
+  // readable by someone who's never seen this dashboard, not a raw table
+  // dump of the internal stats JSON shape.
+  function buildCsvRows(stats) {
+    var snapshotDate = new Date().toISOString();
+    var rows = [['Metric', 'Category', 'Value', 'Snapshot Date']];
+    function add(metric, category, value) {
+      rows.push([metric, category, String(value), snapshotDate]);
+    }
+    add('Diagnostic submitted', 'Signup funnel', stats.funnel.diagnosticSubmitted);
+    add('Verified & completed', 'Signup funnel', stats.funnel.verifiedAndCompleted);
+    add('Conversion rate', 'Signup funnel', fmtPct(stats.funnel.conversionRate));
+    stats.scoreDistribution.forEach(function (b) {
+      add(b.band, 'Financial Health Score distribution', b.count);
+    });
+    add('Paying subscribers', 'MoneyMatters+', stats.plus.payingSubscribers);
+    add('MRR (USD)', 'MoneyMatters+', stats.plus.mrrUsd);
+    add('Churned (lifetime)', 'MoneyMatters+', stats.plus.churnedLifetime);
+    add('Free-Plus incentive claimed', 'Free-Plus incentive', stats.freePlusIncentive.claimed);
+    add('Free-Plus incentive total', 'Free-Plus incentive', stats.freePlusIncentive.total);
+    add('Leads submitted', 'Advisor pipeline', stats.pipeline.submitted);
+    add('Leads matched', 'Advisor pipeline', stats.pipeline.matched);
+    add('Leads accepted', 'Advisor pipeline', stats.pipeline.accepted);
+    add('Leads pending', 'Advisor pipeline', stats.pipeline.pending);
+    add('Leads timed out', 'Advisor pipeline', stats.pipeline.timedOut);
+    add('Meetings taken', 'Advisor pipeline', stats.pipeline.meetingTaken);
+    if (stats.weeklyVerifiedTrend) {
+      stats.weeklyVerifiedTrend.forEach(function (w) {
+        add('New verified users — week of ' + w.weekStart, 'Growth trend', w.count);
+      });
+    }
+    if (stats.retention) {
+      add('7-day retention', 'Retention', fmtPct(stats.retention.day7Rate));
+      add('30-day retention', 'Retention', fmtPct(stats.retention.day30Rate));
+    }
+    if (stats.completionRates) {
+      add('Health Score completion rate', 'Tool completion', fmtPct(stats.completionRates.healthScore));
+      add('Net Worth completion rate', 'Tool completion', fmtPct(stats.completionRates.netWorth));
+    }
+    if (stats.attribution) {
+      stats.attribution.forEach(function (a) {
+        add(a.source, 'Traffic-source attribution', a.count);
+      });
+    }
+    if (stats.avgLeadToAcceptHours !== undefined && stats.avgLeadToAcceptHours !== null) {
+      add('Average lead-to-accept time (hours)', 'Advisor pipeline', stats.avgLeadToAcceptHours);
+    }
+    if (stats.toolEngagementRate !== undefined && stats.toolEngagementRate !== null) {
+      add('Post-diagnostic tool-engagement rate', 'Engagement', fmtPct(stats.toolEngagementRate));
+    }
+    return rows;
+  }
+
+  function toCsvText(rows) {
+    return rows.map(function (row) {
+      return row.map(function (cell) {
+        var str = String(cell);
+        return /[",\n]/.test(str) ? '"' + str.replace(/"/g, '""') + '"' : str;
+      }).join(',');
+    }).join('\r\n');
+  }
+
+  document.getElementById('csv-btn').addEventListener('click', function () {
+    if (!state.dashboard) return;
+    var csvText = toCsvText(buildCsvRows(state.dashboard));
+    var blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'moneymatters-admin-dashboard-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   });
 
   if (pw) {

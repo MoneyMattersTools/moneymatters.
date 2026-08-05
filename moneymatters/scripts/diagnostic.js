@@ -2,6 +2,33 @@
   var heroRoot = document.getElementById('diagnostic-hero');
   if (!heroRoot) return;
 
+  var SOURCE_MAX_LENGTH = 120;
+
+  // Traffic-source attribution (SITE_STRATEGY.md "Round 2 additions",
+  // locked 2026-08-05) — captured once, at the moment someone actually
+  // completes and submits the diagnostic, not on every pageview. Prefers
+  // UTM params (real campaign intent) over referrer (which only tells you
+  // the previous page, not why they clicked).
+  function captureAttributionSource() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var utmSource = params.get('utm_source');
+      if (utmSource) {
+        var utmMedium = params.get('utm_medium');
+        return ('utm:' + utmSource + (utmMedium ? '/' + utmMedium : '')).slice(0, SOURCE_MAX_LENGTH);
+      }
+      if (document.referrer) {
+        var referrerHost = new URL(document.referrer).hostname.replace(/^www\./, '');
+        if (referrerHost && referrerHost !== window.location.hostname) {
+          return ('referrer:' + referrerHost).slice(0, SOURCE_MAX_LENGTH);
+        }
+      }
+      return 'direct';
+    } catch (e) {
+      return 'direct';
+    }
+  }
+
   var QUESTIONS = [
     {
       id: 'q1',
@@ -260,7 +287,7 @@
     fetch('/api/submit-diagnostic', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: state.email, answers: state.answers }),
+      body: JSON.stringify({ email: state.email, answers: state.answers, source: captureAttributionSource() }),
     })
       .then(function (res) {
         return res.json().then(function (data) {

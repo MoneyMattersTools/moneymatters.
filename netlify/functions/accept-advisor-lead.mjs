@@ -59,7 +59,10 @@ export default async (request) => {
       status: 'accepted',
       accepted_at: new Date().toISOString(),
     });
-    await updateRecord('advisor_review_requests', reviewRequest.id, { status: 'Matched' });
+    await updateRecord('advisor_review_requests', reviewRequest.id, {
+      status: 'Matched',
+      status_changed_at: new Date().toISOString(),
+    });
 
     // This is the moment the site's own copy already promises ("the
     // advisor shares their background first, you decide") — nothing

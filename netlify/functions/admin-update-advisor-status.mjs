@@ -38,7 +38,7 @@ export default async (request) => {
   }
 
   try {
-    const updated = await updateRecord('advisor_review_requests', id, { status });
+    const updated = await updateRecord('advisor_review_requests', id, { status, status_changed_at: new Date().toISOString() });
     if (!updated) {
       return json(404, { ok: false, error: 'not_found' });
     }

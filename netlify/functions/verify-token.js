@@ -83,6 +83,13 @@ exports.handler = async (event) => {
       breakdown = computed.breakdown;
       band = determineBand(score);
 
+      // Promoted from the token's pending_source, same stage-then-promote
+      // pattern as pending_health_score/pending_answers above — real
+      // traffic-source attribution (SITE_STRATEGY.md "Round 2 additions"),
+      // replacing the hardcoded literal this column used to carry on
+      // every single row, which had no actual signal in it.
+      const source = tokenRecord.pending_source || 'direct';
+
       const existingUser = await findByEmail('users', email);
       if (existingUser) {
         await updateRecord('users', existingUser.id, {
@@ -101,7 +108,7 @@ exports.handler = async (event) => {
           health_score_band: band,
           health_score_answers: answers,
           health_score_completed_at: nowIso,
-          source: 'Health Score Diagnostic',
+          source: source,
           last_verified_at: nowIso,
         });
         isNewAccount = true;

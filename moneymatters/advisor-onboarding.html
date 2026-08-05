@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<title>Advisor Onboarding | MoneyMatters</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 24px;
+    background: #0F1B15;
+    color: #FAFAF7;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .card {
+    max-width: 560px;
+    width: 100%;
+    margin: 40px 0;
+    padding: 32px;
+    background: #1A2B23;
+    border: 1px solid #2A3D33;
+    border-radius: 16px;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .subtitle { color: rgba(250, 250, 247, 0.6); margin: 0 0 24px; font-size: 14px; }
+  label { display: block; font-size: 13px; color: rgba(250, 250, 247, 0.75); margin-bottom: 6px; }
+  .field { margin-bottom: 16px; }
+  input[type="text"], input[type="email"], input[type="url"] {
+    width: 100%;
+    padding: 10px 12px;
+    background: #0F1B15;
+    border: 1px solid #2A3D33;
+    border-radius: 8px;
+    color: #FAFAF7;
+    font-size: 14px;
+  }
+  .checkbox-row { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  .checkbox-row label { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13.5px; color: rgba(250, 250, 247, 0.85); }
+  .checkbox-row input { width: auto; }
+  button {
+    width: 100%;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #62A974;
+    color: #0F1B15;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  button:disabled { opacity: 0.6; cursor: default; }
+  #message { margin-top: 16px; font-size: 14px; color: rgba(250, 250, 247, 0.75); }
+  #message.err { color: #E8927C; }
+  #message.ok { color: #62A974; }
+  #loading, #error-state, #success-state { display: none; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div id="loading">
+    <h1>Loading…</h1>
+  </div>
+
+  <div id="error-state">
+    <h1>This invite link isn't available anymore</h1>
+    <p class="subtitle" id="error-detail">It may have already been used, or the link has expired.</p>
+  </div>
+
+  <div id="success-state">
+    <h1>You're on the roster.</h1>
+    <p class="subtitle">Thanks — we'll be in touch when a lead matches your profile.</p>
+  </div>
+
+  <div id="form-state">
+    <h1>Join the MoneyMatters advisor roster</h1>
+    <p class="subtitle">A couple minutes, and you're set up to receive matched leads directly.</p>
+    <form id="onboarding-form">
+      <div class="field">
+        <label for="name">Your name</label>
+        <input type="text" id="name" required>
+      </div>
+      <div class="field">
+        <label for="firm">Firm</label>
+        <input type="text" id="firm">
+      </div>
+      <div class="field">
+        <label for="email">Contact email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="field">
+        <label for="scheduling">Your scheduling link (Calendly or equivalent)</label>
+        <input type="url" id="scheduling">
+      </div>
+      <div class="field">
+        <label for="states">States you're licensed in (2-letter codes, comma-separated)</label>
+        <input type="text" id="states" placeholder="PA, NJ, NY">
+      </div>
+      <div class="field">
+        <label>What you specialize in</label>
+        <div class="checkbox-row" id="specialty-row"></div>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" id="accepting" checked style="width:auto"> I'm currently accepting new leads</label>
+      </div>
+      <button type="submit" id="submit-btn">Submit</button>
+      <p id="message"></p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  var SPECIALTIES = [
+    'Saving for retirement', 'Paying off debt', 'Buying a home', 'Growing my investments',
+    "Saving for a child's education", 'Inheritance or major windfall',
+    'Selling a business or equity compensation', 'New to investing', 'Not sure, just want general guidance',
+  ];
+
+  var params = new URLSearchParams(window.location.search);
+  var token = params.get('token') || '';
+
+  var loadingEl = document.getElementById('loading');
+  var errorEl = document.getElementById('error-state');
+  var errorDetailEl = document.getElementById('error-detail');
+  var successEl = document.getElementById('success-state');
+  var formEl = document.getElementById('form-state');
+  var messageEl = document.getElementById('message');
+
+  var ERROR_MESSAGES = {
+    already_used: 'This invite link has already been used.',
+    expired: 'This invite link has expired.',
+    invalid: "This link isn't valid.",
+  };
+
+  function show(el) {
+    [loadingEl, errorEl, successEl, formEl].forEach(function (e) { e.style.display = 'none'; });
+    el.style.display = 'block';
+  }
+
+  document.getElementById('specialty-row').innerHTML = SPECIALTIES.map(function (s) {
+    return '<label><input type="checkbox" name="specialty" value="' + s + '">' + s + '</label>';
+  }).join('');
+
+  if (!token) {
+    errorDetailEl.textContent = ERROR_MESSAGES.invalid;
+    show(errorEl);
+    return;
+  }
+
+  show(loadingEl);
+  fetch('/api/get-advisor-invite?token=' + encodeURIComponent(token))
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (!data.ok) {
+        errorDetailEl.textContent = ERROR_MESSAGES[data.error] || ERROR_MESSAGES.invalid;
+        show(errorEl);
+        return;
+      }
+      show(formEl);
+    })
+    .catch(function () {
+      errorDetailEl.textContent = 'Something went wrong loading this invite. Try refreshing.';
+      show(errorEl);
+    });
+
+  document.getElementById('onboarding-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = document.getElementById('submit-btn');
+    var name = document.getElementById('name').value.trim();
+    var email = document.getElementById('email').value.trim();
+    if (!name || !email) return;
+
+    var specialtyTags = Array.prototype.map.call(
+      document.querySelectorAll('input[name="specialty"]:checked'),
+      function (i) { return i.value; }
+    );
+    var licensedStates = document.getElementById('states').value
+      .split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+
+    var payload = {
+      token: token,
+      name: name,
+      firm: document.getElementById('firm').value.trim(),
+      contactEmail: email,
+      schedulingLink: document.getElementById('scheduling').value.trim(),
+      licensedStates: licensedStates,
+      specialtyTags: specialtyTags,
+      accepting: document.getElementById('accepting').checked,
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+    messageEl.textContent = '';
+    messageEl.className = '';
+
+    fetch('/api/submit-advisor-onboarding', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        if (!data.ok) {
+          btn.disabled = false;
+          btn.textContent = 'Submit';
+          messageEl.textContent = ERROR_MESSAGES[data.error] || 'Something went wrong. Please check your details and try again.';
+          messageEl.className = 'err';
+          return;
+        }
+        show(successEl);
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Submit';
+        messageEl.textContent = 'Something went wrong. Please try again.';
+        messageEl.className = 'err';
+      });
+  });
+})();
+</script>
+
+</body>
+</html>

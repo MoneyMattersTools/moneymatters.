@@ -9,6 +9,7 @@ const { validateAnswers, computeScore, QUESTIONS } = scoringLib;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const EMAIL_MAX_LENGTH = 254; // RFC 5321 max mailbox length
+const SOURCE_MAX_LENGTH = 120;
 const TOKEN_TTL_SECONDS = 30 * 60;
 const TOKEN_TTL_MS = TOKEN_TTL_SECONDS * 1000;
 
@@ -61,6 +62,10 @@ export default async (request, context) => {
 
   const email = typeof payload.email === 'string' ? payload.email.trim().toLowerCase() : '';
   const answers = payload.answers;
+  // Traffic-source attribution (SITE_STRATEGY.md "Round 2 additions") —
+  // client-captured, free text within a length cap, no validation against
+  // an allowlist since real referrer hostnames/utm values are unbounded.
+  const source = typeof payload.source === 'string' ? payload.source.trim().slice(0, SOURCE_MAX_LENGTH) : 'direct';
 
   if (!email || email.length > EMAIL_MAX_LENGTH || !EMAIL_RE.test(email)) {
     return json(400, { ok: false, error: 'invalid_email' });
@@ -104,6 +109,7 @@ export default async (request, context) => {
       purpose: 'signup_verification',
       pending_health_score: score,
       pending_answers: cleanAnswers,
+      pending_source: source,
       expires_at: expiresAt,
       request_ip: clientIp,
     });
