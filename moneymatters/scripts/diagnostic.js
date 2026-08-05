@@ -433,7 +433,7 @@
     { key: 'networth', label: 'Net Worth', href: 'individual-tools/basic-tools/net-worth-calculator.html' },
     { key: 'budget', label: 'Budget', href: 'individual-tools/basic-tools/basic-budget-tool.html' },
     { key: 'retirement', label: 'Retirement', href: 'individual-tools/basic-tools/basic-retirement-tool.html' },
-    { key: 'investment', label: 'Investment', href: 'individual-tools/basic-tools/basic-investment-tool%20.html' },
+    { key: 'investment', label: 'Investment', href: 'individual-tools/basic-tools/basic-investment-tool.html' },
   ];
 
   // §29.7: one-time popup on real account creation (not on every login),
