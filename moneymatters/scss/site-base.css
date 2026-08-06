@@ -31,23 +31,25 @@
     --mm-sans-display: 'Inter Tight', 'Inter', sans-serif;
 }
 
-/* §33.6: a vertical scrollbar only reserves space on the right edge, so
-   every margin:0 auto centered element sitewide sits centered against
-   the content area (viewport minus scrollbar), not the true window —
-   confirmed via live pixel measurement, not just a CSS read: a 640px
-   centered box measured 393px from the left edge and 407px from the
-   right in a 1440px window (real, visible, ~14px left bias), which is
-   why the newsletter box specifically (an obvious, hard-edged card
-   against a full-bleed background) kept reading as "still slightly
-   off-center" even after prior fix attempts that only adjusted its own
-   CSS. scrollbar-gutter:stable reserves the browser's real scrollbar
-   space up front so it doesn't cause layout shift; both-edges mirrors
-   that same reservation on the left too, so every centered element's
-   containing block is symmetric again — fixes this sitewide in one
-   place rather than compensating per-component. */
-html { scrollbar-gutter: stable both-edges; }
-
-body { background: var(--mm-cream); color: var(--mm-text); line-height: 1.65; }
+/* §33.6 background: a vertical scrollbar only reserves space on the right
+   edge, so every margin:0 auto centered element sitewide sits centered
+   against the content area (viewport minus scrollbar), not the true
+   window — confirmed via live pixel measurement: a 640px centered box
+   measured 393px from the left edge and 407px from the right in a 1440px
+   window (real, visible, ~14px left bias). The original fix,
+   `scrollbar-gutter: stable both-edges`, corrected the centering bias but
+   reserved its left-side gutter as a strip outside body's own box, so it
+   could only ever paint a flat color — never body's real background
+   (photos/gradients) — which read as a visible seam (§48). Replaced with
+   a JS-measured equivalent (scripts/scrollbar-compensation.js, loaded
+   early in every page's <head>) that sets --mm-scrollbar-compensation,
+   applied below as real padding inside body's own box. */
+body {
+    background: var(--mm-cream);
+    color: var(--mm-text);
+    line-height: 1.65;
+    padding-left: var(--mm-scrollbar-compensation, 0px);
+}
 
 body h1, body h2, body h3 {
     font-family: var(--mm-serif);

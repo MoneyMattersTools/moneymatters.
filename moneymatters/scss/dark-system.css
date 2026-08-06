@@ -64,12 +64,13 @@
    Global: body, typography, base surfaces
    ===================================================== */
 /* §34.3: html itself was never given the dark background — only body was.
-   site-base.css's `html { scrollbar-gutter: stable both-edges; }` (added
-   §33.6 for newsletter-box centering) reserves a gutter strip on the left
-   edge that sits outside body's own box (confirmed live: body measured
-   15px inset from the left edge, exactly the gutter width), so that strip
-   rendered html's un-themed light background instead of the site's actual
-   dark theme — the reported white line on the left edge. */
+   Originally needed because site-base.css's `scrollbar-gutter: stable
+   both-edges` reserved a gutter strip outside body's own box, which
+   rendered html's un-themed background there instead. §48 replaced that
+   gutter with real body padding, so html's own background is no longer
+   visible as a distinct region — this rule is now purely defensive
+   (harmless to keep, cheap insurance against any future edge case where
+   body's box doesn't fully cover html's). */
 html {
     background: var(--mm-bg) !important;
 }
