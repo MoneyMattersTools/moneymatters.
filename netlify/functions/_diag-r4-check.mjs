@@ -1,0 +1,30 @@
+import supabaseLib from './lib/supabase.js';
+
+const { listAll } = supabaseLib;
+
+function json(statusCode, body) {
+  return new Response(JSON.stringify(body), {
+    status: statusCode,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+// Temp — checks migration 0007 status and lists advisor rows so stray
+// test entries can be identified. Delete after use.
+export default async () => {
+  const result = {};
+  try {
+    const rows = await listAll('advisors');
+    result.advisors_is_test_exists = rows.length ? 'is_test' in rows[0] : 'unknown (no rows)';
+    result.advisors = rows.map((a) => ({ id: a.id, name: a.name, email: a.contact_email, is_test: a.is_test }));
+  } catch (err) {
+    result.advisors_error = err.message.slice(0, 200);
+  }
+  try {
+    const rows = await listAll('users');
+    result.users_adv_budget_result_exists = rows.length ? 'adv_budget_result' in rows[0] : 'unknown (no rows)';
+  } catch (err) {
+    result.users_error = err.message.slice(0, 200);
+  }
+  return json(200, result);
+};
