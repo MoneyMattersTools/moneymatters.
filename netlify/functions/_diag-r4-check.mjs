@@ -1,6 +1,6 @@
 import supabaseLib from './lib/supabase.js';
 
-const { listAll } = supabaseLib;
+const { listAll, updateRecord, findByEmail } = supabaseLib;
 
 function json(statusCode, body) {
   return new Response(JSON.stringify(body), {
@@ -9,9 +9,32 @@ function json(statusCode, body) {
   });
 }
 
-// Temp — checks migration 0007 status and lists advisor rows so stray
-// test entries can be identified. Delete after use.
-export default async () => {
+// Temp — checks migration 0007 status, lists advisor rows so stray test
+// entries can be identified, and backfills is_test on known test rows.
+// Delete after use.
+export default async (request) => {
+  const url = new URL(request.url);
+  const action = url.searchParams.get('action');
+
+  if (request.method === 'POST' && action === 'backfill') {
+    const payload = await request.json();
+    const results = [];
+    for (const id of payload.advisorIds || []) {
+      await updateRecord('advisors', id, { is_test: true });
+      results.push({ advisor: id, flagged: true });
+    }
+    if (payload.qaEmail) {
+      const qaUser = await findByEmail('users', payload.qaEmail);
+      if (qaUser) {
+        await updateRecord('users', qaUser.id, { is_test: true });
+        results.push({ user: qaUser.id, flagged: true });
+      } else {
+        results.push({ user: payload.qaEmail, flagged: false, reason: 'not found' });
+      }
+    }
+    return json(200, { ok: true, results });
+  }
+
   const result = {};
   try {
     const rows = await listAll('advisors');
