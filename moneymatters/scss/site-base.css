@@ -100,6 +100,14 @@ body > .value-strip, .value-strip {
     box-sizing: border-box !important;
     z-index: 1 !important;
     font-family: var(--mm-sans) !important;
+    /* DESIGN_SPEC.md §47 item 5: the ticker's hard-cut edges (text
+       abruptly truncated at the container boundary) read as a glitch,
+       especially in stills — a scrolling marquee is never at rest, so
+       every screenshot lands mid-scroll. Fades text to transparent over
+       the last 50px at both edges instead of clipping it hard; no
+       animation/timing change. */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 50px, black calc(100% - 50px), transparent 100%) !important;
+    mask-image: linear-gradient(to right, transparent 0, black 50px, black calc(100% - 50px), transparent 100%) !important;
 }
 .value-strip .value-strip-track {
     display: inline-flex !important;
