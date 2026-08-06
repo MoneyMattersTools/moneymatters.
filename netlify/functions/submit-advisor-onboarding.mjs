@@ -83,7 +83,14 @@ export default async (request, context) => {
     // applied), skip the cooldown check rather than fail the whole
     // submission — same "existing/new path must not break on an
     // unapplied migration" reasoning as submit-diagnostic.mjs's
-    // pending_source fallback.
+    // pending_source fallback. Caught broadly (not message-matched like
+    // the other fallbacks in this codebase) because this specific check
+    // is a HEAD request — HTTP forbids a response body on HEAD, so
+    // PostgREST's error detail never reaches this catch to match against
+    // in the first place. Safe to be broad here: this check is a
+    // courtesy rate limit, not the actual write, so skipping it on any
+    // failure just means one submission wasn't cooldown-checked, not a
+    // silently wrong write.
     if (clientIp !== 'unknown') {
       try {
         const recentCount = await countRecentByIpSince(
@@ -96,7 +103,7 @@ export default async (request, context) => {
           return json(429, { ok: false, error: 'rate_limited' });
         }
       } catch (rateLimitErr) {
-        if (!/request_ip/.test(rateLimitErr.message)) throw rateLimitErr;
+        console.error('submit-advisor-onboarding rate-limit check skipped:', rateLimitErr.message);
       }
     }
 
