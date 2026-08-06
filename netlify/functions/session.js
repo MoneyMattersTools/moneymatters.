@@ -79,6 +79,10 @@ exports.handler = async (event) => {
         email: session.email,
         healthScore: user && typeof user.health_score === 'number' ? user.health_score : session.healthScore,
         healthBand: (user && user.health_score_band) || session.healthBand,
+        // Round 4: lets the advisor-intake checklist pre-check items that
+        // overlap with what the diagnostic already flagged, instead of
+        // re-asking. Raw per-question answers, not just the score/band.
+        healthScoreAnswers: (user && user.health_score_answers) || null,
         // Plan is a manual, team-set flag (Section 28) — set it as lowercase
         // 'plus' directly on the users row in Supabase's Table Editor, not
         // the old Airtable-era capitalized 'Plus'.

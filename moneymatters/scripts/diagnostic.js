@@ -317,6 +317,33 @@
   // by init()'s ?start=advisor-connect handling, so a visitor who arrived
   // specifically to connect with an advisor lands on this step directly
   // instead of needing to notice and click the button themselves.
+  // Round 4: pre-checks situational items the diagnostic already flagged,
+  // instead of re-asking. Only the two clear, defensible overlaps between
+  // the 7 Health Score questions and the 9 situational checklist items —
+  // q2 (non-mortgage debt) and q5 (retirement contributions) are genuine
+  // "situation" signals; the other 5 questions (emergency fund, spending
+  // awareness, saving rate, protection basics, goal clarity) don't map
+  // cleanly to any checklist item, so they're deliberately left alone
+  // rather than guessing. "Bad answer" = picked 'a' or 'b' out of a/b/c/d,
+  // i.e. a real gap on that question, not just "less than perfect".
+  var DIAGNOSTIC_PRECHECK_RULES = [
+    { questionId: 'q2', gapAnswers: ['a', 'b'], situational: 'Paying off debt' },
+    { questionId: 'q5', gapAnswers: ['a', 'b'], situational: 'Saving for retirement' },
+  ];
+
+  function prefillSituationalFromDiagnostic() {
+    if (typeof window.mmGetSession !== 'function') return;
+    window.mmGetSession().then(function (data) {
+      var answers = data && data.healthScoreAnswers;
+      if (!answers) return;
+      DIAGNOSTIC_PRECHECK_RULES.forEach(function (rule) {
+        if (rule.gapAnswers.indexOf(answers[rule.questionId]) === -1) return;
+        var checkbox = advisorForm.querySelector('input[name="situational"][value="' + rule.situational + '"]');
+        if (checkbox) checkbox.checked = true;
+      });
+    }).catch(function () {});
+  }
+
   function openAdvisorIntake() {
     // Reset in case this is a re-open after an earlier submit in the same
     // session — otherwise the panel would show the confirmation message
@@ -326,6 +353,7 @@
     advisorConfirm.hidden = true;
     if (netWorthWrap) netWorthWrap.hidden = true;
     setStep('advisor-intake');
+    prefillSituationalFromDiagnostic();
   }
 
   if (advisorCta) {
@@ -462,15 +490,17 @@
   // not a redesign of it. Renders whichever tool results the user has
   // submitted, empty-state prompts for the rest, advisor status if any,
   // and a bonus combined-analysis panel for Plus accounts.
+  // §45: for Plus members, the Budget/Investment cards show the advanced
+  // tool's result instead of the basic one (same card slot, upgraded data
+  // source), not a second card — upgradeKey/upgradeHref only apply when
+  // data.plan === 'plus' AND that advanced result actually exists; a Plus
+  // member who's only used the basic tool still sees their basic result,
+  // never an empty advanced card standing in for real data.
   var DASHBOARD_TOOLS = [
     { key: 'networth', label: 'Net Worth', href: 'individual-tools/basic-tools/net-worth-calculator.html' },
-    { key: 'budget', label: 'Budget', href: 'individual-tools/basic-tools/basic-budget-tool.html' },
+    { key: 'budget', label: 'Budget', href: 'individual-tools/basic-tools/basic-budget-tool.html', upgradeKey: 'advBudget', upgradeHref: 'individual-tools/advanced-tools/advanced-budget-tool.html' },
     { key: 'retirement', label: 'Retirement', href: 'individual-tools/basic-tools/basic-retirement-tool.html' },
-    { key: 'investment', label: 'Investment', href: 'individual-tools/basic-tools/basic-investment-tool.html' },
-    // Plus-only — matches the advanced tools' own access gate; a free
-    // visitor would otherwise see a card linking to a tool they can't use.
-    { key: 'advBudget', label: 'Advanced Budget', href: 'individual-tools/advanced-tools/advanced-budget-tool.html', plusOnly: true },
-    { key: 'advInvestment', label: 'Advanced Investment', href: 'individual-tools/advanced-tools/advanced-investment-tool.html', plusOnly: true },
+    { key: 'investment', label: 'Investment', href: 'individual-tools/basic-tools/basic-investment-tool.html', upgradeKey: 'advInvestment', upgradeHref: 'individual-tools/advanced-tools/advanced-investment-tool.html' },
   ];
 
   // §29.7: one-time popup on real account creation (not on every login),
@@ -541,10 +571,10 @@
     if (!dashEl) return;
     var tools = data.tools || {};
 
-    var cardsHtml = DASHBOARD_TOOLS.filter(function (tool) {
-      return !tool.plusOnly || data.plan === 'plus';
-    }).map(function (tool) {
-      var result = tools[tool.key];
+    var cardsHtml = DASHBOARD_TOOLS.map(function (tool) {
+      var useUpgrade = tool.upgradeKey && data.plan === 'plus' && tools[tool.upgradeKey] && tools[tool.upgradeKey].headline;
+      var result = useUpgrade ? tools[tool.upgradeKey] : tools[tool.key];
+      var href = useUpgrade ? tool.upgradeHref : tool.href;
       if (result && result.headline) {
         // §40.1: the sub-label is only useful when it clarifies what the
         // figure actually means (Budget's "Monthly Surplus", Retirement's
@@ -557,7 +587,7 @@
           ? '<span class="mm-dashboard-card-sub">' + result.headline.label + '</span>'
           : '';
         return (
-          '<a class="mm-dashboard-card" href="' + tool.href + '">' +
+          '<a class="mm-dashboard-card" href="' + href + '">' +
             '<span class="mm-dashboard-card-label">' + tool.label + '</span>' +
             '<span class="mm-dashboard-card-value">' + result.headline.value + '</span>' +
             subHtml +
