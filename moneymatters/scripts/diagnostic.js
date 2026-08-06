@@ -503,15 +503,18 @@
     { key: 'investment', label: 'Investment', href: 'individual-tools/basic-tools/basic-investment-tool.html', upgradeKey: 'advInvestment', upgradeHref: 'individual-tools/advanced-tools/advanced-investment-tool.html' },
   ];
 
-  // §29.7: one-time popup on real account creation (not on every login),
-  // framed around a running community counter — doubles as a lightweight
-  // growth-tracking proxy. Reuses .mm-gate-* modal chrome so it matches
-  // the sign-in/onboarding modals exactly, no new chrome needed.
-  function showFirstAccountPopup(count) {
+  // §29.7: one-time popup on real account creation (not on every login).
+  // §SITE_STRATEGY item 5 (locked 2026-08-07): no longer shows a raw live
+  // signup count (an independent QA review flagged a low raw number as a
+  // trust risk) — shows a one-time first-500 milestone message instead,
+  // tied to the same threshold as the admin dashboard's free-Plus
+  // incentive counter. Reuses .mm-gate-* modal chrome so it matches the
+  // sign-in/onboarding modals exactly, no new chrome needed.
+  function showFirstAccountPopup(qualifiesForFirst500) {
     var overlay = document.createElement('div');
     overlay.className = 'mm-gate-overlay';
-    var countText = typeof count === 'number' && count > 0
-      ? 'You’re one of ' + count.toLocaleString('en-US') + ' people building this with us so far.'
+    var countText = qualifiesForFirst500
+      ? 'You’re in our first 500 users and get MoneyMatters+ free for 6 months! Would love your feedback.'
       : 'Glad to have you here.';
     overlay.innerHTML =
       '<div class="mm-gate-modal mm-welcome-modal" role="dialog" aria-modal="true" aria-labelledby="mm-welcome-heading" tabindex="-1">' +
@@ -713,7 +716,7 @@
               // returning visitor's sign-in link.
               renderResults(result.data.score, result.data.band, { freshSubmission: !!result.data.breakdown });
               if (result.data.isNewAccount) {
-                showFirstAccountPopup(result.data.communityCount);
+                showFirstAccountPopup(result.data.qualifiesForFirst500);
               }
               // §37.6: this visitor's original click came from the Advisor
               // Connect page — after the score reveal, continue straight

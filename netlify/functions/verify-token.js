@@ -1,6 +1,7 @@
-const { findByToken, findByEmail, createRecord, updateRecord, countAllCached } = require('./lib/supabase');
+const { findByToken, findByEmail, createRecord, updateRecord, countByFilter } = require('./lib/supabase');
 const { computeScore, determineBand } = require('./lib/scoring');
 const { signSession, buildSetCookie } = require('./lib/session');
+const { FREE_PLUS_SPOTS_TOTAL } = require('./lib/incentives');
 
 const TOKEN_RE = /^[A-Za-z0-9_-]{16,128}$/;
 
@@ -59,7 +60,7 @@ exports.handler = async (event) => {
     const nowIso = new Date().toISOString();
     let score, band, breakdown;
     let isNewAccount = false;
-    let communityCount = null;
+    let qualifiesForFirst500 = false;
 
     if (tokenRecord.purpose === 'returning_login') {
       // A returning-user token never carries Pending Answers — there's
@@ -112,12 +113,22 @@ exports.handler = async (event) => {
           last_verified_at: nowIso,
         });
         isNewAccount = true;
-        // Best-effort — the community counter is a nice-to-have popup, not
-        // something that should fail the whole verification if it errors.
+        // SITE_STRATEGY.md item 5 (locked 2026-08-07): the welcome popup no
+        // longer shows a raw live signup count (flagged as a trust risk by
+        // the independent QA review) — it shows a one-time first-500
+        // milestone message instead, tied to the same threshold as the
+        // admin dashboard's free-Plus incentive counter (lib/incentives.js).
+        // Deliberately NOT cached (unlike the old countAllCached read) and
+        // excludes is_test rows — this gates a real, if manually-actioned,
+        // promise to the user, so it needs to be accurate at the moment of
+        // signup rather than up to 6 hours stale. Best-effort: a count
+        // failure shouldn't fail the whole verification, just falls back to
+        // the generic (non-milestone) popup copy.
         try {
-          communityCount = await countAllCached('users');
+          const realUserCount = await countByFilter('users', ['is_test=eq.false']);
+          qualifiesForFirst500 = realUserCount <= FREE_PLUS_SPOTS_TOTAL;
         } catch (countErr) {
-          console.error('verify-token community count error:', countErr);
+          console.error('verify-token first-500 count error:', countErr);
         }
       }
     }
@@ -126,7 +137,7 @@ exports.handler = async (event) => {
 
     return json(
       200,
-      { ok: true, score, band, breakdown, isNewAccount, communityCount },
+      { ok: true, score, band, breakdown, isNewAccount, qualifiesForFirst500 },
       { 'Set-Cookie': buildSetCookie(cookieValue) }
     );
   } catch (err) {

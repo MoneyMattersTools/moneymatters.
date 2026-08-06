@@ -157,22 +157,13 @@ async function countAll(table) {
   return parseCountFromContentRange(res.headers.get('content-range'));
 }
 
-// Kept even though countAll() is now cheap (a single HEAD request, not a
-// paginated scan) — still one fewer network round-trip on the signup
-// critical path for negligible added complexity. See lib/airtable.js's
-// original countAllCached for the fuller rationale; same shape here.
-const countAllCache = new Map();
-const COUNT_ALL_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
-
-async function countAllCached(table, ttlMs = COUNT_ALL_CACHE_TTL_MS) {
-  const cached = countAllCache.get(table);
-  const now = Date.now();
-  if (cached && now - cached.at < ttlMs) {
-    return cached.count;
-  }
-  const count = await countAll(table);
-  countAllCache.set(table, { count, at: now });
-  return count;
+// Same shape as countAll, but with filters — e.g. verify-token.js's
+// first-500 milestone check needs a real-users-only count (excluding
+// is_test), which the unconditional countAll can't express.
+async function countByFilter(table, filters) {
+  const qs = `?${filters.join('&')}&select=id`;
+  const res = await supabaseFetch(table, qs, { method: 'HEAD', headers: { Prefer: 'count=exact' } });
+  return parseCountFromContentRange(res.headers.get('content-range'));
 }
 
 module.exports = {
@@ -187,6 +178,6 @@ module.exports = {
   updateRecord,
   deleteRecord,
   countAll,
-  countAllCached,
+  countByFilter,
   encodeEq,
 };

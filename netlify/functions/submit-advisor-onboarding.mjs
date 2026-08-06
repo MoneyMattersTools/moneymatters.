@@ -1,8 +1,10 @@
 import supabaseLib from './lib/supabase.js';
 import specialtiesLib from './lib/specialties.js';
+import advisorAccessLib from './lib/advisor-access.js';
 
 const { createRecord, countRecentByIpSince } = supabaseLib;
 const { SPECIALTIES_SET } = specialtiesLib;
+const { hasValidGrant } = advisorAccessLib;
 
 const NAME_MAX_LENGTH = 120;
 const FIRM_MAX_LENGTH = 120;
@@ -41,19 +43,24 @@ function cleanSpecialties(value) {
   return value.filter((s) => typeof s === 'string' && SPECIALTIES_SET.has(s));
 }
 
-// Public, no token — advisor-onboarding.html is now a single reusable
-// registration page (replaces the per-advisor invite-link system).
-// Anyone submitting valid, real-looking fields lands directly on the
-// roster. Ethan reviews/prunes the roster from the admin page rather
-// than gating who can submit in the first place, same tradeoff the
-// advisor-review-request intake already makes on the user side. IP
-// cooldown is the real protection here (same pattern and reasoning as
+// Single reusable registration page (replaces the per-advisor
+// invite-link system), gated by a shared access code (SITE_STRATEGY.md
+// item 4, locked 2026-08-07) rather than per-advisor tokens — advisor-
+// onboarding.html hides the form client-side without a valid grant, but
+// that's UX only, so this checks the same signed cookie server-side
+// before accepting a submission (someone could otherwise skip the gate
+// page and POST here directly). IP cooldown below is the anti-spam
+// layer for advisors who do have the code (same pattern and reasoning as
 // submit-diagnostic.mjs / request-advisor-review.mjs — Netlify's
 // platform-native rate limiting isn't available on the current plan
 // tier, confirmed in those files already).
 export default async (request, context) => {
   if (request.method !== 'POST') {
     return json(405, { ok: false, error: 'method_not_allowed' });
+  }
+
+  if (!hasValidGrant(request)) {
+    return json(403, { ok: false, error: 'access_required' });
   }
 
   let payload;

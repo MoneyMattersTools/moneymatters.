@@ -1,13 +1,14 @@
 import supabaseLib from './lib/supabase.js';
 import adminAuthLib from './lib/admin-auth.js';
 import scoringLib from './lib/scoring.js';
+import incentivesLib from './lib/incentives.js';
 
 const { listAll } = supabaseLib;
 const { checkAdminPassword } = adminAuthLib;
 const { BANDS } = scoringLib;
+const { FREE_PLUS_SPOTS_TOTAL } = incentivesLib;
 
 const PLUS_PRICE_USD = 5;
-const FREE_PLUS_SPOTS_TOTAL = 500; // SITE_STRATEGY.md "MVP build order" — first 500 users, updated from 100
 const WEEKLY_TREND_WEEKS = 8;
 const RETENTION_DAY_WINDOWS = { day7: 7, day30: 30 };
 const TOOL_COLUMNS = ['net_worth_submitted_at', 'budget_submitted_at', 'retirement_submitted_at', 'investment_submitted_at'];
