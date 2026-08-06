@@ -441,8 +441,10 @@
     font-family: var(--mm-sans);
     font-weight: 700;
     font-size: 17px;
+    margin-top: 20px;
     margin-bottom: 8px;
 }
+#diagnostic-hero .advisor-intake-networth label:first-child { margin-top: 0; }
 #diagnostic-hero .advisor-intake-networth input,
 #diagnostic-hero .advisor-intake-networth select {
     width: 100%;
