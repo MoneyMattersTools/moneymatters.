@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /index-test1.html
 Disallow: /admin-advisor-requests.html
 
 Sitemap: https://www.money-matters.site/sitemap.xml

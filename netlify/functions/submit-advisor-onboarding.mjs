@@ -1,22 +1,32 @@
 import supabaseLib from './lib/supabase.js';
 import specialtiesLib from './lib/specialties.js';
 
-const { createRecord, updateRecord, findOneByFilters, encodeEq } = supabaseLib;
+const { createRecord, countRecentByIpSince } = supabaseLib;
 const { SPECIALTIES_SET } = specialtiesLib;
 
-const TOKEN_RE = /^[A-Za-z0-9_-]{16,128}$/;
 const NAME_MAX_LENGTH = 120;
 const FIRM_MAX_LENGTH = 120;
 const EMAIL_MAX_LENGTH = 254;
 const SCHEDULING_LINK_MAX_LENGTH = 300;
 const STATE_CODE_RE = /^[A-Z]{2}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const IP_RATE_LIMIT_WINDOW_SECONDS = 60;
+const IP_RATE_LIMIT_MAX_REQUESTS = 5;
 
 function json(statusCode, body) {
   return new Response(JSON.stringify(body), {
     status: statusCode,
     headers: { 'Content-Type': 'application/json' },
   });
+}
+
+function getClientIp(request, context) {
+  if (context && typeof context.ip === 'string' && context.ip) return context.ip;
+  const headerIp = request.headers.get('x-nf-client-connection-ip');
+  if (headerIp) return headerIp;
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  if (forwardedFor) return forwardedFor.split(',')[0].trim();
+  return 'unknown';
 }
 
 function cleanStates(value) {
@@ -31,12 +41,17 @@ function cleanSpecialties(value) {
   return value.filter((s) => typeof s === 'string' && SPECIALTIES_SET.has(s));
 }
 
-// Public, token-gated — the advisor-facing half of Round 2's self-onboarding
-// (SITE_STRATEGY.md, locked 2026-08-05). Same field validation as
-// admin-create-advisor.mjs; the only difference is the auth model (a
-// single-use invite token instead of ADMIN_PASSWORD) and that the token
-// gets marked used on success so the link can't be reused.
-export default async (request) => {
+// Public, no token — advisor-onboarding.html is now a single reusable
+// registration page (replaces the per-advisor invite-link system).
+// Anyone submitting valid, real-looking fields lands directly on the
+// roster. Ethan reviews/prunes the roster from the admin page rather
+// than gating who can submit in the first place, same tradeoff the
+// advisor-review-request intake already makes on the user side. IP
+// cooldown is the real protection here (same pattern and reasoning as
+// submit-diagnostic.mjs / request-advisor-review.mjs — Netlify's
+// platform-native rate limiting isn't available on the current plan
+// tier, confirmed in those files already).
+export default async (request, context) => {
   if (request.method !== 'POST') {
     return json(405, { ok: false, error: 'method_not_allowed' });
   }
@@ -46,11 +61,6 @@ export default async (request) => {
     payload = await request.json();
   } catch {
     return json(400, { ok: false, error: 'invalid_json' });
-  }
-
-  const token = typeof payload.token === 'string' ? payload.token : '';
-  if (!token || !TOKEN_RE.test(token)) {
-    return json(400, { ok: false, error: 'invalid' });
   }
 
   const name = typeof payload.name === 'string' ? payload.name.trim().slice(0, NAME_MAX_LENGTH) : '';
@@ -66,19 +76,31 @@ export default async (request) => {
     return json(400, { ok: false, error: 'invalid_request' });
   }
 
+  const clientIp = getClientIp(request, context);
+
   try {
-    const invite = await findOneByFilters('advisor_invites', [`token=${encodeEq(token)}`]);
-    if (!invite) {
-      return json(404, { ok: false, error: 'invalid' });
-    }
-    if (invite.used_at) {
-      return json(410, { ok: false, error: 'already_used' });
-    }
-    if (new Date(invite.expires_at).getTime() < Date.now()) {
-      return json(410, { ok: false, error: 'expired' });
+    // Best-effort: if request_ip isn't live yet (migration 0007 not yet
+    // applied), skip the cooldown check rather than fail the whole
+    // submission — same "existing/new path must not break on an
+    // unapplied migration" reasoning as submit-diagnostic.mjs's
+    // pending_source fallback.
+    if (clientIp !== 'unknown') {
+      try {
+        const recentCount = await countRecentByIpSince(
+          'advisors',
+          clientIp,
+          IP_RATE_LIMIT_WINDOW_SECONDS,
+          'created_at'
+        );
+        if (recentCount >= IP_RATE_LIMIT_MAX_REQUESTS) {
+          return json(429, { ok: false, error: 'rate_limited' });
+        }
+      } catch (rateLimitErr) {
+        if (!/request_ip/.test(rateLimitErr.message)) throw rateLimitErr;
+      }
     }
 
-    const advisor = await createRecord('advisors', {
+    const advisorFields = {
       name,
       firm: firm || null,
       contact_email: contactEmail,
@@ -86,9 +108,16 @@ export default async (request) => {
       licensed_states: licensedStates,
       specialty_tags: specialtyTags,
       accepting,
-    });
-
-    await updateRecord('advisor_invites', invite.id, { used_at: new Date().toISOString() });
+      request_ip: clientIp,
+    };
+    let advisor;
+    try {
+      advisor = await createRecord('advisors', advisorFields);
+    } catch (insertErr) {
+      if (!/request_ip/.test(insertErr.message)) throw insertErr;
+      const { request_ip, ...fieldsWithoutIp } = advisorFields;
+      advisor = await createRecord('advisors', fieldsWithoutIp);
+    }
 
     return json(200, { ok: true, advisor });
   } catch (err) {

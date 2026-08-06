@@ -25,6 +25,14 @@
     { id: nextId++, name: '', category: 'bonds', value: '' },
   ];
 
+  var lastResult = null;
+  // No `inputs` pre-fill for this tool — holdings are a dynamic named
+  // list, not fixed form fields, so toolPrefillFromSaved's flat
+  // key->input map doesn't apply the way it does for the other tools.
+  // Save/summary/email still work fully; only "come back and see your
+  // exact holdings pre-filled" doesn't.
+  var actions = toolWireResultsActions(resultsEl, 'adv-investment', 'advInvestment', 'Advanced Investment Tool', function () { return lastResult; });
+
   function currentRisk() {
     var checked = document.querySelector('input[name="adv-inv-risk"]:checked');
     return checked ? checked.value : '2';
@@ -129,6 +137,18 @@
           '</li>';
       }).join('');
 
+    var namedHoldings = holdings.filter(function (h) { return toolParseNumber(h.value) > 0; });
+    var summary = namedHoldings.map(function (h) {
+      var pct = total > 0 ? (toolParseNumber(h.value) / total) * 100 : 0;
+      var name = h.name && h.name.trim() ? h.name.trim() : 'Unnamed holding';
+      return { label: name + ' (' + LABELS[h.category] + ')', value: toolFormatCurrency(toolParseNumber(h.value)) + ' (' + toolFormatPercent(pct, 0) + ')' };
+    });
+    summary.unshift({ label: 'Risk profile', value: risk.label });
+    lastResult = {
+      headline: { label: 'Portfolio Value', value: toolFormatCurrency(total) },
+      summary: summary.length > 1 ? summary : summary.concat([{ label: 'Holdings', value: 'None entered yet' }]),
+    };
+
     resultsEl.innerHTML = '' +
       '<div class="tool-stat">' +
         '<span class="tool-stat-label">Portfolio Value</span>' +
@@ -148,10 +168,16 @@
       '<ul class="tool-legend">' + legendHtml(currentSegments) + '</ul>' +
       (holdingRows ? '<p class="tool-breakdown-group-label">Your holdings</p><ul class="tool-breakdown">' + holdingRows + '</ul>' : '') +
       '<p class="tool-note">' + gapNote + ' Target mix and expected returns (equities 8%, bonds 4%, cash 2%, other 5%) are long-run rule-of-thumb assumptions, not a projection or guarantee. Actual returns vary and your right mix depends on your full financial picture.</p>' +
+      toolResultsActionsHtml('adv-investment') +
+      '<div class="tool-spreadsheet">' +
+        '<p class="first-p">Prefer a spreadsheet? Download an editable copy of what you entered.</p>' +
+        '<button type="button" class="download-button" id="adv-investment-download">Download CSV</button>' +
+      '</div>' +
       '<div class="tool-next-steps">' +
         '<a href="../../index.html?start=health-score">Check your Financial Health Score</a>' +
         '<a href="../../contact.html">Talk to an advisor</a>' +
       '</div>';
+    actions.refresh();
   }
 
   listEl.addEventListener('input', function (e) {
@@ -191,6 +217,22 @@
   });
 
   riskInputs.forEach(function (input) { input.addEventListener('change', render); });
+
+  resultsEl.addEventListener('click', function (e) {
+    if (!e.target.closest('#adv-investment-download')) return;
+    toolDownloadCsv('advanced-investment-tool-results.csv', lastResult ? lastResult.summary : []);
+  });
+
+  var templateBtn = document.getElementById('adv-investment-template-download');
+  if (templateBtn) {
+    templateBtn.addEventListener('click', function () {
+      toolDownloadCsv('advanced-investment-tool-template.csv', [
+        { label: 'Holding name', value: '' },
+        { label: 'Category (equities/bonds/cash/other)', value: '' },
+        { label: 'Value', value: '' },
+      ]);
+    });
+  }
 
   renderHoldingsInputs();
   render();

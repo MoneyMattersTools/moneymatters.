@@ -25,6 +25,8 @@ const TOOLS = {
   budget: { resultColumn: 'budget_result', submittedColumn: 'budget_submitted_at', label: 'Budget Tool' },
   retirement: { resultColumn: 'retirement_result', submittedColumn: 'retirement_submitted_at', label: 'Retirement Tool' },
   investment: { resultColumn: 'investment_result', submittedColumn: 'investment_submitted_at', label: 'Investment Tool' },
+  advBudget: { resultColumn: 'adv_budget_result', submittedColumn: 'adv_budget_submitted_at', label: 'Advanced Budget Tool' },
+  advInvestment: { resultColumn: 'adv_investment_result', submittedColumn: 'adv_investment_submitted_at', label: 'Advanced Investment Tool' },
 };
 
 function escapeHtml(value) {
@@ -113,10 +115,20 @@ export default async (request) => {
 
     const nowIso = new Date().toISOString();
     const resultRecord = inputs ? { headline, summary, inputs } : { headline, summary };
-    await updateRecord('users', user.id, {
-      [tool.resultColumn]: resultRecord,
-      [tool.submittedColumn]: nowIso,
-    });
+    // Falls back if adv_budget_*/adv_investment_* aren't live yet
+    // (migration 0007 not yet applied) — same reasoning as
+    // submit-diagnostic.mjs's pending_source fallback: this endpoint was
+    // already in production use for the 4 basic tools, so a new tool key
+    // failing must not break the shared function for everyone.
+    try {
+      await updateRecord('users', user.id, {
+        [tool.resultColumn]: resultRecord,
+        [tool.submittedColumn]: nowIso,
+      });
+    } catch (updateErr) {
+      if (!new RegExp(tool.resultColumn).test(updateErr.message)) throw updateErr;
+      return json(503, { ok: false, error: 'not_yet_available' });
+    }
 
     const rowsText = summary.map((row) => `${row.label}: ${row.value}`).join('\n');
     const rowsHtml = summary

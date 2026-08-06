@@ -6,6 +6,8 @@ const TOOL_COLUMNS = [
   { key: 'budget', resultColumn: 'budget_result', submittedColumn: 'budget_submitted_at' },
   { key: 'retirement', resultColumn: 'retirement_result', submittedColumn: 'retirement_submitted_at' },
   { key: 'investment', resultColumn: 'investment_result', submittedColumn: 'investment_submitted_at' },
+  { key: 'advBudget', resultColumn: 'adv_budget_result', submittedColumn: 'adv_budget_submitted_at' },
+  { key: 'advInvestment', resultColumn: 'adv_investment_result', submittedColumn: 'adv_investment_submitted_at' },
 ];
 
 // Tool result columns are jsonb — PostgREST already returns them parsed

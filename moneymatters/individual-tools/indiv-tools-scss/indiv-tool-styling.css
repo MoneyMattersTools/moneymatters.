@@ -19,6 +19,9 @@ html {
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   background-color: #1A2B23;
   font-size: 40px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
   width: -moz-fit-content;
   width: fit-content;
   padding-left: 2.5%;
@@ -162,6 +165,9 @@ h1 {
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   background-color: #1A2B23;
   font-size: 40px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
   width: -moz-fit-content;
   width: fit-content;
   padding-left: 2.5%;

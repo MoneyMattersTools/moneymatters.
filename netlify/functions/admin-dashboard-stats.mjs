@@ -48,12 +48,23 @@ export default async (request) => {
   }
 
   try {
-    const [users, verificationTokens, advisorRequests, leadDeliveries] = await Promise.all([
+    const [usersRaw, verificationTokens, advisorRequestsRaw, leadDeliveriesRaw] = await Promise.all([
       listAll('users'),
       listAll('verification_tokens'),
       listAll('advisor_review_requests'),
       listAll('advisor_lead_deliveries'),
     ]);
+
+    // Test rows (QA/dev accounts and leads, flagged via is_test — see
+    // migration 0007) are excluded from every KPI below. Filtered once,
+    // immediately after fetch, so every computation downstream is
+    // automatically clean rather than needing its own exclusion. Deliveries
+    // don't carry their own is_test flag — excluded by cross-referencing
+    // their parent lead instead.
+    const users = usersRaw.filter((u) => !u.is_test);
+    const advisorRequests = advisorRequestsRaw.filter((r) => !r.is_test);
+    const testRequestIds = new Set(advisorRequestsRaw.filter((r) => r.is_test).map((r) => r.id));
+    const leadDeliveries = leadDeliveriesRaw.filter((d) => !testRequestIds.has(d.advisor_review_request_id));
 
     // --- Signup/verification funnel ---
     // "Started diagnostic" (pre-email) is genuinely not captured anywhere —

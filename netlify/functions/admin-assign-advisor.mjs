@@ -53,6 +53,12 @@ function buildSnapshot(reviewRequest) {
     if (reviewRequest.shared_scores.healthScoreBand) {
       lines.push('Financial Health Score band: ' + reviewRequest.shared_scores.healthScoreBand + '.');
     }
+    if (reviewRequest.shared_scores.creditScoreRange) {
+      lines.push('Credit score range: ' + reviewRequest.shared_scores.creditScoreRange + '.');
+    }
+    if (reviewRequest.shared_scores.householdIncomeRange) {
+      lines.push('Household income range: ' + reviewRequest.shared_scores.householdIncomeRange + '.');
+    }
   }
   if (reviewRequest.details) {
     lines.push('In their own words: "' + reviewRequest.details + '"');

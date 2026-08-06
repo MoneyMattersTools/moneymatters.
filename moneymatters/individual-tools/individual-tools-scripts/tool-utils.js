@@ -288,6 +288,33 @@ function toolShowFeedbackWidget(resultsEl, toolKey) {
   });
 }
 
+// Downloadable/editable copy of a tool's current results — a real CSV
+// (opens directly in Excel/Sheets, no proprietary format, no new
+// dependency in a project with zero npm packages), built from the same
+// summary rows already shown on screen and already sent in the
+// save/email flows above, so it's never out of sync with what the tool
+// actually displayed.
+function toolDownloadCsv(filename, summaryRows) {
+  if (!summaryRows || !summaryRows.length) return;
+  function escapeCsvCell(value) {
+    var str = String(value);
+    return /[",\n]/.test(str) ? '"' + str.replace(/"/g, '""') + '"' : str;
+  }
+  var lines = [['Item', 'Value'].map(escapeCsvCell).join(',')];
+  summaryRows.forEach(function (row) {
+    lines.push([row.label, row.value].map(escapeCsvCell).join(','));
+  });
+  var blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 function toolPrefillFromSaved(savedResult, idToInput) {
   if (!savedResult || !savedResult.inputs || typeof savedResult.inputs !== 'object') return false;
   var filled = false;

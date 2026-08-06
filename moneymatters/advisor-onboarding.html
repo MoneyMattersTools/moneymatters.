@@ -60,21 +60,12 @@
   #message { margin-top: 16px; font-size: 14px; color: rgba(250, 250, 247, 0.75); }
   #message.err { color: #E8927C; }
   #message.ok { color: #62A974; }
-  #loading, #error-state, #success-state { display: none; }
+  #success-state { display: none; }
 </style>
 </head>
 <body>
 
 <div class="card">
-  <div id="loading">
-    <h1>Loading…</h1>
-  </div>
-
-  <div id="error-state">
-    <h1>This invite link isn't available anymore</h1>
-    <p class="subtitle" id="error-detail">It may have already been used, or the link has expired.</p>
-  </div>
-
   <div id="success-state">
     <h1>You're on the roster.</h1>
     <p class="subtitle">Thanks — we'll be in touch when a lead matches your profile.</p>
@@ -125,52 +116,13 @@
     'Selling a business or equity compensation', 'New to investing', 'Not sure, just want general guidance',
   ];
 
-  var params = new URLSearchParams(window.location.search);
-  var token = params.get('token') || '';
-
-  var loadingEl = document.getElementById('loading');
-  var errorEl = document.getElementById('error-state');
-  var errorDetailEl = document.getElementById('error-detail');
   var successEl = document.getElementById('success-state');
   var formEl = document.getElementById('form-state');
   var messageEl = document.getElementById('message');
 
-  var ERROR_MESSAGES = {
-    already_used: 'This invite link has already been used.',
-    expired: 'This invite link has expired.',
-    invalid: "This link isn't valid.",
-  };
-
-  function show(el) {
-    [loadingEl, errorEl, successEl, formEl].forEach(function (e) { e.style.display = 'none'; });
-    el.style.display = 'block';
-  }
-
   document.getElementById('specialty-row').innerHTML = SPECIALTIES.map(function (s) {
     return '<label><input type="checkbox" name="specialty" value="' + s + '">' + s + '</label>';
   }).join('');
-
-  if (!token) {
-    errorDetailEl.textContent = ERROR_MESSAGES.invalid;
-    show(errorEl);
-    return;
-  }
-
-  show(loadingEl);
-  fetch('/api/get-advisor-invite?token=' + encodeURIComponent(token))
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      if (!data.ok) {
-        errorDetailEl.textContent = ERROR_MESSAGES[data.error] || ERROR_MESSAGES.invalid;
-        show(errorEl);
-        return;
-      }
-      show(formEl);
-    })
-    .catch(function () {
-      errorDetailEl.textContent = 'Something went wrong loading this invite. Try refreshing.';
-      show(errorEl);
-    });
 
   document.getElementById('onboarding-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -187,7 +139,6 @@
       .split(',').map(function (s) { return s.trim(); }).filter(Boolean);
 
     var payload = {
-      token: token,
       name: name,
       firm: document.getElementById('firm').value.trim(),
       contactEmail: email,
@@ -212,11 +163,14 @@
         if (!data.ok) {
           btn.disabled = false;
           btn.textContent = 'Submit';
-          messageEl.textContent = ERROR_MESSAGES[data.error] || 'Something went wrong. Please check your details and try again.';
+          messageEl.textContent = data.error === 'rate_limited'
+            ? "Too many submissions from this connection. Please try again in a bit."
+            : 'Something went wrong. Please check your details and try again.';
           messageEl.className = 'err';
           return;
         }
-        show(successEl);
+        formEl.style.display = 'none';
+        successEl.style.display = 'block';
       })
       .catch(function () {
         btn.disabled = false;

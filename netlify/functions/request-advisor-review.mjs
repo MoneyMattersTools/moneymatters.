@@ -16,7 +16,11 @@ const SITUATIONAL_ITEM_MAX_LENGTH = 80;
 // §26.7: a range bucket, not an exact figure — users are unlikely to be
 // comfortable sharing a specific net worth number even when opted in.
 // Must match the <select> options in index.html's advisor-intake-networth.
+// Credit score and household income (Round 3) follow the same pattern —
+// same opt-in gate, same range-not-figure reasoning.
 const ALLOWED_NET_WORTH_RANGES = new Set(['0-250k', '250k-500k', '500k-1mm', '1mm-5mm', '5mm+']);
+const ALLOWED_CREDIT_SCORE_RANGES = new Set(['below-580', '580-669', '670-739', '740-799', '800+']);
+const ALLOWED_HOUSEHOLD_INCOME_RANGES = new Set(['0-75k', '75k-150k', '150k-250k', '250k-500k', '500k+']);
 
 // Must match the checkbox values in index.html's advisor-intake-checklist
 // exactly — keeps "Situational Details" a controlled checklist rather than
@@ -96,6 +100,14 @@ export default async (request, context) => {
     typeof payload.netWorthRange === 'string' && ALLOWED_NET_WORTH_RANGES.has(payload.netWorthRange)
       ? payload.netWorthRange
       : null;
+  const creditScoreRange =
+    typeof payload.creditScoreRange === 'string' && ALLOWED_CREDIT_SCORE_RANGES.has(payload.creditScoreRange)
+      ? payload.creditScoreRange
+      : null;
+  const householdIncomeRange =
+    typeof payload.householdIncomeRange === 'string' && ALLOWED_HOUSEHOLD_INCOME_RANGES.has(payload.householdIncomeRange)
+      ? payload.householdIncomeRange
+      : null;
 
   // SITE_STRATEGY.md's lead-value ranking, signal #2: timeline is the one
   // opportunity/urgency signal intake didn't capture before. Optional —
@@ -153,6 +165,8 @@ export default async (request, context) => {
         healthScore: user ? user.health_score : null,
         healthScoreBand: user ? user.health_score_band : null,
         netWorthRange: netWorthRange,
+        creditScoreRange: creditScoreRange,
+        householdIncomeRange: householdIncomeRange,
       };
     }
 

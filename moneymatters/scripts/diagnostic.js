@@ -358,6 +358,10 @@
       var shareScores = !!(shareScoresCheckbox && shareScoresCheckbox.checked);
       var netWorthRangeRaw = el('advisor-intake-networth-input').value;
       var netWorthRange = shareScores && netWorthRangeRaw ? netWorthRangeRaw : null;
+      var creditScoreRangeRaw = el('advisor-intake-credit-input').value;
+      var creditScoreRange = shareScores && creditScoreRangeRaw ? creditScoreRangeRaw : null;
+      var householdIncomeRangeRaw = el('advisor-intake-income-input').value;
+      var householdIncomeRange = shareScores && householdIncomeRangeRaw ? householdIncomeRangeRaw : null;
       var urgencyChecked = advisorForm.querySelector('input[name="urgency"]:checked');
       var urgency = urgencyChecked ? urgencyChecked.value : null;
       var submitBtn = el('advisor-intake-submit');
@@ -372,6 +376,8 @@
           details: details,
           shareScores: shareScores,
           netWorthRange: netWorthRange,
+          creditScoreRange: creditScoreRange,
+          householdIncomeRange: householdIncomeRange,
           urgency: urgency,
         }),
       })
@@ -461,6 +467,10 @@
     { key: 'budget', label: 'Budget', href: 'individual-tools/basic-tools/basic-budget-tool.html' },
     { key: 'retirement', label: 'Retirement', href: 'individual-tools/basic-tools/basic-retirement-tool.html' },
     { key: 'investment', label: 'Investment', href: 'individual-tools/basic-tools/basic-investment-tool.html' },
+    // Plus-only — matches the advanced tools' own access gate; a free
+    // visitor would otherwise see a card linking to a tool they can't use.
+    { key: 'advBudget', label: 'Advanced Budget', href: 'individual-tools/advanced-tools/advanced-budget-tool.html', plusOnly: true },
+    { key: 'advInvestment', label: 'Advanced Investment', href: 'individual-tools/advanced-tools/advanced-investment-tool.html', plusOnly: true },
   ];
 
   // §29.7: one-time popup on real account creation (not on every login),
@@ -531,7 +541,9 @@
     if (!dashEl) return;
     var tools = data.tools || {};
 
-    var cardsHtml = DASHBOARD_TOOLS.map(function (tool) {
+    var cardsHtml = DASHBOARD_TOOLS.filter(function (tool) {
+      return !tool.plusOnly || data.plan === 'plus';
+    }).map(function (tool) {
       var result = tools[tool.key];
       if (result && result.headline) {
         // §40.1: the sub-label is only useful when it clarifies what the

@@ -158,11 +158,10 @@
   </table>
 
   <h2>Advisor roster</h2>
-  <p class="subtitle">Generate an invite link and send it yourself through your own outreach — the advisor fills in their own info. Or add one manually below.</p>
+  <p class="subtitle">One reusable registration page — send this link through your own outreach, any advisor fills in their own info and lands directly on the roster. Or add one manually below.</p>
   <div class="invite-box">
-    <button type="button" class="btn btn-primary" id="generate-invite-btn">Generate invite link</button>
-    <input type="text" id="invite-link-output" readonly placeholder="Link appears here once generated">
-    <button type="button" class="btn" id="copy-invite-btn" style="display:none;">Copy</button>
+    <input type="text" id="invite-link-output" readonly value="https://www.money-matters.site/advisor-onboarding.html">
+    <button type="button" class="btn" id="copy-invite-btn">Copy</button>
     <span class="invite-status" id="invite-status"></span>
   </div>
   <form class="roster-form" id="advisor-form">
@@ -418,7 +417,7 @@
   }
 
   function renderRows() {
-    var acceptingAdvisors = state.advisors.filter(function (a) { return a.accepting; });
+    var acceptingAdvisors = state.advisors.filter(function (a) { return a.accepting && !a.is_test; });
     rowsEl.innerHTML = state.requests.map(function (row) {
       var options = STATUSES.map(function (s) {
         return '<option value="' + s + '"' + (row.status === s ? ' selected' : '') + '>' + s + '</option>';
@@ -462,7 +461,7 @@
           '<td>' + escapeHtml(a.firm || '—') + '</td>' +
           '<td>' + escapeHtml(states || '—') + '</td>' +
           '<td>' + escapeHtml(specialties || '—') + '</td>' +
-          '<td>' + (a.accepting ? 'Accepting' : 'Paused') + '</td>' +
+          '<td>' + (a.accepting ? 'Accepting' : 'Paused') + (a.is_test ? ' <span class="delivery-timedout">(test — excluded from matching)</span>' : '') + '</td>' +
         '</tr>';
     }).join('');
   }
@@ -770,35 +769,6 @@
       .catch(function () {
         statusEl.textContent = 'Something went wrong. Try again.';
         statusEl.className = 'err';
-      });
-  });
-
-  document.getElementById('generate-invite-btn').addEventListener('click', function () {
-    var btn = this;
-    var output = document.getElementById('invite-link-output');
-    var copyBtn = document.getElementById('copy-invite-btn');
-    var statusEl = document.getElementById('invite-status');
-    btn.disabled = true;
-    statusEl.textContent = 'Generating…';
-    statusEl.className = 'invite-status';
-    fetch('/api/admin-create-advisor-invite', { method: 'POST', headers: authHeaders() })
-      .then(function (res) { return res.json().catch(function () { return {}; }); })
-      .then(function (data) {
-        btn.disabled = false;
-        if (!data.ok) {
-          statusEl.textContent = 'Failed to generate link.';
-          statusEl.className = 'invite-status err';
-          return;
-        }
-        output.value = data.inviteLink;
-        copyBtn.style.display = 'inline-block';
-        statusEl.textContent = 'Valid 30 days, single use.';
-        statusEl.className = 'invite-status ok';
-      })
-      .catch(function () {
-        btn.disabled = false;
-        statusEl.textContent = 'Failed to generate link.';
-        statusEl.className = 'invite-status err';
       });
   });
 
