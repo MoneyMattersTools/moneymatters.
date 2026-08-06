@@ -1,6 +1,6 @@
 import supabaseLib from './lib/supabase.js';
 
-const { listAll, updateRecord, findByEmail } = supabaseLib;
+const { listAll, updateRecord, findByEmail, deleteRecord } = supabaseLib;
 
 function json(statusCode, body) {
   return new Response(JSON.stringify(body), {
@@ -33,6 +33,12 @@ export default async (request) => {
       }
     }
     return json(200, { ok: true, results });
+  }
+
+  if (request.method === 'DELETE' && action === 'purge') {
+    const payload = await request.json();
+    for (const id of payload.advisorIds || []) await deleteRecord('advisors', id);
+    return json(200, { ok: true, purged: payload.advisorIds || [] });
   }
 
   const result = {};
