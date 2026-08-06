@@ -39,5 +39,22 @@ export default async (request) => {
     return json(200, { ok: true, cleaned: true });
   }
 
+  if (request.method === 'DELETE' && action === 'purge-user') {
+    const payload = await request.json();
+    const email = payload.email;
+    if (!email) return json(400, { ok: false, error: 'missing email' });
+
+    const user = await findOneByFilters('users', [`email=${encodeEq(email)}`]);
+    if (user) await deleteRecord('users', user.id);
+
+    const tokens = await listAll('verification_tokens');
+    for (const t of tokens.filter((t) => t.email === email)) await deleteRecord('verification_tokens', t.id);
+
+    const requests = await listAll('advisor_review_requests');
+    for (const r of requests.filter((r) => r.email === email)) await deleteRecord('advisor_review_requests', r.id);
+
+    return json(200, { ok: true, cleaned: true });
+  }
+
   return json(400, { ok: false, error: 'unknown_action' });
 };
