@@ -1,113 +1,255 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<link rel="icon" type="image/png" href="images/favicon.png">
-<title>Advisor Onboarding | MoneyMatters</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<style>
-  * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    margin: 0;
-    padding: 24px;
-    background: #0F1B15;
-    color: #FAFAF7;
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-  }
-  .card {
-    max-width: 560px;
-    width: 100%;
-    margin: 40px 0;
-    padding: 32px;
-    background: #1A2B23;
-    border: 1px solid #2A3D33;
-    border-radius: 16px;
-  }
-  h1 { font-size: 20px; margin: 0 0 4px; }
-  .subtitle { color: rgba(250, 250, 247, 0.6); margin: 0 0 24px; font-size: 14px; }
-  label { display: block; font-size: 13px; color: rgba(250, 250, 247, 0.75); margin-bottom: 6px; }
-  .field { margin-bottom: 16px; }
-  input[type="text"], input[type="email"], input[type="url"] {
-    width: 100%;
-    padding: 10px 12px;
-    background: #0F1B15;
-    border: 1px solid #2A3D33;
-    border-radius: 8px;
-    color: #FAFAF7;
-    font-size: 14px;
-  }
-  .checkbox-row { display: flex; flex-wrap: wrap; gap: 8px 16px; }
-  .checkbox-row label { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13.5px; color: rgba(250, 250, 247, 0.85); }
-  .checkbox-row input { width: auto; }
-  button {
-    width: 100%;
-    padding: 13px 16px;
-    border: none;
-    border-radius: 8px;
-    background: #62A974;
-    color: #0F1B15;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 8px;
-  }
-  button:disabled { opacity: 0.6; cursor: default; }
-  #message { margin-top: 16px; font-size: 14px; color: rgba(250, 250, 247, 0.75); }
-  #message.err { color: #E8927C; }
-  #message.ok { color: #62A974; }
-  #success-state { display: none; }
-</style>
-</head>
-<body>
+<html>
+    <head>
+        <title>Advisor Onboarding | MoneyMatters</title>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/png" href="images/favicon.png">
+        <meta name="description" content="Join the MoneyMatters advisor roster: vetted, fee-only, fiduciary advisors get matched to warm, relevant leads.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="robots" content="noindex, nofollow">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Join the MoneyMatters Advisor Roster">
+        <meta property="og:description" content="Vetted, fee-only, fiduciary advisors get matched to warm, relevant leads. Free to join.">
+        <meta property="og:image" content="https://www.money-matters.site/images/money_mattershandshake-cropped.png">
+        <meta name="twitter:card" content="summary_large_image">
+        <link rel="stylesheet" href="scss/about-us-styling.css">
+        <link rel="stylesheet" href="scss/site-base.css">
+        <link rel="stylesheet" href="scss/dark-system.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZXJ5S59FQ"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag("js", new Date());
+          gtag("config", "G-LZXJ5S59FQ");
+        </script>
+        <style>
+          .advisor-onboard-form-section { max-width: 640px; margin: 0 auto; padding: 20px 8% 80px; }
+          .advisor-onboard-card {
+            padding: 32px;
+            background: #1A2B23;
+            border: 1px solid #2A3D33;
+            border-radius: 16px;
+          }
+          .advisor-onboard-card h2 { color: #FAFAF7; font-size: 22px; margin: 0 0 4px; }
+          .advisor-onboard-card .subtitle { color: rgba(250, 250, 247, 0.6); margin: 0 0 24px; font-size: 14px; }
+          .advisor-onboard-card label { display: block; font-size: 13px; color: rgba(250, 250, 247, 0.75); margin-bottom: 6px; }
+          .advisor-onboard-card .field { margin-bottom: 16px; }
+          .advisor-onboard-card input[type="text"], .advisor-onboard-card input[type="email"], .advisor-onboard-card input[type="url"] {
+            width: 100%;
+            padding: 10px 12px;
+            background: #0F1B15;
+            border: 1px solid #2A3D33;
+            border-radius: 8px;
+            color: #FAFAF7;
+            font-size: 14px;
+            box-sizing: border-box;
+            font-family: inherit;
+          }
+          .advisor-onboard-card .checkbox-row { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+          .advisor-onboard-card .checkbox-row label { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13.5px; color: rgba(250, 250, 247, 0.85); }
+          .advisor-onboard-card .checkbox-row input { width: auto; }
+          .advisor-onboard-card button {
+            width: 100%;
+            padding: 13px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #62A974;
+            color: #0F1B15;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: inherit;
+          }
+          .advisor-onboard-card button:disabled { opacity: 0.6; cursor: default; }
+          .advisor-onboard-card #message { margin-top: 16px; font-size: 14px; color: rgba(250, 250, 247, 0.75); }
+          .advisor-onboard-card #message.err { color: #E8927C; }
+          .advisor-onboard-card #message.ok { color: #62A974; }
+          .advisor-onboard-card #success-state { display: none; }
+        </style>
+    </head>
 
-<div class="card">
-  <div id="success-state">
-    <h1>You're on the roster.</h1>
-    <p class="subtitle">Thanks — we'll be in touch when a lead matches your profile.</p>
-  </div>
+    <body>
+        <div class="value-strip" aria-hidden="true" aria-label="Why MoneyMatters">
+          <div class="value-strip-track">
+            <span class="value-item">You can't fix what you can't see. See it first.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">Real advisors, actually vetted.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">Warm leads, matched by specialty.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">CFP&reg; certified. Fee-only. Fiduciary.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">No cold-calling. Leads come to you.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">Free to join the roster.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">You can't fix what you can't see. See it first.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">Real advisors, actually vetted.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">Warm leads, matched by specialty.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">CFP&reg; certified. Fee-only. Fiduciary.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">No cold-calling. Leads come to you.</span>
+            <span class="value-divider">●</span>
+            <span class="value-item">Free to join the roster.</span>
+            <span class="value-divider">●</span>
+          </div>
+        </div>
+        <header>
+            <div class="top-bar"></div>
+            <a href="index.html"><p><img src="images/moneymatters-hero-icon.png" alt="" class="nav-logo-icon">MoneyMatters.</p></a>
 
-  <div id="form-state">
-    <h1>Join the MoneyMatters advisor roster</h1>
-    <p class="subtitle">A couple minutes, and you're set up to receive matched leads directly.</p>
-    <form id="onboarding-form">
-      <div class="field">
-        <label for="name">Your name</label>
-        <input type="text" id="name" required>
-      </div>
-      <div class="field">
-        <label for="firm">Firm</label>
-        <input type="text" id="firm">
-      </div>
-      <div class="field">
-        <label for="email">Contact email</label>
-        <input type="email" id="email" required>
-      </div>
-      <div class="field">
-        <label for="scheduling">Your scheduling link (Calendly or equivalent)</label>
-        <input type="url" id="scheduling">
-      </div>
-      <div class="field">
-        <label for="states">States you're licensed in (2-letter codes, comma-separated)</label>
-        <input type="text" id="states" placeholder="PA, NJ, NY">
-      </div>
-      <div class="field">
-        <label>What you specialize in</label>
-        <div class="checkbox-row" id="specialty-row"></div>
-      </div>
-      <div class="field">
-        <label><input type="checkbox" id="accepting" checked style="width:auto"> I'm currently accepting new leads</label>
-      </div>
-      <button type="submit" id="submit-btn">Submit</button>
-      <p id="message"></p>
-    </form>
-  </div>
-</div>
+            <button type="button" class="hamburger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </button>
 
+            <nav class="top show" id="mobileMenu" aria-label="Primary">
+                <a href="index.html">Home</a>
+                <a href="tools.html">Tools</a>
+                <span class="nav-item-with-dropdown">
+                  <a href="aboutus.html">About Us</a>
+                  <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-controls="nav-about-dropdown" aria-label="Show more About Us links">&#9662;</button>
+                  <div class="nav-dropdown-menu" id="nav-about-dropdown" hidden>
+                    <a href="contact.html">Contact</a>
+                  </div>
+                </span>
+                <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
+                <a href="connect-with-advisor.html">Advisor Connect</a>
+                <a href="moneymatters-plus.html" class="block-link">MoneyMatters+</a>
+                    <button type="button" class="nav-sign-in-link" id="nav-sign-in">Sign In</button>
+                </nav>
+        </header>
+
+        <section class="tools-hero fade-up">
+          <div class="hero-media hero-media--photo-only" aria-hidden="true">
+            <!-- money_mattershandshake-cropped.png: MoneyMatters-owned asset -->
+            <img class="hero-media-poster" src="images/money_mattershandshake-cropped.png" alt="" width="1024" height="454" loading="eager">
+            <div class="hero-media-scrim"></div>
+          </div>
+          <h1>Join the MoneyMatters Advisor Roster</h1>
+          <p class="tools-hero-sub">We connect people who've just seen their full financial picture with vetted, fee-only, fiduciary advisors. Join the roster to get matched to warm leads directly, no cold outreach required.</p>
+        </section>
+
+        <main class="simple-page">
+          <section class="about-section fade-up">
+            <h2>How it works for advisors</h2>
+            <div class="timeline">
+              <div class="timeline-track" aria-hidden="true"><div class="timeline-track-fill"></div></div>
+              <div class="timeline-step">
+                <div class="step-number">1</div>
+                <h3>Tell us about your practice</h3>
+                <p>A couple minutes: your firm, licensed states, scheduling link, and what situations you specialize in.</p>
+              </div>
+              <div class="timeline-step">
+                <div class="step-number">2</div>
+                <h3>We match you to relevant leads</h3>
+                <p>Our team reviews new leads and matches them by specialty and situation fit, not just who responds fastest.</p>
+              </div>
+              <div class="timeline-step">
+                <div class="step-number">3</div>
+                <h3>You reach out on your terms</h3>
+                <p>Leads land in your inbox with real context already gathered. No bidding, no cold-calling. Toggle your capacity flag any time you're not taking new leads.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="about-section fade-up">
+            <h2>What MoneyMatters is</h2>
+            <p>A free financial-clarity platform: people take a 2-minute diagnostic, use transparent budgeting, retirement, and investment tools, and get matched to a real advisor when they're ready for one. Every advisor on the roster holds the same bar: CFP&reg;-certified, fee-only, fiduciary, no exceptions. There's no cost to join the roster.</p>
+          </section>
+
+          <section class="advisor-onboard-form-section fade-up">
+            <div class="advisor-onboard-card">
+              <div id="success-state">
+                <h2>You're on the roster.</h2>
+                <p class="subtitle">Thanks, we'll be in touch when a lead matches your profile.</p>
+              </div>
+
+              <div id="form-state">
+                <h2>Join the roster</h2>
+                <p class="subtitle">A couple minutes, and you're set up to receive matched leads directly.</p>
+                <form id="onboarding-form">
+                  <div class="field">
+                    <label for="name">Your name</label>
+                    <input type="text" id="name" required>
+                  </div>
+                  <div class="field">
+                    <label for="firm">Firm</label>
+                    <input type="text" id="firm">
+                  </div>
+                  <div class="field">
+                    <label for="email">Contact email</label>
+                    <input type="email" id="email" required>
+                  </div>
+                  <div class="field">
+                    <label for="scheduling">Your scheduling link (Calendly or equivalent)</label>
+                    <input type="url" id="scheduling">
+                  </div>
+                  <div class="field">
+                    <label for="states">States you're licensed in (2-letter codes, comma-separated)</label>
+                    <input type="text" id="states" placeholder="PA, NJ, NY">
+                  </div>
+                  <div class="field">
+                    <label>What you specialize in</label>
+                    <div class="checkbox-row" id="specialty-row"></div>
+                  </div>
+                  <div class="field">
+                    <label><input type="checkbox" id="accepting" checked style="width:auto"> I'm currently accepting new leads</label>
+                  </div>
+                  <button type="submit" id="submit-btn">Submit</button>
+                  <p id="message"></p>
+                </form>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer>
+            <p>MoneyMatters.</p>
+            <nav aria-label="Footer">
+                <a href="index.html">Home</a>
+                <a href="tools.html">Tools</a>
+                <a href="aboutus.html">About Us</a>
+                <a href="blogs/blogs-home.html">Blogs</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy-policy.html">Privacy Policy</a>
+            </nav>
+            <div class="social-media">
+                <h3>Follow Us!</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/moneymatters.tools?igsh=d2Rxbjg3dGY1c2ll&utm_source=qr" target="_blank"><img src="images/IGLOGO.png" alt="Instagram"></a>
+                    <a href="https://www.facebook.com/share/14wpjLu4Zze/?mibextid=wwXIfr" target="_blank"><img src="images/fbasset.png" alt="Facebook"></a>
+                    <a href="https://www.tiktok.com/@moneymatters.tools?_t=ZP-8w46bg1nK5G&_r=1" target="_blank"><img src="images/TikTok_Icon_Black_Circle.png" alt="TikTok"></a>
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                <h3>Disclaimer</h3>
+                <p>The information and tools provided on this website are for educational and informational purposes only. We aim to assist individuals in budgeting, investing, and planning for improved financial health by offering accessible resources. However, the content on this site is not intended as professional financial advice or formal recommendations.
+                    MoneyMatters may receive referral compensation when you connect with an advisor through our platform. This never affects which advisor you're matched with. See our <a href="aboutus.html#how-we-make-money">About page</a> for details.
+                    Users are encouraged to seek personalized advice from a licensed financial professional before making any financial decisions. We do not assume any responsibility or liability for actions taken based on the information or recommendations provided on this site. By using the tools and resources available, users acknowledge and agree that they do so at their own risk.
+                    </p>
+            </div>
+
+            <div class="credits">
+                <p>&copy; 2025 MoneyMatters.</p>
+            </div>
+            <p class="footer-signoff">Built with care for the long view.</p>
+        </footer>
+
+<script src="scripts/hamburger.js"></script>
+<script src="scripts/nav-dropdown.js"></script>
+<script src="scripts/scroll-animations.js"></script>
+<script src="scripts/session-client.js"></script>
+<script src="scripts/sign-in.js"></script>
 <script>
 (function () {
   var SPECIALTIES = [
@@ -181,6 +323,6 @@
   });
 })();
 </script>
+    </body>
 
-</body>
 </html>
