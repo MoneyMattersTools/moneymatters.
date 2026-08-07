@@ -257,40 +257,27 @@ body header nav button.nav-sign-in-link--account {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.mm-account-menu {
-    position: absolute;
-    top: 100%;
-    right: 5%;
-    margin-top: 8px;
-    background: var(--mm-charcoal);
-    border: 1px solid rgba(250, 250, 247, 0.15);
-    border-radius: 12px;
-    padding: 14px 16px;
-    z-index: 150;
-    box-shadow: var(--mm-shadow-lg);
-    min-width: 220px;
-}
-.mm-account-menu-email {
-    font-family: var(--mm-sans);
-    font-size: 13px;
-    color: rgba(250, 250, 247, 0.7);
-    margin: 0 0 10px;
-    word-break: break-all;
-}
-.mm-account-menu-signout {
+/* DESIGN_SPEC.md §49.5: the account menu (sign-out) now reuses the same
+   .nav-item-with-dropdown / .nav-dropdown-menu pattern as About Us and
+   Advisor Connect (see scripts/sign-in.js) instead of a bespoke menu —
+   same hover-on-desktop, tap-on-mobile affordance the other dropdowns
+   already established, so it's not a pattern only this button used.
+   .nav-dropdown-menu's own rules (position/background/padding/etc.)
+   apply automatically; this just styles the sign-out button itself to
+   match the <a> menu items next to it. */
+body header .nav-dropdown-signout {
+    display: block !important;
     width: 100%;
-    padding: 8px 12px;
-    background: transparent;
-    border: 1px solid rgba(250, 250, 247, 0.25);
-    border-radius: 8px;
-    color: var(--mm-cream);
-    font-family: var(--mm-sans);
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    padding: 8px 10px !important;
+    background: none !important;
+    border: none !important;
+    color: var(--mm-cream) !important;
+    font-family: var(--mm-sans) !important;
+    font-size: 15px !important;
+    text-align: left;
+    cursor: pointer !important;
 }
-.mm-account-menu-signout:hover { background: rgba(250, 250, 247, 0.1); border-color: var(--mm-green); }
+body header .nav-dropdown-signout:hover { color: var(--mm-green) !important; }
 /* About Us dropdown (Contact) — §20 */
 body header .nav-item-with-dropdown {
     position: relative !important;

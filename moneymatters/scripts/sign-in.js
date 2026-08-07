@@ -113,40 +113,40 @@
     return email.length > 22 ? email.slice(0, 19) + '…' : email;
   }
 
-  function toggleAccountMenu(email) {
-    var existing = document.getElementById('mm-account-menu');
-    if (existing) {
-      existing.remove();
-      return;
-    }
-    var menu = document.createElement('div');
-    menu.className = 'mm-account-menu';
-    menu.id = 'mm-account-menu';
-    menu.innerHTML =
-      '<p class="mm-account-menu-email">Signed in as ' + email + '</p>' +
-      '<button type="button" class="mm-account-menu-signout" id="mm-account-signout">Sign out</button>';
-    trigger.insertAdjacentElement('afterend', menu);
+  // DESIGN_SPEC.md §49.5 (locked 2026-08-09): sign-out previously lived
+  // in a one-off custom menu (click your own email, hope you notice it's
+  // interactive) — replaced with the same hover-on-desktop/tap-on-mobile
+  // dropdown pattern as the About Us / Advisor Connect nav items
+  // (site-base.css's .nav-item-with-dropdown rules, wired through
+  // nav-dropdown.js's window.mmWireDropdown), so finding sign-out uses
+  // the same, already-familiar affordance as every other secondary nav
+  // action instead of a bespoke pattern nothing else on the site used.
+  function buildAccountMenu(email) {
+    var wrapper = document.createElement('span');
+    wrapper.className = 'nav-item-with-dropdown';
+    wrapper.innerHTML =
+      '<button type="button" class="nav-sign-in-link nav-sign-in-link--account" id="nav-sign-in">' + shortEmail(email) + '</button>' +
+      '<button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-controls="nav-account-dropdown" aria-label="Account menu">&#9662;</button>' +
+      '<div class="nav-dropdown-menu" id="nav-account-dropdown" hidden>' +
+        '<button type="button" class="nav-dropdown-signout" id="nav-account-signout">Sign out</button>' +
+      '</div>';
+    trigger.replaceWith(wrapper);
 
-    document.getElementById('mm-account-signout').addEventListener('click', function () {
+    if (typeof window.mmWireDropdown === 'function') {
+      window.mmWireDropdown(wrapper.querySelector('.nav-dropdown-toggle'));
+    }
+
+    document.getElementById('nav-account-signout').addEventListener('click', function () {
       fetch('/api/sign-out', { method: 'POST' })
         .catch(function () {})
         .then(function () { window.location.reload(); });
     });
-
-    function onDocClick(e) {
-      if (menu.contains(e.target) || e.target === trigger) return;
-      menu.remove();
-      document.removeEventListener('click', onDocClick);
-    }
-    setTimeout(function () { document.addEventListener('click', onDocClick); }, 0);
   }
 
   window.mmGetSession()
     .then(function (data) {
       if (data && data.loggedIn && data.email) {
-        trigger.textContent = shortEmail(data.email);
-        trigger.classList.add('nav-sign-in-link--account');
-        trigger.addEventListener('click', function () { toggleAccountMenu(data.email); });
+        buildAccountMenu(data.email);
       } else {
         trigger.addEventListener('click', openModal);
       }
