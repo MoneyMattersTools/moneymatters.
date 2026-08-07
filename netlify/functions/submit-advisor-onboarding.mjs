@@ -2,9 +2,9 @@ import supabaseLib from './lib/supabase.js';
 import specialtiesLib from './lib/specialties.js';
 import advisorAccessLib from './lib/advisor-access.js';
 
-const { createRecord, countRecentByIpSince } = supabaseLib;
+const { createRecord, updateRecordIf, countRecentByIpSince, encodeEq } = supabaseLib;
 const { SPECIALTIES_SET } = specialtiesLib;
-const { hasValidGrant } = advisorAccessLib;
+const { hasValidGrant, getGrantCode } = advisorAccessLib;
 
 const NAME_MAX_LENGTH = 120;
 const FIRM_MAX_LENGTH = 120;
@@ -43,17 +43,18 @@ function cleanSpecialties(value) {
   return value.filter((s) => typeof s === 'string' && SPECIALTIES_SET.has(s));
 }
 
-// Single reusable registration page (replaces the per-advisor
-// invite-link system), gated by a shared access code (SITE_STRATEGY.md
-// item 4, locked 2026-08-07) rather than per-advisor tokens — advisor-
-// onboarding.html hides the form client-side without a valid grant, but
-// that's UX only, so this checks the same signed cookie server-side
-// before accepting a submission (someone could otherwise skip the gate
-// page and POST here directly). IP cooldown below is the anti-spam
-// layer for advisors who do have the code (same pattern and reasoning as
-// submit-diagnostic.mjs / request-advisor-review.mjs — Netlify's
-// platform-native rate limiting isn't available on the current plan
-// tier, confirmed in those files already).
+// Single reusable registration page, gated by a per-advisor single-use
+// invite code (SITE_STRATEGY.md item 4, locked 2026-08-07; codes made
+// unique/single-use in the round-35 ask — see advisor_invite_codes and
+// verify-advisor-access-code.mjs) — advisor-onboarding.html hides the
+// form client-side without a valid grant, but that's UX only, so this
+// checks the same signed cookie server-side before accepting a
+// submission (someone could otherwise skip the gate page and POST here
+// directly). IP cooldown below is the anti-spam layer for advisors who
+// do have a code (same pattern and reasoning as submit-diagnostic.mjs /
+// request-advisor-review.mjs — Netlify's platform-native rate limiting
+// isn't available on the current plan tier, confirmed in those files
+// already).
 export default async (request, context) => {
   if (request.method !== 'POST') {
     return json(405, { ok: false, error: 'method_not_allowed' });
@@ -131,6 +132,24 @@ export default async (request, context) => {
       if (!/request_ip/.test(insertErr.message)) throw insertErr;
       const { request_ip, ...fieldsWithoutIp } = advisorFields;
       advisor = await createRecord('advisors', fieldsWithoutIp);
+    }
+
+    // Best-effort traceability: link the invite code to who actually used
+    // it, so the admin page's invite-codes list shows more than just
+    // "used." Never fails the submission — the advisor is already on the
+    // roster at this point, and this is bookkeeping, not the write that
+    // matters.
+    const grantCode = getGrantCode(request);
+    if (grantCode) {
+      try {
+        await updateRecordIf(
+          'advisor_invite_codes',
+          [`code=${encodeEq(grantCode)}`],
+          { used_by_email: contactEmail }
+        );
+      } catch (linkErr) {
+        console.error('submit-advisor-onboarding invite-code linkage skipped:', linkErr.message);
+      }
     }
 
     return json(200, { ok: true, advisor });

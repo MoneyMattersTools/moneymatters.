@@ -1,11 +1,20 @@
 const crypto = require('node:crypto');
 
-// SITE_STRATEGY.md item 4 (locked 2026-08-07): a single shared access code
-// gates entry to the advisor onboarding form, so registration stays
-// limited to advisors Ethan has actually invited. Deliberately reuses
-// SESSION_SECRET for signing rather than adding a second secret env var —
-// this is a low-stakes anti-spam gate, not user auth, so a separate
-// signing key buys nothing. Same signed-cookie shape as lib/session.js.
+// SITE_STRATEGY.md item 4 (locked 2026-08-07), codes replaced with unique
+// per-advisor single-use ones in the round-35 ask: an access code gates
+// entry to the advisor onboarding form, so registration stays limited to
+// advisors Ethan has actually invited. The code itself is validated
+// against the advisor_invite_codes table (see verify-advisor-access-code.mjs)
+// — this file only handles the resulting signed grant cookie, deliberately
+// reusing SESSION_SECRET for signing rather than adding a second secret env
+// var, since this is a low-stakes anti-spam gate, not user auth. Same
+// signed-cookie shape as lib/session.js.
+//
+// The grant carries the consumed code itself (not just a granted:true
+// flag) so submit-advisor-onboarding.mjs can, once the advisor's contact
+// email is known, link the invite code back to who actually used it
+// (advisor_invite_codes.used_by_email) — purely a traceability nicety for
+// the admin page, not part of the security boundary.
 const COOKIE_NAME = 'mm_advisor_access';
 const MAX_AGE_SECONDS = 60 * 60 * 24; // 24 hours — re-enter the code on a later visit
 
@@ -19,39 +28,31 @@ function sign(payloadB64) {
   return crypto.createHmac('sha256', getSecret()).update(payloadB64).digest('base64url');
 }
 
-function signGrant() {
-  const body = { granted: true, exp: Math.floor(Date.now() / 1000) + MAX_AGE_SECONDS };
+function signGrant(code) {
+  const body = { granted: true, code: code || null, exp: Math.floor(Date.now() / 1000) + MAX_AGE_SECONDS };
   const payloadB64 = Buffer.from(JSON.stringify(body)).toString('base64url');
   return `${payloadB64}.${sign(payloadB64)}`;
 }
 
-function verifyGrantValue(value) {
-  if (!value || typeof value !== 'string' || !value.includes('.')) return false;
+function verifyGrant(value) {
+  if (!value || typeof value !== 'string' || !value.includes('.')) return null;
   const [payloadB64, sig] = value.split('.');
   const sigBuf = Buffer.from(sig || '');
   const expectedBuf = Buffer.from(sign(payloadB64));
   if (sigBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(sigBuf, expectedBuf)) {
-    return false;
+    return null;
   }
   try {
     const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf8'));
-    return !!payload.granted && payload.exp > Math.floor(Date.now() / 1000);
+    if (!payload.granted || payload.exp <= Math.floor(Date.now() / 1000)) return null;
+    return payload;
   } catch {
-    return false;
+    return null;
   }
 }
 
-function checkAccessCode(code) {
-  const expected = process.env.ADVISOR_ACCESS_CODE;
-  if (!expected) return false; // fail closed if the env var isn't set
-  const providedBuf = Buffer.from(String(code || ''));
-  const expectedBuf = Buffer.from(expected);
-  if (providedBuf.length !== expectedBuf.length) return false;
-  return crypto.timingSafeEqual(providedBuf, expectedBuf);
-}
-
-function buildSetCookie() {
-  return `${COOKIE_NAME}=${encodeURIComponent(signGrant())}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${MAX_AGE_SECONDS}`;
+function buildSetCookie(code) {
+  return `${COOKIE_NAME}=${encodeURIComponent(signGrant(code))}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${MAX_AGE_SECONDS}`;
 }
 
 function parseCookies(cookieHeader) {
@@ -69,7 +70,13 @@ function parseCookies(cookieHeader) {
 // Request), unlike the classic-event functions lib/session.js also serves.
 function hasValidGrant(request) {
   const cookies = parseCookies(request.headers.get('cookie') || '');
-  return verifyGrantValue(cookies[COOKIE_NAME]);
+  return !!verifyGrant(cookies[COOKIE_NAME]);
 }
 
-module.exports = { checkAccessCode, buildSetCookie, hasValidGrant };
+function getGrantCode(request) {
+  const cookies = parseCookies(request.headers.get('cookie') || '');
+  const payload = verifyGrant(cookies[COOKIE_NAME]);
+  return payload ? payload.code : null;
+}
+
+module.exports = { buildSetCookie, hasValidGrant, getGrantCode };

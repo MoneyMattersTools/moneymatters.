@@ -145,6 +145,24 @@ async function updateRecord(table, id, fields) {
   return rows[0];
 }
 
+// Same shape as updateRecord, but with arbitrary filters instead of a
+// single id — lets a caller express "update this row only if it still
+// matches some condition" as one atomic request instead of a separate
+// read-then-write, which PostgREST's REST layer can't otherwise make
+// compare-and-swap safe. Used for single-use invite codes: the PATCH
+// itself carries `used_at=is.null`, so two concurrent redemptions of the
+// same code can't both succeed — the second one's filter simply matches
+// zero rows and this returns null.
+async function updateRecordIf(table, filters, fields) {
+  const res = await supabaseFetch(table, `?${filters.join('&')}`, {
+    method: 'PATCH',
+    headers: { Prefer: 'return=representation' },
+    body: JSON.stringify(fields),
+  });
+  const rows = await res.json();
+  return rows[0] || null;
+}
+
 async function deleteRecord(table, id) {
   await supabaseFetch(table, `?id=${encodeEq(id)}`, { method: 'DELETE' });
 }
@@ -176,6 +194,7 @@ module.exports = {
   listAll,
   createRecord,
   updateRecord,
+  updateRecordIf,
   deleteRecord,
   countAll,
   countByFilter,

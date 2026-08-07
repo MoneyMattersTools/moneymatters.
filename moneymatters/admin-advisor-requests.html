@@ -137,11 +137,26 @@
   <button type="button" class="btn" id="refresh-btn">Refresh</button>
   <p id="status-line"></p>
 
+  <h2>Request queue</h2>
+  <p class="subtitle">Everything open across the site in one place — advisor leads, pending advisor applications, and data-deletion requests. Each links down to its full section for the actual action. Contact-form messages aren't included: those go straight to Formspree, not this database, so there's nothing here to show for them — check the Formspree inbox directly.</p>
+  <table>
+    <thead>
+      <tr>
+        <th class="col-date">Submitted</th>
+        <th>Type</th>
+        <th>Who</th>
+        <th>Detail</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="queue-rows"></tbody>
+  </table>
+
   <h2>Dashboard</h2>
   <button type="button" class="btn csv-btn" id="csv-btn">Download CSV</button>
   <div class="dashboard-grid" id="dashboard-grid"></div>
 
-  <h2>Leads &amp; matching</h2>
+  <h2 id="leads-section">Leads &amp; matching</h2>
   <table>
     <thead>
       <tr>
@@ -157,7 +172,26 @@
     <tbody id="rows"></tbody>
   </table>
 
-  <h2>Pending applications</h2>
+  <h2>Advisor invite codes</h2>
+  <p class="subtitle">Unique, single-use codes — generate one per advisor you're reaching out to, send it along with the <a href="for-advisors.html" target="_blank" style="color:#8ab4a8;">For Advisors</a> link. Replaces the old single shared code.</p>
+  <form class="invite-box" id="invite-code-form">
+    <input type="text" id="invite-code-label" placeholder="Label (optional — e.g. advisor name or firm)" style="flex:1;min-width:220px;">
+    <button type="submit" class="btn btn-primary">Generate code</button>
+    <span class="invite-status" id="invite-code-status"></span>
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Label</th>
+        <th>Created</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="invite-code-rows"></tbody>
+  </table>
+
+  <h2 id="pending-applications-section">Pending applications</h2>
   <p class="subtitle">Submitted via the no-code Advisor Application Form (SITE_STRATEGY item 6). Not on the live roster and excluded from matching until approved.</p>
   <table>
     <thead>
@@ -226,6 +260,20 @@
       </tr>
     </thead>
     <tbody id="advisor-rows"></tbody>
+  </table>
+
+  <h2 id="deletion-requests-section">Data deletion requests</h2>
+  <p class="subtitle">From the privacy-policy deletion flow (request-deletion.mjs). Deletion itself is still a manual step in Supabase — this only tracks that a request came in and whether it's been handled.</p>
+  <table>
+    <thead>
+      <tr>
+        <th class="col-date">Requested</th>
+        <th class="col-email">Email</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="deletion-rows"></tbody>
   </table>
 </div>
 
@@ -319,9 +367,12 @@
   var rowsEl = document.getElementById('rows');
   var advisorRowsEl = document.getElementById('advisor-rows');
   var pendingAdvisorRowsEl = document.getElementById('pending-advisor-rows');
+  var inviteCodeRowsEl = document.getElementById('invite-code-rows');
+  var deletionRowsEl = document.getElementById('deletion-rows');
+  var queueRowsEl = document.getElementById('queue-rows');
   var specialtyRowEl = document.getElementById('advisor-specialty-row');
 
-  var state = { requests: [], advisors: [], deliveries: [], dashboard: null };
+  var state = { requests: [], advisors: [], deliveries: [], dashboard: null, inviteCodes: [], deletionRequests: [] };
 
   specialtyRowEl.innerHTML = SPECIALTIES.map(function (s) {
     return '<label><input type="checkbox" name="advisor-specialty" value="' + s + '">' + s + '</label>';
@@ -505,6 +556,97 @@
       : '<tr><td colspan="6" style="color:#5c6468;font-style:italic;">No pending applications.</td></tr>';
   }
 
+  function renderInviteCodes() {
+    inviteCodeRowsEl.innerHTML = state.inviteCodes.length
+      ? state.inviteCodes.map(function (c) {
+          var status = c.used_at
+            ? 'Used' + (c.used_by_email ? ' by ' + escapeHtml(c.used_by_email) : '') + ' — ' + fmtDate(c.used_at)
+            : '<span style="color:#3ba676;">Unused</span>';
+          return '' +
+            '<tr>' +
+              '<td style="font-family:monospace;letter-spacing:0.05em;">' + escapeHtml(c.code) + '</td>' +
+              '<td>' + escapeHtml(c.label || '—') + '</td>' +
+              '<td class="col-date">' + fmtDate(c.created_at) + '</td>' +
+              '<td>' + status + '</td>' +
+            '</tr>';
+        }).join('')
+      : '<tr><td colspan="4" style="color:#5c6468;font-style:italic;">No invite codes generated yet.</td></tr>';
+  }
+
+  function renderDeletionRows() {
+    deletionRowsEl.innerHTML = state.deletionRequests.length
+      ? state.deletionRequests.map(function (d) {
+          var isDone = d.status === 'Completed';
+          return '' +
+            '<tr data-id="' + d.id + '">' +
+              '<td class="col-date">' + fmtDate(d.requested_at) + '</td>' +
+              '<td class="col-email">' + escapeHtml(d.email) + '</td>' +
+              '<td>' + (isDone ? 'Completed' : '<span style="color:#e0a45c;">Pending</span>') + '</td>' +
+              '<td>' +
+                (isDone
+                  ? '—'
+                  : '<button type="button" class="btn deletion-complete-btn">Mark completed</button>') +
+                '<span class="save-flash deletion-flash"></span>' +
+              '</td>' +
+            '</tr>';
+        }).join('')
+      : '<tr><td colspan="4" style="color:#5c6468;font-style:italic;">No deletion requests.</td></tr>';
+  }
+
+  // Round-35 ask: one place to see everything open across the site.
+  // Pulls from three already-loaded sources rather than a new endpoint —
+  // each item links down to the real section below for the actual action.
+  function renderQueue() {
+    var items = [];
+    state.requests.forEach(function (r) {
+      if (r.status === 'Meeting Taken') return; // resolved, not part of the open queue
+      items.push({
+        date: r.requested_at,
+        type: 'Advisor lead',
+        who: r.email,
+        detail: URGENCY_LABELS[r.urgency] || r.location || '—',
+        status: r.status,
+        anchor: '#leads-section',
+      });
+    });
+    state.advisors.forEach(function (a) {
+      if (a.approved !== false || a.is_test) return;
+      items.push({
+        date: a.created_at,
+        type: 'Advisor application',
+        who: a.name + (a.firm ? ' (' + a.firm + ')' : ''),
+        detail: Array.isArray(a.specialty_tags) && a.specialty_tags.length ? a.specialty_tags.join(', ') : '—',
+        status: 'Pending review',
+        anchor: '#pending-applications-section',
+      });
+    });
+    state.deletionRequests.forEach(function (d) {
+      if (d.status === 'Completed') return;
+      items.push({
+        date: d.requested_at,
+        type: 'Deletion request',
+        who: d.email,
+        detail: '—',
+        status: 'Pending',
+        anchor: '#deletion-requests-section',
+      });
+    });
+    items.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+
+    queueRowsEl.innerHTML = items.length
+      ? items.map(function (item) {
+          return '' +
+            '<tr>' +
+              '<td class="col-date">' + fmtDate(item.date) + '</td>' +
+              '<td>' + escapeHtml(item.type) + '</td>' +
+              '<td>' + escapeHtml(item.who) + '</td>' +
+              '<td>' + escapeHtml(item.detail) + '</td>' +
+              '<td><a href="' + item.anchor + '" style="color:#8ab4a8;">' + escapeHtml(item.status) + '</a></td>' +
+            '</tr>';
+        }).join('')
+      : '<tr><td colspan="5" style="color:#5c6468;font-style:italic;">Nothing open right now.</td></tr>';
+  }
+
   function authHeaders(extra) {
     var h = { 'X-Admin-Password': pw };
     if (extra) for (var k in extra) h[k] = extra[k];
@@ -619,6 +761,8 @@
       fetch('/api/admin-list-advisors', { headers: authHeaders() }).then(function (r) { return r.json(); }),
       fetch('/api/admin-list-lead-deliveries', { headers: authHeaders() }).then(function (r) { return r.json(); }),
       fetch('/api/admin-dashboard-stats', { headers: authHeaders() }).then(function (r) { return r.json(); }),
+      fetch('/api/admin-list-invite-codes', { headers: authHeaders() }).then(function (r) { return r.json(); }),
+      fetch('/api/admin-list-deletion-requests', { headers: authHeaders() }).then(function (r) { return r.json(); }),
     ])
       .then(function (results) {
         if (!results[0].ok || !results[1].ok || !results[2].ok) throw new Error('server_error');
@@ -626,9 +770,14 @@
         state.advisors = results[1].advisors;
         state.deliveries = results[2].deliveries;
         state.dashboard = results[3].ok ? results[3] : null;
+        state.inviteCodes = results[4].ok ? results[4].codes : [];
+        state.deletionRequests = results[5].ok ? results[5].requests : [];
         renderRows();
         renderAdvisorRows();
         renderPendingApplications();
+        renderInviteCodes();
+        renderDeletionRows();
+        renderQueue();
         renderDashboard(state.dashboard);
         statusLine.textContent = state.requests.length + ' request' + (state.requests.length === 1 ? '' : 's') + ', ' +
           state.advisors.length + ' advisor' + (state.advisors.length === 1 ? '' : 's') + ' on roster.';
@@ -797,6 +946,37 @@
       });
   });
 
+  deletionRowsEl.addEventListener('click', function (e) {
+    var btn = e.target.closest('.deletion-complete-btn');
+    if (!btn) return;
+    var tr = btn.closest('tr');
+    var id = tr.dataset.id;
+    var flash = tr.querySelector('.deletion-flash');
+    btn.disabled = true;
+    flash.textContent = 'Saving…';
+    flash.className = 'save-flash deletion-flash';
+    fetch('/api/admin-update-deletion-status', {
+      method: 'POST',
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ id: id, status: 'Completed' }),
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        if (!data.ok) {
+          btn.disabled = false;
+          flash.textContent = 'Failed to save';
+          flash.className = 'save-flash deletion-flash err';
+          return;
+        }
+        loadAll();
+      })
+      .catch(function () {
+        btn.disabled = false;
+        flash.textContent = 'Failed to save';
+        flash.className = 'save-flash deletion-flash err';
+      });
+  });
+
   document.getElementById('advisor-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var statusEl = document.getElementById('advisor-form-status');
@@ -855,6 +1035,39 @@
     } catch (e) {
       document.execCommand('copy');
     }
+  });
+
+  document.getElementById('invite-code-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var labelInput = document.getElementById('invite-code-label');
+    var statusEl = document.getElementById('invite-code-status');
+    var btn = e.target.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    statusEl.textContent = 'Generating…';
+    statusEl.className = 'invite-status';
+    fetch('/api/admin-generate-invite-code', {
+      method: 'POST',
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ label: labelInput.value.trim() }),
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        btn.disabled = false;
+        if (!data.ok) {
+          statusEl.textContent = 'Failed to generate code.';
+          statusEl.className = 'invite-status err';
+          return;
+        }
+        statusEl.textContent = 'Code: ' + data.invite.code;
+        statusEl.className = 'invite-status ok';
+        labelInput.value = '';
+        loadAll();
+      })
+      .catch(function () {
+        btn.disabled = false;
+        statusEl.textContent = 'Failed to generate code.';
+        statusEl.className = 'invite-status err';
+      });
   });
 
   // Flat, labeled rows (metric name / category / value / snapshot date) —
