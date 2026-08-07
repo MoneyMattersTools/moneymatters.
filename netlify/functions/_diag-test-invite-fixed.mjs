@@ -4,7 +4,7 @@ const { createRecord, findOneByFilters, encodeEq } = supabaseLib;
 
 export default async () => {
   const testCode = 'FIXED' + Date.now().toString().slice(-6);
-  const base = 'https://money-matters.site';
+  const base = 'https://www.money-matters.site';
 
   await createRecord('advisor_invite_codes', { code: testCode, label: 'fixed test', is_test: true });
 
