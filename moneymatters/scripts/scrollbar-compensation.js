@@ -1,25 +1,37 @@
-// DESIGN_SPEC.md §48: replaces `html { scrollbar-gutter: stable both-edges; }`.
-// That approach reserved a real gutter strip on the left edge that sat
-// outside body's own box, so it could only ever paint a flat color (never
-// body's actual background photos/gradients) — a visible seam against any
-// non-flat background. This measures the real scrollbar width directly
-// (not innerWidth - documentElement.clientWidth, which reads 0 on any page
-// short enough not to currently need a scrollbar, which would make the
-// compensation flicker on/off between pages — exactly the instability
-// `scrollbar-gutter: stable` existed to prevent) and exposes it as a CSS
-// variable that site-base.css applies as real body padding, so both edges
-// render as part of body's own background.
+// DESIGN_SPEC.md §48. Originally replaced `html { scrollbar-gutter: stable
+// both-edges; }`, which reserved a real gutter strip outside body's own
+// box that could only ever paint a flat color, never body's actual
+// background — a visible seam. §48 round 2 found that compensating via
+// padding on body was worse: it inset every full-bleed section sitewide
+// (header, .value-strip, hero photos, --mm-bg-deep sections) by the same
+// amount, creating a more pervasive version of the same seam. Body is now
+// fully unpadded again; this script only feeds one narrow, cosmetic
+// correction (site-base.css's .newsletter-cta__inner transform nudge),
+// not a sitewide layout property — so there's no seam/paint-order risk
+// left, and no need to measure before first paint.
 //
-// Must run synchronously, before body's first paint, or the padding would
-// visibly snap in after an unpadded flash — hence: no defer/async, and
-// placed as early as possible in <head> on every page.
+// Measures the REAL live discrepancy between the window and the document,
+// not a synthetic probe: an earlier version used a hidden overflow:scroll
+// div to estimate the browser's generic scrollbar rendering width, but
+// that measures whether a scrollbar CAN exist, not whether THIS page
+// currently has one taking real layout space — confirmed live to read a
+// nonzero value even on setups with zero actual reserved space (overlay
+// scrollbars, some headless/automated rendering contexts), which made the
+// "corrected" element overshoot in the wrong direction instead of landing
+// centered. innerWidth - clientWidth reflects the real, current page.
+// Runs after full load (not immediately) since running this in <head>
+// before body is parsed would always read 0 — the browser can't know yet
+// whether the page will need to scroll.
 (function () {
-  var probe = document.createElement('div');
-  probe.style.cssText = 'position:absolute;top:-9999px;left:-9999px;width:100px;height:100px;overflow:scroll;';
-  document.documentElement.appendChild(probe);
-  var scrollbarWidth = probe.offsetWidth - probe.clientWidth;
-  document.documentElement.removeChild(probe);
-  if (scrollbarWidth > 0) {
-    document.documentElement.style.setProperty('--mm-scrollbar-compensation', scrollbarWidth + 'px');
+  function measure() {
+    var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbarWidth > 0) {
+      document.documentElement.style.setProperty('--mm-scrollbar-compensation', scrollbarWidth + 'px');
+    }
+  }
+  if (document.readyState === 'complete') {
+    measure();
+  } else {
+    window.addEventListener('load', measure);
   }
 })();
