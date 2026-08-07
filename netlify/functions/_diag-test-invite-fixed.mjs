@@ -20,6 +20,12 @@ export default async () => {
   const setCookies = typeof verifyRes.headers.getSetCookie === 'function' ? verifyRes.headers.getSetCookie() : [verifyRes.headers.get('set-cookie')];
   const cookieValue = setCookies[0] ? setCookies[0].split(';')[0] : null;
 
+  const inspectRes = await fetch(`${base}/.netlify/functions/_diag-inspect-cookie`, {
+    method: 'GET',
+    headers: { Cookie: cookieValue },
+  });
+  const inspectBody = await inspectRes.json();
+
   const email = `mm-test-invite-fixed-${Date.now()}@web-library.net`;
   const submitRes = await fetch(`${base}/api/submit-advisor-onboarding`, {
     method: 'POST',
@@ -41,6 +47,7 @@ export default async () => {
     testCode,
     allSetCookies: setCookies,
     cookieValue,
+    inspectBody,
     submitStatus: submitRes.status,
     submitBody,
     codeAfter: codeAfter ? { used_at: codeAfter.used_at, used_by_email: codeAfter.used_by_email } : null,
