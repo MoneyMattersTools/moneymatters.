@@ -120,11 +120,16 @@
                   <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-controls="nav-about-dropdown" aria-label="Show more About Us links">&#9662;</button>
                   <div class="nav-dropdown-menu" id="nav-about-dropdown" hidden>
                     <a href="contact.html">Contact</a>
-                    <a href="for-advisors.html">For Advisors</a>
                   </div>
                 </span>
                 <a href="blogs/blogs-home.html" class="blog-link">Blogs</a>
-                <a href="connect-with-advisor.html">Advisor Connect</a>
+                <span class="nav-item-with-dropdown">
+                  <a href="connect-with-advisor.html">Advisor Connect</a>
+                  <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-controls="nav-advisor-dropdown" aria-label="Show more Advisor Connect links">&#9662;</button>
+                  <div class="nav-dropdown-menu" id="nav-advisor-dropdown" hidden>
+                    <a href="for-advisors.html">For Advisors</a>
+                  </div>
+                </span>
                 <a href="moneymatters-plus.html" class="block-link">MoneyMatters+</a>
                     <button type="button" class="nav-sign-in-link" id="nav-sign-in">Sign In</button>
                 </nav>
@@ -141,6 +146,22 @@
         </section>
 
         <main class="simple-page">
+          <section class="advisor-onboard-form-section fade-up">
+            <div class="advisor-onboard-card">
+              <h2>Have an access code?</h2>
+              <p class="subtitle">Enter the code from your invitation to continue to registration.</p>
+              <form id="access-code-form">
+                <div class="field">
+                  <label for="access-code">Access code</label>
+                  <input type="text" id="access-code" autocomplete="off" required>
+                </div>
+                <button type="submit" id="submit-btn">Continue</button>
+                <p id="message"></p>
+              </form>
+              <p class="no-code-note">Don't have a code? <a href="advisor-application.html">Apply here</a> and we'll review your submission.</p>
+            </div>
+          </section>
+
           <section class="about-section fade-up">
             <h2>How it works for advisors</h2>
             <div class="timeline">
@@ -166,22 +187,6 @@
           <section class="about-section fade-up">
             <h2>What MoneyMatters is</h2>
             <p>A free financial-clarity platform: people take a 2-minute diagnostic, use transparent budgeting, retirement, and investment tools, and get matched to a real advisor when they're ready for one. Every advisor on the roster holds the same bar: CFP&reg;-certified, fee-only, fiduciary, no exceptions. There's no cost to join the roster — registration is currently invite-only.</p>
-          </section>
-
-          <section class="advisor-onboard-form-section fade-up">
-            <div class="advisor-onboard-card">
-              <h2>Have an access code?</h2>
-              <p class="subtitle">Enter the code from your invitation to continue to registration.</p>
-              <form id="access-code-form">
-                <div class="field">
-                  <label for="access-code">Access code</label>
-                  <input type="text" id="access-code" autocomplete="off" required>
-                </div>
-                <button type="submit" id="submit-btn">Continue</button>
-                <p id="message"></p>
-              </form>
-              <p class="no-code-note">Don't have a code? If you'd like to be considered for a future outreach round, <a href="contact.html">get in touch</a>.</p>
-            </div>
           </section>
         </main>
 

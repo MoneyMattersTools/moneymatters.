@@ -157,10 +157,26 @@
     <tbody id="rows"></tbody>
   </table>
 
+  <h2>Pending applications</h2>
+  <p class="subtitle">Submitted via the no-code Advisor Application Form (SITE_STRATEGY item 6). Not on the live roster and excluded from matching until approved.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Firm</th>
+        <th>Contact</th>
+        <th>States</th>
+        <th>Specialties</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="pending-advisor-rows"></tbody>
+  </table>
+
   <h2>Advisor roster</h2>
-  <p class="subtitle">One reusable registration page — send this link through your own outreach, any advisor fills in their own info and lands directly on the roster. Or add one manually below.</p>
+  <p class="subtitle">Send the "For Advisors" page (linked in the site nav under Advisor Connect) through your own outreach — advisors enter the access code there, then fill in their own info and land directly on the roster. Or add one manually below.</p>
   <div class="invite-box">
-    <input type="text" id="invite-link-output" readonly value="https://www.money-matters.site/advisor-onboarding.html">
+    <input type="text" id="invite-link-output" readonly value="https://www.money-matters.site/for-advisors.html">
     <button type="button" class="btn" id="copy-invite-btn">Copy</button>
     <span class="invite-status" id="invite-status"></span>
   </div>
@@ -302,6 +318,7 @@
   var statusLine = document.getElementById('status-line');
   var rowsEl = document.getElementById('rows');
   var advisorRowsEl = document.getElementById('advisor-rows');
+  var pendingAdvisorRowsEl = document.getElementById('pending-advisor-rows');
   var specialtyRowEl = document.getElementById('advisor-specialty-row');
 
   var state = { requests: [], advisors: [], deliveries: [], dashboard: null };
@@ -417,7 +434,7 @@
   }
 
   function renderRows() {
-    var acceptingAdvisors = state.advisors.filter(function (a) { return a.accepting && !a.is_test; });
+    var acceptingAdvisors = state.advisors.filter(function (a) { return a.accepting && !a.is_test && a.approved !== false; });
     rowsEl.innerHTML = state.requests.map(function (row) {
       var options = STATUSES.map(function (s) {
         return '<option value="' + s + '"' + (row.status === s ? ' selected' : '') + '>' + s + '</option>';
@@ -452,7 +469,10 @@
   }
 
   function renderAdvisorRows() {
-    advisorRowsEl.innerHTML = state.advisors.map(function (a) {
+    // Pending (unapproved) applications get their own section below —
+    // this table is the live/matchable roster only.
+    var roster = state.advisors.filter(function (a) { return a.approved !== false; });
+    advisorRowsEl.innerHTML = roster.map(function (a) {
       var states = Array.isArray(a.licensed_states) ? a.licensed_states.join(', ') : '';
       var specialties = Array.isArray(a.specialty_tags) ? a.specialty_tags.join(', ') : '';
       return '' +
@@ -464,6 +484,25 @@
           '<td>' + (a.accepting ? 'Accepting' : 'Paused') + (a.is_test ? ' <span class="delivery-timedout">(test — excluded from matching)</span>' : '') + '</td>' +
         '</tr>';
     }).join('');
+  }
+
+  function renderPendingApplications() {
+    var pending = state.advisors.filter(function (a) { return a.approved === false; });
+    pendingAdvisorRowsEl.innerHTML = pending.length
+      ? pending.map(function (a) {
+          var states = Array.isArray(a.licensed_states) ? a.licensed_states.join(', ') : '';
+          var specialties = Array.isArray(a.specialty_tags) ? a.specialty_tags.join(', ') : '';
+          return '' +
+            '<tr data-id="' + a.id + '">' +
+              '<td>' + escapeHtml(a.name) + '</td>' +
+              '<td>' + escapeHtml(a.firm || '—') + '</td>' +
+              '<td>' + escapeHtml(a.contact_email || '—') + '</td>' +
+              '<td>' + escapeHtml(states || '—') + '</td>' +
+              '<td>' + escapeHtml(specialties || '—') + '</td>' +
+              '<td><button type="button" class="btn approve-btn">Approve</button><span class="save-flash approve-flash"></span></td>' +
+            '</tr>';
+        }).join('')
+      : '<tr><td colspan="6" style="color:#5c6468;font-style:italic;">No pending applications.</td></tr>';
   }
 
   function authHeaders(extra) {
@@ -589,6 +628,7 @@
         state.dashboard = results[3].ok ? results[3] : null;
         renderRows();
         renderAdvisorRows();
+        renderPendingApplications();
         renderDashboard(state.dashboard);
         statusLine.textContent = state.requests.length + ' request' + (state.requests.length === 1 ? '' : 's') + ', ' +
           state.advisors.length + ' advisor' + (state.advisors.length === 1 ? '' : 's') + ' on roster.';
@@ -723,6 +763,37 @@
         select.disabled = false;
         flash.textContent = 'Failed to send';
         flash.className = 'save-flash assign-flash err';
+      });
+  });
+
+  pendingAdvisorRowsEl.addEventListener('click', function (e) {
+    var btn = e.target.closest('.approve-btn');
+    if (!btn) return;
+    var tr = btn.closest('tr');
+    var id = tr.dataset.id;
+    var flash = tr.querySelector('.approve-flash');
+    btn.disabled = true;
+    flash.textContent = 'Approving…';
+    flash.className = 'save-flash approve-flash';
+    fetch('/api/admin-approve-advisor', {
+      method: 'POST',
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ id: id }),
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        if (!data.ok) {
+          btn.disabled = false;
+          flash.textContent = 'Failed to approve';
+          flash.className = 'save-flash approve-flash err';
+          return;
+        }
+        loadAll();
+      })
+      .catch(function () {
+        btn.disabled = false;
+        flash.textContent = 'Failed to approve';
+        flash.className = 'save-flash approve-flash err';
       });
   });
 

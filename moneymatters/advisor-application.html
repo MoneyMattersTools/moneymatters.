@@ -1,10 +1,10 @@
 <html>
     <head>
-        <title>Advisor Registration | MoneyMatters</title>
+        <title>Advisor Application | MoneyMatters</title>
         <meta charset="UTF-8">
 <script src="scripts/scrollbar-compensation.js"></script>
         <link rel="icon" type="image/png" href="images/favicon.png">
-        <meta name="description" content="Register for the MoneyMatters advisor roster.">
+        <meta name="description" content="Apply to join the MoneyMatters advisor roster. No invitation needed — applications are reviewed before you're added to the live roster.">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="robots" content="noindex, nofollow">
         <link rel="stylesheet" href="scss/about-us-styling.css">
@@ -64,8 +64,7 @@
           .advisor-onboard-card #message { margin-top: 16px; font-size: 14px; color: rgba(250, 250, 247, 0.75); }
           .advisor-onboard-card #message.err { color: #E8927C; }
           .advisor-onboard-card #message.ok { color: #62A974; }
-          .advisor-onboard-card #success-state, .advisor-onboard-card #gate-state { display: none; }
-          .advisor-onboard-card #gate-state a { color: #62A974; }
+          .advisor-onboard-card #success-state { display: none; }
         </style>
     </head>
 
@@ -134,19 +133,14 @@
         <main class="simple-page">
           <section class="advisor-onboard-form-section fade-up">
             <div class="advisor-onboard-card">
-              <div id="gate-state">
-                <h2>Access code required</h2>
-                <p class="subtitle">This page is invite-only. Enter your access code on the <a href="for-advisors.html">For Advisors</a> page to continue.</p>
-              </div>
-
               <div id="success-state">
-                <h2>You're on the roster.</h2>
-                <p class="subtitle">Thanks, we'll be in touch when a lead matches your profile.</p>
+                <h2>Application received.</h2>
+                <p class="subtitle">Thanks — our team reviews every application by hand. We'll reach out if it's a fit.</p>
               </div>
 
               <div id="form-state">
-                <h2>Advisor registration</h2>
-                <p class="subtitle">A couple minutes, and you're set up to receive matched leads directly.</p>
+                <h2>Advisor application</h2>
+                <p class="subtitle">No invitation code needed. Every application is reviewed before being added to the live roster — this isn't instant.</p>
                 <form id="onboarding-form">
                   <div class="field">
                     <label for="name">Your name</label>
@@ -175,7 +169,7 @@
                   <div class="field">
                     <label><input type="checkbox" id="accepting" checked style="width:auto"> I'm currently accepting new leads</label>
                   </div>
-                  <button type="submit" id="submit-btn">Submit</button>
+                  <button type="submit" id="submit-btn">Submit application</button>
                   <p id="message"></p>
                 </form>
               </div>
@@ -229,7 +223,6 @@
     'Selling a business or equity compensation', 'New to investing', 'Not sure, just want general guidance',
   ];
 
-  var gateEl = document.getElementById('gate-state');
   var successEl = document.getElementById('success-state');
   var formEl = document.getElementById('form-state');
   var messageEl = document.getElementById('message');
@@ -267,7 +260,7 @@
     messageEl.textContent = '';
     messageEl.className = '';
 
-    fetch('/api/submit-advisor-onboarding', {
+    fetch('/api/submit-advisor-application', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -276,12 +269,7 @@
       .then(function (data) {
         if (!data.ok) {
           btn.disabled = false;
-          btn.textContent = 'Submit';
-          if (data.error === 'access_required') {
-            formEl.style.display = 'none';
-            gateEl.style.display = 'block';
-            return;
-          }
+          btn.textContent = 'Submit application';
           messageEl.textContent = data.error === 'rate_limited'
             ? "Too many submissions from this connection. Please try again in a bit."
             : 'Something went wrong. Please check your details and try again.';
@@ -293,28 +281,11 @@
       })
       .catch(function () {
         btn.disabled = false;
-        btn.textContent = 'Submit';
+        btn.textContent = 'Submit application';
         messageEl.textContent = 'Something went wrong. Please try again.';
         messageEl.className = 'err';
       });
   });
-
-  // Gate check — pure UX (the real enforcement is server-side in
-  // submit-advisor-onboarding.mjs). Without a valid grant, don't show the
-  // form at all rather than let someone fill it out just to be rejected
-  // on submit.
-  fetch('/api/check-advisor-access')
-    .then(function (res) { return res.json().catch(function () { return { granted: false }; }); })
-    .then(function (data) {
-      if (!data.granted) {
-        formEl.style.display = 'none';
-        gateEl.style.display = 'block';
-      }
-    })
-    .catch(function () {
-      formEl.style.display = 'none';
-      gateEl.style.display = 'block';
-    });
 })();
 </script>
     </body>
