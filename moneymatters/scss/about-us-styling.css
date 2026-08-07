@@ -992,10 +992,19 @@ footer nav {
    as a single backdrop. Layout only here; forest scrim/tint colors
    live in dark-system.css, same split as the rest of the site.
    ===================================================== */
+/* DESIGN_SPEC.md §49.4 (locked 2026-08-09): the 1600px cap here (Round 23,
+   unrelated to any recent nav/scrollbar work — confirmed via git blame,
+   not a new regression) meant the forest-flank columns stopped growing
+   past ~1600px of available width, so on any wider viewport the leftover
+   space rendered as body's own flat background outside the images —
+   real, visible "bars," just not a code regression, an old design gap
+   that gets more visible the wider the screen. The center text column is
+   already fixed at 700px regardless of the grid's own width, so removing
+   this cap only lets the decorative flank images keep extending; it
+   changes nothing about text width, line length, or reading experience. */
 .scroll-story {
   display: grid;
   grid-template-columns: minmax(60px, 1fr) minmax(0, 700px) minmax(60px, 1fr);
-  max-width: 1600px;
   margin: 0 auto;
   padding: 60px 0 40px;
 }
