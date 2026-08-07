@@ -32,23 +32,34 @@
 }
 
 /* §33.6 background: a vertical scrollbar only reserves space on the right
-   edge, so every margin:0 auto centered element sitewide sits centered
-   against the content area (viewport minus scrollbar), not the true
-   window — confirmed via live pixel measurement: a 640px centered box
-   measured 393px from the left edge and 407px from the right in a 1440px
-   window (real, visible, ~14px left bias). The original fix,
-   `scrollbar-gutter: stable both-edges`, corrected the centering bias but
-   reserved its left-side gutter as a strip outside body's own box, so it
-   could only ever paint a flat color — never body's real background
-   (photos/gradients) — which read as a visible seam (§48). Replaced with
-   a JS-measured equivalent (scripts/scrollbar-compensation.js, loaded
-   early in every page's <head>) that sets --mm-scrollbar-compensation,
-   applied below as real padding inside body's own box. */
+   edge, so a margin:0 auto centered element (e.g. the newsletter box)
+   sits centered against the content area (viewport minus scrollbar), not
+   the true window — confirmed via live pixel measurement: a 640px
+   centered box measured 393px from the left edge and 407px from the
+   right in a 1440px window (real, visible, ~14px left bias).
+   `scrollbar-gutter: stable both-edges` corrected this but reserved its
+   left-side gutter as a strip outside body's own box, painting only a
+   flat color there — never body's real background — a visible seam
+   (§48). A later attempt (§48, round 1) applied the same compensation as
+   padding directly on `body`, which fixed the gutter-seam but created a
+   NEW, more pervasive one: every full-bleed section sitewide (header,
+   .value-strip, hero photos, and the many sections using --mm-bg-deep
+   for the alternating-band look) is a plain block child of body, so
+   padding on body insets ALL of them equally, and each one's own
+   distinct background color starts 15px late — confirmed via a DOM
+   sweep across 7 pages, dozens of sections affected, not just one.
+   §48 round 2: reverted the body-level padding entirely. Full-bleed
+   sections are far more numerous and higher-visibility than the one
+   `margin:0 auto` box the original bug was actually about, so body
+   itself now stays fully unpadded/edge-to-edge (matching native
+   pre-fix behavior — zero seam risk, by construction, since nothing is
+   ever inset from body's own edge). The centering-bias correction is
+   scoped to .newsletter-cta__inner specifically, further down, via a
+   transform nudge that can't affect any other element. */
 body {
     background: var(--mm-cream);
     color: var(--mm-text);
     line-height: 1.65;
-    padding-left: var(--mm-scrollbar-compensation, 0px);
 }
 
 body h1, body h2, body h3 {
@@ -860,6 +871,12 @@ body a, body button { transition: color 0.2s ease, background 0.2s ease, transfo
 .newsletter-cta__inner {
   max-width: 640px;
   margin: 0 auto;
+  /* §33.6/§48: corrects the ~scrollbar-width/2 left-of-true-center bias
+     margin:0 auto gets from a right-only scrollbar reservation — a
+     transform nudge, not padding/margin, so it can't affect layout flow
+     or any sibling/ancestor (see the body-level comment above for why
+     that broader approach was reverted). */
+  transform: translateX(calc(var(--mm-scrollbar-compensation, 0px) / 2));
 }
 /* Beehiiv's embedded iframe/div can render at a fixed px width wider than a narrow viewport. */
 .newsletter-cta__inner iframe,

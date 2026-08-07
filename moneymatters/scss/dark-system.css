@@ -66,11 +66,14 @@
 /* §34.3: html itself was never given the dark background — only body was.
    Originally needed because site-base.css's `scrollbar-gutter: stable
    both-edges` reserved a gutter strip outside body's own box, which
-   rendered html's un-themed background there instead. §48 replaced that
-   gutter with real body padding, so html's own background is no longer
-   visible as a distinct region — this rule is now purely defensive
-   (harmless to keep, cheap insurance against any future edge case where
-   body's box doesn't fully cover html's). */
+   rendered html's un-themed background there instead. §48 (round 2)
+   removed that gutter AND removed the body-padding approach that
+   replaced it (see site-base.css's body rule comment — padding on body
+   inset every full-bleed section sitewide, a worse regression than the
+   original gutter seam), so body is fully unpadded again and covers the
+   entire viewport with no gap anywhere. This rule is now purely
+   defensive (harmless to keep, cheap insurance against any future edge
+   case where body's box doesn't fully cover html's). */
 html {
     background: var(--mm-bg) !important;
 }
