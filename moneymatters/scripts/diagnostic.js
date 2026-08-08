@@ -506,15 +506,18 @@
   // §29.7: one-time popup on real account creation (not on every login).
   // §SITE_STRATEGY item 5 (locked 2026-08-07): no longer shows a raw live
   // signup count (an independent QA review flagged a low raw number as a
-  // trust risk) — shows a one-time first-500 milestone message instead,
-  // tied to the same threshold as the admin dashboard's free-Plus
-  // incentive counter. Reuses .mm-gate-* modal chrome so it matches the
-  // sign-in/onboarding modals exactly, no new chrome needed.
+  // trust risk) — shows a one-time milestone message instead, tied to the
+  // same threshold as the admin dashboard's free-Plus incentive counter
+  // (lib/incentives.js's FREE_PLUS_SPOTS_TOTAL — lowered from 500 to 100
+  // on 2026-08-08; the "First500" name in this param/field survives that
+  // change since it's just an identifier, not the actual number shown).
+  // Reuses .mm-gate-* modal chrome so it matches the sign-in/onboarding
+  // modals exactly, no new chrome needed.
   function showFirstAccountPopup(qualifiesForFirst500) {
     var overlay = document.createElement('div');
     overlay.className = 'mm-gate-overlay';
     var countText = qualifiesForFirst500
-      ? 'You’re in our first 500 users and get MoneyMatters+ free for 6 months! Would love your feedback.'
+      ? 'You’re in our first 100 users and get MoneyMatters+ free for 6 months! Would love your feedback.'
       : 'Glad to have you here.';
     overlay.innerHTML =
       '<div class="mm-gate-modal mm-welcome-modal" role="dialog" aria-modal="true" aria-labelledby="mm-welcome-heading" tabindex="-1">' +

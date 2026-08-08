@@ -116,7 +116,7 @@ export default async (request) => {
       freePlusGrants: freeGrantPlus.length,
     };
 
-    // --- Free-Plus incentive counter (first 500) ---
+    // --- Free-Plus incentive counter (first 100) ---
     const freePlusIncentive = {
       claimed: freeGrantPlus.length,
       total: FREE_PLUS_SPOTS_TOTAL,

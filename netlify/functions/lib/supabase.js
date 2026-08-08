@@ -176,7 +176,7 @@ async function countAll(table) {
 }
 
 // Same shape as countAll, but with filters — e.g. verify-token.js's
-// first-500 milestone check needs a real-users-only count (excluding
+// free-Plus milestone check needs a real-users-only count (excluding
 // is_test), which the unconditional countAll can't express.
 async function countByFilter(table, filters) {
   const qs = `?${filters.join('&')}&select=id`;
