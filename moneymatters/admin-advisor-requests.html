@@ -134,6 +134,11 @@
 <div id="app">
   <h1>MoneyMatters Admin</h1>
   <p class="subtitle">Internal only — not customer-facing.</p>
+
+  <div style="background:#1a1f21;border:1px solid #262c2f;border-radius:8px;padding:16px 18px;margin-bottom:24px;max-width:720px;font-size:13px;line-height:1.6;color:#c3c9cc;">
+    <strong style="color:#e6e9ea;">How to use this page:</strong> Start with <strong>Request queue</strong> below — it's everything that needs your attention right now, across the whole site, in one list. Click a status to jump to that item's full section. <strong>Dashboard</strong> is read-only numbers (signups, subscribers, advisor pipeline) — nothing to act on there. Further down, <strong>Leads &amp; matching</strong> is where you actually assign an advisor to someone who asked for a match. <strong>Advisor invite codes</strong> is how you generate a one-time code to send an advisor you're recruiting. <strong>Advisor roster</strong> lists everyone currently matchable. <strong>Data deletion requests</strong> tracks who's asked to have their account removed — deleting the actual data in Supabase is still a manual step you do yourself. If a page section ever looks stuck or wrong, hit <strong>Refresh</strong> above.
+  </div>
+
   <button type="button" class="btn" id="refresh-btn">Refresh</button>
   <p id="status-line"></p>
 
@@ -179,6 +184,13 @@
     <button type="submit" class="btn btn-primary">Generate code</button>
     <span class="invite-status" id="invite-code-status"></span>
   </form>
+  <p class="subtitle" style="margin-bottom:8px;">
+    <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+      <input type="checkbox" id="invite-code-show-used" style="width:auto;">
+      Show used codes too
+    </label>
+    <span id="invite-code-hidden-count" style="margin-left:6px;"></span>
+  </p>
   <table>
     <thead>
       <tr>
@@ -556,9 +568,22 @@
       : '<tr><td colspan="6" style="color:#5c6468;font-style:italic;">No pending applications.</td></tr>';
   }
 
+  // Default view is active/unused codes only — the list otherwise gets
+  // cluttered with every code ever generated, most of which are long since
+  // consumed. "Show used codes too" reveals the rest without losing them.
   function renderInviteCodes() {
-    inviteCodeRowsEl.innerHTML = state.inviteCodes.length
-      ? state.inviteCodes.map(function (c) {
+    var showUsed = document.getElementById('invite-code-show-used').checked;
+    var unused = state.inviteCodes.filter(function (c) { return !c.used_at; });
+    var used = state.inviteCodes.filter(function (c) { return c.used_at; });
+    var visible = showUsed ? state.inviteCodes : unused;
+
+    var hiddenCountEl = document.getElementById('invite-code-hidden-count');
+    hiddenCountEl.textContent = !showUsed && used.length
+      ? '(' + used.length + ' used code' + (used.length === 1 ? '' : 's') + ' hidden)'
+      : '';
+
+    inviteCodeRowsEl.innerHTML = visible.length
+      ? visible.map(function (c) {
           var status = c.used_at
             ? 'Used' + (c.used_by_email ? ' by ' + escapeHtml(c.used_by_email) : '') + ' — ' + fmtDate(c.used_at)
             : '<span style="color:#3ba676;">Unused</span>';
@@ -570,7 +595,9 @@
               '<td>' + status + '</td>' +
             '</tr>';
         }).join('')
-      : '<tr><td colspan="4" style="color:#5c6468;font-style:italic;">No invite codes generated yet.</td></tr>';
+      : (state.inviteCodes.length
+          ? '<tr><td colspan="4" style="color:#5c6468;font-style:italic;">All codes are used — check "Show used codes too".</td></tr>'
+          : '<tr><td colspan="4" style="color:#5c6468;font-style:italic;">No invite codes generated yet.</td></tr>');
   }
 
   function renderDeletionRows() {
@@ -827,6 +854,7 @@
   });
 
   document.getElementById('refresh-btn').addEventListener('click', loadAll);
+  document.getElementById('invite-code-show-used').addEventListener('change', renderInviteCodes);
 
   rowsEl.addEventListener('change', function (e) {
     var select = e.target.closest('.status-select');

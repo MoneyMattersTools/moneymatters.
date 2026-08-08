@@ -108,6 +108,16 @@ async function findOneByFilters(table, filters) {
   return rows[0] || null;
 }
 
+// Same filter shape as findOneByFilters, but returns every matching row —
+// for a user-scoped export (e.g. download-my-data.mjs's advisor-request
+// history), a single email filter is expected to match a handful of rows
+// at most, so this is a plain filtered read, not listAll's whole-table scan.
+async function findAllByFilters(table, filters) {
+  const qs = `?${filters.join('&')}`;
+  const res = await supabaseFetch(table, qs);
+  return res.json();
+}
+
 async function findLatestByFilters(table, filters, orderColumn) {
   const qs = `?${filters.join('&')}&order=${orderColumn}.desc&limit=1`;
   const res = await supabaseFetch(table, qs);
@@ -190,6 +200,7 @@ module.exports = {
   findActiveTokenByEmail,
   countRecentByIpSince,
   findOneByFilters,
+  findAllByFilters,
   findLatestByFilters,
   listAll,
   createRecord,

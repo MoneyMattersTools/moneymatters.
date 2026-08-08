@@ -220,7 +220,7 @@ function toolShowFeedbackWidget(resultsEl, toolKey) {
     '<p class="tool-feedback-prompt">How useful was this?</p>' +
     '<div class="tool-feedback-stars" role="radiogroup" aria-label="Rating">' +
       [1, 2, 3, 4, 5].map(function (n) {
-        return '<button type="button" class="tool-feedback-star" data-star="' + n + '" aria-label="' + n + ' star' + (n > 1 ? 's' : '') + '">&#9733;</button>';
+        return '<button type="button" class="tool-feedback-star" role="radio" aria-checked="false" data-star="' + n + '" aria-label="' + n + ' star' + (n > 1 ? 's' : '') + '">&#9733;</button>';
       }).join('') +
     '</div>' +
     '<div class="tool-feedback-detail" hidden>' +
@@ -248,7 +248,12 @@ function toolShowFeedbackWidget(resultsEl, toolKey) {
 
   function paintStars() {
     stars.forEach(function (star) {
-      star.classList.toggle('is-selected', Number(star.dataset.star) <= selectedRating);
+      var n = Number(star.dataset.star);
+      star.classList.toggle('is-selected', n <= selectedRating);
+      // Only the exact chosen rating is "checked" — a radiogroup can have
+      // at most one selected member, even though the fill visually spans
+      // every star up to it.
+      star.setAttribute('aria-checked', n === selectedRating ? 'true' : 'false');
     });
   }
 
