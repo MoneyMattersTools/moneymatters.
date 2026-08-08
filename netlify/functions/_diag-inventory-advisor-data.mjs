@@ -5,7 +5,8 @@ const { listAll } = supabaseLib;
 export default async () => {
   const requests = await listAll('advisor_review_requests', 'requested_at.desc');
   const advisors = await listAll('advisors', 'created_at.desc');
-  const deliveries = await listAll('lead_deliveries', 'created_at.desc').catch((e) => ({ error: e.message }));
+  const deliveries = await listAll('advisor_lead_deliveries', 'assigned_at.desc').catch((e) => ({ error: e.message }));
+  const consentLog = await listAll('advisor_consent_log', 'shared_at.desc').catch((e) => ({ error: e.message }));
 
   return new Response(JSON.stringify({
     advisorReviewRequests: {
@@ -16,8 +17,11 @@ export default async () => {
       count: advisors.length,
       rows: advisors.map((a) => ({ id: a.id, name: a.name, contact_email: a.contact_email, is_test: a.is_test, approved: a.approved, created_at: a.created_at })),
     },
-    leadDeliveries: Array.isArray(deliveries)
+    advisorLeadDeliveries: Array.isArray(deliveries)
       ? { count: deliveries.length, rows: deliveries.map((d) => ({ id: d.id, advisor_id: d.advisor_id, advisor_review_request_id: d.advisor_review_request_id, status: d.status })) }
       : deliveries,
+    advisorConsentLog: Array.isArray(consentLog)
+      ? { count: consentLog.length, rows: consentLog.map((c) => ({ id: c.id, advisor_id: c.advisor_id, advisor_review_request_id: c.advisor_review_request_id })) }
+      : consentLog,
   }, null, 2), { headers: { 'Content-Type': 'application/json' } });
 };
