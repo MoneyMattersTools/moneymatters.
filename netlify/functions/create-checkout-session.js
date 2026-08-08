@@ -6,6 +6,7 @@
 const { readSessionFromEvent } = require('./lib/session');
 const { findByEmail, updateRecord } = require('./lib/supabase');
 const { stripeRequest } = require('./lib/stripe');
+const { alertOnError } = require('./lib/error-alert');
 
 const SITE_URL = 'https://www.money-matters.site';
 
@@ -30,6 +31,7 @@ exports.handler = async (event) => {
   const priceId = process.env.STRIPE_PLUS_PRICE_ID;
   if (!priceId) {
     console.error('create-checkout-session: STRIPE_PLUS_PRICE_ID missing');
+    await alertOnError("create-checkout-session", new Error("create-checkout-session: STRIPE_PLUS_PRICE_ID missing"));
     return json(500, { ok: false, error: 'server_error' });
   }
 
@@ -65,6 +67,7 @@ exports.handler = async (event) => {
     return json(200, { ok: true, url: checkoutSession.url });
   } catch (err) {
     console.error('create-checkout-session error:', err);
+    await alertOnError("create-checkout-session", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

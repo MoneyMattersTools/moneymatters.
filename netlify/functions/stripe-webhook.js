@@ -13,6 +13,7 @@
 // a manually-flagged user, structurally, not by convention.
 const { verifyWebhookSignature } = require('./lib/stripe');
 const { findOneByFilters, updateRecord, encodeEq } = require('./lib/supabase');
+const { alertOnError } = require('./lib/error-alert');
 
 function json(statusCode, body) {
   return { statusCode, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) };
@@ -30,6 +31,7 @@ exports.handler = async (event) => {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!webhookSecret) {
     console.error('stripe-webhook: STRIPE_WEBHOOK_SECRET missing');
+    await alertOnError("stripe-webhook", new Error("stripe-webhook: STRIPE_WEBHOOK_SECRET missing"));
     return json(500, { ok: false, error: 'server_error' });
   }
 
@@ -111,6 +113,7 @@ exports.handler = async (event) => {
     // idempotent (re-applying the same plan/plan_source/subscription_id
     // is harmless), so a retry is always safe.
     console.error('stripe-webhook handling error:', err);
+    await alertOnError("stripe-webhook", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

@@ -1,4 +1,6 @@
 import supabaseLib from './lib/supabase.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { findOneByFilters, encodeEq } = supabaseLib;
 
@@ -40,6 +42,7 @@ export default async (request) => {
     return json(200, { ok: true, snapshot: delivery.snapshot_text });
   } catch (err) {
     console.error('get-lead-delivery error:', err);
+    await alertOnError("get-lead-delivery", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

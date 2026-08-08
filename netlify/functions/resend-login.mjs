@@ -1,6 +1,8 @@
 import crypto from 'node:crypto';
 import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { findByEmail, findActiveTokenByEmail, createRecord, countRecentByIpSince } = supabaseLib;
 const { sendEmail } = resendLib;
@@ -99,6 +101,7 @@ export default async (request, context) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('resend-login error:', err);
+    await alertOnError("resend-login", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

@@ -2,6 +2,7 @@ const { findByToken, findByEmail, createRecord, updateRecord, countByFilter } = 
 const { computeScore, determineBand } = require('./lib/scoring');
 const { signSession, buildSetCookie } = require('./lib/session');
 const { FREE_PLUS_SPOTS_TOTAL } = require('./lib/incentives');
+const { alertOnError } = require('./lib/error-alert');
 
 const TOKEN_RE = /^[A-Za-z0-9_-]{16,128}$/;
 
@@ -142,6 +143,7 @@ exports.handler = async (event) => {
     );
   } catch (err) {
     console.error('verify-token error:', err);
+    await alertOnError("verify-token", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

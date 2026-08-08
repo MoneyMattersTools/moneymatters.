@@ -2,6 +2,8 @@ import crypto from 'node:crypto';
 import supabaseLib from './lib/supabase.js';
 import adminAuthLib from './lib/admin-auth.js';
 import resendLib from './lib/resend.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { findOneByFilters, encodeEq, createRecord } = supabaseLib;
 const { checkAdminPassword } = adminAuthLib;
@@ -139,6 +141,7 @@ export default async (request) => {
     return json(200, { ok: true, delivery });
   } catch (err) {
     console.error('admin-assign-advisor error:', err);
+    await alertOnError("admin-assign-advisor", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

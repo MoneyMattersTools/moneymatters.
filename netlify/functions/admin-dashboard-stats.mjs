@@ -2,6 +2,8 @@ import supabaseLib from './lib/supabase.js';
 import adminAuthLib from './lib/admin-auth.js';
 import scoringLib from './lib/scoring.js';
 import incentivesLib from './lib/incentives.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { listAll } = supabaseLib;
 const { checkAdminPassword } = adminAuthLib;
@@ -242,6 +244,7 @@ export default async (request) => {
     });
   } catch (err) {
     console.error('admin-dashboard-stats error:', err);
+    await alertOnError("admin-dashboard-stats", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

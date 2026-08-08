@@ -1,6 +1,8 @@
 import supabaseLib from './lib/supabase.js';
 import adminAuthLib from './lib/admin-auth.js';
 import specialtiesLib from './lib/specialties.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { createRecord } = supabaseLib;
 const { checkAdminPassword } = adminAuthLib;
@@ -75,6 +77,7 @@ export default async (request) => {
     return json(200, { ok: true, advisor });
   } catch (err) {
     console.error('admin-create-advisor error:', err);
+    await alertOnError("admin-create-advisor", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

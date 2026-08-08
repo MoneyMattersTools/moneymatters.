@@ -2,6 +2,8 @@ import crypto from 'node:crypto';
 import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
 import scoringLib from './lib/scoring.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { createRecord, findActiveTokenByEmail, countRecentByIpSince } = supabaseLib;
 const { sendEmail } = resendLib;
@@ -141,6 +143,7 @@ export default async (request, context) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('submit-diagnostic error:', err);
+    await alertOnError("submit-diagnostic", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

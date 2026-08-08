@@ -1,5 +1,7 @@
 import supabaseLib from './lib/supabase.js';
 import adminAuthLib from './lib/admin-auth.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { listAll } = supabaseLib;
 const { checkAdminPassword } = adminAuthLib;
@@ -20,6 +22,7 @@ export default async (request) => {
     return json(200, { ok: true, requests: rows });
   } catch (err) {
     console.error('admin-list-deletion-requests error:', err);
+    await alertOnError("admin-list-deletion-requests", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

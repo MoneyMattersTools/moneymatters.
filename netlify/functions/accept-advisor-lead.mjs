@@ -1,5 +1,7 @@
 import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { findOneByFilters, encodeEq, updateRecord } = supabaseLib;
 const { sendEmail } = resendLib;
@@ -104,6 +106,7 @@ export default async (request) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('accept-advisor-lead error:', err);
+    await alertOnError("accept-advisor-lead", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

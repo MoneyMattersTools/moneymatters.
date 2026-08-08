@@ -1,4 +1,6 @@
 import resendLib from './lib/resend.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { sendEmail } = resendLib;
 
@@ -82,6 +84,7 @@ export default async (request) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('email-tool-results error:', err);
+    await alertOnError("email-tool-results", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

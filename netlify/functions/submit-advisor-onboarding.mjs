@@ -1,6 +1,8 @@
 import supabaseLib from './lib/supabase.js';
 import specialtiesLib from './lib/specialties.js';
 import advisorAccessLib from './lib/advisor-access.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { createRecord, updateRecordIf, countRecentByIpSince, encodeEq } = supabaseLib;
 const { SPECIALTIES_SET } = specialtiesLib;
@@ -155,6 +157,7 @@ export default async (request, context) => {
     return json(200, { ok: true, advisor });
   } catch (err) {
     console.error('submit-advisor-onboarding error:', err);
+    await alertOnError("submit-advisor-onboarding", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

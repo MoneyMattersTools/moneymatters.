@@ -1,6 +1,8 @@
 import supabaseLib from './lib/supabase.js';
 import sessionLib from './lib/session.js';
 import resendLib from './lib/resend.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { findByEmail, updateRecord } = supabaseLib;
 const { readSessionFromRequest } = sessionLib;
@@ -149,6 +151,7 @@ export default async (request) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('submit-tool-result error:', err);
+    await alertOnError("submit-tool-result", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

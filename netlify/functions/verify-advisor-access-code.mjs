@@ -1,5 +1,7 @@
 import supabaseLib from './lib/supabase.js';
 import advisorAccessLib from './lib/advisor-access.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { updateRecordIf, encodeEq } = supabaseLib;
 const { buildSetCookie } = advisorAccessLib;
@@ -48,6 +50,7 @@ export default async (request) => {
     return json(200, { ok: true }, { 'Set-Cookie': buildSetCookie(code) });
   } catch (err) {
     console.error('verify-advisor-access-code error:', err);
+    await alertOnError("verify-advisor-access-code", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

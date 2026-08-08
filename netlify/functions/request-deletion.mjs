@@ -1,5 +1,7 @@
 import supabaseLib from './lib/supabase.js';
 import resendLib from './lib/resend.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { createRecord, findOneByFilters, countRecentByIpSince, encodeEq } = supabaseLib;
 const { sendEmail } = resendLib;
@@ -86,6 +88,7 @@ export default async (request, context) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('request-deletion error:', err);
+    await alertOnError("request-deletion", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };

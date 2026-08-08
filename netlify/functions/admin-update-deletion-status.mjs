@@ -1,5 +1,7 @@
 import supabaseLib from './lib/supabase.js';
 import adminAuthLib from './lib/admin-auth.js';
+import errorAlertLib from './lib/error-alert.js';
+const { alertOnError } = errorAlertLib;
 
 const { updateRecord } = supabaseLib;
 const { checkAdminPassword } = adminAuthLib;
@@ -42,6 +44,7 @@ export default async (request) => {
     return json(200, { ok: true });
   } catch (err) {
     console.error('admin-update-deletion-status error:', err);
+    await alertOnError("admin-update-deletion-status", err);
     return json(500, { ok: false, error: 'server_error' });
   }
 };
